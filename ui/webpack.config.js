@@ -35,7 +35,6 @@ module.exports = (webpackConfigEnv, argv) => {
     ],
     resolve: {
       alias: {
-        utils: path.resolve(__dirname, "src/utils/"),
         types: path.resolve(__dirname, "src/types/"),
         hooks: path.resolve(__dirname, "src/hooks/"),
         components: path.resolve(__dirname, "src/components/"),

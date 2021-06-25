@@ -18,7 +18,7 @@ import { FieldRenderProps } from "react-final-form";
 import tw, { styled } from "twin.macro";
 import { usePreserveCaretPosition } from "@drill4j/react-hooks";
 
-import { convertToSingleSpaces } from "utils";
+import { convertToSingleSpaces } from "@drill4j/common-utils";
 
 const ErrorMessage = styled.div`
   ${tw`text-12 leading-24 whitespace-nowrap text-red-default`};

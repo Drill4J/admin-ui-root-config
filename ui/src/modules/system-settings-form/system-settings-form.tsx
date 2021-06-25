@@ -31,7 +31,7 @@ import {
 import { UnlockingSystemSettingsFormModal } from "modules";
 import {
   parsePackages, formatPackages, dotsAndSlashesToSlash, isPristine,
-} from "utils";
+} from "@drill4j/common-utils";
 import { Agent } from "types/agent";
 import { NotificationManagerContext } from "notification-manager";
 

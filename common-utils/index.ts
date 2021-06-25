@@ -13,7 +13,7 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-export { get } from "./get";
+export { getPropertyByPath } from "./get-property-by-path";
 export { percentFormatter } from "./percent-formatter";
 export { camelToTitle } from "./camel-to-title";
 export { copyToClipboard } from "./copy-to-clipboard";

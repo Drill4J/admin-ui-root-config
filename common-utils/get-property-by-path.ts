@@ -13,10 +13,10 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-export function get<T>(obj?: any, path?: string): T {
+export function getPropertyByPath<T>(obj?: any, path?: string): T {
   if (!path || !path.length) {
     return obj;
   }
   const [head, ...tail] = path.split(".");
-  return get(obj && obj[head], tail.join("."));
+  return getPropertyByPath(obj && obj[head], tail.join("."));
 }

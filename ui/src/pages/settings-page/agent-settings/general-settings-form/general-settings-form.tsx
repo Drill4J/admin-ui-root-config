@@ -29,7 +29,7 @@ import {
 } from "forms";
 import { Agent } from "types/agent";
 import { NotificationManagerContext } from "notification-manager";
-import { isPristine } from "utils";
+import { isPristine } from "@drill4j/common-utils";
 
 interface Props {
   agent: Agent;

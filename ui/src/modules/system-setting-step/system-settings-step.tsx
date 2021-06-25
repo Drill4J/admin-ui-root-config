@@ -19,7 +19,7 @@ import { FormGroup, GeneralAlerts } from "@drill4j/ui-kit";
 import "twin.macro";
 
 import { Fields } from "forms";
-import { parsePackages, formatPackages, dotsAndSlashesToSlash } from "utils";
+import { parsePackages, formatPackages, dotsAndSlashesToSlash } from "@drill4j/common-utils";
 
 export const SystemSettingsStep = () => (
   <div tw="space-y-10">

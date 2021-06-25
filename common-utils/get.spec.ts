@@ -13,7 +13,7 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-import { get } from "./get";
+import { getPropertyByPath } from "./get-property-by-path";
 
 describe("get", () => {
   const client = {
@@ -24,23 +24,23 @@ describe("get", () => {
     },
   };
   it("should retrieve value by path from object", () => {
-    expect(get(client, "foo.bar.buzz")).toBe("buzz");
+    expect(getPropertyByPath(client, "foo.bar.buzz")).toBe("buzz");
   });
 
   it("should return object if no path provided", () => {
-    expect(get(client, undefined)).toBe(client);
-    expect(get(client, "")).toBe(client);
+    expect(getPropertyByPath(client, undefined)).toBe(client);
+    expect(getPropertyByPath(client, "")).toBe(client);
   });
 
   it("should return undefined if value does not exist by provided path", () => {
-    expect(get(client, "foo.buzz")).toBe(undefined);
+    expect(getPropertyByPath(client, "foo.buzz")).toBe(undefined);
   });
 
   it("should return undefined if no object provided", () => {
-    expect(get(undefined, "foo.buzz")).toBe(undefined);
+    expect(getPropertyByPath(undefined, "foo.buzz")).toBe(undefined);
   });
 
   it("should return null if object is null", () => {
-    expect(get(null, "foo.buzz")).toBe(null);
+    expect(getPropertyByPath(null, "foo.buzz")).toBe(null);
   });
 });

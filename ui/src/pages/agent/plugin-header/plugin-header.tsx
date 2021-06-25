@@ -20,7 +20,7 @@ import tw, { styled, css } from "twin.macro";
 
 import { AGENT_STATUS } from "common/constants";
 import { getPagePath, routes } from "common";
-import { capitalize, snakeToSpaces } from "utils";
+import { capitalize, snakeToSpaces } from "@drill4j/common-utils";
 import { AgentStatus } from "types/agent-status";
 import LogoSvg from "./logo.svg";
 

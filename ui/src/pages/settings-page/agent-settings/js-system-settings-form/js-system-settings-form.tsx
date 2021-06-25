@@ -28,7 +28,7 @@ import {
 } from "forms";
 import { NotificationManagerContext } from "notification-manager";
 import { Agent } from "types/agent";
-import { isPristine } from "utils";
+import { isPristine } from "@drill4j/common-utils";
 import { useFormHandleSubmit } from "@drill4j/react-hooks";
 
 interface Props {
