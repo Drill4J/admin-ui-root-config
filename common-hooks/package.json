@@ -1,6 +1,6 @@
 {
-  "name": "@drill4j/react-hooks",
-  "version": "1.0.5",
+  "name": "@drill4j/common-hooks",
+  "version": "1.0.0",
   "main": "dist/index.js",
   "types": "index.d.ts",
   "author": "Drill4J",

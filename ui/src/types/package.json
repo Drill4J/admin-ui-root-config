@@ -1,6 +1,6 @@
 {
   "name": "@drill4j/types-admin",
-  "version": "1.0.0",
+  "version": "1.0.1",
   "main": "dist/index.js",
   "types": "index.d.ts",
   "dependencies": {

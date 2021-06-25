@@ -15,27 +15,34 @@
  */
 import React, { useEffect } from "react";
 import { getAppNames, LifeCycles, registerApplication } from "single-spa";
+import { useHistory, useParams } from "react-router-dom";
+import "twin.macro";
 
-import { useParams } from "react-router-dom";
+import { getPagePath } from "common";
 import { paths } from "../../../containers-paths";
 
 export const Plugin = () => {
-  const { pluginId } = useParams<{ pluginId: string }>();
+  const { pluginId, agentId } = useParams<{ pluginId: string; agentId: string; }>();
+  const { push } = useHistory();
+  const switchBuild = (version: string, path: string) => {
+    push(`${getPagePath({ name: "agentPlugin", params: { buildVersion: version, agentId, pluginId } })}${path}`);
+  };
 
   useEffect(() => {
     // eslint-disable-next-line @typescript-eslint/ban-ts-comment
     // @ts-ignore
-    !getAppNames().includes(pluginId) && registerApp(pluginId, paths[pluginId]);
+    !getAppNames().includes(pluginId) && registerApp(pluginId, paths[pluginId], { switchBuild });
   }, [pluginId]);
 
-  return <div id={pluginId} />;
+  return <div tw="w-full h-full" id={pluginId} />;
 };
 
-const registerApp = (appName: string, appPath: string) => {
+const registerApp = (appName: string, appPath: string, customProps: any) => {
   registerApplication({
     name: appName,
     app: () => System.import(appPath) as Promise<LifeCycles<never>>,
     activeWhen: (location) =>
-      new URLSearchParams(location.search).get("pluginId") === appName,
+      location.pathname.includes(appName),
+    customProps,
   });
 };
