@@ -1,0 +1,13 @@
+{
+  "name": "@drill4j/send-notification-event",
+  "version": "1.0.0",
+  "main": "dist/index.js",
+  "types": "index.d.ts",
+  "author": "Drill4J",
+  "license": "Apache-2.0",
+  "dependencies": {
+  },
+  "devDependencies": {
+    "typescript": "^4.1.2"
+  }
+}
