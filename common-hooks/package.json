@@ -1,6 +1,6 @@
 {
   "name": "@drill4j/common-hooks",
-  "version": "1.0.0",
+  "version": "1.0.2",
   "main": "dist/index.js",
   "types": "index.d.ts",
   "author": "Drill4J",
@@ -10,11 +10,12 @@
     "react-final-form": "6.5.3"
   },
   "devDependencies": {
+    "@drill4j/types-admin": "^1.0.1",
+    "@types/react": "^16.9.32",
+    "@types/react-router-dom": "^5.1.7",
+    "query-string": "^7.0.0",
     "react": "^17.0.1",
     "react-router-dom": "^5.2.0",
-    "@types/react-router-dom": "^5.1.7",
-    "@types/react": "^16.9.32",
-    "query-string": "^7.0.0",
     "typescript": "^4.1.2"
   }
 }
