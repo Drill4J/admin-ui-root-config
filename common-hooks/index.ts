@@ -22,4 +22,4 @@ export { useClickOutside } from "./use-click-outside";
 export { useIntersection } from "./use-intersection";
 export { useElementSize } from "./use-element-size";
 export { useVisibleElementsCount } from "./use-visible-elements-count";
-export { useGeneralAlertMessage } from './use-general-alert-message'
+export { useGeneralAlertMessage } from "./use-general-alert-message"

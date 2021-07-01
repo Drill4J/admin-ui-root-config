@@ -13,14 +13,15 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-import React, { useContext, useState } from "react";
+import React, { useState } from "react";
 import { Modal, Button, Spinner } from "@drill4j/ui-kit";
 import { matchPath, useLocation } from "react-router-dom";
 import { useCloseModal } from "@drill4j/react-hooks";
 import tw, { styled } from "twin.macro";
 
-import { NotificationManagerContext } from "notification-manager";
 import { Plugin } from "types/plugin";
+import { routes } from "common";
+import { sendNotificationEvent } from "@drill4j/send-notification-event";
 import { SelectableList } from "./selectable-list";
 import { loadPlugins } from "./load-plugins";
 
@@ -42,25 +43,21 @@ const PluginsList = styled.div`
 export const AddPluginsModal = ({
   plugins, setSelectedPlugins, selectedPlugins,
 }: Props) => {
-  const { showMessage } = useContext(NotificationManagerContext);
   const { pathname } = useLocation();
-  const { params: { type = "", id: agentId = "" } = {} } = matchPath<{ type: "service-group" | "agent"; id: string }>(pathname, {
-    path: "/:type/:id/settings",
-  }) || {};
+  const { params: { agentId = "", groupId = "" } = {} } = matchPath<{
+    agentId?: string; groupId?: string; }>(pathname, { path: [routes.agentPluginsSettings, routes.serviceGroupPluginsSettings] }) || {};
   const [loading, setLoading] = useState(false);
   const closeModal = useCloseModal("/add-plugin-modal");
-  const handleLoadPlugins = loadPlugins(
-    `/${type === "agent" ? "agents" : "groups"}/${agentId}/plugins`, {
-      onSuccess: () => {
-        closeModal();
-        showMessage({ type: "SUCCESS", text: "Plugin has been added" });
-      },
-      onError: () => showMessage({
-        type: "ERROR",
-        text: "On-submit error. Server problem or operation could not be processed in real-time",
-      }),
+  const handleLoadPlugins = loadPlugins(agentId ? `/agents/${agentId}/plugins` : `/groups/${groupId}/plugins`, {
+    onSuccess: () => {
+      closeModal();
+      sendNotificationEvent({ type: "SUCCESS", text: "Plugin has been added" });
     },
-  );
+    onError: () => sendNotificationEvent({
+      type: "ERROR",
+      text: "On-submit error. Server problem or operation could not be processed in real-time",
+    }),
+  });
 
   return (
     <Modal isOpen onToggle={closeModal}>
