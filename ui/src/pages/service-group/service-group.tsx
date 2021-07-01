@@ -16,13 +16,13 @@
 import React from "react";
 import "twin.macro";
 import {
-  useParams, Route, Link as LinkComponent,
+  useParams, Route, Link as LinkComponent, Switch,
 } from "react-router-dom";
 import { Icons } from "@drill4j/ui-kit";
 
 import { Toolbar, Footer } from "components";
 import { PluginsLayout } from "layouts";
-import { Plugin } from "types/plugin";
+import { Plugin as PluginType } from "types/plugin";
 import { ServiceGroup as ServiceGroupType } from "types/service-group";
 import { useAdminConnection } from "hooks";
 import { Agent } from "types/agent";
@@ -30,6 +30,7 @@ import { getPagePath, routes } from "common";
 import { ServiceGroupHeader } from "./service-group-header";
 import { Sidebar, Link } from "../agent/sidebar";
 import { Dashboard } from "./dashboard";
+import { Plugin } from "./plugin";
 
 const Breadcrumbs = () => (
   <LinkComponent tw="link" to={getPagePath({ name: "agentsTable" })}>Agents</LinkComponent>
@@ -37,7 +38,7 @@ const Breadcrumbs = () => (
 
 export const ServiceGroup = () => {
   const { groupId = "" } = useParams<{ groupId: string, pluginId: string }>();
-  const plugins = useAdminConnection<Plugin[]>(`/groups/${groupId}/plugins`) || [];
+  const plugins = useAdminConnection<PluginType[]>(`/groups/${groupId}/plugins`) || [];
   const { name = "" } = useAdminConnection<ServiceGroupType>(`/groups/${groupId}`) || {};
   const agentsList = useAdminConnection<Agent[]>("/api/agents") || [];
   const agentCount = agentsList.filter((agent) => agent.group === groupId).length;
@@ -68,7 +69,10 @@ export const ServiceGroup = () => {
       footer={<Footer />}
     >
       <div tw="w-full h-full">
-        <Route path={routes.serviceGroupDashboard} component={Dashboard} />
+        <Switch>
+          <Route path={routes.serviceGroupPlugin} component={Plugin} />
+          <Route path={routes.serviceGroupDashboard} component={Dashboard} />
+        </Switch>
       </div>
     </PluginsLayout>
   );
