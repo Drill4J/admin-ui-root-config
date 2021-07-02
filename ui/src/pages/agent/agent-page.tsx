@@ -13,17 +13,19 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-import React from "react";
+import React, { useEffect } from "react";
 import {
   Route, Switch, useParams, Link as LinkComponent,
 } from "react-router-dom";
 import { Icons } from "@drill4j/ui-kit";
+import axios from "axios";
 import "twin.macro";
 
-import { useAgent } from "hooks";
+import { useAdminConnection, useAgent } from "hooks";
 import { PluginsLayout } from "layouts";
 import { Footer, Toolbar } from "components";
 import { getPagePath, routes } from "common";
+import { Notification } from "types";
 import { Dashboard } from "./dashboard";
 import { Sidebar, Link } from "./sidebar";
 import { Plugin } from "./plugin";
@@ -50,6 +52,19 @@ export const AgentPage = () => {
     })),
   ];
 
+  const notifications = useAdminConnection<Notification[]>("/notifications") || [];
+  const newBuildNotification = notifications.find((notification) => notification.agentId === agentId) || {};
+  useEffect(() => {
+    if (
+      !newBuildNotification?.read &&
+      newBuildNotification?.agentId === agentId &&
+      newBuildNotification?.message?.currentId === buildVersion &&
+      newBuildNotification?.id
+    ) {
+      readNotification(newBuildNotification.id);
+    }
+  }, [buildVersion, newBuildNotification?.id]);
+
   return (
     <PluginsLayout
       footer={<Footer />}
@@ -64,3 +79,15 @@ export const AgentPage = () => {
     </PluginsLayout>
   );
 };
+
+async function readNotification(
+  notificationId: string,
+  { onSuccess, onError }: { onSuccess?: () => void; onError?: (message: string) => void } = {},
+) {
+  try {
+    await axios.patch(`/notifications/${notificationId}/read`);
+    onSuccess && onSuccess();
+  } catch ({ response: { data: { message } = {} } = {} }) {
+    onError && onError(message);
+  }
+}
