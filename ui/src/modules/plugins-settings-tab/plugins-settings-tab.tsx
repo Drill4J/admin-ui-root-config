@@ -25,6 +25,7 @@ import { Agent } from "types/agent";
 import { Plugin } from "types/plugin";
 import { useAdminConnection } from "hooks";
 import { AddPluginsModal } from "./add-plugins-modal";
+import { getPagePath, routes } from "../../common";
 
 interface Props {
   agent: Agent;
@@ -32,10 +33,10 @@ interface Props {
 
 export const PluginsSettingsTab = ({ agent: { buildVersion = "" } }: Props) => {
   const { pathname } = useLocation();
-  const { params: { type: agentType = "", id = "" } = {} } = matchPath<{ type: "service-group" | "agent", id: string }>(pathname, {
-    path: "/agent/:type/:id/:tab",
+  const { params: { agentId = "", groupId = "" } = {} } = matchPath<{ agentId?: string; groupId?: string; }>(pathname, {
+    path: [routes.agentPluginsSettings, routes.serviceGroupPluginsSettings],
   }) || {};
-  const pluginsTopic = `/${agentType === "agent" ? "agents" : "groups"}/${id}/plugins`;
+  const pluginsTopic = agentId ? `/agents/${agentId}/plugins` : `/groups/${groupId}/plugins`;
   const plugins = useAdminConnection<Plugin[]>(pluginsTopic) || [];
   const installedPlugins = plugins.filter((plugin) => !plugin.available);
   const [selectedPlugins, setSelectedPlugins] = useState<string[]>([]);
@@ -43,7 +44,7 @@ export const PluginsSettingsTab = ({ agent: { buildVersion = "" } }: Props) => {
   return (
     <div tw="flex flex-col h-full w-full">
       <GeneralAlerts type="INFO">
-        {`Installed plugins on your ${agentType === "agent" ? "agent" : "service group"}.`}
+        {`Installed plugins on your ${agentId ? "agent" : "service group"}.`}
       </GeneralAlerts>
       <div tw="flex justify-between pt-6 pb-6 mr-6 ml-6 text-20">
         <span>
@@ -52,7 +53,7 @@ export const PluginsSettingsTab = ({ agent: { buildVersion = "" } }: Props) => {
         </span>
         <Link
           to={`${pathname}/add-plugin-modal`}
-          data-test={`${agentType}-info-page:add-plugin-button`}
+          data-test={`${agentId ? "agent" : "service-group"}-info-page:add-plugin-button`}
         >
           <Button
             tw="flex items-center justify-center gap-x-2 h-full pl-2 pr-2 text-14"
@@ -66,16 +67,16 @@ export const PluginsSettingsTab = ({ agent: { buildVersion = "" } }: Props) => {
       <div tw="flex-grow mr-6 ml-6">
         {installedPlugins.length > 0 ? (
           installedPlugins.map(({
-            id: pluginId, name, description, version,
+            id: pluginId = "", name, description, version,
           }) => (
             <Link
-              to={agentType === "agent"
-                ? `/full-page/${id}/${buildVersion}/${pluginId}/dashboard/methods`
-                : `/service-group-full-page/${id}/${pluginId}`}
+              to={agentId
+                ? getPagePath({ name: "agentPlugin", params: { agentId, buildVersion, pluginId } })
+                : getPagePath({ name: "serviceGroupPlugin", params: { groupId, pluginId } })}
               key={pluginId}
             >
               <PluginListEntry
-                key={id}
+                key={agentId || groupId}
                 description={description}
                 icon={name as keyof typeof Icons}
               >
@@ -90,7 +91,7 @@ export const PluginsSettingsTab = ({ agent: { buildVersion = "" } }: Props) => {
           <Stub
             icon={<Icons.Plugins tw="text-monochrome-medium-tint" height={160} width={160} />}
             title={<span tw="text-24">No plugins installed</span>}
-            message={`There are no plugins installed on this ${agentType === "agent" ? "agent" : "service group"} at the moment.`}
+            message={`There are no plugins installed on this ${agentId ? "agent" : "service group"} at the moment.`}
           />
         )}
       </div>
