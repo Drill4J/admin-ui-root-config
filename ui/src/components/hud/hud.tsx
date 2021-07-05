@@ -16,11 +16,12 @@
 import React from "react";
 import Parcel from "single-spa-react/parcel";
 
-export const HUD = ({ url, name = "AgentHUD" }: { url: string; name?: string }) => (
+export const HUD = ({ url, name = "AgentHUD", ...rest }: { url: string; name?: string, [key: string]:any }) => (
   <Parcel
     config={async () => {
       const res = await System.import(url);
       return res[name];
     }}
+    {...rest}
   />
 );

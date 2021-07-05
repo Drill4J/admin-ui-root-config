@@ -33,7 +33,7 @@ export const Dashboard = () => {
         // eslint-disable-next-line @typescript-eslint/ban-ts-comment
         // @ts-ignore
         const hudPath = paths[id];
-        return <HUD url={hudPath} name="ServiceGroupHUD" />;
+        return <HUD key={id} url={hudPath} name="ServiceGroupHUD" />;
       })}
     </div>
   );

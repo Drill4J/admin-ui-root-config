@@ -22,6 +22,13 @@ const lifecycles = singleSpaReact({
   React,
   ReactDOM,
   rootComponent: Root,
+  errorBoundary: (err, info, props) => (
+    <ul>
+      <li>err: {err}</li>
+      <li>info: {info}</li>
+      <li>props: {props}</li>
+    </ul>
+  ),
 });
 
 export const { bootstrap, mount, unmount } = lifecycles;

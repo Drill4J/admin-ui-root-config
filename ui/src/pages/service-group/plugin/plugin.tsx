@@ -26,6 +26,7 @@ export const Plugin = () => {
   return (
     <div tw="w-full h-full" id={pluginId}>
       <Parcel
+        key={pluginId}
         config={async () => {
           const res = await System.import(paths[pluginId as keyof typeof paths]);
           return res.GroupPlugin;

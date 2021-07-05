@@ -31,7 +31,7 @@ export const Plugin = () => {
   useEffect(() => {
     // eslint-disable-next-line @typescript-eslint/ban-ts-comment
     // @ts-ignore
-    !getAppNames().includes(pluginId) && registerApp(pluginId, paths[pluginId], { switchBuild });
+    !getAppNames().includes(pluginId) && paths[pluginId] && registerApp(pluginId, paths[pluginId], { switchBuild });
   }, [pluginId]);
 
   return <div tw="w-full h-full" id={pluginId} />;
