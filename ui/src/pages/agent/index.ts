@@ -14,5 +14,4 @@
  * limitations under the License.
  */
 export { Plugin } from "./plugin";
-export { Dashboard } from "./dashboard";
 export { AgentPage } from "./agent-page";

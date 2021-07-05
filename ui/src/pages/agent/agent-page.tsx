@@ -26,7 +26,7 @@ import { PluginsLayout } from "layouts";
 import { Footer, Toolbar } from "components";
 import { getPagePath, routes } from "common";
 import { Notification } from "types";
-import { Dashboard } from "./dashboard";
+import { Dashboard } from "../dashboard";
 import { Sidebar, Link } from "./sidebar";
 import { Plugin } from "./plugin";
 import { PluginHeader } from "./plugin-header";
@@ -74,7 +74,7 @@ export const AgentPage = () => {
     >
       <Switch>
         <Route path={routes.agentPlugin} component={Plugin} />
-        <Route path={routes.agentDashboard} component={Dashboard} />
+        <Route path={routes.agentDashboard} render={() => <Dashboard id={agentId} />} />
       </Switch>
     </PluginsLayout>
   );

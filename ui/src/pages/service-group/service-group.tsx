@@ -29,7 +29,7 @@ import { Agent } from "types/agent";
 import { getPagePath, routes } from "common";
 import { ServiceGroupHeader } from "./service-group-header";
 import { Sidebar, Link } from "../agent/sidebar";
-import { Dashboard } from "./dashboard";
+import { Dashboard } from "../dashboard";
 import { Plugin } from "./plugin";
 
 const Breadcrumbs = () => (
@@ -71,7 +71,7 @@ export const ServiceGroup = () => {
       <div tw="w-full h-full">
         <Switch>
           <Route path={routes.serviceGroupPlugin} component={Plugin} />
-          <Route path={routes.serviceGroupDashboard} component={Dashboard} />
+          <Route path={routes.serviceGroupDashboard} render={() => <Dashboard id={groupId} isGroup />} />
         </Switch>
       </div>
     </PluginsLayout>

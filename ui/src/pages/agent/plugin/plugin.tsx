@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 import React, { useEffect } from "react";
-import { getAppNames, LifeCycles, registerApplication } from "single-spa";
+import { getAppNames, registerApplication } from "single-spa";
 import { useHistory, useParams } from "react-router-dom";
 import "twin.macro";
 
@@ -31,18 +31,23 @@ export const Plugin = () => {
   useEffect(() => {
     // eslint-disable-next-line @typescript-eslint/ban-ts-comment
     // @ts-ignore
-    !getAppNames().includes(pluginId) && paths[pluginId] && registerApp(pluginId, paths[pluginId], { switchBuild });
+    !getAppNames().includes(getPluginName(pluginId)) && paths[pluginId] && registerAgentPlugin(pluginId, paths[pluginId], { switchBuild });
   }, [pluginId]);
 
   return <div tw="w-full h-full" id={pluginId} />;
 };
 
-const registerApp = (appName: string, appPath: string, customProps: any) => {
+const registerAgentPlugin = (pluginName: string, pluginPath: string, customProps: any) => {
   registerApplication({
-    name: appName,
-    app: () => System.import(appPath) as Promise<LifeCycles<never>>,
+    name: getPluginName(pluginName),
+    app: async () => {
+      const res = await System.import(pluginPath);
+      return res.AgentPlugin;
+    },
     activeWhen: (location) =>
-      location.pathname.includes(appName),
+      !location.pathname.includes("group") && location.pathname.includes(pluginName),
     customProps,
   });
 };
+
+const getPluginName = (pluginId: string) => `agent-plugin-${pluginId}`;
