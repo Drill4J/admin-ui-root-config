@@ -21,7 +21,7 @@ import {
 } from "@drill4j/ui-kit";
 import { Form, Field, FormRenderProps } from "react-final-form";
 import "twin.macro";
-import { useFormHandleSubmit } from "@drill4j/react-hooks";
+import { useFormHandleSubmit } from "@drill4j/common-hooks";
 
 import {
   composeValidators, Fields, requiredArray, sizeLimit,

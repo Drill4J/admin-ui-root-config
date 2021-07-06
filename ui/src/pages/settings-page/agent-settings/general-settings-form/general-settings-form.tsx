@@ -17,7 +17,7 @@ import React, { useEffect } from "react";
 import axios from "axios";
 import { matchPath, useLocation } from "react-router-dom";
 import { Form, Field, FormRenderProps } from "react-final-form";
-import { useFormHandleSubmit } from "@drill4j/react-hooks";
+import { useFormHandleSubmit } from "@drill4j/common-hooks";
 import { isPristine } from "@drill4j/common-utils";
 import { sendNotificationEvent } from "@drill4j/send-notification-event";
 

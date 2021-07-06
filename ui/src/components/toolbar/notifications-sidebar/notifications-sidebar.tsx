@@ -17,7 +17,7 @@ import React, { useState } from "react";
 import { nanoid } from "nanoid";
 import { Icons, Modal, GeneralAlerts } from "@drill4j/ui-kit";
 import { useHistory } from "react-router-dom";
-import { useCloseModal } from "@drill4j/react-hooks";
+import { useCloseModal } from "@drill4j/common-hooks";
 import tw, { styled } from "twin.macro";
 
 import { Notification as NotificationType } from "types/notificaiton";

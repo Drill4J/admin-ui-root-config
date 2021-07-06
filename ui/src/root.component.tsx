@@ -15,7 +15,7 @@
  */
 import React from "react";
 import {
-  BrowserRouter, Route, Switch,
+  BrowserRouter, Redirect, Route, Switch,
 } from "react-router-dom";
 import { Icons } from "@drill4j/ui-kit";
 
@@ -46,6 +46,7 @@ const Root = () => (
     <NotificationManager />
     <Switch>
       <Route exact path={routes.login} component={LoginPage} />
+      <Route exact path="/" render={() => <Redirect to={routes.agentsTable} />} />
       <PrivateRoute path={[routes.agentPlugin, routes.agentDashboard]} component={AgentPage} />
       <PrivateRoute
         path={[routes.serviceGroupPlugin, routes.serviceGroupDashboard]}

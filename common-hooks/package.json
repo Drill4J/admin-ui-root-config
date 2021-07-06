@@ -1,16 +1,16 @@
 {
   "name": "@drill4j/common-hooks",
-  "version": "1.0.2",
+  "version": "1.0.3",
   "main": "dist/index.js",
   "types": "index.d.ts",
   "author": "Drill4J",
   "license": "Apache-2.0",
   "dependencies": {
     "final-form": "4.20.2",
-    "react-final-form": "6.5.3"
+    "react-final-form": "6.5.3",
+    "@drill4j/types-admin": "^1.0.1"
   },
   "devDependencies": {
-    "@drill4j/types-admin": "^1.0.1",
     "@types/react": "^16.9.32",
     "@types/react-router-dom": "^5.1.7",
     "query-string": "^7.0.0",

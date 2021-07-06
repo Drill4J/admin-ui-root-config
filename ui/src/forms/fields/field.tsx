@@ -16,7 +16,7 @@
 import React from "react";
 import { FieldRenderProps } from "react-final-form";
 import tw, { styled } from "twin.macro";
-import { usePreserveCaretPosition } from "@drill4j/react-hooks";
+import { usePreserveCaretPosition } from "@drill4j/common-hooks";
 
 import { convertToSingleSpaces } from "@drill4j/common-utils";
 
