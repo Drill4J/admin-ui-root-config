@@ -24,8 +24,8 @@ import { PluginListEntry, Stub } from "components";
 import { Agent } from "types/agent";
 import { Plugin } from "types/plugin";
 import { useAdminConnection } from "hooks";
+import { getPagePath, routes } from "common";
 import { AddPluginsModal } from "./add-plugins-modal";
-import { getPagePath, routes } from "../../common";
 
 interface Props {
   agent: Agent;

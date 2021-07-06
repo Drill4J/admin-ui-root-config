@@ -13,7 +13,4 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-export {
-  NotificationManager,
-  NotificationManagerContext,
-} from "./notification-manager";
+export { NotificationManager } from "./notification-manager";

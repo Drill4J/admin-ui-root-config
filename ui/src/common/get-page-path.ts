@@ -44,9 +44,9 @@ export const routes = {
   agentRegistration: "/register/:agentId",
   agentPreregistration: "/preregister",
   serviceGroupPlugin: "/agents/group/:groupId/dashboard/:pluginId",
-  serviceGroupGeneralSettings: "/agent/group/:groupId/general-settings",
-  serviceGroupSystemSettings: "/agent/group/:groupId/system-settings",
-  serviceGroupPluginsSettings: "/agent/group/:groupId/plugins-settings",
+  serviceGroupGeneralSettings: "/agents/group/:groupId/general-settings",
+  serviceGroupSystemSettings: "/agents/group/:groupId/system-settings",
+  serviceGroupPluginsSettings: "/agents/group/:groupId/plugins-settings",
   serviceGroupDashboard: "/agents/group/:groupId/dashboard",
   serviceGroupRegistration: "/register/group/:groupId",
 };

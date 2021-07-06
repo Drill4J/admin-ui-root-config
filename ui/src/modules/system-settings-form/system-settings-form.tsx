@@ -13,9 +13,7 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-import React, {
-  useContext, useEffect, useState,
-} from "react";
+import React, { useEffect, useState } from "react";
 import axios from "axios";
 import { matchPath, useLocation } from "react-router-dom";
 import {
@@ -33,23 +31,20 @@ import {
   parsePackages, formatPackages, dotsAndSlashesToSlash, isPristine,
 } from "@drill4j/common-utils";
 import { Agent } from "types/agent";
-import { NotificationManagerContext } from "notification-manager";
+import { sendNotificationEvent } from "@drill4j/send-notification-event";
+import { routes } from "common";
 
 interface Props {
   agent: Agent;
-  isServiceGroup?: boolean;
   setPristineSettings: (pristine: boolean) => void;
 }
 
-export const SystemSettingsForm = ({
-  isServiceGroup, agent, setPristineSettings,
-}: Props) => {
+export const SystemSettingsForm = ({ agent, setPristineSettings }: Props) => {
   const [unlockedPackages, setUnlockedPackages] = useState(false);
   const [isUnlockingModalOpened, setIsUnlockingModalOpened] = useState(false);
-  const { showMessage } = useContext(NotificationManagerContext);
   const { pathname } = useLocation();
-  const { params: { id = "" } = {} } = matchPath<{ id: string }>(pathname, {
-    path: "/:type/:id/settings",
+  const { params: { agentId = "", groupId = "" } = {} } = matchPath<{ agentId: string; groupId: string }>(pathname, {
+    path: [routes.agentSystemSettings, routes.serviceGroupSystemSettings],
   }) || {};
 
   return (
@@ -61,11 +56,11 @@ export const SystemSettingsForm = ({
             sessionIdHeaderName,
             targetHost,
           };
-          await axios.put(`/${isServiceGroup ? "groups" : "agents"}/${id}/system-settings`, systemSettings);
-          showMessage({ type: "SUCCESS", text: "New settings have been saved" });
+          await axios.put(groupId ? `/groups/${groupId}/system-settings` : `/agents/${agentId}/system-settings`, systemSettings);
+          sendNotificationEvent({ type: "SUCCESS", text: "New settings have been saved" });
           setUnlockedPackages(false);
         } catch ({ response: { data: { message } = {} } = {} }) {
-          showMessage({
+          sendNotificationEvent({
             type: "ERROR",
             text: "On-submit error. Server problem or operation could not be processed in real-time",
           });
@@ -95,7 +90,7 @@ export const SystemSettingsForm = ({
         return (
           <form ref={ref} tw="space-y-10">
             <GeneralAlerts type="INFO">
-              {isServiceGroup
+              {groupId
                 ? "System settings are related only to Java agents."
                 : "Information related to your application / project."}
             </GeneralAlerts>

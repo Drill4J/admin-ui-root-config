@@ -16,7 +16,7 @@
 import React, { useState, useEffect } from "react";
 import { Icons } from "@drill4j/ui-kit";
 import {
-  useParams, Prompt, Switch, Route,
+  Prompt, Switch, Route, useLocation, matchPath,
 } from "react-router-dom";
 import "twin.macro";
 
@@ -33,10 +33,12 @@ import { UnSaveChangeModal } from "../un-save-changes-modal";
 export const AgentSettings = () => {
   const [pristineSettings, setPristineSettings] = useState(true);
   const [nextLocation, setNextLocation] = useState("");
-  const { agentId = "", tab = "" } = useParams<{ agentId: string; tab: string; }>();
+  const { pathname: path } = useLocation();
+  const { params: { agentId = "", tab = "" } = {} } = matchPath<{ agentId: string; tab: string}>(path, {
+    path: "/agents/:agentId/:tab",
+  }) || {};
   const agent = useAdminConnection<Agent>(`/api/agents/${agentId}`) || {};
   const SystemSettings = agent.agentType === "Node.js" ? JsSystemSettingsForm : SystemSettingsForm;
-
   useEffect(() => {
     setPristineSettings(true);
   }, [tab]);

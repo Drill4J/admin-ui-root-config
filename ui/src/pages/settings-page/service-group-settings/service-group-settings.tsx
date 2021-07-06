@@ -15,7 +15,7 @@
  */
 import React, { useState, useEffect } from "react";
 import {
-  useParams, Switch, Route, Prompt,
+  Switch, Route, Prompt, matchPath, useLocation,
 } from "react-router-dom";
 import { Icons } from "@drill4j/ui-kit";
 import "twin.macro";
@@ -31,7 +31,10 @@ import { UnSaveChangeModal } from "../un-save-changes-modal";
 export const ServiceGroupSettings = () => {
   const [pristineSettings, setPristineSettings] = useState(true);
   const [nextLocation, setNextLocation] = useState("");
-  const { groupId = "", tab = "" } = useParams<{ groupId: string; tab: string}>();
+  const { pathname: path } = useLocation();
+  const { params: { groupId = "", tab = "" } = {} } = matchPath<{ groupId: string; tab: string}>(path, {
+    path: "/agents/group/:groupId/:tab",
+  }) || {};
   const serviceGroup = useAdminConnection<ServiceGroupEntity>(`/api/groups/${groupId}`) || {};
 
   useEffect(() => {
@@ -49,7 +52,7 @@ export const ServiceGroupSettings = () => {
         )}
       />
       <div tw="px-6">
-        <TabsPanel path="/agent/group/:groupId/:tab">
+        <TabsPanel path="/agents/group/:groupId/:tab">
           <Tab name="general-settings" to={getPagePath({ name: "serviceGroupGeneralSettings", params: { groupId } })}>General</Tab>
           <Tab name="system-settings" to={getPagePath({ name: "serviceGroupSystemSettings", params: { groupId } })}>System</Tab>
           <Tab name="plugins-settings" to={getPagePath({ name: "serviceGroupPluginsSettings", params: { groupId } })}>Plugins</Tab>
@@ -58,7 +61,7 @@ export const ServiceGroupSettings = () => {
       <Switch>
         <Route
           path={routes.serviceGroupSystemSettings}
-          render={() => <SystemSettingsForm agent={serviceGroup} setPristineSettings={setPristineSettings} isServiceGroup />}
+          render={() => <SystemSettingsForm agent={serviceGroup} setPristineSettings={setPristineSettings} />}
         />
         <Route
           path={routes.serviceGroupPluginsSettings}

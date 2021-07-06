@@ -13,11 +13,13 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-import React, { useContext, useEffect } from "react";
+import React, { useEffect } from "react";
 import axios from "axios";
 import { matchPath, useLocation } from "react-router-dom";
 import { Form, Field, FormRenderProps } from "react-final-form";
 import { useFormHandleSubmit } from "@drill4j/react-hooks";
+import { isPristine } from "@drill4j/common-utils";
+import { sendNotificationEvent } from "@drill4j/send-notification-event";
 
 import {
   Button, FormGroup, GeneralAlerts, Spinner,
@@ -28,8 +30,7 @@ import {
   composeValidators, Fields, required, sizeLimit,
 } from "forms";
 import { Agent } from "types/agent";
-import { NotificationManagerContext } from "notification-manager";
-import { isPristine } from "@drill4j/common-utils";
+import { routes } from "common";
 
 interface Props {
   agent: Agent;
@@ -38,19 +39,18 @@ interface Props {
 
 export const GeneralSettingsForm = ({ agent, setPristineSettings }: Props) => {
   const { pathname } = useLocation();
-  const { params: { id = "" } = {} } = matchPath<{ id: string }>(pathname, {
-    path: "/:type/:id/settings",
+  const { params: { agentId = "" } = {} } = matchPath<{ agentId: string; }>(pathname, {
+    path: routes.agentGeneralSettings,
   }) || {};
-  const { showMessage } = useContext(NotificationManagerContext);
 
   return (
     <Form
       onSubmit={async ({ name, description, environment }: Agent) => {
         try {
-          await axios.patch(`/agents/${id}/info`, { name, description, environment });
-          showMessage({ type: "SUCCESS", text: "New settings have been saved" });
+          await axios.patch(`/agents/${agentId}/info`, { name, description, environment });
+          sendNotificationEvent({ type: "SUCCESS", text: "New settings have been saved" });
         } catch ({ response: { data: { message } = {} } = {} }) {
-          showMessage({
+          sendNotificationEvent({
             type: "ERROR",
             text: "On-submit error. Server problem or operation could not be processed in real-time",
           });

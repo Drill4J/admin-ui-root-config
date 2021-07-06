@@ -13,11 +13,13 @@
 * See the License for the specific language governing permissions and
 * limitations under the License.
 */
-import React, { useContext, useEffect } from "react";
+import React, { useEffect } from "react";
 import axios from "axios";
 import { matchPath, useLocation } from "react-router-dom";
 import { Form, Field, FormRenderProps } from "react-final-form";
-
+import { useFormHandleSubmit } from "@drill4j/react-hooks";
+import { sendNotificationEvent } from "@drill4j/send-notification-event";
+import { isPristine } from "@drill4j/common-utils";
 import {
   Button, GeneralAlerts, Icons, Spinner, Tooltip,
 } from "@drill4j/ui-kit";
@@ -26,10 +28,8 @@ import "twin.macro";
 import {
   composeValidators, Fields, required,
 } from "forms";
-import { NotificationManagerContext } from "notification-manager";
 import { Agent } from "types/agent";
-import { isPristine } from "@drill4j/common-utils";
-import { useFormHandleSubmit } from "@drill4j/react-hooks";
+import { routes } from "common";
 
 interface Props {
   agent: Agent;
@@ -38,19 +38,18 @@ interface Props {
 
 export const JsSystemSettingsForm = ({ agent, setPristineSettings }: Props) => {
   const { pathname } = useLocation();
-  const { params: { id = "" } = {} } = matchPath<{ id: string }>(pathname, {
-    path: "/:type/:id/settings",
+  const { params: { agentId = "" } = {} } = matchPath<{ agentId: string }>(pathname, {
+    path: routes.agentSystemSettings,
   }) || {};
-  const { showMessage } = useContext(NotificationManagerContext);
 
   return (
     <Form
       onSubmit={async ({ systemSettings: { targetHost } = {} }: Agent) => {
         try {
-          await axios.put(`/agents/${id}/system-settings`, { targetHost });
-          showMessage({ type: "SUCCESS", text: "New settings have been saved" });
+          await axios.put(`/agents/${agentId}/system-settings`, { targetHost });
+          sendNotificationEvent({ type: "SUCCESS", text: "New settings have been saved" });
         } catch ({ response: { data: { message } = {} } = {} }) {
-          showMessage({
+          sendNotificationEvent({
             type: "ERROR",
             text: "On-submit error. Server problem or operation could not be processed in real-time",
           });

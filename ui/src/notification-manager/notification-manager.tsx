@@ -14,40 +14,19 @@
  * limitations under the License.
  */
 import React, {
-  ReactNode, useState, createContext, useEffect,
+  ReactNode, useState, useEffect,
 } from "react";
 import { MessagePanel } from "@drill4j/ui-kit";
 
 import { Message } from "types/message";
 import { defaultAdminSocket } from "common/connection";
 import { useLocation } from "react-router-dom";
+import { sendNotificationEvent } from "@drill4j/send-notification-event";
 
 interface Props {
   className?: string;
   children?: ReactNode;
 }
-
-type ContextType = {
-  showMessage: (message: Message) => void;
-  closeMessage: () => void;
-  currentMessage: Message | null;
-};
-
-export const NotificationManagerContext = createContext<ContextType>({
-  showMessage: () => {},
-  closeMessage: () => {},
-  currentMessage: null,
-});
-
-const sendNotificationEvent = (message: Message) => {
-  const event = new CustomEvent<Message>("notification", {
-    detail: {
-      text: message.text,
-      type: message.type,
-    },
-  });
-  document.dispatchEvent(event);
-};
 
 export const NotificationManager = ({ children }: Props) => {
   const [message, setMessage] = useState<Message | null>(null);

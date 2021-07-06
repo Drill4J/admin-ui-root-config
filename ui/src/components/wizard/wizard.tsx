@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 import React, {
-  Children, ComponentType, ReactElement, useReducer, Component, useContext,
+  Children, ComponentType, ReactElement, useReducer, Component,
 } from "react";
 import { Form } from "react-final-form";
 import {
@@ -23,9 +23,9 @@ import {
 import "twin.macro";
 
 import { Agent } from "types/agent";
-import { NotificationManagerContext } from "notification-manager";
 import { FormValidator } from "forms/form-validators";
 import { useAdminConnection } from "hooks";
+import { sendNotificationEvent } from "@drill4j/send-notification-event";
 import {
   wizardReducer, previousStep, nextStep, state,
 } from "./wizard-reducer";
@@ -53,7 +53,6 @@ export const Wizard = ({
   const steps = Children.toArray(children);
   const { name, validate, component: StepComponent } = (steps[currentStepIndex] as Component<StepProps>).props;
   const availablePlugins = useAdminConnection<Plugin[]>("/plugins") || [];
-  const { showMessage, currentMessage } = useContext(NotificationManagerContext);
 
   return (
     <div>
@@ -66,9 +65,9 @@ export const Wizard = ({
         onSubmit={async (values: any) => {
           try {
             await onSubmit(values);
-            showMessage({ type: "SUCCESS", text: onSuccessMessage });
+            sendNotificationEvent({ type: "SUCCESS", text: onSuccessMessage });
           } catch ({ response: { data: { message } = {} } = {} }) {
-            showMessage({
+            sendNotificationEvent({
               type: "ERROR",
               text: message || "On-submit error. Server problem or operation could not be processed in real-time.",
             });
@@ -125,7 +124,7 @@ export const Wizard = ({
                     size="large"
                     onClick={handleSubmit}
                     data-test="wizard:finishng-button"
-                    disabled={submitting || currentMessage?.type === "ERROR"}
+                    disabled={submitting}
                   >
                     {submitting ? <Spinner disabled /> : <Icons.Check height={10} width={14} viewBox="0 0 14 10" />}
                     <span>Finish</span>
