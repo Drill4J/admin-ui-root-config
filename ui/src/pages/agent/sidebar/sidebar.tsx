@@ -43,7 +43,7 @@ export const Sidebar = ({ links }: Props) => {
         return (
           <Tooltip message={<div>{name}</div>} position="right" key={id}>
             <SidebarLink
-              isActive={id === "dashboard" ? pathname.slice(-9) === "dashboard" : pathname.includes(path)}
+              isActive={id === "dashboard" ? !pathname.match("dashboard\\/\\w") : pathname.includes(path)}
               to={path}
             >
               <Icon />

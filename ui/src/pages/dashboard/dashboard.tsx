@@ -73,7 +73,7 @@ export const Dashboard = ({ id = "", isGroup = false }: Props) => {
       activeWhen: (location) => {
         const isCorrectPage = isGroup ? location.pathname.includes("group") : !location.pathname.includes("group");
         // it need that on dashboard page both of dashboard not activate
-        return isCorrectPage && location.pathname.slice(-9) === "dashboard"; // "dashboard".length
+        return isCorrectPage && !location.pathname.match("dashboard\\/\\w"); // "dashboard".length
       },
       customProps: { id, isGroup },
     });
