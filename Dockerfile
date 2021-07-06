@@ -7,15 +7,12 @@ ENV REACT_APP_ENV "$ENV"
 ENV REACT_APP_VERSION "$VERSION"
 ENV REACT_APP_API_HOST "$API_HOST"
 WORKDIR /app
-COPY package.json /app/package.json
-COPY package-lock.json /app/package-lock.json
-RUN npm install --silent
-COPY src /app/src
-RUN npm run build
-CMD /wait && /bin/sh -c "envsubst < /etc/nginx/upsteam.conf.template > /etc/nginx/upstream.conf && exec nginx -g 'daemon off;'"
-
+COPY . /app
+#RUN npm install --silent
 #RUN npm run build
-#
+WORKDIR /app/ui
+RUN npm install --silent
+RUN npm run build
 ## production environment
 #FROM nginx:1.17.6-alpine-perl
 #ENV UPSTREAM "drill-admin:8090"

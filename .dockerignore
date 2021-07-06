@@ -1,0 +1,9 @@
+**/node_modules
+**/coverage
+**/common-hooks
+**/common-utils
+**/send-notification-event
+
+**/npm-debug.log*
+**/yarn-debug.log*
+**/yarn-error.log*

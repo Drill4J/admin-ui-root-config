@@ -6,7 +6,7 @@ module.exports = (webpackConfigEnv, argv) => {
   const orgName = "Drill4J";
   const defaultConfig = singleSpaDefaults({
     orgName,
-    projectName: "root-config",
+    projectName: "admin-ui-container",
     webpackConfigEnv,
     argv,
     disableHtmlGeneration: true,

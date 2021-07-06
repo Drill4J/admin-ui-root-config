@@ -1,5 +1,5 @@
 {
-  "name": "@drill4j/admin-ui-root-config",
+  "name": "@drill4j/admin-ui-container",
   "author": "Drill4J",
   "license": "Apache-2.0",
   "description": "Drill4J admin ui root config",
