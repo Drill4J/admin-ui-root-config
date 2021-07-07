@@ -17,14 +17,13 @@ import React from "react";
 import {
   BrowserRouter, Redirect, Route, Switch,
 } from "react-router-dom";
-import { Icons } from "@drill4j/ui-kit";
 
 import {
   LoginPage, AgentsPage, AgentPage,
   SettingsPage, AgentRegistrationPage, ServiceGroupRegistrationPage, ServiceGroup,
 } from "pages";
 import { TypographyStyles, LayoutStyles, FontsStyles } from "global-styles";
-import { Footer, PrivateRoute, Sidebar } from "components";
+import { Footer, PrivateRoute } from "components";
 import { configureAxios, routes } from "common";
 import { AppLayout } from "layouts";
 
@@ -34,28 +33,21 @@ import "./index.css";
 
 configureAxios();
 
-const sidebarLinks = [
-  { link: "agents", icon: Icons.Agents },
-];
-
 const Root = () => (
   <BrowserRouter>
     <FontsStyles />
     <TypographyStyles />
     <LayoutStyles />
     <NotificationManager />
-    <Switch>
-      <Route exact path={routes.login} component={LoginPage} />
-      <Route exact path="/" render={() => <Redirect to={routes.agentsTable} />} />
-      <PrivateRoute path={[routes.agentPlugin, routes.agentDashboard]} component={AgentPage} />
-      <PrivateRoute
-        path={[routes.serviceGroupPlugin, routes.serviceGroupDashboard]}
-        component={ServiceGroup}
-      />
-      <AppLayout
-        sidebar={<Sidebar links={sidebarLinks} matchParams={{ path: "/:activeLink" }} />}
-        footer={<Footer />}
-      >
+    <AppLayout footer={<Footer />}>
+      <Switch>
+        <Route exact path={routes.login} component={LoginPage} />
+        <Route exact path="/" render={() => <Redirect to={routes.agentsTable} />} />
+        <PrivateRoute path={[routes.agentPlugin, routes.agentDashboard]} component={AgentPage} />
+        <PrivateRoute
+          path={[routes.serviceGroupPlugin, routes.serviceGroupDashboard]}
+          component={ServiceGroup}
+        />
         <Switch>
           <PrivateRoute exact path={[routes.agentsTable, `${routes.agentsTable}/notification-sidebar`]} component={AgentsPage} />
           <PrivateRoute
@@ -67,8 +59,8 @@ const Root = () => (
           <PrivateRoute exact path={routes.serviceGroupRegistration} component={ServiceGroupRegistrationPage} />
           <PrivateRoute path={routes.agentPreregistration} component={AgentRegistrationPage} />
         </Switch>
-      </AppLayout>
-    </Switch>
+      </Switch>
+    </AppLayout>
   </BrowserRouter>
 );
 

@@ -16,11 +16,11 @@
 import React from "react";
 import "twin.macro";
 import {
-  useParams, Route, Link as LinkComponent, Switch,
+  useParams, Route, Switch,
 } from "react-router-dom";
 import { Icons } from "@drill4j/ui-kit";
 
-import { Toolbar, Footer } from "components";
+import { Footer } from "components";
 import { PluginsLayout } from "layouts";
 import { Plugin as PluginType } from "types/plugin";
 import { ServiceGroup as ServiceGroupType } from "types/service-group";
@@ -31,10 +31,6 @@ import { ServiceGroupHeader } from "./service-group-header";
 import { Sidebar, Link } from "../agent/sidebar";
 import { Dashboard } from "../dashboard";
 import { Plugin } from "./plugin";
-
-const Breadcrumbs = () => (
-  <LinkComponent tw="link" to={getPagePath({ name: "agentsTable" })}>Agents</LinkComponent>
-);
 
 export const ServiceGroup = () => {
   const { groupId = "" } = useParams<{ groupId: string, pluginId: string }>();
@@ -64,7 +60,6 @@ export const ServiceGroup = () => {
           matchParams={{ path: routes.serviceGroupDashboard }}
         />
       )}
-      toolbar={<Toolbar breadcrumbs={<Breadcrumbs />} />}
       header={<ServiceGroupHeader name={name} agentsCount={agentCount} />}
       footer={<Footer />}
     >
