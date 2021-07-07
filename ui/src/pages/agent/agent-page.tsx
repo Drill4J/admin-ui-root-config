@@ -23,7 +23,6 @@ import "twin.macro";
 
 import { useAdminConnection, useAgent } from "hooks";
 import { PluginsLayout } from "layouts";
-import { Footer } from "components";
 import { getPagePath, routes } from "common";
 import { Notification } from "types";
 import { Dashboard } from "../dashboard";
@@ -63,7 +62,6 @@ export const AgentPage = () => {
 
   return (
     <PluginsLayout
-      footer={<Footer />}
       sidebar={<Sidebar links={pluginsLinks} />}
       header={<PluginHeader agentName={agent.name} agentStatus={agent.status} />}
     >

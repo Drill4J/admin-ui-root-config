@@ -73,9 +73,9 @@ export const Footer = () => {
   ];
 
   return (
-    <div tw="opacity-75 text-12 leading-32 text-monochrome-default">
+    <div tw="opacity-75 text-12 leading-32 text-monochrome-default border-t border-monochrome-medium-tint">
       <div tw="px-6">
-        <div tw="flex justify-between items-center w-full border-t border-monochrome-medium-tint">
+        <div tw="flex justify-between items-center w-full">
           <AdminInfo>
             <span>
               {`© Drill4J ${new Date().getFullYear()}`}

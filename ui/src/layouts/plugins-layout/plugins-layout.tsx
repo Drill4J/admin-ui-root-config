@@ -20,11 +20,10 @@ interface Props {
   children?: React.ReactNode;
   sidebar?: React.ReactNode;
   header?: React.ReactNode;
-  footer?: React.ReactNode;
 }
 
 export const PluginsLayout = ({
-  header, children, footer, sidebar,
+  header, children, sidebar,
 }: Props) => (
   <div tw="flex flex-col w-full h-full overflow-hidden">
     <div tw="flex-shrink-0 w-full h-28 border-b border-monochrome-medium-tint">{header}</div>
@@ -32,7 +31,6 @@ export const PluginsLayout = ({
       <div tw="max-w-80px h-full">{sidebar}</div>
       <div className="flex items-start flex-col w-full overflow-y-auto overflow-x-hidden">
         <div tw="flex flex-grow w-full mb-6">{children}</div>
-        <div tw="w-full">{footer}</div>
       </div>
     </div>
   </div>
