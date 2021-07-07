@@ -15,7 +15,7 @@
  */
 import React, { useEffect } from "react";
 import {
-  Route, Switch, useParams, Link as LinkComponent,
+  Route, Switch, useParams,
 } from "react-router-dom";
 import { Icons } from "@drill4j/ui-kit";
 import axios from "axios";
@@ -23,17 +23,13 @@ import "twin.macro";
 
 import { useAdminConnection, useAgent } from "hooks";
 import { PluginsLayout } from "layouts";
-import { Footer, Toolbar } from "components";
+import { Footer } from "components";
 import { getPagePath, routes } from "common";
 import { Notification } from "types";
 import { Dashboard } from "../dashboard";
 import { Sidebar, Link } from "./sidebar";
 import { Plugin } from "./plugin";
 import { PluginHeader } from "./plugin-header";
-
-const Breadcrumbs = () => (
-  <LinkComponent tw="link" to={getPagePath({ name: "agentsTable" })}>Agents</LinkComponent>
-);
 
 export const AgentPage = () => {
   const { agentId = "", buildVersion = "" } = useParams<{ agentId?: string; buildVersion?: string; }>();
@@ -70,7 +66,6 @@ export const AgentPage = () => {
       footer={<Footer />}
       sidebar={<Sidebar links={pluginsLinks} />}
       header={<PluginHeader agentName={agent.name} agentStatus={agent.status} />}
-      toolbar={<Toolbar breadcrumbs={<Breadcrumbs />} />}
     >
       <Switch>
         <Route path={routes.agentPlugin} component={Plugin} />

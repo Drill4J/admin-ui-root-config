@@ -18,20 +18,16 @@ import "twin.macro";
 
 interface Props {
   children?: React.ReactNode;
-  toolbar?: React.ReactNode;
   sidebar?: React.ReactNode;
   header?: React.ReactNode;
-  breadcrumbs?: React.ReactNode;
   footer?: React.ReactNode;
 }
 
 export const PluginsLayout = ({
-  toolbar, header, breadcrumbs, children, footer, sidebar,
+  header, children, footer, sidebar,
 }: Props) => (
   <div tw="flex flex-col w-full h-full overflow-hidden">
-    <div tw="flex-shrink-0 w-full h-12 border-b border-monochrome-medium-tint">{toolbar}</div>
     <div tw="flex-shrink-0 w-full h-28 border-b border-monochrome-medium-tint">{header}</div>
-    {breadcrumbs && <div tw="flex-shrink-0 w-full h-10 border-b border-monochrome-medium-tint">{breadcrumbs}</div>}
     <div tw="flex flex-row w-full h-full overflow-auto">
       <div tw="max-w-80px h-full">{sidebar}</div>
       <div className="flex items-start flex-col w-full overflow-y-auto overflow-x-hidden">
