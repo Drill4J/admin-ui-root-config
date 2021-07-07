@@ -15,7 +15,7 @@
  */
 import React from "react";
 import {
-  Route, useHistory, Link, useLocation,
+  Route, useHistory, Link, useLocation, useParams, useRouteMatch, matchPath,
 } from "react-router-dom";
 import { Icons } from "@drill4j/ui-kit";
 import tw, { styled } from "twin.macro";
@@ -23,7 +23,7 @@ import tw, { styled } from "twin.macro";
 import { TOKEN_KEY } from "common/constants";
 import { Notification } from "types/notificaiton";
 import { useAdminConnection } from "hooks";
-import { getPagePath } from "common";
+import { getPagePath, routes } from "common";
 import { Breadcrumbs } from "modules";
 import { NotificationsSidebar } from "./notifications-sidebar";
 
@@ -43,6 +43,21 @@ export const Toolbar = () => {
   const { push } = useHistory();
   const { pathname } = useLocation();
 
+  const {
+    params: {
+      agentId = "", buildVersion = "", pluginId = "", groupId = "",
+    } = {},
+  } = matchPath(pathname, {
+    path: Object.values(routes),
+  }) || {};
+  const availableRoutes = Object
+    .values(routes)
+    .map(route => route
+      .replace(":agentId", agentId)
+      .replace(":buildVersion", buildVersion)
+      .replace(":pluginId", pluginId)
+      .replace(":groupId", groupId));
+
   return (
     <div tw="flex items-center w-full h-full">
       <div tw="flex items-center justify-between mx-6 w-full h-full">
@@ -57,15 +72,15 @@ export const Toolbar = () => {
                     text-blue-default text-12
                     font-bold cursor-pointer no-underline
                   `};
-                  ${({ prevCrumb }: { prevCrumb?: string }) => (prevCrumb !== "agents" && prevCrumb !== "scopes") && tw`capitalize`};
+                  ${({ isNotFound }: { isNotFound: boolean }) => isNotFound && tw`text-monochrome-default pointer-events-none`}
                 `;
-
+                const link = `/${crumbs.slice(0, index + 1).join("/")}`;
                 return (
                   <CrumbLink
-                    prevCrumb={crumbs[index - 1]}
+                    isNotFound={!availableRoutes.includes(link)}
                     key={crumb}
                     title={crumb}
-                    to={`/${crumbs.slice(0, index + 1).join("/")}`}
+                    to={link}
                   >
                     {crumb}
                   </CrumbLink>
