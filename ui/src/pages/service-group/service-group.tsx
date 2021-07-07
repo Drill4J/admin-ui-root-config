@@ -20,7 +20,6 @@ import {
 } from "react-router-dom";
 import { Icons } from "@drill4j/ui-kit";
 
-import { Footer } from "components";
 import { PluginsLayout } from "layouts";
 import { Plugin as PluginType } from "types/plugin";
 import { ServiceGroup as ServiceGroupType } from "types/service-group";
@@ -61,7 +60,6 @@ export const ServiceGroup = () => {
         />
       )}
       header={<ServiceGroupHeader name={name} agentsCount={agentCount} />}
-      footer={<Footer />}
     >
       <div tw="w-full h-full">
         <Switch>
