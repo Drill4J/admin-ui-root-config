@@ -15,7 +15,11 @@
  */
 import React from "react";
 import {
-  Route, useHistory, Link, useLocation, matchPath,
+  Route,
+  useHistory,
+  Link,
+  useLocation,
+  matchPath,
 } from "react-router-dom";
 import { Icons } from "@drill4j/ui-kit";
 import tw, { styled } from "twin.macro";
@@ -45,14 +49,17 @@ export const Toolbar = () => {
 
   const {
     params: {
-      agentId = "", buildVersion = "", pluginId = "", groupId = "",
+      agentId = "",
+      buildVersion = "",
+      pluginId = "",
+      groupId = "",
     } = {},
-  } = matchPath(pathname, {
-    path: Object.values(routes),
-  }) || {};
-  const availableRoutes = Object
-    .values(routes)
-    .map(route => route
+  } =
+    matchPath(pathname, {
+      path: Object.values(routes),
+    }) || {};
+  const availableRoutes = Object.values(routes).map((route) =>
+    route
       .replace(":agentId", agentId)
       .replace(":buildVersion", buildVersion)
       .replace(":pluginId", pluginId)
@@ -64,16 +71,8 @@ export const Toolbar = () => {
         <div tw="text-monochrome-default">
           <Breadcrumbs
             pathname={pathname}
-            render={(crumbs) => crumbs.map(
-              (crumb, index) => {
-                const CrumbLink = styled(Link)`
-                  ${tw`inline-block max-w-200px
-                    text-ellipsis align-middle
-                    text-blue-default text-12
-                    font-bold cursor-pointer no-underline
-                  `};
-                  ${({ isNotFound }: { isNotFound: boolean }) => isNotFound && tw`text-monochrome-default pointer-events-none`}
-                `;
+            render={(crumbs) =>
+              crumbs.map((crumb, index) => {
                 const link = `/${crumbs.slice(0, index + 1).join("/")}`;
                 return (
                   <CrumbLink
@@ -85,8 +84,7 @@ export const Toolbar = () => {
                     {crumb}
                   </CrumbLink>
                 );
-              },
-            )}
+              })}
           />
         </div>
         <div tw="flex items-center text-12 leading-20 text-monochrome-default">
@@ -124,3 +122,13 @@ export const Toolbar = () => {
     </div>
   );
 };
+
+const CrumbLink = styled(Link)`
+  ${tw`inline-block max-w-200px
+      text-ellipsis align-middle
+      text-blue-default text-12
+      font-bold cursor-pointer no-underline
+  `};
+  ${({ isNotFound }: { isNotFound: boolean }) =>
+    isNotFound && tw`text-monochrome-default pointer-events-none`}
+`;
