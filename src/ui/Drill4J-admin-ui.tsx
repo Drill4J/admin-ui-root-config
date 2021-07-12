@@ -18,7 +18,7 @@ import ReactDOM from "react-dom";
 import singleSpaReact from "single-spa-react";
 import Root from "./root.component";
 
-const lifecycles = singleSpaReact({
+export default singleSpaReact({
   React,
   ReactDOM,
   rootComponent: Root,
@@ -29,6 +29,5 @@ const lifecycles = singleSpaReact({
       <li>props: {props}</li>
     </ul>
   ),
+  domElementGetter: () => document.querySelector("main") || document.body,
 });
-
-export const { bootstrap, mount, unmount } = lifecycles;

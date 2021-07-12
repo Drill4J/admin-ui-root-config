@@ -10,11 +10,6 @@ WORKDIR /app
 COPY . /app
 RUN npm install --silent
 RUN npm run build
-WORKDIR /app/ui
-RUN npm install --silent
-RUN npm run build
-WORKDIR /app
-RUN mv ui/dist dist/ui
 
 # production environment
 FROM nginx:1.17.6-alpine-perl

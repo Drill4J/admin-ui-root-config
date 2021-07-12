@@ -18,7 +18,7 @@ import { nanoid } from "nanoid";
 import tw, { styled } from "twin.macro";
 
 import { DrillVersion } from "types/drill-version";
-import packageJson from "../../../package.json";
+import packageJson from "../../../../package.json";
 import { useAdminConnection } from "../../hooks";
 
 interface FooterLinkProps {

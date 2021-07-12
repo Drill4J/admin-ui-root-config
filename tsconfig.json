@@ -1,5 +1,23 @@
 {
   "extends": "ts-config-single-spa",
-  "include": ["src/**/*", "node_modules/@types"],
+  "compilerOptions": {
+    "target": "es5",
+    "lib": ["dom", "dom.iterable", "esnext"],
+    "jsx": "react",
+    "baseUrl": "./src/ui",
+    "allowJs": true,
+    "skipLibCheck": true,
+    "esModuleInterop": true,
+    "allowSyntheticDefaultImports": true,
+    "strict": true,
+    "forceConsistentCasingInFileNames": true,
+    "module": "esnext",
+    "moduleResolution": "node",
+    "resolveJsonModule": true,
+    "isolatedModules": true,
+    "noEmit": true,
+    "noFallthroughCasesInSwitch": true
+  },
+  "include": ["src", "node_modules/@types", "twin.d.ts", "declarations.d.ts"],
   "exclude": ["src/**/*.test*"]
 }
