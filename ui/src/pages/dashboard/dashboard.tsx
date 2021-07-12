@@ -16,33 +16,46 @@
 import singleSpaReact from "single-spa-react";
 import React, { useEffect } from "react";
 import ReactDOM from "react-dom";
+import {
+  Application, getAppNames, registerApplication, unregisterApplication,
+} from "single-spa";
 import "twin.macro";
 
 import { useAdminConnection } from "hooks";
 import { Plugin } from "types";
 import { HUD } from "components";
-import {
-  Application, getAppNames, registerApplication, unregisterApplication,
-} from "single-spa";
 import { paths } from "../../containers-paths";
+import { getPagePath } from "../../common";
 
 interface Props {
   id: string;
+  buildVersion?: string;
   isGroup?: boolean;
 }
 
-const DashboardComponent = ({ id, isGroup }: Props) => {
+const DashboardComponent = ({ id, isGroup, buildVersion = "" }: Props) => {
   const plugins = useAdminConnection<Plugin[]>(isGroup ? `/groups/${id}/plugins` : `/agents/${id}/plugins`) || [];
   const installedPlugins = plugins.filter((plugin) => !plugin.available);
 
   return (
     <div tw="mt-5 px-6">
       <div tw="mb-7 text-24 leading-32 font-light">Dashboard</div>
-      {installedPlugins.map(({ id: pluginID = "" }) => {
+      {installedPlugins.map(({ id: pluginId = "" }) => {
         // eslint-disable-next-line @typescript-eslint/ban-ts-comment
         // @ts-ignore
-        const hudPath = paths[pluginID];
-        return <HUD key={pluginID} url={hudPath} name={isGroup ? "GroupHUD" : "AgentHUD"} />;
+        const hudPath = paths[pluginId];
+        return (
+          <HUD
+            key={pluginId}
+            url={hudPath}
+            name={isGroup ? "GroupHUD" : "AgentHUD"}
+            customProps={{
+              pluginPagePath: isGroup
+                ? getPagePath({ name: "serviceGroupPlugin", params: { groupId: id, pluginId } })
+                : getPagePath({ name: "agentPlugin", params: { agentId: id, buildVersion, pluginId } }),
+            }}
+          />
+        );
       })}
     </div>
   );
@@ -56,7 +69,7 @@ const DashboardLifecycle = singleSpaReact({
   errorBoundary: () => <div>smth went wrong</div>,
 });
 
-export const Dashboard = ({ id = "", isGroup = false }: Props) => {
+export const Dashboard = ({ id = "", buildVersion = "", isGroup = false }: Props) => {
   useEffect(() => {
     !getAppNames().includes(isGroup ? "group-dashboard" : "agent-dashboard") && registerApplication({
       name: isGroup ? "group-dashboard" : "agent-dashboard",
@@ -75,7 +88,7 @@ export const Dashboard = ({ id = "", isGroup = false }: Props) => {
         // it need that on dashboard page both of dashboard not activate
         return isCorrectPage && !location.pathname.match("dashboard\\/\\w"); // "dashboard".length
       },
-      customProps: { id, isGroup },
+      customProps: { id, isGroup, buildVersion },
     });
     return () => {
       unregisterApplication(isGroup ? "group-dashboard" : "agent-dashboard");

@@ -74,7 +74,7 @@ export const AgentPage = () => {
     >
       <Switch>
         <Route path={routes.agentPlugin} component={Plugin} />
-        <Route path={routes.agentDashboard} render={() => <Dashboard id={agentId} />} />
+        <Route path={routes.agentDashboard} render={() => <Dashboard id={agentId} buildVersion={buildVersion} />} />
       </Switch>
     </PluginsLayout>
   );
