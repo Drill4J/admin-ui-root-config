@@ -74,7 +74,7 @@ export const AgentRegistrationPage = () => {
             if (isMounted.current) {
               if (data.plugins?.length === 1) {
                 const [plugin] = data.plugins;
-                push(getPagePath({ name: "agentPlugin", params: { agentId, buildVersion, pluginId: plugin.id || "" } }));
+                push(getPagePath({ name: "agentPlugin", params: { agentId, buildVersion, pluginId: String(plugin) } }));
               } else {
                 push(getPagePath({ name: "agentDashboard", params: { agentId, buildVersion } }));
               }

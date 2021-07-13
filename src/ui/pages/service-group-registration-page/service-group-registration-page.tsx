@@ -70,7 +70,7 @@ export const ServiceGroupRegistrationPage = () => {
           if (isMounted.current) {
             if (data.plugins?.length === 1) {
               const [plugin] = data.plugins;
-              push(getPagePath({ name: "serviceGroupPlugin", params: { groupId, pluginId: plugin.id || "" } }));
+              push(getPagePath({ name: "serviceGroupPlugin", params: { groupId, pluginId: String(plugin) } }));
             } else {
               push(getPagePath({ name: "serviceGroupDashboard", params: { groupId } }));
             }
