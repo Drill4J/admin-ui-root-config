@@ -38,12 +38,12 @@ const PluginsIcon = styled.div`
 `;
 
 export const SelectableList = ({ plugins, handleSelect, selectedRows }: Props) => (
-  <div tw="hover:bg-monochrome-light-tint">
+  <div>
     {plugins.map(({
       id = "", available, description, version, name,
     }) => (
       <Element key={id} selected={selectedRows.includes(id)}>
-        <div tw="flex items-center gap-x-4 p-4 w-full border-b border-monochrome-medium-tint">
+        <div tw="flex items-center gap-x-4 p-4 w-full border-b border-monochrome-medium-tint hover:bg-monochrome-light-tint">
           {available && (
             <Inputs.Checkbox
               onChange={() => {
