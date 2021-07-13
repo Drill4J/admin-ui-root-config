@@ -39,9 +39,9 @@ const Root = () => (
     <TypographyStyles />
     <LayoutStyles />
     <NotificationManager />
+    <Route exact path={routes.login} component={LoginPage} />
     <AppLayout footer={<Footer />}>
       <Switch>
-        <Route exact path={routes.login} component={LoginPage} />
         <Route exact path="/" render={() => <Redirect to={routes.agentsTable} />} />
         <PrivateRoute path={[routes.agentPlugin, routes.agentDashboard]} component={AgentPage} />
         <PrivateRoute
