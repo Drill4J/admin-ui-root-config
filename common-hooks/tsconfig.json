@@ -1,12 +1,14 @@
 {
   "compilerOptions": {
+    "rootDir": ".",
     "module": "commonjs",
     "target": "es2015",
     "declaration": true,
     "outDir": "./dist",
     "lib": ["es2017", "es7", "es6", "dom"],
     "strict": true,
-    "esModuleInterop": true
+    "esModuleInterop": true,
+    "skipLibCheck": true
   },
   "exclude": [
     "node_modules",
