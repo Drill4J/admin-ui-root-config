@@ -87,7 +87,6 @@ export const GeneralSettingsForm = ({ agent }: Props) => {
               </FormGroup>
               <FormGroup label="Description" optional>
                 <Field
-                  tw="h-20"
                   name="description"
                   component={Fields.Textarea}
                   placeholder="Add agent's description"
