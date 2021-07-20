@@ -1,25 +1,25 @@
 /*
- * Copyright 2020 EPAM Systems
- *
- * Licensed under the Apache License, Version 2.0 (the "License");
- * you may not use this file except in compliance with the License.
- * You may obtain a copy of the License at
- *
- * http://www.apache.org/licenses/LICENSE-2.0
- *
- * Unless required by applicable law or agreed to in writing, software
- * distributed under the License is distributed on an "AS IS" BASIS,
- * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
- * See the License for the specific language governing permissions and
- * limitations under the License.
+* Copyright 2020 EPAM Systems
+*
+* Licensed under the Apache License, Version 2.0 (the "License");
+* you may not use this file except in compliance with the License.
+* You may obtain a copy of the License at
+*
+* http://www.apache.org/licenses/LICENSE-2.0
+*
+* Unless required by applicable law or agreed to in writing, software
+* distributed under the License is distributed on an "AS IS" BASIS,
+* WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+* See the License for the specific language governing permissions and
+* limitations under the License.
 */
+/* eslint-disable max-len */
 import React from "react";
 import { Icons } from "@drill4j/ui-kit";
-import "twin.macro";
 
 import { PluginListEntry } from "components";
 import { Plugin } from "types/plugin";
-import { Field as Checkbox } from "react-final-form";
+import { Field } from "formik";
 
 interface Props {
   formValues?: { plugins?: string[], availablePlugins?: Plugin[] };
@@ -35,35 +35,30 @@ export const InstallPluginsStep = ({ infoPanel, formValues: { plugins = [], avai
       {availablePlugins.length}
       &nbsp;selected
     </div>
-    <div tw="mr-6 ml-6">
+    <div tw="mr-6 ml-6" role="group" aria-labelledby="checkbox-group">
       {availablePlugins.map(({
-        id = "", name, description, version,
+        id, name, description, version,
       }) => (
-        <Checkbox
-          name="plugins"
-          type="checkbox"
-          value={id}
-          key={id}
-          render={({ input, meta }) => (
-            <PluginListEntry
-              description={description}
-              input={input}
-              meta={meta}
-              icon={name as keyof typeof Icons}
-              onClick={() => input.onChange({
-                target: {
-                  type: "checkbox",
-                  checked: !input.checked,
-                },
-              })}
-            >
-              <div tw="flex items-center w-full mb-3 text-14 leading-20">
-                <div tw="font-bold text-monochrome-black">{name}&nbsp;</div>
-                {version && <div tw="text-monochrome-default">({version})</div>}
-              </div>
-            </PluginListEntry>
-          )}
-        />
+        <label tw="text-blue-default" key={id}>
+          <Field
+            type="checkbox"
+            name="plugins"
+            value={id}
+          >
+            {({ field }: any) => (
+              <PluginListEntry
+                field={field}
+                icon={name as keyof typeof Icons}
+                description={description}
+              >
+                <div tw="flex items-center w-full mb-3 text-14 leading-20">
+                  <div tw="font-bold text-monochrome-black">{name}&nbsp;</div>
+                  {version && <div tw="text-monochrome-default">({version})</div>}
+                </div>
+              </PluginListEntry>
+            )}
+          </Field>
+        </label>
       ))}
     </div>
   </div>

@@ -6,8 +6,6 @@
   "author": "Drill4J",
   "license": "Apache-2.0",
   "dependencies": {
-    "final-form": "4.20.2",
-    "react-final-form": "6.5.3",
     "@drill4j/types-admin": "^1.0.1"
   },
   "devDependencies": {

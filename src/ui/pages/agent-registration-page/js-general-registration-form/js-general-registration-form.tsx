@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 import React from "react";
-import { Field } from "react-final-form";
+import { Field } from "formik";
 import { FormGroup, GeneralAlerts } from "@drill4j/ui-kit";
 import { styled } from "twin.macro";
 
@@ -27,34 +27,35 @@ export const JsGeneralRegistrationForm = () => (
     <GeneralAlerts type="INFO">
       Set up basic agent settings.
     </GeneralAlerts>
-    <Content tw="flex flex-col items-center gap-y-6 pt-10 overflow-auto">
-      <FormGroup tw="w-97" label="Agent ID">
-        <Field name="id" component={Fields.Input} placeholder="Enter agent's ID" disabled />
-      </FormGroup>
-      <FormGroup tw="w-97" label="Agent version">
-        <Field name="agentVersion" component={Fields.Input} placeholder="n/a" disabled />
-      </FormGroup>
-      <FormGroup tw="w-97" label="Service Group">
-        <Field name="group" component={Fields.Input} placeholder="n/a" disabled />
-      </FormGroup>
-      <FormGroup tw="w-97" label="Agent name">
-        <Field name="name" component={Fields.Input} placeholder="Enter agent's name" />
-      </FormGroup>
-      <FormGroup tw="w-97" label="Description" optional>
-        <Field
-          tw="h-20"
-          name="description"
-          component={Fields.Textarea}
-          placeholder="Add agent's description"
-        />
-      </FormGroup>
-      <FormGroup tw="w-97" label="Environment" optional>
-        <Field
-          name="environment"
-          component={Fields.Input}
-          placeholder="Specify an environment"
-        />
-      </FormGroup>
+    <Content tw="flex flex-col items-center pt-10 overflow-auto">
+      <div tw="w-97 space-y-6">
+        <FormGroup label="Agent ID">
+          <Field name="id" component={Fields.Input} placeholder="Enter agent's ID" disabled />
+        </FormGroup>
+        <FormGroup label="Agent version">
+          <Field name="agentVersion" component={Fields.Input} placeholder="n/a" disabled />
+        </FormGroup>
+        <FormGroup label="Service Group">
+          <Field name="group" component={Fields.Input} placeholder="n/a" disabled />
+        </FormGroup>
+        <FormGroup label="Agent name">
+          <Field name="name" component={Fields.Input} placeholder="Enter agent's name" />
+        </FormGroup>
+        <FormGroup label="Description" optional>
+          <Field
+            name="description"
+            component={Fields.Textarea}
+            placeholder="Add agent's description"
+          />
+        </FormGroup>
+        <FormGroup label="Environment" optional>
+          <Field
+            name="environment"
+            component={Fields.Input}
+            placeholder="Specify an environment"
+          />
+        </FormGroup>
+      </div>
     </Content>
   </>
 );

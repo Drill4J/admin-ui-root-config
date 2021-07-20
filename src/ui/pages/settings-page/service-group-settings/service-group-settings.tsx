@@ -13,9 +13,9 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-import React, { useState, useEffect } from "react";
+import React from "react";
 import {
-  Switch, Route, Prompt, matchPath, useLocation,
+  Switch, Route, matchPath, useLocation,
 } from "react-router-dom";
 import { Icons } from "@drill4j/ui-kit";
 import "twin.macro";
@@ -26,20 +26,13 @@ import { useAdminConnection } from "hooks";
 import { ServiceGroupEntity } from "types/service-group-entity";
 import { getPagePath, routes } from "common";
 import { ServiceGroupGeneralSettingsForm } from "./service-group-general-settings-form";
-import { UnSaveChangeModal } from "../un-save-changes-modal";
 
 export const ServiceGroupSettings = () => {
-  const [pristineSettings, setPristineSettings] = useState(true);
-  const [nextLocation, setNextLocation] = useState("");
   const { pathname: path } = useLocation();
-  const { params: { groupId = "", tab = "" } = {} } = matchPath<{ groupId: string; tab: string}>(path, {
+  const { params: { groupId = "" } = {} } = matchPath<{ groupId: string; }>(path, {
     path: "/agents/group/:groupId/:tab",
   }) || {};
   const serviceGroup = useAdminConnection<ServiceGroupEntity>(`/api/groups/${groupId}`) || {};
-
-  useEffect(() => {
-    setPristineSettings(true);
-  }, [tab]);
 
   return (
     <div tw="flex flex-col w-full">
@@ -61,7 +54,7 @@ export const ServiceGroupSettings = () => {
       <Switch>
         <Route
           path={routes.serviceGroupSystemSettings}
-          render={() => <SystemSettingsForm agent={serviceGroup} setPristineSettings={setPristineSettings} />}
+          render={() => <SystemSettingsForm agent={serviceGroup} />}
         />
         <Route
           path={routes.serviceGroupPluginsSettings}
@@ -69,25 +62,9 @@ export const ServiceGroupSettings = () => {
         />
         <Route
           path={routes.serviceGroupGeneralSettings}
-          render={() => <ServiceGroupGeneralSettingsForm serviceGroup={serviceGroup} setPristineSettings={setPristineSettings} />}
+          render={() => <ServiceGroupGeneralSettingsForm serviceGroup={serviceGroup} />}
         />
       </Switch>
-      <UnSaveChangeModal
-        setNextLocation={setNextLocation}
-        path={nextLocation}
-      />
-      <Prompt
-        when={!pristineSettings}
-        message={({ pathname, state }) => {
-          const { pristine } = state as { pristine: boolean } || {};
-
-          if (pristineSettings || pristine) {
-            return true;
-          }
-          setNextLocation(pathname);
-          return false;
-        }}
-      />
     </div>
   );
 };

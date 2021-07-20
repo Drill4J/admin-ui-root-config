@@ -19,8 +19,29 @@ const plugin = require("tailwindcss/plugin");
 module.exports = {
   purge: ["./src/**/*.{js,jsx,ts,tsx}", "./public/index.html"],
   darkMode: false,
+  mode: "jit",
   theme: {
+    boxShadow: {
+      DEFAULT: "0 0 24px rgba(0, 0, 0, 0.15)",
+      sm: "0 1px 2px 0 rgba(0, 0, 0, 0.05)",
+      md: "0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -1px rgba(0, 0, 0, 0.06)",
+      lg: "0 10px 15px -3px rgba(0, 0, 0, 0.1), 0 4px 6px -2px rgba(0, 0, 0, 0.05)",
+      xl: "0 20px 25px -5px rgba(0, 0, 0, 0.1), 0 10px 10px -5px rgba(0, 0, 0, 0.04)",
+      "2xl": "0 25px 50px -12px rgba(0, 0, 0, 0.25)",
+      "3xl": "0 35px 60px -15px rgba(0, 0, 0, 0.3)",
+      inner: "inset 0 2px 4px 0 rgba(0, 0, 0, 0.06)",
+      none: "none",
+    },
     extend: {
+      animation: {
+        blinker: "blinker 1.5s infinite cubic-bezier(1, 0, 0, 1)",
+      },
+      keyframes: {
+        blinker: {
+          from: { opacity: "1" },
+          to: { opacity: "0" },
+        },
+      },
       spacing: {
         "1px": "1px",
         13: "3.25rem",
@@ -178,14 +199,20 @@ module.exports = {
       64: "64px",
       86: "86px",
     },
-    screens: {},
-    borderColor: (theme) => ({
+    borderColor: theme => ({
+      ...theme("colors"),
+      "current-color": "currentColor",
+    }),
+    backgroundColor: theme => ({
       ...theme("colors"),
       "current-color": "currentColor",
     }),
   },
   variants: {
-    extend: {},
+    extend: {
+      backgroundColor: ["checked"],
+      borderColor: ["checked"],
+    },
   },
   plugins: [
     plugin(({ addUtilities }) => {

@@ -14,23 +14,19 @@
  * limitations under the License.
  */
 import React from "react";
-import { FieldInputProps, FieldMetaState } from "react-final-form";
-import { Icons } from "@drill4j/ui-kit";
+import { FieldInputProps } from "formik";
+import { Icons, Checkbox } from "@drill4j/ui-kit";
 import tw, { styled } from "twin.macro";
 
-import { Fields } from "forms/fields";
-
 interface Props {
-  onClick?: () => void;
-  input?: FieldInputProps<string>;
-  meta?: FieldMetaState<string>;
+  field?: FieldInputProps<any>;
   icon: keyof typeof Icons;
   description?: string;
   children?: React.ReactNode;
 }
 
 const PluginElements = styled.div`
-  ${tw`flex items-center pr-4 pl-4`};
+  ${tw`flex items-center pr-4 pl-4 text-blue-default`};
   ${({ selected }: { selected?: boolean }) => selected && tw`bg-blue-light-tint text-monochrome-white`};
 `;
 
@@ -41,7 +37,7 @@ const PluginsIconWrapper = styled.div`
 `;
 
 export const PluginListEntry = ({
-  input, meta, description, onClick, icon, children,
+  field, description, icon, children,
 }: Props) => {
   const PluginIcon = Icons[icon] || Icons.Plugins;
   return (
@@ -51,9 +47,9 @@ export const PluginListEntry = ({
       tw`hover:bg-monochrome-light-tint`,
     ]}
     >
-      <PluginElements onClick={onClick} selected={input && input.checked}>
-        {input && meta && <Fields.Checkbox input={input} meta={meta} />}
-        <PluginsIconWrapper selected={input && input.checked}>
+      <PluginElements selected={field?.checked}>
+        {field && <Checkbox input={field} />}
+        <PluginsIconWrapper selected={field?.checked}>
           <PluginIcon />
         </PluginsIconWrapper>
         <div>

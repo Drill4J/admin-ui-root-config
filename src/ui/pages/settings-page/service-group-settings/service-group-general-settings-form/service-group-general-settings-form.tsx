@@ -13,12 +13,12 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-import React, { useEffect } from "react";
+import React from "react";
 import { matchPath, useLocation } from "react-router-dom";
 import axios from "axios";
-import { Form, Field, FormRenderProps } from "react-final-form";
-import { useFormHandleSubmit } from "@drill4j/common-hooks";
-import { isPristine } from "@drill4j/common-utils";
+import {
+  Formik, Field, Form,
+} from "formik";
 import { sendNotificationEvent } from "@drill4j/send-notification-event";
 import {
   Button, FormGroup, GeneralAlerts, Spinner,
@@ -31,20 +31,20 @@ import {
 import { ServiceGroupEntity } from "types/service-group-entity";
 
 import { routes } from "common";
+import { UnSaveChangeModal } from "pages/settings-page/un-save-changes-modal";
 
 interface Props {
   serviceGroup: ServiceGroupEntity;
-  setPristineSettings: (pristine: boolean) => void;
 }
 
-export const ServiceGroupGeneralSettingsForm = ({ serviceGroup, setPristineSettings }: Props) => {
+export const ServiceGroupGeneralSettingsForm = ({ serviceGroup }: Props) => {
   const { pathname } = useLocation();
   const { params: { groupId = "" } = {} } = matchPath<{ groupId: string }>(pathname, {
     path: routes.serviceGroupGeneralSettings,
   }) || {};
 
   return (
-    <Form
+    <Formik
       onSubmit={async ({ name, description, environment }: ServiceGroupEntity) => {
         try {
           await axios.put(`/groups/${groupId}`, { name, description, environment });
@@ -63,42 +63,32 @@ export const ServiceGroupGeneralSettingsForm = ({ serviceGroup, setPristineSetti
         sizeLimit({ name: "environment" }),
         sizeLimit({ name: "description", min: 3, max: 256 }),
       ) as any}
-      render={(props) => {
-        const ref = useFormHandleSubmit(props as FormRenderProps);
-        const {
-          handleSubmit, submitting, invalid, values,
-        } = props || {};
-        const pristine = isPristine(serviceGroup, values);
-
-        useEffect(() => {
-          setPristineSettings(pristine);
-        }, [pristine]);
-
-        return (
-          <form ref={ref} tw="space-y-10">
-            <GeneralAlerts type="INFO">
-              Basic service group settings.
-            </GeneralAlerts>
-            <div tw="flex flex-col items-center gap-y-6">
-              <FormGroup tw="w-97" label="Service Group ID">
-                <Field name="id" component={Fields.Input} disabled />
+    >
+      {({ isSubmitting, isValid, dirty }) => (
+        <Form tw="space-y-10">
+          <GeneralAlerts type="INFO">
+            Basic service group settings.
+          </GeneralAlerts>
+          <div tw="flex flex-col items-center">
+            <div tw="w-97 space-y-6">
+              <FormGroup label="Service Group ID">
+                <Field name="id" component={Fields.Input} />
               </FormGroup>
-              <FormGroup tw="w-97" label="Service Group Name">
+              <FormGroup label="Service Group Name">
                 <Field
                   name="name"
                   component={Fields.Input}
                   placeholder="Enter service group's name"
                 />
               </FormGroup>
-              <FormGroup tw="w-97" label="Description" optional>
+              <FormGroup label="Description" optional>
                 <Field
-                  tw="h-20"
                   name="description"
                   component={Fields.Textarea}
                   placeholder="Add service group's description"
                 />
               </FormGroup>
-              <FormGroup tw="w-97" label="Environment" optional>
+              <FormGroup label="Environment" optional>
                 <Field
                   name="environment"
                   component={Fields.Input}
@@ -110,17 +100,18 @@ export const ServiceGroupGeneralSettingsForm = ({ serviceGroup, setPristineSetti
                   className="flex justify-center items-center gap-x-1 w-32"
                   primary
                   size="large"
-                  onClick={handleSubmit}
-                  disabled={submitting || invalid || pristine}
+                  type="submit"
+                  disabled={isSubmitting || !isValid || !dirty}
                   data-test="js-system-settings-form:save-changes-button"
                 >
-                  {submitting ? <Spinner disabled /> : "Save Changes"}
+                  {isSubmitting ? <Spinner disabled /> : "Save Changes"}
                 </Button>
               </div>
             </div>
-          </form>
-        );
-      }}
-    />
+          </div>
+          <UnSaveChangeModal />
+        </Form>
+      )}
+    </Formik>
   );
 };

@@ -13,6 +13,9 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
+
 export const paths = {
-  test2code: "https://cdn.jsdelivr.net/npm/@drill4j/test2code-ui@0.1.1/dist/Drill4J-test-to-code.js",
+  test2code: process.env.NODE_ENV === "development"
+    ? "http://localhost:8080/Drill4J-test-to-code.js"
+    : "https://cdn.jsdelivr.net/npm/@drill4j/test2code-ui@0.1.1/dist/Drill4J-test-to-code.js",
 };

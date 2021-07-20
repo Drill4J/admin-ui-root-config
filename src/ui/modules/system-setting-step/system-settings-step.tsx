@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 import React from "react";
-import { Field } from "react-final-form";
+import { Field } from "formik";
 import { FormGroup, GeneralAlerts } from "@drill4j/ui-kit";
 import "twin.macro";
 
@@ -26,32 +26,32 @@ export const SystemSettingsStep = () => (
     <GeneralAlerts type="INFO">
       Provide information related to your application / project.
     </GeneralAlerts>
-    <div tw="flex flex-col items-center gap-y-6">
-      <div tw="space-y-2">
-        <FormGroup tw="w-97" label="Project Package(s)">
+    <div tw="flex flex-col items-center">
+      <div tw="w-97 space-y-6">
+        <div tw="space-y-2">
+          <FormGroup tw="w-97" label="Project Package(s)">
+            <Field
+              tw="h-20"
+              component={Fields.Textarea}
+              name="systemSettings.packages"
+              placeholder="e.g. com/example/mypackage&#10;foo/bar/baz&#10;and so on."
+              normalize={(str: string) => dotsAndSlashesToSlash(formatPackages(parsePackages(str)))}
+            />
+          </FormGroup>
+          <div tw="w-97 text-12 leading-16 text-monochrome-default">
+            Make sure you add application packages only, otherwise agent&apos;s performance will be affected.
+            Use new line as a separator, &quot;!&quot; before package/class for excluding and use &quot;/&quot; in a package path.
+          </div>
+        </div>
+        <FormGroup tw="w-97" label="Header Mapping" optional>
           <Field
-            tw="h-20"
-            component={Fields.Textarea}
-            name="systemSettings.packages"
-            placeholder="e.g. com/example/mypackage&#10;foo/bar/baz&#10;and so on."
-            parse={parsePackages}
-            format={formatPackages}
-            replacer={dotsAndSlashesToSlash}
+            name="systemSettings.sessionIdHeaderName"
+            component={Fields.Input}
+            placeholder="Enter session header name"
+            label="Session header name"
           />
         </FormGroup>
-        <div tw="w-97 text-12 leading-16 text-monochrome-default">
-          Make sure you add application packages only, otherwise agent&apos;s performance will be affected.
-          Use new line as a separator, &quot;!&quot; before package/class for excluding and use &quot;/&quot; in a package path.
-        </div>
       </div>
-      <FormGroup tw="w-97" label="Header Mapping" optional>
-        <Field
-          name="systemSettings.sessionIdHeaderName"
-          component={Fields.Input}
-          placeholder="Enter session header name"
-          label="Session header name"
-        />
-      </FormGroup>
     </div>
   </div>
 );

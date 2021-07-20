@@ -13,14 +13,14 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-import { useState } from 'react';
+import { useState } from "react";
 import { Message } from "@drill4j/types-admin";
 
 export function useGeneralAlertMessage() {
   const [generalAlertMessage, setGeneralAlertMessage] = useState<Message | null>(null);
   const showGeneralAlertMessage = (incommingMessage: Message | null) => {
     setGeneralAlertMessage(incommingMessage);
-    incommingMessage?.type === 'SUCCESS' && setTimeout(() => setGeneralAlertMessage(null), 3000);
+    incommingMessage?.type === "SUCCESS" && setTimeout(() => setGeneralAlertMessage(null), 3000);
   };
 
   return { generalAlertMessage, showGeneralAlertMessage };

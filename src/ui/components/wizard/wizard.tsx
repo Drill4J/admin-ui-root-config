@@ -16,7 +16,7 @@
 import React, {
   Children, ComponentType, ReactElement, useReducer, Component,
 } from "react";
-import { Form } from "react-final-form";
+import { Formik, Form } from "formik";
 import {
   Icons, Button, Spinner,
 } from "@drill4j/ui-kit";
@@ -56,12 +56,11 @@ export const Wizard = ({
 
   return (
     <div>
-      <Form
+      <Formik
         initialValues={{
           ...initialValues, availablePlugins, plugins: ["test2code"],
         }}
-        keepDirtyOnReinitialize
-        initialValuesEqual={(prevValues, nextValues) => JSON.stringify(prevValues) === JSON.stringify(nextValues)}
+        enableReinitialize
         onSubmit={async (values: any) => {
           try {
             await onSubmit(values);
@@ -75,17 +74,11 @@ export const Wizard = ({
         }}
         validate={validate}
         render={({
-          handleSubmit,
-          submitting,
-          invalid,
+          isSubmitting,
+          isValid,
           values,
-        }: {
-          handleSubmit: () => void;
-          submitting: boolean;
-          invalid: boolean;
-          values: Agent;
         }) => (
-          <>
+          <Form>
             <div className="flex items-center w-full px-6 py-4">
               <span tw="w-full text-20 leading-32 text-monochrome-black">
                 {`${currentStepIndex + 1} of ${Children.count(children)}. ${name} `}
@@ -98,6 +91,7 @@ export const Wizard = ({
                     size="large"
                     onClick={() => dispatch(previousStep())}
                     data-test="wizard:previous-button"
+                    type="button"
                   >
                     <Icons.Expander width={8} height={14} rotate={180} />
                     <span>Back</span>
@@ -110,8 +104,9 @@ export const Wizard = ({
                     primary
                     size="large"
                     onClick={() => dispatch(nextStep())}
-                    disabled={submitting || invalid}
+                    disabled={isSubmitting || !isValid}
                     data-test="wizard:continue-button"
+                    type="button"
                   >
                     Continue
                     <Icons.Expander tw="text-monochrome-white" width={8} height={14} />
@@ -122,18 +117,18 @@ export const Wizard = ({
                     className="flex gap-x-2"
                     primary
                     size="large"
-                    onClick={handleSubmit}
+                    type="submit"
                     data-test="wizard:finishng-button"
-                    disabled={submitting}
+                    disabled={isSubmitting}
                   >
-                    {submitting ? <Spinner disabled /> : <Icons.Check height={10} width={14} viewBox="0 0 14 10" />}
+                    {isSubmitting ? <Spinner disabled /> : <Icons.Check height={10} width={14} viewBox="0 0 14 10" />}
                     <span>Finish</span>
                   </Button>
                 )}
               </div>
             </div>
             <StepComponent formValues={values} />
-          </>
+          </Form>
         )}
       />
     </div>

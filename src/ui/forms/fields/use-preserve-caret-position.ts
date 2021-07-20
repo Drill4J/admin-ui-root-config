@@ -31,14 +31,12 @@ export const usePreserveCaretPosition = (normalize: (str: string) => string) => 
     return [newValue, preserveCaret];
   };
 
-  const handleOnChange = (onChange: any, event: any) => {
+  const handleOnChange = (setValue: (value: any, shouldValidate?: boolean) => void, event: any) => {
     const input = event.target;
     const [newValue, preserveCaret] = parse(event.target.value, input.selectionStart);
-    onChange({
-      target: {
-        value: normalize(String(newValue)),
-      },
-    });
+
+    setValue(normalize(String(newValue)));
+
     runAfterUpdate(() => {
       input.selectionStart = preserveCaret;
       input.selectionEnd = preserveCaret;

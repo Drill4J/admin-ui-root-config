@@ -14,13 +14,14 @@
  * limitations under the License.
  */
 import React from "react";
-import { FieldRenderProps } from "react-final-form";
+import {
+  ErrorMessage, useField, FieldInputProps, FormikProps,
+} from "formik";
 import tw, { styled } from "twin.macro";
-import { usePreserveCaretPosition } from "@drill4j/common-hooks";
-
 import { convertToSingleSpaces } from "@drill4j/common-utils";
+import { usePreserveCaretPosition } from "./use-preserve-caret-position";
 
-const ErrorMessage = styled.div`
+const ErrorMessageWrapper = styled.div`
   ${tw`text-12 leading-24 whitespace-nowrap text-red-default`};
 
   &::first-letter {
@@ -28,26 +29,51 @@ const ErrorMessage = styled.div`
   }
 `;
 
-export const field = <T, >(Input: React.ElementType) => (props: FieldRenderProps<T>) => {
-  const {
-    input, meta, replacer, ...rest
-  } = props;
-  const isError = (meta.error || (meta.submitError && !meta.dirtySinceLastSubmit)) && meta.touched;
-  const handleOnChange = usePreserveCaretPosition(replacer || convertToSingleSpaces);
+interface Props {
+  field: FieldInputProps<any>;
+  form?: FormikProps<any>;
+  placeholder?: string;
+  disabled?: boolean;
+  name?: string;
+  normalize?: any;
+  parse?: any;
+  format?: any;
+}
+
+export const fieldWrapper = (Input: React.ElementType) => ({
+  field: { name }, form, placeholder, disabled, normalize, parse, format,
+}: Props) => {
+  const [field, meta, helper] = useField(name);
+  const { isSubmitting, dirty, handleSubmit } = form || {};
+
+  const handleOnChange = usePreserveCaretPosition(normalize || convertToSingleSpaces);
+  const node = React.useRef<HTMLFormElement>(null);
+
+  React.useEffect(() => {
+    const listener = (event: KeyboardEvent) => {
+      const isPressedCtrlEnter = (event.ctrlKey || event.metaKey) && event.keyCode === 13;
+      if (isPressedCtrlEnter && !isSubmitting && dirty) {
+        handleSubmit && handleSubmit();
+      }
+    };
+    node && node.current && node.current.addEventListener("keydown", listener);
+    return () => {
+      node && node.current && node.current.removeEventListener("keydown", listener);
+    };
+  });
 
   return (
     <>
       <Input
-        {...input}
-        {...rest}
-        error={isError}
-        onBlur={(event: React.ChangeEvent<HTMLInputElement>) => {
-          input.onBlur();
-          input.onChange({ target: { value: event.target.value.trimEnd() } });
-        }}
-        onChange={input.type === "checkbox" ? input.onChange : (event: React.ChangeEvent<HTMLInputElement>) => handleOnChange(input, event)}
+        {...field}
+        placeholder={placeholder}
+        error={meta.error}
+        disabled={disabled}
+        ref={node}
+        onBlur={(event: React.ChangeEvent<HTMLInputElement>) => helper.setValue(event.target.value.trimEnd())}
+        onChange={(event: React.ChangeEvent<HTMLInputElement>) => handleOnChange(helper.setValue, event)}
       />
-      {isError && <ErrorMessage>{meta.error || meta.submitError}</ErrorMessage>}
+      <ErrorMessage component={ErrorMessageWrapper} name={name} />
     </>
   );
 };

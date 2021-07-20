@@ -13,13 +13,11 @@
 * See the License for the specific language governing permissions and
 * limitations under the License.
 */
-import React, { useEffect } from "react";
+import React from "react";
 import axios from "axios";
 import { matchPath, useLocation } from "react-router-dom";
-import { Form, Field, FormRenderProps } from "react-final-form";
-import { useFormHandleSubmit } from "@drill4j/common-hooks";
+import { Formik, Field, Form } from "formik";
 import { sendNotificationEvent } from "@drill4j/send-notification-event";
-import { isPristine } from "@drill4j/common-utils";
 import {
   Button, GeneralAlerts, Icons, Spinner, Tooltip,
 } from "@drill4j/ui-kit";
@@ -30,20 +28,20 @@ import {
 } from "forms";
 import { Agent } from "types/agent";
 import { routes } from "common";
+import { UnSaveChangeModal } from "pages/settings-page/un-save-changes-modal";
 
 interface Props {
   agent: Agent;
-  setPristineSettings: (pristine: boolean) => void;
 }
 
-export const JsSystemSettingsForm = ({ agent, setPristineSettings }: Props) => {
+export const JsSystemSettingsForm = ({ agent }: Props) => {
   const { pathname } = useLocation();
   const { params: { agentId = "" } = {} } = matchPath<{ agentId: string }>(pathname, {
     path: routes.agentSystemSettings,
   }) || {};
 
   return (
-    <Form
+    <Formik
       onSubmit={async ({ systemSettings: { targetHost } = {} }: Agent) => {
         try {
           await axios.put(`/agents/${agentId}/system-settings`, { targetHost });
@@ -59,53 +57,42 @@ export const JsSystemSettingsForm = ({ agent, setPristineSettings }: Props) => {
       validate={composeValidators(
         !agent.group && required("systemSettings.targetHost", "Target Host"),
       ) as any}
-      render={(props) => {
-        const ref = useFormHandleSubmit(props as FormRenderProps);
-        const {
-          handleSubmit, submitting, invalid, values,
-        } = props || {};
-        const pristine = isPristine(agent, values);
-
-        useEffect(() => {
-          setPristineSettings(pristine);
-        }, [pristine]);
-
-        return (
-          <form ref={ref} tw="space-y-10">
-            <GeneralAlerts type="INFO">
-              Information related to your application / project.
-            </GeneralAlerts>
-            <div tw="flex flex-col items-center gap-y-6">
-              <div tw="w-97 space-y-2">
-                <div tw="flex items-center gap-x-2">
-                  <span tw="font-bold text-14 leading-20 text-monochrome-black">Target Host</span>
-                  <Tooltip message="Specify URL where your application is located">
-                    <Icons.Info tw="text-monochrome-default" />
-                  </Tooltip>
-                </div>
-                <Field
-                  name="systemSettings.targetHost"
-                  component={Fields.Input}
-                  placeholder="http://example.com"
-                />
+    >
+      {({ isSubmitting, isValid, dirty }) => (
+        <Form tw="space-y-10">
+          <GeneralAlerts type="INFO">
+            Information related to your application / project.
+          </GeneralAlerts>
+          <div tw="flex flex-col items-center gap-y-6 w-97">
+            <div tw="w-97 space-y-2">
+              <div tw="flex items-center gap-x-2">
+                <span tw="font-bold text-14 leading-20 text-monochrome-black">Target Host</span>
+                <Tooltip message="Specify URL where your application is located">
+                  <Icons.Info tw="text-monochrome-default" />
+                </Tooltip>
               </div>
-              <div tw="w-97 mt-4">
-                <Button
-                  className="flex justify-center items-center gap-x-1 w-32"
-                  primary
-                  size="large"
-                  onClick={handleSubmit}
-                  disabled={submitting || invalid || pristine}
-                  data-test="js-system-settings-form:save-changes-button"
-                >
-                  {submitting ? <Spinner disabled /> : "Save Changes"}
-                </Button>
-              </div>
+              <Field
+                name="systemSettings.targetHost"
+                component={Fields.Input}
+                placeholder="http://example.com"
+              />
             </div>
-          </form>
-        );
-      }}
-    />
-
+            <div tw="w-97 mt-4">
+              <Button
+                className="flex justify-center items-center gap-x-1 w-32"
+                primary
+                size="large"
+                type="submit"
+                disabled={isSubmitting || !isValid || !dirty}
+                data-test="js-system-settings-form:save-changes-button"
+              >
+                {isSubmitting ? <Spinner disabled /> : "Save Changes"}
+              </Button>
+            </div>
+          </div>
+          <UnSaveChangeModal />
+        </Form>
+      )}
+    </Formik>
   );
 };

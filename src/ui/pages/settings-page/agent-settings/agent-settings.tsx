@@ -13,10 +13,10 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-import React, { useState, useEffect } from "react";
+import React from "react";
 import { Icons } from "@drill4j/ui-kit";
 import {
-  Prompt, Switch, Route, useLocation, matchPath,
+  Switch, Route, useLocation, matchPath,
 } from "react-router-dom";
 import "twin.macro";
 
@@ -28,20 +28,14 @@ import { getPagePath, routes } from "common";
 import { GeneralSettingsForm } from "./general-settings-form";
 import { JsSystemSettingsForm } from "./js-system-settings-form";
 import { AgentStatusToggle } from "../../agents-page/agent-status-toggle";
-import { UnSaveChangeModal } from "../un-save-changes-modal";
 
 export const AgentSettings = () => {
-  const [pristineSettings, setPristineSettings] = useState(true);
-  const [nextLocation, setNextLocation] = useState("");
   const { pathname: path } = useLocation();
-  const { params: { agentId = "", tab = "" } = {} } = matchPath<{ agentId: string; tab: string}>(path, {
+  const { params: { agentId = "" } = {} } = matchPath<{ agentId: string; tab: string}>(path, {
     path: "/agents/:agentId/:tab",
   }) || {};
   const agent = useAdminConnection<Agent>(`/api/agents/${agentId}`) || {};
   const SystemSettings = agent.agentType === "Node.js" ? JsSystemSettingsForm : SystemSettingsForm;
-  useEffect(() => {
-    setPristineSettings(true);
-  }, [tab]);
 
   return (
     <div tw="flex flex-col w-full">
@@ -64,7 +58,7 @@ export const AgentSettings = () => {
       <Switch>
         <Route
           path={routes.agentSystemSettings}
-          render={() => <SystemSettings agent={agent} setPristineSettings={setPristineSettings} />}
+          render={() => <SystemSettings agent={agent} />}
         />
         <Route
           path={routes.agentPluginsSettings}
@@ -72,22 +66,9 @@ export const AgentSettings = () => {
         />
         <Route
           path={routes.agentGeneralSettings}
-          render={() => <GeneralSettingsForm agent={agent} setPristineSettings={setPristineSettings} />}
+          render={() => <GeneralSettingsForm agent={agent} />}
         />
       </Switch>
-      <UnSaveChangeModal path={nextLocation} setNextLocation={setNextLocation} />
-      <Prompt
-        when
-        message={({ pathname, state }) => {
-          const { pristine } = state as { pristine: boolean } || {};
-
-          if (pristineSettings || pristine) {
-            return true;
-          }
-          setNextLocation(pathname);
-          return false;
-        }}
-      />
     </div>
   );
 };

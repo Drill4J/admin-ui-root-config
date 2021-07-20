@@ -81,7 +81,7 @@ export const PluginsSettingsTab = ({ agent: { buildVersion = "" } }: Props) => {
                 icon={name as keyof typeof Icons}
               >
                 <div className="flex items-center w-full">
-                  <div tw="font-semibold text-14 leading-22 link">{name}&nbsp;</div>
+                  <div tw="font-bold text-14 leading-22 link">{name}&nbsp;</div>
                   {version && <div tw="text-14 leading-22 text-monochrome-default">({version})</div>}
                 </div>
               </PluginListEntry>

@@ -13,33 +13,32 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-import React, { useEffect, useState } from "react";
+import React, { useState } from "react";
 import axios from "axios";
 import { matchPath, useLocation } from "react-router-dom";
 import {
   Icons, Tooltip, GeneralAlerts, FormGroup, Spinner, Button,
 } from "@drill4j/ui-kit";
-import { Form, Field, FormRenderProps } from "react-final-form";
+import { Formik, Field, Form } from "formik";
 import "twin.macro";
-import { useFormHandleSubmit } from "@drill4j/common-hooks";
 
 import {
   composeValidators, Fields, requiredArray, sizeLimit,
 } from "forms";
 import { UnlockingSystemSettingsFormModal } from "modules";
 import {
-  parsePackages, formatPackages, dotsAndSlashesToSlash, isPristine,
+  parsePackages, formatPackages, dotsAndSlashesToSlash,
 } from "@drill4j/common-utils";
 import { Agent } from "types/agent";
 import { sendNotificationEvent } from "@drill4j/send-notification-event";
 import { routes } from "common";
+import { UnSaveChangeModal } from "pages/settings-page/un-save-changes-modal";
 
 interface Props {
   agent: Agent;
-  setPristineSettings: (pristine: boolean) => void;
 }
 
-export const SystemSettingsForm = ({ agent, setPristineSettings }: Props) => {
+export const SystemSettingsForm = ({ agent }: Props) => {
   const [unlockedPackages, setUnlockedPackages] = useState(false);
   const [isUnlockingModalOpened, setIsUnlockingModalOpened] = useState(false);
   const { pathname } = useLocation();
@@ -48,7 +47,7 @@ export const SystemSettingsForm = ({ agent, setPristineSettings }: Props) => {
   }) || {};
 
   return (
-    <Form
+    <Formik
       onSubmit={async ({ systemSettings: { sessionIdHeaderName, packages = [], targetHost } = {} }: Agent) => {
         try {
           const systemSettings = {
@@ -76,32 +75,23 @@ export const SystemSettingsForm = ({ agent, setPristineSettings }: Props) => {
           max: 256,
         }),
       ) as any}
-      render={(props) => {
-        const ref = useFormHandleSubmit(props as FormRenderProps);
-        const {
-          handleSubmit, submitting, invalid, values,
-        } = props || {};
-        const pristine = isPristine(agent, values);
-
-        useEffect(() => {
-          setPristineSettings(pristine);
-        }, [pristine]);
-
-        return (
-          <form ref={ref} tw="space-y-10">
-            <GeneralAlerts type="INFO">
-              {groupId
-                ? "System settings are related only to Java agents."
-                : "Information related to your application / project."}
-            </GeneralAlerts>
-            <div tw="flex flex-col items-center gap-y-6">
+    >
+      {({ isSubmitting, isValid, dirty }) => (
+        <Form tw="space-y-10">
+          <GeneralAlerts type="INFO">
+            {groupId
+              ? "System settings are related only to Java agents."
+              : "Information related to your application / project."}
+          </GeneralAlerts>
+          <div tw="flex flex-col items-center">
+            <div tw="w-97 space-y-6">
               <div>
                 <div tw="flex items-center gap-x-2 mb-2">
                   <span tw="font-bold text-14 leading-20 text-monochrome-black">Project Package(s)</span>
                   <div
                     className={`flex items-center ${unlockedPackages ? "text-red-default" : "text-monochrome-default"}`}
                     onClick={() => {
-                      unlockedPackages ? !invalid && setUnlockedPackages(false) : setIsUnlockingModalOpened(true);
+                      unlockedPackages ? isValid && setUnlockedPackages(false) : setIsUnlockingModalOpened(true);
                     }}
                   >
                     {unlockedPackages ? (
@@ -121,14 +111,13 @@ export const SystemSettingsForm = ({ agent, setPristineSettings }: Props) => {
                   </div>
                 </div>
                 <Field
-                  tw="w-97 h-20"
                   component={Fields.Textarea}
                   name="systemSettings.packages"
                   parse={parsePackages}
                   format={formatPackages}
                   placeholder="e.g. com/example/mypackage&#10;foo/bar/baz&#10;and so on."
                   disabled={!unlockedPackages}
-                  replacer={dotsAndSlashesToSlash}
+                  normalize={dotsAndSlashesToSlash}
                 />
                 {unlockedPackages && (
                   <div tw="w-97 text-12 leading-16 text-monochrome-default">
@@ -138,23 +127,23 @@ export const SystemSettingsForm = ({ agent, setPristineSettings }: Props) => {
                   </div>
                 )}
               </div>
-              <FormGroup tw="w-97" label="Header Mapping" optional>
+              <FormGroup label="Header Mapping" optional>
                 <Field
                   name="systemSettings.sessionIdHeaderName"
                   component={Fields.Input}
                   placeholder="Enter session header name"
                 />
               </FormGroup>
-              <div tw="w-97 mt-4">
+              <div tw="mt-4">
                 <Button
                   className="flex justify-center items-center gap-x-1 w-32"
                   primary
                   size="large"
-                  onClick={handleSubmit}
-                  disabled={submitting || invalid || pristine}
+                  type="submit"
+                  disabled={isSubmitting || !isValid || !dirty}
                   data-test="system-settings-form:save-changes-button"
                 >
-                  {submitting ? <Spinner disabled /> : "Save Changes"}
+                  {isSubmitting ? <Spinner disabled /> : "Save Changes"}
                 </Button>
               </div>
               <UnlockingSystemSettingsFormModal
@@ -163,9 +152,10 @@ export const SystemSettingsForm = ({ agent, setPristineSettings }: Props) => {
                 setUnlocked={setUnlockedPackages}
               />
             </div>
-          </form>
-        );
-      }}
-    />
+          </div>
+          <UnSaveChangeModal />
+        </Form>
+      )}
+    </Formik>
   );
 };
