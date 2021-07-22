@@ -34,7 +34,7 @@ export const SystemSettingsStep = () => (
               component={Fields.Textarea}
               name="systemSettings.packages"
               placeholder="e.g. com/example/mypackage&#10;foo/bar/baz&#10;and so on."
-              normalize={dotsAndSlashesToSlash}
+              normalize={(str: string) => dotsAndSlashesToSlash(str).replace(/(?:(?:\r\n|\r|\n)\s*){2}/gm, "")}
             />
           </FormGroup>
           <div tw="w-97 text-12 leading-16 text-monochrome-default">

@@ -39,6 +39,7 @@ export const ServiceGroupGeneralRegistrationForm = () => (
           <Field
             name="description"
             component={Fields.Textarea}
+            normalize={(str: string) => str.replace(/(?:(?:\r\n|\r|\n)\s*){2}/gm, "")}
             placeholder="Add service group's description"
           />
         </FormGroup>
