@@ -15,11 +15,10 @@
  */
 import React from "react";
 import { Field } from "formik";
-import { FormGroup, GeneralAlerts } from "@drill4j/ui-kit";
+import { FormGroup, GeneralAlerts, Fields } from "@drill4j/ui-kit";
 import "twin.macro";
 
-import { Fields } from "forms";
-import { parsePackages, formatPackages, dotsAndSlashesToSlash } from "@drill4j/common-utils";
+import { dotsAndSlashesToSlash } from "@drill4j/common-utils";
 
 export const SystemSettingsStep = () => (
   <div tw="space-y-10">
@@ -35,7 +34,7 @@ export const SystemSettingsStep = () => (
               component={Fields.Textarea}
               name="systemSettings.packages"
               placeholder="e.g. com/example/mypackage&#10;foo/bar/baz&#10;and so on."
-              normalize={(str: string) => dotsAndSlashesToSlash(formatPackages(parsePackages(str)))}
+              normalize={dotsAndSlashesToSlash}
             />
           </FormGroup>
           <div tw="w-97 text-12 leading-16 text-monochrome-default">

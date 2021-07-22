@@ -19,19 +19,17 @@ import React, {
 import { useParams, useHistory, useLocation } from "react-router-dom";
 import axios from "axios";
 import {
-  Icons, Button, GeneralAlerts,
+  Icons, Button, GeneralAlerts, composeValidators, required, requiredArray, sizeLimit,
 } from "@drill4j/ui-kit";
 import queryString from "query-string";
 import "twin.macro";
 
 import { PageHeader, Wizard, Step } from "components";
 import { CancelAgentRegistrationModal, SystemSettingsStep, InstallPluginsStep } from "modules";
-import {
-  composeValidators, required, requiredArray, sizeLimit,
-} from "forms";
 import { Agent } from "types/agent";
 import { useAdminConnection } from "hooks";
 import { getPagePath } from "common";
+import { parsePackages } from "@drill4j/common-utils";
 import { ServiceGroupGeneralRegistrationForm } from "./service-group-general-registration-form";
 
 export const ServiceGroupRegistrationPage = () => {
@@ -151,7 +149,7 @@ async function registerServiceGroup({
     name,
     systemSettings: {
       ...systemSettings,
-      packages: systemSettings?.packages?.filter(Boolean),
+      packages: parsePackages(systemSettings?.packages || "")?.filter(Boolean),
     },
     description,
     environment,

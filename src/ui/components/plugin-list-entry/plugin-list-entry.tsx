@@ -48,7 +48,7 @@ export const PluginListEntry = ({
     ]}
     >
       <PluginElements selected={field?.checked}>
-        {field && <Checkbox input={field} />}
+        {field && <Checkbox field={field} />}
         <PluginsIconWrapper selected={field?.checked}>
           <PluginIcon />
         </PluginsIconWrapper>

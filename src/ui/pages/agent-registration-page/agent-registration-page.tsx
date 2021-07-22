@@ -19,20 +19,18 @@ import React, {
 import { useParams, useHistory } from "react-router-dom";
 import axios from "axios";
 import {
-  Icons, Button, GeneralAlerts,
+  Icons, Button, GeneralAlerts, requiredArray, composeValidators, required, sizeLimit,
 } from "@drill4j/ui-kit";
 import "twin.macro";
 
 import {
   PageHeader, Wizard, Step,
 } from "components";
-import {
-  requiredArray, composeValidators, required, sizeLimit,
-} from "forms";
 import { useAgent } from "hooks";
 import { CancelAgentRegistrationModal, InstallPluginsStep, SystemSettingsStep } from "modules";
 import { Agent } from "types/agent";
 import { getPagePath } from "common";
+import { parsePackages } from "@drill4j/common-utils";
 import { JavaGeneralRegistrationForm } from "./java-general-registration-form";
 import { JsGeneralRegistrationForm } from "./js-general-registration-form";
 import { JsSystemRegistrationForm } from "./js-system-registration-form";
@@ -160,7 +158,7 @@ async function preregisterOfflineAgent({
     plugins,
     systemSettings: {
       ...systemSettings,
-      packages: systemSettings?.packages?.filter(Boolean),
+      packages: parsePackages(systemSettings?.packages || "")?.filter(Boolean),
     },
   });
 }
@@ -180,7 +178,7 @@ async function registerAgent({
     plugins,
     systemSettings: {
       ...systemSettings,
-      packages: systemSettings?.packages?.filter(Boolean),
+      packages: parsePackages(systemSettings?.packages || "")?.filter(Boolean),
     },
   });
 }

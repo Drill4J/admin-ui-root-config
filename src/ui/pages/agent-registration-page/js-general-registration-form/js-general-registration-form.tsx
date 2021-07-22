@@ -15,10 +15,8 @@
  */
 import React from "react";
 import { Field } from "formik";
-import { FormGroup, GeneralAlerts } from "@drill4j/ui-kit";
+import { FormGroup, GeneralAlerts, Fields } from "@drill4j/ui-kit";
 import { styled } from "twin.macro";
-
-import { Fields } from "forms";
 
 const Content = styled.div`height: calc(100vh - 270px);`;
 

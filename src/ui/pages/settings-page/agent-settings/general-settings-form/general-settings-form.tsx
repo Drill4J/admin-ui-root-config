@@ -22,13 +22,10 @@ import {
 import { sendNotificationEvent } from "@drill4j/send-notification-event";
 
 import {
-  Button, FormGroup, GeneralAlerts, Spinner,
+  Button, FormGroup, GeneralAlerts, Spinner, composeValidators, Fields, required, sizeLimit,
 } from "@drill4j/ui-kit";
 import "twin.macro";
 
-import {
-  composeValidators, Fields, required, sizeLimit,
-} from "forms";
 import { Agent } from "types/agent";
 import { routes } from "common";
 import { UnSaveChangeModal } from "pages/settings-page/un-save-changes-modal";

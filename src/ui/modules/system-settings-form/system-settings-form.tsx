@@ -17,18 +17,13 @@ import React, { useState } from "react";
 import axios from "axios";
 import { matchPath, useLocation } from "react-router-dom";
 import {
-  Icons, Tooltip, GeneralAlerts, FormGroup, Spinner, Button,
+  Icons, Tooltip, GeneralAlerts, FormGroup, Spinner, Button, composeValidators, Fields, requiredArray, sizeLimit,
 } from "@drill4j/ui-kit";
 import { Formik, Field, Form } from "formik";
 import "twin.macro";
 
-import {
-  composeValidators, Fields, requiredArray, sizeLimit,
-} from "forms";
 import { UnlockingSystemSettingsFormModal } from "modules";
-import {
-  parsePackages, formatPackages, dotsAndSlashesToSlash,
-} from "@drill4j/common-utils";
+import { dotsAndSlashesToSlash, parsePackages } from "@drill4j/common-utils";
 import { Agent } from "types/agent";
 import { sendNotificationEvent } from "@drill4j/send-notification-event";
 import { routes } from "common";
@@ -48,10 +43,10 @@ export const SystemSettingsForm = ({ agent }: Props) => {
 
   return (
     <Formik
-      onSubmit={async ({ systemSettings: { sessionIdHeaderName, packages = [], targetHost } = {} }: Agent) => {
+      onSubmit={async ({ systemSettings: { sessionIdHeaderName, packages = "", targetHost } = {} }: Agent) => {
         try {
           const systemSettings = {
-            packages: packages.filter(Boolean),
+            packages: parsePackages(packages).filter(Boolean),
             sessionIdHeaderName,
             targetHost,
           };
@@ -113,8 +108,6 @@ export const SystemSettingsForm = ({ agent }: Props) => {
                 <Field
                   component={Fields.Textarea}
                   name="systemSettings.packages"
-                  parse={parsePackages}
-                  format={formatPackages}
                   placeholder="e.g. com/example/mypackage&#10;foo/bar/baz&#10;and so on."
                   disabled={!unlockedPackages}
                   normalize={dotsAndSlashesToSlash}

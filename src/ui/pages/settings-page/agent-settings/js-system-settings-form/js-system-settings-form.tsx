@@ -19,13 +19,10 @@ import { matchPath, useLocation } from "react-router-dom";
 import { Formik, Field, Form } from "formik";
 import { sendNotificationEvent } from "@drill4j/send-notification-event";
 import {
-  Button, GeneralAlerts, Icons, Spinner, Tooltip,
+  Button, GeneralAlerts, Icons, Spinner, Tooltip, composeValidators, Fields, required,
 } from "@drill4j/ui-kit";
 import "twin.macro";
 
-import {
-  composeValidators, Fields, required,
-} from "forms";
 import { Agent } from "types/agent";
 import { routes } from "common";
 import { UnSaveChangeModal } from "pages/settings-page/un-save-changes-modal";

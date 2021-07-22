@@ -15,10 +15,10 @@
  */
 import React from "react";
 import { Field } from "formik";
-import { GeneralAlerts, Tooltip, Icons } from "@drill4j/ui-kit";
+import {
+  GeneralAlerts, Tooltip, Icons, Fields,
+} from "@drill4j/ui-kit";
 import "twin.macro";
-
-import { Fields } from "forms";
 
 export const JsSystemRegistrationForm = () => (
   <div tw="space-y-10">

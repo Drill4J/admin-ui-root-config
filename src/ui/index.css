@@ -1,4 +1,4 @@
-/*! tailwindcss v2.2.4 | MIT License | https://tailwindcss.com */
+/*! tailwindcss v2.2.6 | MIT License | https://tailwindcss.com */
 
 /*! modern-normalize v1.1.0 | MIT License | https://github.com/sindresorhus/modern-normalize */
 
@@ -575,7 +575,15 @@ video {
   height: auto;
 }
 
-*, ::before, ::after {
+/**
+ * Ensure the default browser behavior of the `hidden` attribute.
+ */
+
+[hidden] {
+  display: none;
+}
+
+.transform {
   --tw-translate-x: 0;
   --tw-translate-y: 0;
   --tw-rotate: 0;
@@ -584,14 +592,13 @@ video {
   --tw-scale-x: 1;
   --tw-scale-y: 1;
   --tw-transform: translateX(var(--tw-translate-x)) translateY(var(--tw-translate-y)) rotate(var(--tw-rotate)) skewX(var(--tw-skew-x)) skewY(var(--tw-skew-y)) scaleX(var(--tw-scale-x)) scaleY(var(--tw-scale-y));
+}
+
+.border, .border-2, .border-t, .border-b, .border-l, .border-r, .first\:border-t {
   border-color: currentColor;
-  --tw-shadow: 0 0 #0000;
-  --tw-ring-inset: var(--tw-empty,/*!*/ /*!*/);
-  --tw-ring-offset-width: 0px;
-  --tw-ring-offset-color: #fff;
-  --tw-ring-color: rgba(59, 130, 246, 0.5);
-  --tw-ring-offset-shadow: 0 0 #0000;
-  --tw-ring-shadow: 0 0 #0000;
+}
+
+.filter {
   --tw-blur: var(--tw-empty,/*!*/ /*!*/);
   --tw-brightness: var(--tw-empty,/*!*/ /*!*/);
   --tw-contrast: var(--tw-empty,/*!*/ /*!*/);
@@ -602,16 +609,6 @@ video {
   --tw-sepia: var(--tw-empty,/*!*/ /*!*/);
   --tw-drop-shadow: var(--tw-empty,/*!*/ /*!*/);
   --tw-filter: var(--tw-blur) var(--tw-brightness) var(--tw-contrast) var(--tw-grayscale) var(--tw-hue-rotate) var(--tw-invert) var(--tw-saturate) var(--tw-sepia) var(--tw-drop-shadow);
-  --tw-backdrop-blur: var(--tw-empty,/*!*/ /*!*/);
-  --tw-backdrop-brightness: var(--tw-empty,/*!*/ /*!*/);
-  --tw-backdrop-contrast: var(--tw-empty,/*!*/ /*!*/);
-  --tw-backdrop-grayscale: var(--tw-empty,/*!*/ /*!*/);
-  --tw-backdrop-hue-rotate: var(--tw-empty,/*!*/ /*!*/);
-  --tw-backdrop-invert: var(--tw-empty,/*!*/ /*!*/);
-  --tw-backdrop-opacity: var(--tw-empty,/*!*/ /*!*/);
-  --tw-backdrop-saturate: var(--tw-empty,/*!*/ /*!*/);
-  --tw-backdrop-sepia: var(--tw-empty,/*!*/ /*!*/);
-  --tw-backdrop-filter: var(--tw-backdrop-blur) var(--tw-backdrop-brightness) var(--tw-backdrop-contrast) var(--tw-backdrop-grayscale) var(--tw-backdrop-hue-rotate) var(--tw-backdrop-invert) var(--tw-backdrop-opacity) var(--tw-backdrop-saturate) var(--tw-backdrop-sepia);
 }
 
 .pointer-events-none {
@@ -864,6 +861,10 @@ video {
   max-height: 20px;
 }
 
+.min-h-16px {
+  min-height: 16px;
+}
+
 .min-h-60px {
   min-height: 60px;
 }
@@ -928,6 +929,10 @@ video {
   min-width: 850px;
 }
 
+.min-w-16px {
+  min-width: 16px;
+}
+
 .min-w-8px {
   min-width: 8px;
 }
@@ -974,6 +979,12 @@ video {
 
 .cursor-not-allowed {
   cursor: not-allowed;
+}
+
+.appearance-none {
+  -webkit-appearance: none;
+     -moz-appearance: none;
+          appearance: none;
 }
 
 .flex-row {
@@ -1087,10 +1098,6 @@ video {
   overflow-y: hidden;
 }
 
-.whitespace-nowrap {
-  white-space: nowrap;
-}
-
 .rounded-2xl {
   border-radius: 1rem;
 }
@@ -1183,6 +1190,10 @@ video {
 .bg-blue-ultralight-tint {
   --tw-bg-opacity: 1;
   background-color: rgba(229, 242, 255, var(--tw-bg-opacity));
+}
+
+.bg-no-repeat {
+  background-repeat: no-repeat;
 }
 
 .p-0 {
@@ -1501,9 +1512,21 @@ video {
   padding-right: 1rem;
 }
 
+.checked\:border-transparent:checked {
+  border-color: transparent;
+}
+
+.checked\:bg-current-color:checked {
+  background-color: currentColor;
+}
+
 .hover\:border-blue-default:hover {
   --tw-border-opacity: 1;
   border-color: rgba(0, 127, 255, var(--tw-border-opacity));
+}
+
+.hover\:border-current-color:hover {
+  border-color: currentColor;
 }
 
 .hover\:bg-monochrome-light-tint:hover {
@@ -1535,6 +1558,10 @@ video {
   color: rgba(241, 51, 51, var(--tw-text-opacity));
 }
 
+.checked\:hover\:opacity-\[0\.8\]:checked:hover {
+  opacity: 0.8;
+}
+
 .active\:text-blue-shade:active {
   --tw-text-opacity: 1;
   color: rgba(0, 108, 216, var(--tw-text-opacity));
@@ -1543,4 +1570,8 @@ video {
 .active\:text-red-shade:active {
   --tw-text-opacity: 1;
   color: rgba(204, 0, 0, var(--tw-text-opacity));
+}
+
+.disabled\:opacity-50:disabled {
+  opacity: 0.5;
 }

@@ -23,7 +23,6 @@ import {
 import "twin.macro";
 
 import { Agent } from "types/agent";
-import { FormValidator } from "forms/form-validators";
 import { useAdminConnection } from "hooks";
 import { sendNotificationEvent } from "@drill4j/send-notification-event";
 import {
@@ -33,7 +32,7 @@ import {
 export interface StepProps {
   name: string;
   component: ComponentType<any>;
-  validate?: FormValidator;
+  validate?: any;
 }
 
 interface Props {
