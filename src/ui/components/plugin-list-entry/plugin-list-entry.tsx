@@ -27,7 +27,7 @@ interface Props {
 
 const PluginElements = styled.div`
   ${tw`flex items-center pr-4 pl-4 text-blue-default`};
-  ${({ selected }: { selected?: boolean }) => selected && tw`bg-blue-light-tint text-monochrome-white`};
+  ${({ selected }: { selected?: boolean }) => selected && tw`bg-blue-light-tint`};
 `;
 
 const PluginsIconWrapper = styled.div`
