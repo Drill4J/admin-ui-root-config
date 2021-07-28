@@ -51,19 +51,20 @@ export const Sidebar = ({ links, matchParams }: Props) => {
       </Link>
       {links.length > 0
           && links.map(({ icon: Icon, link, computedLink }) => (
-            <SidebarLink
+            <Link
               key={link}
-              isActive={link === activeLink}
               to={`/${computedLink || link}`}
             >
-              <Icon />
-            </SidebarLink>
+              <SidebarLink isActive={link === activeLink}>
+                <Icon />
+              </SidebarLink>
+            </Link>
           ))}
     </div>
   );
 };
 
-export const SidebarLink = styled(Link)`
+export const SidebarLink = styled.div`
   ${tw`flex justify-center items-center w-full h-20`}
   ${tw`border-b border-monochrome-medium-tint text-monochrome-default cursor-pointer`}
   ${tw`hover:border-blue-default hover:text-blue-default`}

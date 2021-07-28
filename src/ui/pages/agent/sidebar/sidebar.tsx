@@ -16,7 +16,9 @@
 import React from "react";
 import { Icons, Tooltip } from "@drill4j/ui-kit";
 import "twin.macro";
-import { useLocation } from "react-router-dom";
+import {
+  useLocation, Link as ReactRouterLink,
+} from "react-router-dom";
 
 import { SidebarLink } from "components";
 
@@ -42,12 +44,11 @@ export const Sidebar = ({ links }: Props) => {
         const Icon = Icons[name] || Icons.Plugins;
         return (
           <Tooltip message={<div>{name}</div>} position="right" key={id}>
-            <SidebarLink
-              isActive={id === "dashboard" ? !pathname.match("dashboard\\/\\w") : pathname.includes(path)}
-              to={path}
-            >
-              <Icon />
-            </SidebarLink>
+            <ReactRouterLink to={path}>
+              <SidebarLink isActive={id === "dashboard" ? !pathname.match("dashboard\\/\\w") : pathname.includes(path)}>
+                <Icon />
+              </SidebarLink>
+            </ReactRouterLink>
           </Tooltip>
         );
       })}
