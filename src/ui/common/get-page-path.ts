@@ -34,8 +34,6 @@ interface Routes {
 }
 
 export const routes = {
-  login: "/login",
-  agentsTable: "/agents",
   agentDashboard: "/agents/:agentId/builds/:buildVersion/dashboard",
   agentPlugin: "/agents/:agentId/builds/:buildVersion/dashboard/:pluginId",
   agentGeneralSettings: "/agents/:agentId/general-settings",
@@ -49,6 +47,8 @@ export const routes = {
   serviceGroupPluginsSettings: "/agents/group/:groupId/plugins-settings",
   serviceGroupDashboard: "/agents/group/:groupId/dashboard",
   serviceGroupRegistration: "/agents/group/:groupId/registration",
+  login: "/login",
+  agentsTable: "/agents",
 };
 
 export const router = createRouter<Routes>(routes);

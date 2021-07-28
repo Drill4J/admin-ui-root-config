@@ -13,19 +13,73 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-import React from "react";
+import React, { useEffect, useState } from "react";
+import { Link, matchPath } from "react-router-dom";
 import tw, { styled } from "twin.macro";
+
+import { routes } from "common";
+import { paths } from "../../containers-paths";
 
 interface Props {
   pathname: string;
-  render: (crumbs: string[]) => JSX.Element[];
 }
 
-export const Breadcrumbs = ({ pathname, render }: Props) => {
+export const Breadcrumbs = ({ pathname }: Props) => {
+  const [pluginsRoutes, setPluginsRoutes] = useState<string[]>([]);
+  useEffect(() => {
+    (async () => {
+      const modules = await Promise
+        .all(Object
+          .values(paths)
+          .map(pluginPath => System.import(pluginPath)));
+
+      setPluginsRoutes(
+        modules
+          .map(({ Routes }) =>
+            Object
+              .values(Routes)
+              .map((route) => `${routes.agentPlugin}${route}`))
+          .flat(),
+      );
+    })();
+  }, []);
+
+  const {
+    params: {
+      agentId = "",
+      buildVersion = "",
+      pluginId = "",
+      groupId = "",
+      scopeId = "",
+    } = {},
+  } = matchPath(pathname, {
+    path: [...pluginsRoutes, ...Object.values(routes)],
+  }) || {};
+
+  const availableRoutes = [...pluginsRoutes, ...Object.values(routes)].map((route) =>
+    route
+      .replace(":agentId", agentId)
+      .replace(":buildVersion", buildVersion)
+      .replace(":pluginId", pluginId)
+      .replace(":groupId", groupId)
+      .replace(":scopeId", scopeId));
+
   const crumbs = pathname.slice(1).split("/");
   return (
     <BreadcrumbsContainer>
-      {render(crumbs)}
+      {crumbs.map((crumb, index) => {
+        const link = `/${crumbs.slice(0, index + 1).join("/")}`;
+        return (
+          <CrumbLink key={crumb} disable={!availableRoutes.includes(link)}>
+            <Link
+              title={crumb}
+              to={link}
+            >
+              {crumb}
+            </Link>
+          </CrumbLink>
+        );
+      })}
     </BreadcrumbsContainer>
   );
 };
@@ -52,4 +106,14 @@ const BreadcrumbsContainer = styled.div`
       }
     }
   }
+`;
+
+const CrumbLink = styled.div`
+  ${tw`inline-block max-w-200px
+      text-ellipsis align-middle
+      text-blue-default text-12
+      font-bold cursor-pointer no-underline
+  `};
+  ${({ disable }: { disable: boolean }) =>
+    disable && tw`text-monochrome-default pointer-events-none`}
 `;

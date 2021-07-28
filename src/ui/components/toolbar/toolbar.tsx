@@ -19,7 +19,6 @@ import {
   useHistory,
   Link,
   useLocation,
-  matchPath,
 } from "react-router-dom";
 import { Icons } from "@drill4j/ui-kit";
 import tw, { styled } from "twin.macro";
@@ -27,16 +26,9 @@ import tw, { styled } from "twin.macro";
 import { TOKEN_KEY } from "common/constants";
 import { Notification } from "types/notificaiton";
 import { useAdminConnection } from "hooks";
-import { getPagePath, routes } from "common";
+import { getPagePath } from "common";
 import { Breadcrumbs } from "modules";
 import { NotificationsSidebar } from "./notifications-sidebar";
-
-const NotificationCount = styled.div`
-  ${tw`flex justify-center min-w-20px h-5 mr-4 ml-1 px-1 rounded-full`}
-  ${tw`font-bold text-monochrome-default bg-monochrome-medium-tint`}
-  ${({ unread }: { unread: boolean }) =>
-    unread && tw`text-12 text-monochrome-white bg-red-default`}
-`;
 
 export const Toolbar = () => {
   const notifications =
@@ -47,46 +39,11 @@ export const Toolbar = () => {
   const { push } = useHistory();
   const { pathname } = useLocation();
 
-  const {
-    params: {
-      agentId = "",
-      buildVersion = "",
-      pluginId = "",
-      groupId = "",
-    } = {},
-  } =
-    matchPath(pathname, {
-      path: Object.values(routes),
-    }) || {};
-  const availableRoutes = Object.values(routes).map((route) =>
-    route
-      .replace(":agentId", agentId)
-      .replace(":buildVersion", buildVersion)
-      .replace(":pluginId", pluginId)
-      .replace(":groupId", groupId));
-
   return (
     <div tw="flex items-center w-full h-full">
       <div tw="flex items-center justify-between mx-6 w-full h-full">
         <div tw="text-monochrome-default">
-          <Breadcrumbs
-            pathname={pathname}
-            render={(crumbs) =>
-              crumbs.map((crumb, index) => {
-                const link = `/${crumbs.slice(0, index + 1).join("/")}`;
-                return (
-                  <Link
-                    key={crumb}
-                    title={crumb}
-                    to={link}
-                  >
-                    <CrumbLink isNotFound={!availableRoutes.includes(link)}>
-                      {crumb}
-                    </CrumbLink>
-                  </Link>
-                );
-              })}
-          />
+          <Breadcrumbs pathname={pathname} />
         </div>
         <div tw="flex items-center text-12 leading-20 text-monochrome-default">
           <Link
@@ -124,12 +81,9 @@ export const Toolbar = () => {
   );
 };
 
-const CrumbLink = styled.div`
-  ${tw`inline-block max-w-200px
-      text-ellipsis align-middle
-      text-blue-default text-12
-      font-bold cursor-pointer no-underline
-  `};
-  ${({ isNotFound }: { isNotFound: boolean }) =>
-    isNotFound && tw`text-monochrome-default pointer-events-none`}
+const NotificationCount = styled.div`
+  ${tw`flex justify-center min-w-20px h-5 mr-4 ml-1 px-1 rounded-full`}
+  ${tw`font-bold text-monochrome-default bg-monochrome-medium-tint`}
+  ${({ unread }: { unread: boolean }) =>
+    unread && tw`text-12 text-monochrome-white bg-red-default`}
 `;
