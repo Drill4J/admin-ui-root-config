@@ -95,7 +95,7 @@
     "@drill4j/common-utils": "^1.0.0",
     "@drill4j/send-notification-event": "^1.0.0",
     "@drill4j/socket": "^0.1.13",
-    "@drill4j/ui-kit": "^0.1.120",
+    "@drill4j/ui-kit": "^0.1.121",
     "axios": "^0.21.1",
     "babel-plugin-macros": "^3.1.0",
     "formik": "^2.2.9",
