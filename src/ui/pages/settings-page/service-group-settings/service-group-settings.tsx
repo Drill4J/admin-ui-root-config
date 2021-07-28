@@ -15,12 +15,12 @@
  */
 import React from "react";
 import {
-  Switch, Route, matchPath, useLocation,
+  Switch, Route, matchPath, useLocation, Link,
 } from "react-router-dom";
-import { Icons } from "@drill4j/ui-kit";
+import { Icons, Tab } from "@drill4j/ui-kit";
 import "twin.macro";
 
-import { TabsPanel, Tab, PageHeader } from "components";
+import { PageHeader } from "components";
 import { PluginsSettingsTab, SystemSettingsForm } from "modules";
 import { useAdminConnection } from "hooks";
 import { ServiceGroupEntity } from "types/service-group-entity";
@@ -29,7 +29,7 @@ import { ServiceGroupGeneralSettingsForm } from "./service-group-general-setting
 
 export const ServiceGroupSettings = () => {
   const { pathname: path } = useLocation();
-  const { params: { groupId = "" } = {} } = matchPath<{ groupId: string; }>(path, {
+  const { params: { groupId = "", tab = "" } = {} } = matchPath<{ groupId: string; tab: string }>(path, {
     path: "/agents/group/:groupId/:tab",
   }) || {};
   const serviceGroup = useAdminConnection<ServiceGroupEntity>(`/api/groups/${groupId}`) || {};
@@ -45,11 +45,15 @@ export const ServiceGroupSettings = () => {
         )}
       />
       <div tw="px-6">
-        <TabsPanel path="/agents/group/:groupId/:tab">
-          <Tab name="general-settings" to={getPagePath({ name: "serviceGroupGeneralSettings", params: { groupId } })}>General</Tab>
-          <Tab name="system-settings" to={getPagePath({ name: "serviceGroupSystemSettings", params: { groupId } })}>System</Tab>
-          <Tab name="plugins-settings" to={getPagePath({ name: "serviceGroupPluginsSettings", params: { groupId } })}>Plugins</Tab>
-        </TabsPanel>
+        <Link to={getPagePath({ name: "serviceGroupGeneralSettings", params: { groupId } })}>
+          <Tab active={tab === "general-settings"}>General</Tab>
+        </Link>
+        <Link to={getPagePath({ name: "serviceGroupSystemSettings", params: { groupId } })}>
+          <Tab active={tab === "system-settings"}>System</Tab>
+        </Link>
+        <Link to={getPagePath({ name: "serviceGroupPluginsSettings", params: { groupId } })}>
+          <Tab active={tab === "plugins-settings"}>Plugins</Tab>
+        </Link>
       </div>
       <Switch>
         <Route

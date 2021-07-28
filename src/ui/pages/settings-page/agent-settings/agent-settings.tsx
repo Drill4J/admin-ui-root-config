@@ -14,13 +14,13 @@
  * limitations under the License.
  */
 import React from "react";
-import { Icons } from "@drill4j/ui-kit";
+import { Icons, Tab } from "@drill4j/ui-kit";
 import {
-  Switch, Route, useLocation, matchPath,
+  Switch, Route, useLocation, matchPath, Link,
 } from "react-router-dom";
 import "twin.macro";
 
-import { TabsPanel, Tab, PageHeader } from "components";
+import { PageHeader } from "components";
 import { useAdminConnection } from "hooks";
 import { PluginsSettingsTab, SystemSettingsForm } from "modules";
 import { Agent } from "types/agent";
@@ -31,9 +31,10 @@ import { AgentStatusToggle } from "../../agents-page/agent-status-toggle";
 
 export const AgentSettings = () => {
   const { pathname: path } = useLocation();
-  const { params: { agentId = "" } = {} } = matchPath<{ agentId: string; tab: string}>(path, {
+  const { params: { agentId = "", tab = "" } = {} } = matchPath<{ agentId: string; tab: string}>(path, {
     path: "/agents/:agentId/:tab",
   }) || {};
+
   const agent = useAdminConnection<Agent>(`/api/agents/${agentId}`) || {};
   const SystemSettings = agent.agentType === "Node.js" ? JsSystemSettingsForm : SystemSettingsForm;
 
@@ -49,11 +50,15 @@ export const AgentSettings = () => {
         )}
       />
       <div tw="px-6">
-        <TabsPanel path="/agents/:agentId/:tab">
-          <Tab name="general-settings" to={getPagePath({ name: "agentGeneralSettings", params: { agentId } })}>General</Tab>
-          <Tab name="system-settings" to={getPagePath({ name: "agentSystemSettings", params: { agentId } })}>System</Tab>
-          <Tab name="plugins-settings" to={getPagePath({ name: "agentPluginsSettings", params: { agentId } })}>Plugins</Tab>
-        </TabsPanel>
+        <Link to={getPagePath({ name: "agentGeneralSettings", params: { agentId } })}>
+          <Tab active={tab === "general-settings"}>General</Tab>
+        </Link>
+        <Link to={getPagePath({ name: "agentSystemSettings", params: { agentId } })}>
+          <Tab active={tab === "system-settings"}>System</Tab>
+        </Link>
+        <Link to={getPagePath({ name: "agentPluginsSettings", params: { agentId } })}>
+          <Tab active={tab === "plugins-settings"}>Plugins</Tab>
+        </Link>
       </div>
       <Switch>
         <Route

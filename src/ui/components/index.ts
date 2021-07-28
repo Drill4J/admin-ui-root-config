@@ -26,5 +26,4 @@ export { Toolbar } from "./toolbar";
 export { Footer } from "./footer";
 export { Sidebar, SidebarLink } from "./sidebar";
 export { PluginListEntry } from "./plugin-list-entry";
-export { Tab, TabsPanel } from "./tabs";
 export { Step, Wizard } from "./wizard";
