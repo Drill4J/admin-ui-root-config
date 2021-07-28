@@ -75,14 +75,15 @@ export const Toolbar = () => {
               crumbs.map((crumb, index) => {
                 const link = `/${crumbs.slice(0, index + 1).join("/")}`;
                 return (
-                  <CrumbLink
-                    isNotFound={!availableRoutes.includes(link)}
+                  <Link
                     key={crumb}
                     title={crumb}
                     to={link}
                   >
-                    {crumb}
-                  </CrumbLink>
+                    <CrumbLink isNotFound={!availableRoutes.includes(link)}>
+                      {crumb}
+                    </CrumbLink>
+                  </Link>
                 );
               })}
           />
@@ -123,7 +124,7 @@ export const Toolbar = () => {
   );
 };
 
-const CrumbLink = styled(Link)`
+const CrumbLink = styled.div`
   ${tw`inline-block max-w-200px
       text-ellipsis align-middle
       text-blue-default text-12
