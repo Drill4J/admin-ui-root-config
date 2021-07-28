@@ -13,13 +13,6 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-export {
-  TableActionsProvider,
-  setSearch,
-  setSort,
-  useTableActionsDispatch,
-  useTableActionsState,
-} from "./table-actions";
 export { Breadcrumbs } from "./breadcrumbs";
 export { PluginsSettingsTab } from "./plugins-settings-tab";
 export { SystemSettingsForm } from "./system-settings-form";

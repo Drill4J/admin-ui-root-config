@@ -17,7 +17,6 @@ export { HUD } from "./hud";
 export { PrivateRoute } from "./private-route";
 export { PageHeader } from "./page-header";
 export { Stub } from "./stub";
-export { Table, TR } from "./table";
 export {
   TableErrorFallback,
   PageNotFoundErrorFallback,
