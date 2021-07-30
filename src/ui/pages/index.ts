@@ -16,7 +16,7 @@
 export { AgentsPage } from "./agents-page";
 export { LoginPage } from "./login-page";
 export { NotFoundPage } from "./not-found-page";
-export { Plugin, AgentPage } from "./agent";
+export { AgentPage } from "./agent";
 export { SettingsPage } from "./settings-page";
 export { AgentRegistrationPage } from "./agent-registration-page";
 export { ServiceGroupRegistrationPage } from "./service-group-registration-page";

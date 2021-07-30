@@ -13,5 +13,4 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-export { Plugin } from "./plugin";
 export { AgentPage } from "./agent-page";

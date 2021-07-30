@@ -17,6 +17,7 @@ import React, {
   useEffect, useRef, useState,
 } from "react";
 import { useParams, useHistory } from "react-router-dom";
+import { registerApplication } from "single-spa";
 import axios from "axios";
 import {
   Icons, Button, GeneralAlerts, requiredArray, composeValidators, required, sizeLimit,
@@ -29,12 +30,14 @@ import {
 import { useAgent } from "hooks";
 import { CancelAgentRegistrationModal, InstallPluginsStep, SystemSettingsStep } from "modules";
 import { Agent } from "types/agent";
-import { getPagePath } from "common";
-import { formatPackages, parsePackages } from "@drill4j/common-utils";
+import { getPagePath, routes } from "common";
+import { parsePackages } from "@drill4j/common-utils";
+import { paths } from "../../containers-paths";
 import { JavaGeneralRegistrationForm } from "./java-general-registration-form";
 import { JsGeneralRegistrationForm } from "./js-general-registration-form";
 import { JsSystemRegistrationForm } from "./js-system-registration-form";
 
+type Data = Omit<Agent, "plugins"> & { plugins: string[] };
 export const AgentRegistrationPage = () => {
   const { agentId = "" } = useParams<{ agentId: string }>();
   const { push } = useHistory();
@@ -66,8 +69,30 @@ export const AgentRegistrationPage = () => {
       />
       <Wizard
         initialValues={agent}
-        onSubmit={async (data: Agent) => {
+        onSubmit={async (data: any) => {
           if (agentId) {
+            const switchBuild = (_: string, path: string) => {
+              if (isMounted.current) {
+                if (data.plugins?.length === 1) {
+                  const [plugin] = data.plugins;
+                  push(`${getPagePath({ name: "agentPlugin", params: { agentId, buildVersion, pluginId: String(plugin) } })}${path}`);
+                } else {
+                  push(`${getPagePath({ name: "agentDashboard", params: { agentId, buildVersion } })}${path}`);
+                }
+              }
+            };
+
+            data.plugins?.forEach(async (plugin: string) => {
+              const { AgentPlugin } = await System.import(paths[plugin]);
+
+              return registerApplication({
+                name: plugin,
+                app: AgentPlugin,
+                activeWhen: routes.agentPlugin || routes.agentDashboard,
+                customProps: { switchBuild },
+              });
+            });
+
             await registerAgent(data);
             if (isMounted.current) {
               if (data.plugins?.length === 1) {

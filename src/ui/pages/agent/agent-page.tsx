@@ -27,7 +27,6 @@ import { getPagePath, routes } from "common";
 import { Notification } from "types";
 import { Dashboard } from "../dashboard";
 import { Sidebar, Link } from "./sidebar";
-import { Plugin } from "./plugin";
 import { PluginHeader } from "./plugin-header";
 
 export const AgentPage = () => {
@@ -66,7 +65,10 @@ export const AgentPage = () => {
       header={<PluginHeader agentName={agent.name} agentStatus={agent.status} />}
     >
       <Switch>
-        <Route path={routes.agentPlugin} component={Plugin} />
+        <Route
+          path={routes.agentPlugin}
+          render={() => <div tw="w-full h-full" id="test2code" />}
+        />
         <Route path={routes.agentDashboard} render={() => <Dashboard id={agentId} buildVersion={buildVersion} />} />
       </Switch>
     </PluginsLayout>
