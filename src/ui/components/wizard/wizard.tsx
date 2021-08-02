@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 import React, {
-  Children, ComponentType, ReactElement, useReducer, Component,
+  Children, ComponentType, ReactElement, useReducer, Component, useState,
 } from "react";
 import { Formik, Form } from "formik";
 import {
@@ -54,6 +54,7 @@ export const Wizard = ({
   const { name, validate, component: StepComponent } = (steps[currentStepIndex] as Component<StepProps>).props;
   const availablePlugins = useAdminConnection<Plugin[]>("/plugins") || [];
 
+  const [isSubmitting, setIsSubmitting] = useState(false);
   return (
     <div>
       <Formik
@@ -69,7 +70,9 @@ export const Wizard = ({
         enableReinitialize
         onSubmit={async (values: any) => {
           try {
+            setIsSubmitting(true);
             await onSubmit(values);
+            setIsSubmitting(false);
             sendNotificationEvent({ type: "SUCCESS", text: onSuccessMessage });
           } catch ({ response: { data: { message } = {} } = {} }) {
             sendNotificationEvent({
@@ -81,7 +84,6 @@ export const Wizard = ({
         validate={validate}
       >
         {({
-          isSubmitting,
           isValid,
           values,
         }) => (
