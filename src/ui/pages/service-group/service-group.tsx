@@ -63,8 +63,12 @@ export const ServiceGroup = () => {
     >
       <div tw="w-full h-full">
         <Switch>
+          <Route
+            exact
+            path={[routes.serviceGroupDashboard, `${routes.serviceGroupDashboard}/notification-sidebar`]}
+            render={() => <Dashboard id={groupId} isGroup />}
+          />
           <Route path={routes.serviceGroupPlugin} component={Plugin} />
-          <Route path={routes.serviceGroupDashboard} render={() => <Dashboard id={groupId} isGroup />} />
         </Switch>
       </div>
     </PluginsLayout>

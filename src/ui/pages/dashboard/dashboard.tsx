@@ -25,7 +25,7 @@ import { useAdminConnection } from "hooks";
 import { Plugin } from "types";
 import { HUD } from "components";
 import { paths } from "../../containers-paths";
-import { getPagePath } from "../../common";
+import { getPagePath, routes } from "../../common";
 
 interface Props {
   id: string;
@@ -83,11 +83,7 @@ export const Dashboard = ({ id = "", buildVersion = "", isGroup = false }: Props
         update: DashboardLifecycle.update,
         bootstrap: DashboardLifecycle.bootstrap,
       } as Application),
-      activeWhen: (location) => {
-        const isCorrectPage = isGroup ? location.pathname.includes("group") : !location.pathname.includes("group");
-        // it need that on dashboard page both of dashboard not activate
-        return isCorrectPage && !location.pathname.match("dashboard\\/\\w"); // "dashboard".length
-      },
+      activeWhen: [routes.agentDashboard, routes.serviceGroupDashboard],
       customProps: { id, isGroup, buildVersion },
     });
     return () => {
