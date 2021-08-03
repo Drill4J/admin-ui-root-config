@@ -16,10 +16,12 @@
 import singleSpaReact from "single-spa-react";
 import React, { useEffect } from "react";
 import ReactDOM from "react-dom";
+import { BrowserRouter, Link } from "react-router-dom";
 import {
   Application, getAppNames, registerApplication, unregisterApplication,
 } from "single-spa";
 import "twin.macro";
+import { Icons, Stub } from "@drill4j/ui-kit";
 
 import { useAdminConnection } from "hooks";
 import { Plugin } from "types";
@@ -38,26 +40,48 @@ const DashboardComponent = ({ id, isGroup, buildVersion = "" }: Props) => {
   const installedPlugins = plugins.filter((plugin) => !plugin.available);
 
   return (
-    <div tw="mt-5 px-6">
-      <div tw="mb-7 text-24 leading-32 font-light">Dashboard</div>
-      {installedPlugins.map(({ id: pluginId = "" }) => {
+    <BrowserRouter>
+      <div tw="mt-5 px-6">
+        <div tw="pb-7 text-24 leading-32 font-light border-b border-monochrome-medium-tint">Dashboard</div>
+        {installedPlugins.map(({ id: pluginId = "" }) => {
         // eslint-disable-next-line @typescript-eslint/ban-ts-comment
         // @ts-ignore
-        const hudPath = paths[pluginId];
-        return (
-          <HUD
-            key={pluginId}
-            url={hudPath}
-            name={isGroup ? "GroupHUD" : "AgentHUD"}
-            customProps={{
-              pluginPagePath: isGroup
-                ? getPagePath({ name: "serviceGroupPlugin", params: { groupId: id, pluginId } })
-                : getPagePath({ name: "agentPlugin", params: { agentId: id, buildVersion, pluginId } }),
-            }}
+          const hudPath = paths[pluginId];
+          return (
+            <HUD
+              key={pluginId}
+              url={hudPath}
+              name={isGroup ? "GroupHUD" : "AgentHUD"}
+              customProps={{
+                pluginPagePath: isGroup
+                  ? getPagePath({ name: "serviceGroupPlugin", params: { groupId: id, pluginId } })
+                  : getPagePath({ name: "agentPlugin", params: { agentId: id, buildVersion, pluginId } }),
+              }}
+            />
+          );
+        })}
+        {!installedPlugins.length && (
+          <Stub
+            icon={<Icons.Plugins width={160} height={160} />}
+            title="No data available"
+            message={(
+              <div>
+                There are no enabled plugins on this {isGroup ? "service Group" : "agent"} to collect the data from.
+                <br /> To install a plugin go to
+                <Link
+                  tw="link block mt-1 font-bold"
+                  to={isGroup
+                    ? getPagePath({ name: "serviceGroupGeneralSettings", params: { groupId: id } })
+                    : getPagePath({ name: "agentGeneralSettings", params: { agentId: id } })}
+                >
+                  {isGroup ? "Service Group" : "Agent"} settings page
+                </Link>
+              </div>
+            )}
           />
-        );
-      })}
-    </div>
+        )}
+      </div>
+    </BrowserRouter>
   );
 };
 
