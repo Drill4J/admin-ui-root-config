@@ -30,6 +30,7 @@ import { AppLayout } from "layouts";
 import { NotificationManager } from "./notification-manager";
 
 import "./index.css";
+import "../../node_modules/@drill4j/ui-kit/dist/tailwind.css";
 
 configureAxios();
 
