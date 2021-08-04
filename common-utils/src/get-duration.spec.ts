@@ -16,7 +16,9 @@
 import { getDuration } from "./get-duration";
 
 describe("getDuration", () => {
-  it("should return object with the seconds, minutes, hours properties is equal 00 and isLessThenOneSecond is equal false if value is NaN", () => {
+  it(`should return object with the seconds, minutes,
+   hours properties is equal 00 and isLessThenOneSecond is equal false if value is NaN`,
+  () => {
     expect(getDuration(NaN)).toEqual({
       seconds: "00",
       minutes: "00",
@@ -25,7 +27,9 @@ describe("getDuration", () => {
     });
   });
 
-  it("should return object with the seconds, minutes, hours properties is equal 00 and isLessThenOneSecond is equal false if value is Infinity", () => {
+  it(`should return object with the seconds, minutes,
+   hours properties is equal 00 and isLessThenOneSecond is equal false if value is Infinity`,
+  () => {
     expect(getDuration(Infinity)).toEqual({
       seconds: "00",
       minutes: "00",
@@ -34,16 +38,18 @@ describe("getDuration", () => {
     });
   });
 
-  it("should return object with the seconds, minutes, hours properties is equal 00 and isLessThenOneSecond is equal false if value is 0", () => {
-    expect(getDuration(0)).toEqual({
-      seconds: "00",
-      minutes: "00",
-      hours: "00",
-      isLessThenOneSecond: false,
+  it("should return object with the seconds, minutes, hours properties is equal 00 and isLessThenOneSecond is equal false if value is 0",
+    () => {
+      expect(getDuration(0)).toEqual({
+        seconds: "00",
+        minutes: "00",
+        hours: "00",
+        isLessThenOneSecond: false,
+      });
     });
-  });
 
-  it("should return object with the seconds, minutes, hours properties is equal 01 and isLessThenOneSecond is equal false if value is 3661001", () => {
+  it(`should return object with the seconds, minutes,
+   hours properties is equal 01 and isLessThenOneSecond is equal false if value is 3661001`, () => {
     expect(getDuration(3661001)).toEqual({
       seconds: "01",
       minutes: "01",

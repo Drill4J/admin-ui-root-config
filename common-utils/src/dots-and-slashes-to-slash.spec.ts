@@ -19,7 +19,7 @@ describe("dotsAndSlashesToSlash", () => {
   it("should replace dots and slashes with a slash in a provided string", () => {
     expect(dotsAndSlashesToSlash("foo.bar.buzz")).toBe("foo/bar/buzz");
     expect(dotsAndSlashesToSlash("foo//....bar....buzz...")).toBe(
-      "foo/bar/buzz/"
+      "foo/bar/buzz/",
     );
     expect(dotsAndSlashesToSlash("foo///bar....buzz...")).toBe("foo/bar/buzz/");
     expect(dotsAndSlashesToSlash("foo///bar....buzz...")).toBe("foo/bar/buzz/");

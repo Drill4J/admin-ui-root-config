@@ -2,7 +2,7 @@
   "name": "@drill4j/common-utils",
   "version": "1.0.0",
   "main": "dist/index.js",
-  "types": "index.d.ts",
+  "types": "src/index.d.ts",
   "author": "Drill4J",
   "license": "Apache-2.0",
   "dependencies": {
