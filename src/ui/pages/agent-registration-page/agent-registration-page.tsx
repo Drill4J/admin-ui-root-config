@@ -30,7 +30,7 @@ import { useAgent } from "hooks";
 import { CancelAgentRegistrationModal, InstallPluginsStep, SystemSettingsStep } from "modules";
 import { Agent } from "types/agent";
 import { getPagePath } from "common";
-import { formatPackages, parsePackages } from "@drill4j/common-utils";
+import { parsePackages } from "@drill4j/common-utils";
 import { JavaGeneralRegistrationForm } from "./java-general-registration-form";
 import { JsGeneralRegistrationForm } from "./js-general-registration-form";
 import { JsSystemRegistrationForm } from "./js-system-registration-form";

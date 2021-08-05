@@ -50,7 +50,7 @@ const Root = () => (
           component={ServiceGroup}
         />
         <Switch>
-          <PrivateRoute exact path={[routes.agentsTable, `${routes.agentsTable}/notification-sidebar`]} component={AgentsPage} />
+          <PrivateRoute exact path={routes.agentsTable} component={AgentsPage} />
           <PrivateRoute
             path={[routes.agentGeneralSettings, routes.agentPluginsSettings, routes.agentSystemSettings,
               routes.serviceGroupGeneralSettings, routes.serviceGroupSystemSettings, routes.serviceGroupPluginsSettings]}

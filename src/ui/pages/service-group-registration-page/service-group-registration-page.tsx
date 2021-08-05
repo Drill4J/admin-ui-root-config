@@ -29,7 +29,7 @@ import { CancelAgentRegistrationModal, SystemSettingsStep, InstallPluginsStep } 
 import { Agent } from "types/agent";
 import { useAdminConnection } from "hooks";
 import { getPagePath } from "common";
-import { formatPackages, parsePackages } from "@drill4j/common-utils";
+import { parsePackages } from "@drill4j/common-utils";
 import { ServiceGroupGeneralRegistrationForm } from "./service-group-general-registration-form";
 
 export const ServiceGroupRegistrationPage = () => {

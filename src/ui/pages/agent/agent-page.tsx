@@ -68,7 +68,7 @@ export const AgentPage = () => {
       <Switch>
         <Route
           exact
-          path={[routes.agentDashboard, `${routes.agentDashboard}/notification-sidebar`]}
+          path={routes.agentDashboard}
           render={() => <Dashboard id={agentId} buildVersion={buildVersion} />}
         />
         <Route path={routes.agentPlugin} component={Plugin} />

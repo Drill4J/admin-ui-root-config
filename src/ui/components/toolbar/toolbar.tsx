@@ -14,12 +14,7 @@
  * limitations under the License.
  */
 import React from "react";
-import {
-  Route,
-  useHistory,
-  Link,
-  useLocation,
-} from "react-router-dom";
+import { useHistory, Link, useLocation } from "react-router-dom";
 import { Icons } from "@drill4j/ui-kit";
 import tw, { styled } from "twin.macro";
 
@@ -28,9 +23,13 @@ import { Notification } from "types/notificaiton";
 import { useAdminConnection } from "hooks";
 import { getPagePath } from "common";
 import { Breadcrumbs } from "modules";
+import { useQueryParams } from "@drill4j/common-hooks";
 import { NotificationsSidebar } from "./notifications-sidebar";
 
+const NOTIFICATION_SIDEBAR = "NOTIFICATION_SIDEBAR";
+
 export const Toolbar = () => {
+  const { activeModal } = useQueryParams<{ activeModal?: string; }>();
   const notifications =
     useAdminConnection<Notification[]>("/notifications") || [];
   const unreadNotifications = notifications.filter(
@@ -47,7 +46,7 @@ export const Toolbar = () => {
         </div>
         <div tw="flex items-center text-12 leading-20 text-monochrome-default">
           <Link
-            to={`${pathname === "/" ? "" : pathname}/notification-sidebar`}
+            to={`${pathname}?activeModal=${NOTIFICATION_SIDEBAR}`}
             className="link"
           >
             <Icons.Notification data-test="tolbar:icon-notification" />
@@ -73,10 +72,7 @@ export const Toolbar = () => {
           </div>
         </div>
       </div>
-      <Route
-        path="*/notification-sidebar"
-        render={() => <NotificationsSidebar notifications={notifications} />}
-      />
+      {activeModal === NOTIFICATION_SIDEBAR && <NotificationsSidebar notifications={notifications} />}
     </div>
   );
 };
