@@ -46,7 +46,7 @@ export const PluginsSettingsTab = ({ agent: { buildVersion = "" } }: Props) => {
       <GeneralAlerts type="INFO">
         {`Installed plugins on your ${agentId ? "agent" : "service group"}.`}
       </GeneralAlerts>
-      <div tw="flex justify-between pt-6 pb-6 mr-6 ml-6 text-20">
+      <div tw="flex justify-between pt-6 pb-6 mr-6 ml-6 text-20 border-b border-monochrome-medium-tint">
         <span>
           Plugins
           <span tw="ml-2 font-regular text-monochrome-default">{installedPlugins.length}</span>

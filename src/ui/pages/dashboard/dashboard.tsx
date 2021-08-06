@@ -41,7 +41,7 @@ const DashboardComponent = ({ id, isGroup, buildVersion = "" }: Props) => {
 
   return (
     <BrowserRouter>
-      <div tw="mt-5 px-6">
+      <div tw="flex flex-col pt-5 px-6 h-full">
         <div tw="pb-7 text-24 leading-32 font-light border-b border-monochrome-medium-tint">Dashboard</div>
         {installedPlugins.map(({ id: pluginId = "" }) => {
         // eslint-disable-next-line @typescript-eslint/ban-ts-comment

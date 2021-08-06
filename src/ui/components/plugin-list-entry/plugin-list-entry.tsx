@@ -43,7 +43,6 @@ export const PluginListEntry = ({
   return (
     <div css={[
       tw`border-b border-monochrome-medium-tint cursor-pointer`,
-      tw`first:border-t border-monochrome-medium-tint`,
       tw`hover:bg-monochrome-light-tint`,
     ]}
     >
