@@ -14,18 +14,19 @@
  * limitations under the License.
  */
 import React, {
-  Children, ComponentType, ReactElement, useReducer, Component, useState,
+  Children, ComponentType, ReactElement, useReducer, Component, useState, useEffect,
 } from "react";
 import { Formik, Form } from "formik";
 import {
   Icons, Button, Spinner,
 } from "@drill4j/ui-kit";
+import { formatPackages } from "@drill4j/common-utils";
+import { sendNotificationEvent } from "@drill4j/send-notification-event";
 import "twin.macro";
 
 import { Agent } from "types/agent";
 import { useAdminConnection } from "hooks";
-import { sendNotificationEvent } from "@drill4j/send-notification-event";
-import { formatPackages } from "@drill4j/common-utils";
+import { Plugin } from "types";
 import {
   wizardReducer, previousStep, nextStep, state,
 } from "./wizard-reducer";
@@ -53,8 +54,8 @@ export const Wizard = ({
   const steps = Children.toArray(children);
   const { name, validate, component: StepComponent } = (steps[currentStepIndex] as Component<StepProps>).props;
   const availablePlugins = useAdminConnection<Plugin[]>("/plugins") || [];
-
   const [isSubmitting, setIsSubmitting] = useState(false);
+
   return (
     <div>
       <Formik
@@ -65,7 +66,7 @@ export const Wizard = ({
             ...initialValues.systemSettings,
             packages: formatPackages(initialValues.systemSettings?.packages),
           },
-          plugins: ["test2code"],
+          plugins: availablePlugins.length === 1 ? [availablePlugins[0].id] : [],
         }}
         enableReinitialize
         onSubmit={async (values: any) => {
@@ -82,63 +83,71 @@ export const Wizard = ({
           }
         }}
         validate={validate}
+        validateOnMount
       >
         {({
           isValid,
           values,
-        }) => (
-          <Form>
-            <div className="flex items-center w-full px-6 py-4">
-              <span tw="w-full text-20 leading-32 text-monochrome-black">
-                {`${currentStepIndex + 1} of ${Children.count(children)}. ${name} `}
-              </span>
-              <div className="flex justify-end items-center w-full">
-                {currentStepIndex > 0 && (
-                  <Button
-                    tw="flex gap-x-2 mr-4"
-                    secondary
-                    size="large"
-                    onClick={() => dispatch(previousStep())}
-                    data-test="wizard:previous-button"
-                    type="button"
-                  >
-                    <Icons.Expander width={8} height={14} rotate={180} />
-                    <span>Back</span>
-                  </Button>
-                )}
-                {currentStepIndex < steps.length - 1 ? (
-                  <Button
-                    className="flex gap-x-2"
-                    tw="w-28"
-                    primary
-                    size="large"
-                    onClick={() => dispatch(nextStep())}
-                    disabled={isSubmitting || !isValid}
-                    data-test="wizard:continue-button"
-                    type="button"
-                  >
-                    Continue
-                    <Icons.Expander tw="text-monochrome-white" width={8} height={14} />
-                  </Button>
-                ) : (
-                  <Button
-                    tw="w-28"
-                    className="flex gap-x-2"
-                    primary
-                    size="large"
-                    type="submit"
-                    data-test="wizard:finishng-button"
-                    disabled={isSubmitting}
-                  >
-                    {isSubmitting ? <Spinner disabled /> : <Icons.Check height={10} width={14} viewBox="0 0 14 10" />}
-                    <span>Finish</span>
-                  </Button>
-                )}
+          validateForm,
+        }) => {
+          useEffect(() => {
+            values?.id && validateForm();
+          }, [validate]);
+
+          return (
+            <Form>
+              <div className="flex items-center w-full px-6 py-4">
+                <span tw="w-full text-20 leading-32 text-monochrome-black">
+                  {`${currentStepIndex + 1} of ${Children.count(children)}. ${name} `}
+                </span>
+                <div className="flex justify-end items-center w-full">
+                  {currentStepIndex > 0 && (
+                    <Button
+                      tw="flex gap-x-2 mr-4"
+                      secondary
+                      size="large"
+                      onClick={() => dispatch(previousStep())}
+                      data-test="wizard:previous-button"
+                      type="button"
+                    >
+                      <Icons.Expander width={8} height={14} rotate={180} />
+                      <span>Back</span>
+                    </Button>
+                  )}
+                  {currentStepIndex < steps.length - 1 ? (
+                    <Button
+                      className="flex gap-x-2"
+                      tw="w-28"
+                      primary
+                      size="large"
+                      onClick={() => dispatch(nextStep())}
+                      disabled={isSubmitting || !isValid}
+                      data-test="wizard:continue-button"
+                      type="button"
+                    >
+                      Continue
+                      <Icons.Expander tw="text-monochrome-white" width={8} height={14} />
+                    </Button>
+                  ) : (
+                    <Button
+                      tw="w-28"
+                      className="flex gap-x-2"
+                      primary
+                      size="large"
+                      type="submit"
+                      data-test="wizard:finishng-button"
+                      disabled={isSubmitting}
+                    >
+                      {isSubmitting ? <Spinner disabled /> : <Icons.Check height={10} width={14} viewBox="0 0 14 10" />}
+                      <span>Finish</span>
+                    </Button>
+                  )}
+                </div>
               </div>
-            </div>
-            <StepComponent formValues={values} />
-          </Form>
-        )}
+              <StepComponent formValues={values} />
+            </Form>
+          );
+        }}
       </Formik>
     </div>
   );

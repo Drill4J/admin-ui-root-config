@@ -115,5 +115,5 @@ export const Dashboard = ({ id = "", buildVersion = "", isGroup = false }: Props
     };
   }, []);
 
-  return <div tw="w-full" id="dashboard" />;
+  return <div tw="w-full h-full" id="dashboard" />;
 };
