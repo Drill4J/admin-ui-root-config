@@ -16,6 +16,7 @@
 /* eslint-disable max-len */
 import React from "react";
 import { Icons } from "@drill4j/ui-kit";
+import "twin.macro";
 
 import { PluginListEntry } from "components";
 import { Plugin } from "types/plugin";
