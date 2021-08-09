@@ -60,7 +60,7 @@ export const JsSystemSettingsForm = ({ agent }: Props) => {
           <GeneralAlerts type="INFO">
             Information related to your application / project.
           </GeneralAlerts>
-          <div tw="flex flex-col items-center gap-y-6 w-97">
+          <div tw="flex flex-col items-center gap-y-6">
             <div tw="w-97 space-y-2">
               <div tw="flex items-center gap-x-2">
                 <span tw="font-bold text-14 leading-20 text-monochrome-black">Target Host</span>

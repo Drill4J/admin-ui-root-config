@@ -43,7 +43,10 @@ export const SelectableList = ({ plugins, handleSelect, selectedRows }: Props) =
       id = "", available, description, version, name,
     }) => (
       <Element key={id} selected={selectedRows.includes(id)}>
-        <div tw="flex items-center gap-x-4 p-4 w-full border-b border-monochrome-medium-tint hover:bg-monochrome-light-tint">
+        <div css={[
+          tw`flex items-center gap-x-4 p-4 w-full`,
+          tw`border-b border-monochrome-medium-tint hover:bg-monochrome-light-tint text-blue-default`]}
+        >
           {available && (
             <Inputs.Checkbox
               onChange={() => {
