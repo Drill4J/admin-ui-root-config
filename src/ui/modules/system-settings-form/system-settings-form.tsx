@@ -18,8 +18,9 @@ import axios from "axios";
 import { matchPath, useLocation } from "react-router-dom";
 import {
   Icons, Tooltip, GeneralAlerts, FormGroup, Spinner, Button, composeValidators, Fields, requiredArray, sizeLimit,
+  Formik, Field, Form,
 } from "@drill4j/ui-kit";
-import { Formik, Field, Form } from "formik";
+
 import "twin.macro";
 
 import { UnlockingSystemSettingsFormModal } from "modules";

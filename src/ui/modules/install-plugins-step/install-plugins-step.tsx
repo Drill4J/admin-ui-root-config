@@ -15,12 +15,11 @@
 */
 /* eslint-disable max-len */
 import React from "react";
-import { Icons } from "@drill4j/ui-kit";
 import "twin.macro";
+import { Icons, Field } from "@drill4j/ui-kit";
 
 import { PluginListEntry } from "components";
 import { Plugin } from "types/plugin";
-import { Field } from "formik";
 
 interface Props {
   formValues?: { plugins?: string[], availablePlugins?: Plugin[] };

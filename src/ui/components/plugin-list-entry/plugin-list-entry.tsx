@@ -14,8 +14,8 @@
  * limitations under the License.
  */
 import React from "react";
-import { FieldInputProps } from "formik";
-import { Icons, Checkbox } from "@drill4j/ui-kit";
+import { FieldInputProps, Icons, Checkbox } from "@drill4j/ui-kit";
+
 import tw, { styled } from "twin.macro";
 
 interface Props {

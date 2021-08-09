@@ -31,7 +31,7 @@ module.exports = (webpackConfigEnv, argv) => {
   });
 
   return merge(defaultConfig, {
-    externals: ["single-spa", "@drill4j/ui-kit"],
+    externals: ["single-spa", "@drill4j/ui-kit", "react", "react-dom"],
     plugins: [
       new HtmlWebpackPlugin({
         inject: false,

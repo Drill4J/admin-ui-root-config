@@ -16,8 +16,8 @@
 import React, {
   Children, ComponentType, ReactElement, useReducer, Component, useState, useEffect,
 } from "react";
-import { Formik, Form } from "formik";
 import {
+  Formik, Form,
   Icons, Button, Spinner,
 } from "@drill4j/ui-kit";
 import { formatPackages } from "@drill4j/common-utils";

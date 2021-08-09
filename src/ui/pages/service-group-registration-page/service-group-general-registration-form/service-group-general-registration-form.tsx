@@ -14,8 +14,10 @@
  * limitations under the License.
  */
 import React from "react";
-import { Field } from "formik";
-import { FormGroup, GeneralAlerts, Fields } from "@drill4j/ui-kit";
+import {
+  Field, FormGroup, GeneralAlerts, Fields,
+} from "@drill4j/ui-kit";
+
 import { styled } from "twin.macro";
 
 const HEADERS_HEIGHT = 275;

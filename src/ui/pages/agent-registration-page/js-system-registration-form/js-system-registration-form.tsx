@@ -14,10 +14,11 @@
  * limitations under the License.
  */
 import React from "react";
-import { Field } from "formik";
 import {
+  Field,
   GeneralAlerts, Tooltip, Icons, Fields,
 } from "@drill4j/ui-kit";
+
 import "twin.macro";
 
 export const JsSystemRegistrationForm = () => (
