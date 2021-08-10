@@ -18,7 +18,7 @@ import { Link, matchPath } from "react-router-dom";
 import tw, { styled } from "twin.macro";
 
 import { routes } from "common";
-import { paths } from "../../containers-paths";
+import { useContainerPaths } from "hooks";
 
 interface Props {
   pathname: string;
@@ -26,14 +26,16 @@ interface Props {
 
 export const Breadcrumbs = ({ pathname }: Props) => {
   const [pluginsRoutes, setPluginsRoutes] = useState<string[]>([]);
+  const paths = useContainerPaths();
+
   useEffect(() => {
     (async () => {
-      const modules = await Promise
+      const modules = paths && await Promise
         .all(Object
           .values(paths)
           .map(pluginPath => System.import(pluginPath)));
 
-      setPluginsRoutes(
+      modules && setPluginsRoutes(
         modules
           .map(({ Routes }) =>
             Object
@@ -42,7 +44,7 @@ export const Breadcrumbs = ({ pathname }: Props) => {
           .flat(),
       );
     })();
-  }, []);
+  }, [paths]);
 
   const {
     params: {

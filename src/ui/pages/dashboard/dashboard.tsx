@@ -23,11 +23,10 @@ import {
 import "twin.macro";
 import { Icons, Stub } from "@drill4j/ui-kit";
 
-import { useAdminConnection } from "hooks";
+import { useAdminConnection, useContainerPaths } from "hooks";
 import { Plugin } from "types";
 import { HUD } from "components";
-import { paths } from "../../containers-paths";
-import { getPagePath, routes } from "../../common";
+import { getPagePath, routes } from "common";
 
 interface Props {
   id: string;
@@ -38,12 +37,13 @@ interface Props {
 const DashboardComponent = ({ id, isGroup, buildVersion = "" }: Props) => {
   const plugins = useAdminConnection<Plugin[]>(isGroup ? `/groups/${id}/plugins` : `/agents/${id}/plugins`) || [];
   const installedPlugins = plugins.filter((plugin) => !plugin.available);
+  const paths = useContainerPaths();
 
   return (
     <BrowserRouter>
       <div tw="flex flex-col pt-5 px-6 h-full">
         <div tw="pb-7 text-24 leading-32 font-light border-b border-monochrome-medium-tint">Dashboard</div>
-        {installedPlugins.map(({ id: pluginId = "" }) => {
+        {paths && installedPlugins.map(({ id: pluginId = "" }) => {
         // eslint-disable-next-line @typescript-eslint/ban-ts-comment
         // @ts-ignore
           const hudPath = paths[pluginId];

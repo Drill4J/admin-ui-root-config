@@ -15,3 +15,4 @@
  */
 export { useAdminConnection } from "./use-admin-connection";
 export { useAgent } from "./use-agent";
+export { useContainerPaths } from "./use-container-paths";

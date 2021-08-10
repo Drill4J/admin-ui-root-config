@@ -19,20 +19,20 @@ import { useHistory, useParams } from "react-router-dom";
 import "twin.macro";
 
 import { getPagePath } from "common";
-import { paths } from "../../../containers-paths";
+import { useContainerPaths } from "hooks";
 
 export const Plugin = () => {
   const { pluginId, agentId } = useParams<{ pluginId: string; agentId: string; }>();
   const { push } = useHistory();
+  const paths = useContainerPaths();
   const switchBuild = (version: string, path: string) => {
     push(`${getPagePath({ name: "agentPlugin", params: { buildVersion: version, agentId, pluginId } })}${path}`);
   };
 
   useEffect(() => {
-    // eslint-disable-next-line @typescript-eslint/ban-ts-comment
-    // @ts-ignore
-    !getAppNames().includes(getPluginName(pluginId)) && paths[pluginId] && registerAgentPlugin(pluginId, paths[pluginId], { switchBuild });
-  }, [pluginId]);
+    paths && !getAppNames().includes(getPluginName(pluginId))
+    && paths[pluginId] && registerAgentPlugin(pluginId, paths[pluginId], { switchBuild });
+  }, [pluginId, paths]);
 
   return <div tw="w-full h-full px-6" id={pluginId} />;
 };

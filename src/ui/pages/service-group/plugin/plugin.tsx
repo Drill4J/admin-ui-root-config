@@ -19,15 +19,14 @@ import "twin.macro";
 
 import { getPagePath } from "common";
 import { getAppNames, registerApplication } from "single-spa";
-import { paths } from "../../../containers-paths";
+import { useContainerPaths } from "hooks";
 
 export const Plugin = () => {
   const { pluginId } = useParams<{ pluginId: string; }>();
+  const paths = useContainerPaths();
 
   useEffect(() => {
-    // eslint-disable-next-line @typescript-eslint/ban-ts-comment
-    // @ts-ignore
-    !getAppNames().includes(getPluginName(pluginId)) && paths[pluginId] && registerAgentPlugin(pluginId, paths[pluginId], {
+    paths && !getAppNames().includes(getPluginName(pluginId)) && paths[pluginId] && registerAgentPlugin(pluginId, paths[pluginId], {
       getAgentPluginPath: ({ agentId, buildVersion, path = "" }:
       { agentId: string; buildVersion: string; path?: string }) => `${getPagePath(
         { name: "agentPlugin", params: { agentId, buildVersion, pluginId } },
@@ -38,7 +37,7 @@ export const Plugin = () => {
       ),
       getAgentSettingsPath: (agentId: string) => getPagePath({ name: "agentGeneralSettings", params: { agentId } }),
     });
-  }, [pluginId]);
+  }, [pluginId, paths]);
 
   return <div tw="w-full h-full px-6" id={pluginId} />;
 };

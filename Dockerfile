@@ -20,10 +20,12 @@ RUN addgroup nginx root
 # setup wait utility
 ADD https://github.com/ufoscout/docker-compose-wait/releases/download/2.7.3/wait /wait
 RUN chmod +x /wait
-USER nginx
+RUN apk add bash
+COPY --from=build /app/parse-plugin-env.sh .
+RUN chmod +x ./parse-plugin-env.sh
 COPY --from=build /app/dist /usr/share/nginx/html
 RUN rm -v /etc/nginx/nginx.conf
 COPY nginx /etc/nginx/
 
 EXPOSE 8080
-CMD /wait && /bin/sh -c "envsubst < /etc/nginx/upsteam.conf.template > /etc/nginx/upstream.conf && exec nginx -g 'daemon off;'"
+CMD /bin/bash ./parse-plugin-env.sh && /wait && /bin/sh -c "envsubst < /etc/nginx/upsteam.conf.template > /etc/nginx/upstream.conf && exec nginx -g 'daemon off;'"
