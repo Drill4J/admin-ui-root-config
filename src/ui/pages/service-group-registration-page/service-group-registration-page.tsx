@@ -16,30 +16,30 @@
 import React, {
   useEffect, useRef, useState,
 } from "react";
-import { useParams, useHistory, useLocation } from "react-router-dom";
+import { useParams, useHistory } from "react-router-dom";
 import axios from "axios";
 import {
   Icons, Button, GeneralAlerts, composeValidators, required, requiredArray, sizeLimit,
 } from "@drill4j/ui-kit";
-import queryString from "query-string";
 import "twin.macro";
 
 import { PageHeader, Wizard, Step } from "components";
 import { CancelAgentRegistrationModal, SystemSettingsStep, InstallPluginsStep } from "modules";
 import { Agent } from "types/agent";
 import { useAdminConnection } from "hooks";
-import { getPagePath } from "common";
+import { getPagePath, AGENT_STATUS } from "common";
 import { parsePackages } from "@drill4j/common-utils";
 import { ServiceGroupGeneralRegistrationForm } from "./service-group-general-registration-form";
 
 export const ServiceGroupRegistrationPage = () => {
   const { push } = useHistory();
   const { groupId = "" } = useParams<{ groupId: string }>();
-  const { search } = useLocation();
   const [isCancelModalOpened, setIsCancelModalOpened] = useState(false);
-  const serviceGroup = useAdminConnection<Agent>(`/groups/${groupId}`) || {};
-  const { unregisteredAgentsCount } = queryString.parse(search);
   const isMounted = useRef(true);
+  const serviceGroup = useAdminConnection<Agent>(`/groups/${groupId}`) || {};
+  const agents = useAdminConnection<Agent[]>("/api/agents") || [];
+  const unregisteredAgentsCount = agents.filter((item) => item.group === groupId && item.status === AGENT_STATUS.NOT_REGISTERED).length;
+
   useEffect(() => () => {
     isMounted.current = false;
   }, []);
