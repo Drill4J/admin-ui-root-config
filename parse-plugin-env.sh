@@ -1,8 +1,7 @@
 #! /bin/bash
 
-# Set space as the delimiter
 IFS=','
-#Read the split words into an array based on space delimiter
+
 read -a strarr <<<"$PLUGINS"
 
 # Print each value of the array by using the loop
@@ -11,7 +10,7 @@ for entrie in "${strarr[@]}"; do
   plugin="$(cut -d'#' -f1 <<<"${entrie}")"
   link="$(cut -d'#' -f2 <<<"${entrie}")"
   if [ "${entrie}" = "${strarr[-1]}" ]; then
-     echo " \"${plugin}\": \"${link}\"" >>/usr/share/nginx/html/container-paths.json
+     echo " \"${plugin}\": \"${link}\"," >>/usr/share/nginx/html/container-paths.json
   else
     echo " \"${plugin}\": \"${link}\"" >>/usr/share/nginx/html/container-paths.json
   fi
