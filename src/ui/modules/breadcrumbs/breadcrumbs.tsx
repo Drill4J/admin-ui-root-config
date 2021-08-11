@@ -29,13 +29,15 @@ export const Breadcrumbs = ({ pathname }: Props) => {
   const paths = useContainerPaths();
 
   useEffect(() => {
+    if (!paths) return;
+
     (async () => {
-      const modules = paths && await Promise
+      const modules = await Promise
         .all(Object
           .values(paths)
           .map(pluginPath => System.import(pluginPath)));
 
-      modules && setPluginsRoutes(
+      setPluginsRoutes(
         modules
           .map(({ Routes }) =>
             Object
