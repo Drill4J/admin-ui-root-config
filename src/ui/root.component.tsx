@@ -20,7 +20,7 @@ import {
 
 import {
   LoginPage, AgentsPage, AgentPage,
-  SettingsPage, AgentRegistrationPage, ServiceGroupRegistrationPage, ServiceGroup,
+  SettingsPage, AgentRegistrationPage, ServiceGroupRegistrationPage, ServiceGroup, Builds,
 } from "pages";
 import { TypographyStyles, LayoutStyles, FontsStyles } from "global-styles";
 import { Footer, PrivateRoute } from "components";
@@ -45,6 +45,7 @@ const Root = () => (
       <Switch>
         <Route exact path="/" render={() => <Redirect to={routes.agentsTable} />} />
         <PrivateRoute path={[routes.agentPlugin, routes.agentDashboard]} component={AgentPage} />
+        <PrivateRoute path={routes.builds} component={Builds} />
         <PrivateRoute
           path={[routes.serviceGroupPlugin, routes.serviceGroupDashboard]}
           component={ServiceGroup}
