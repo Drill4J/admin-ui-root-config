@@ -32,10 +32,8 @@ function isValidHttpUrl(string: string) {
 
   return url.protocol === "http:" || url.protocol === "https:";
 }
-
 const validate = (obj: Record<string, string>): boolean => !!Object.entries(obj)
-  .filter(([key, value]) => typeof key === "string" && isValidHttpUrl(value));
-
+  .filter(([key, value]) => typeof key === "string" && isValidHttpUrl(value)).length;
 export const useContainerPaths = () => {
   const [paths, setPaths] = useState<Record<string, string> | null>(null);
 
