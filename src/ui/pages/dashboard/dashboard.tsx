@@ -20,8 +20,8 @@ import { BrowserRouter, Link } from "react-router-dom";
 import {
   Application, getAppNames, registerApplication, unregisterApplication,
 } from "single-spa";
-import "twin.macro";
-import { Icons, Stub, Spinner } from "@drill4j/ui-kit";
+import { css } from "twin.macro";
+import { Icons, Stub } from "@drill4j/ui-kit";
 
 import { useAdminConnection, useContainerPaths } from "hooks";
 import { Plugin } from "types";
@@ -34,7 +34,6 @@ interface Props {
   isGroup?: boolean;
 }
 
-const Loader = () => <div tw="w-full h-full text-blue-default"><Spinner /></div>;
 const Wrapper = ({ children }: { children: React.ReactNode }) => (
   <BrowserRouter>
     <div tw="flex flex-col pt-5 px-6 h-full">
@@ -50,7 +49,7 @@ const DashboardComponent = ({ id, isGroup, buildVersion = "" }: Props) => {
   const paths = useContainerPaths();
 
   if (!paths) {
-    return <Wrapper><Loader /></Wrapper>;
+    return <Wrapper><div tw="w-full h-full "><Loader /></div></Wrapper>;
   }
 
   return (
@@ -126,3 +125,22 @@ export const Dashboard = ({ id = "", buildVersion = "", isGroup = false }: Props
 
   return <div tw="w-full h-full" id="dashboard" />;
 };
+
+const loaderStyles = css`
+  width: 160px;
+  height: 160px;
+  border-radius: 50%;
+  border: 10px solid rgba(255, 255, 255, 0.1);
+  border-top-color: #09d;
+  animation: spin 1s linear infinite;
+
+  @keyframes spin {
+    to {
+      transform: rotate(360deg);
+    }
+  }
+`;
+
+export const Loader = () => (
+  <div tw="w-full h-full flex justify-center items-center"><div css={loaderStyles} /></div>
+);
