@@ -21,6 +21,14 @@ const devModePaths = {
   stateWatcher: "http://localhost:8090/Drill4J-state-watcher-ui.js",
 };
 
+const errorHandler = (func: () => any, message: string): any => {
+  try {
+    return func();
+  } catch {
+    throw new Error(message);
+  }
+};
+
 function isValidHttpUrl(string: string) {
   let url;
 
@@ -32,30 +40,25 @@ function isValidHttpUrl(string: string) {
 
   return url.protocol === "http:" || url.protocol === "https:";
 }
-const validate = (obj: Record<string, string>): boolean => !!Object.entries(obj)
-  .filter(([key, value]) => typeof key === "string" && isValidHttpUrl(value)).length;
+const validate = (obj: Record<string, string>): boolean => Object.entries(obj)
+  .every(([key, value]) => typeof key === "string" && isValidHttpUrl(value));
 export const useContainerPaths = () => {
   const [paths, setPaths] = useState<Record<string, string> | null>(null);
 
   const getContainerPaths = async () => {
     if (process.env.NODE_ENV === "production") {
       try {
-        const response = await fetch("/container-paths.json");
-        try {
-          const data = await response.json();
+        const response = await errorHandler(() => fetch("/container-paths.json"), "Failed to fetch containers paths");
+        const data = await errorHandler(() => response.json(), "Failed to fetch containers paths");
+        errorHandler(() => {
           if (validate(data)) {
-            setPaths(data);
-          } else {
-            sendNotificationEvent({
-              type: "ERROR",
-              text: "CRITICAL ERROR: unable to obtain plugin resources. This is likely happened due to invalid PLUGINS env variable value",
-            });
+            return setPaths(data);
           }
-        } catch {
-          sendNotificationEvent({ type: "ERROR", text: "Failed to parse json" });
-        }
-      } catch (error) {
-        sendNotificationEvent({ type: "ERROR", text: error || "Failed to fetch containers paths" });
+          throw new Error();
+        },
+        "CRITICAL ERROR: unable to obtain plugin resources. This is likely happened due to invalid PLUGINS env variable value");
+      } catch (e) {
+        sendNotificationEvent({ type: "ERROR", text: e.message });
       }
     } else {
       setPaths(devModePaths);
