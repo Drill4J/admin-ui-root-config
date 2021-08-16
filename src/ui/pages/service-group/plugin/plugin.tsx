@@ -15,6 +15,7 @@
  */
 import React, { useEffect } from "react";
 import { useParams } from "react-router-dom";
+import { sendNotificationEvent } from "@drill4j/send-notification-event";
 import "twin.macro";
 
 import { getPagePath } from "common";
@@ -26,13 +27,19 @@ export const Plugin = () => {
   const paths = usePluginUrls();
 
   useEffect(() => {
-    paths && !getAppNames().includes(getPluginName(pluginId)) && paths[pluginId] && registerAgentPlugin(pluginId, paths[pluginId], {
+    if (!paths) return;
+    const isPluginAlreadyRegistered = getAppNames().includes(getPluginName(pluginId));
+    if (isPluginAlreadyRegistered) return;
+    if (!paths[pluginId]) {
+      sendNotificationEvent({ type: "ERROR", text: "CRITICAL ERROR: Plugin URL is not exist. Check PLUGINS env variable value" });
+      return;
+    }
+    registerAgentPlugin(pluginId, paths[pluginId], {
       getAgentPluginPath: ({ agentId, buildVersion, path = "" }:
       { agentId: string; buildVersion: string; path?: string }) => `${getPagePath(
         { name: "agentPlugin", params: { agentId, buildVersion, pluginId } },
       )}${path}`,
-      getAgentDashboardPath: ({ agentId, buildVersion }:
-      { agentId: string; buildVersion: string; }) => getPagePath(
+      getAgentDashboardPath: ({ agentId, buildVersion }: { agentId: string; buildVersion: string; }) => getPagePath(
         { name: "agentDashboard", params: { agentId, buildVersion } },
       ),
       getAgentSettingsPath: (agentId: string) => getPagePath({ name: "agentGeneralSettings", params: { agentId } }),
