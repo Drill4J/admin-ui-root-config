@@ -19,12 +19,12 @@ import { useHistory, useParams } from "react-router-dom";
 import "twin.macro";
 
 import { getPagePath } from "common";
-import { useContainerPaths } from "hooks";
+import { usePluginUrls } from "hooks";
 
 export const Plugin = () => {
   const { pluginId, agentId } = useParams<{ pluginId: string; agentId: string; }>();
   const { push } = useHistory();
-  const paths = useContainerPaths();
+  const paths = usePluginUrls();
   const switchBuild = (version: string, path: string) => {
     push(`${getPagePath({ name: "agentPlugin", params: { buildVersion: version, agentId, pluginId } })}${path}`);
   };

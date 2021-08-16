@@ -42,13 +42,13 @@ function isValidHttpUrl(string: string) {
 }
 const validate = (obj: Record<string, string>): boolean => Object.entries(obj)
   .every(([key, value]) => typeof key === "string" && isValidHttpUrl(value));
-export const useContainerPaths = () => {
+export const usePluginUrls = () => {
   const [paths, setPaths] = useState<Record<string, string> | null>(null);
 
-  const getContainerPaths = async () => {
+  const getPluginUrls = async () => {
     if (process.env.NODE_ENV === "production") {
       try {
-        const response = await errorHandler(() => fetch("/container-paths.json"), "Failed to fetch containers paths");
+        const response = await errorHandler(() => fetch("/plugin-urls.json"), "Failed to fetch containers paths");
         const data = await errorHandler(() => response.json(), "Failed to fetch containers paths");
         errorHandler(() => {
           if (validate(data)) {
@@ -66,7 +66,7 @@ export const useContainerPaths = () => {
   };
 
   useEffect(() => {
-    getContainerPaths();
+    getPluginUrls();
   }, []);
 
   return paths;

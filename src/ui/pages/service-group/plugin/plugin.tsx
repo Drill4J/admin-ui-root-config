@@ -19,11 +19,11 @@ import "twin.macro";
 
 import { getPagePath } from "common";
 import { getAppNames, registerApplication } from "single-spa";
-import { useContainerPaths } from "hooks";
+import { usePluginUrls } from "hooks";
 
 export const Plugin = () => {
   const { pluginId } = useParams<{ pluginId: string; }>();
-  const paths = useContainerPaths();
+  const paths = usePluginUrls();
 
   useEffect(() => {
     paths && !getAppNames().includes(getPluginName(pluginId)) && paths[pluginId] && registerAgentPlugin(pluginId, paths[pluginId], {

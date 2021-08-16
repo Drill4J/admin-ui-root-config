@@ -18,7 +18,7 @@ import { Link, matchPath } from "react-router-dom";
 import tw, { styled } from "twin.macro";
 
 import { routes } from "common";
-import { useContainerPaths } from "hooks";
+import { usePluginUrls } from "hooks";
 
 interface Props {
   pathname: string;
@@ -26,7 +26,7 @@ interface Props {
 
 export const Breadcrumbs = ({ pathname }: Props) => {
   const [pluginsRoutes, setPluginsRoutes] = useState<string[]>([]);
-  const paths = useContainerPaths();
+  const paths = usePluginUrls();
 
   useEffect(() => {
     if (!paths) return;

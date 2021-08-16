@@ -23,7 +23,7 @@ import {
 import { css } from "twin.macro";
 import { Icons, Stub } from "@drill4j/ui-kit";
 
-import { useAdminConnection, useContainerPaths } from "hooks";
+import { useAdminConnection, usePluginUrls } from "hooks";
 import { Plugin } from "types";
 import { HUD } from "components";
 import { getPagePath, routes } from "common";
@@ -46,7 +46,7 @@ const Wrapper = ({ children }: { children: React.ReactNode }) => (
 const DashboardComponent = ({ id, isGroup, buildVersion = "" }: Props) => {
   const plugins = useAdminConnection<Plugin[]>(isGroup ? `/groups/${id}/plugins` : `/agents/${id}/plugins`) || [];
   const installedPlugins = plugins.filter((plugin) => !plugin.available);
-  const paths = useContainerPaths();
+  const paths = usePluginUrls();
 
   if (!paths) {
     return <Wrapper><div tw="w-full h-full "><Loader /></div></Wrapper>;
