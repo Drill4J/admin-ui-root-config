@@ -52,6 +52,29 @@ const DashboardComponent = ({ id, isGroup, buildVersion = "" }: Props) => {
     return <Wrapper><div tw="w-full h-full "><Loader /></div></Wrapper>;
   }
 
+  if (!installedPlugins.length) {
+    return (
+      <Stub
+        icon={<Icons.Plugins width={160} height={160} />}
+        title="No data available"
+        message={(
+          <div>
+            There are no enabled plugins on this {isGroup ? "service Group" : "agent"} to collect the data from.
+            <br /> To install a plugin go to
+            <Link
+              tw="link block mt-1 font-bold"
+              to={isGroup
+                ? getPagePath({ name: "serviceGroupGeneralSettings", params: { groupId: id } })
+                : getPagePath({ name: "agentGeneralSettings", params: { agentId: id } })}
+            >
+              {isGroup ? "Service Group" : "Agent"} settings page
+            </Link>
+          </div>
+        )}
+      />
+    );
+  }
+
   return (
     <Wrapper>
       { installedPlugins.map(({ id: pluginId = "" }) => {
@@ -69,26 +92,6 @@ const DashboardComponent = ({ id, isGroup, buildVersion = "" }: Props) => {
           />
         );
       })}
-      {!installedPlugins.length && (
-        <Stub
-          icon={<Icons.Plugins width={160} height={160} />}
-          title="No data available"
-          message={(
-            <div>
-              There are no enabled plugins on this {isGroup ? "service Group" : "agent"} to collect the data from.
-              <br /> To install a plugin go to
-              <Link
-                tw="link block mt-1 font-bold"
-                to={isGroup
-                  ? getPagePath({ name: "serviceGroupGeneralSettings", params: { groupId: id } })
-                  : getPagePath({ name: "agentGeneralSettings", params: { agentId: id } })}
-              >
-                {isGroup ? "Service Group" : "Agent"} settings page
-              </Link>
-            </div>
-          )}
-        />
-      )}
     </Wrapper>
   );
 };
