@@ -24,7 +24,8 @@ const devModePaths = {
 const errorHandler = (func: () => any, message: string): any => {
   try {
     return func();
-  } catch {
+  } catch (e) {
+    console.error(e);
     throw new Error(message);
   }
 };
@@ -48,15 +49,17 @@ export const usePluginUrls = () => {
   const getPluginUrls = async () => {
     if (process.env.NODE_ENV === "production") {
       try {
-        const response = await errorHandler(() => fetch("/plugin-urls.json"), "Failed to fetch containers paths");
-        const data = await errorHandler(() => response.json(), "Failed to fetch containers paths");
+        const response = await errorHandler(() => fetch("/plugin-urls.json"),
+          "CRITICAL ERROR: Failed to fetch JSON with plugin resources URLs");
+        const data = await errorHandler(() => response.json(),
+          "CRITICAL ERROR: JSON with plugin resources URLs is invalid. Check PLUGINS env variable value");
         errorHandler(() => {
-          if (validate(data)) {
-            return setPaths(data);
+          if (!validate(data)) {
+            throw new Error();
           }
-          throw new Error();
+          setPaths(data);
         },
-        "CRITICAL ERROR: unable to obtain plugin resources. This is likely happened due to invalid PLUGINS env variable value");
+        "CRITICAL ERROR: plugin URL is invalid. Check PLUGINS env variable value");
       } catch (e) {
         sendNotificationEvent({ type: "ERROR", text: e.message });
       }
