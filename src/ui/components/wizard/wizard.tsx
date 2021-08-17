@@ -42,19 +42,22 @@ interface Props {
   onSubmit: (val: Record<string, unknown>) => Promise<void>;
   children: ReactElement<StepProps>[];
   onSuccessMessage: string;
+  isOfflineAgent?: boolean;
 }
 
 // eslint-disable-next-line @typescript-eslint/no-unused-vars
 export const Step = (props: StepProps) => null;
 
 export const Wizard = ({
-  children, initialValues, onSubmit, onSuccessMessage,
+  children, initialValues, onSubmit, onSuccessMessage, isOfflineAgent,
 }: Props) => {
   const [{ currentStepIndex }, dispatch] = useReducer(wizardReducer, state);
   const steps = Children.toArray(children);
   const { name, validate, component: StepComponent } = (steps[currentStepIndex] as Component<StepProps>).props;
   const availablePlugins = useAdminConnection<Plugin[]>("/plugins") || [];
   const [isSubmitting, setIsSubmitting] = useState(false);
+
+  if (!isOfflineAgent && !Object.keys(initialValues).length) return null;
 
   return (
     <div>
@@ -68,7 +71,6 @@ export const Wizard = ({
           },
           plugins: availablePlugins.length === 1 ? [availablePlugins[0].id] : [],
         }}
-        enableReinitialize
         onSubmit={async (values: any) => {
           try {
             setIsSubmitting(true);

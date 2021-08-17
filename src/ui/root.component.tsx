@@ -59,7 +59,7 @@ const Root = () => (
           />
           <PrivateRoute exact path={routes.agentRegistration} component={AgentRegistrationPage} />
           <PrivateRoute exact path={routes.serviceGroupRegistration} component={ServiceGroupRegistrationPage} />
-          <PrivateRoute path={routes.agentPreregistration} component={AgentRegistrationPage} />
+          <PrivateRoute path={routes.agentPreregistration} component={() => <AgentRegistrationPage isOfflineAgent />} />
         </Switch>
       </Switch>
     </AppLayout>

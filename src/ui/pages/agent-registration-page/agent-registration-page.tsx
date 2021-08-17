@@ -35,7 +35,11 @@ import { JavaGeneralRegistrationForm } from "./java-general-registration-form";
 import { JsGeneralRegistrationForm } from "./js-general-registration-form";
 import { JsSystemRegistrationForm } from "./js-system-registration-form";
 
-export const AgentRegistrationPage = () => {
+interface Props {
+  isOfflineAgent?: boolean;
+}
+
+export const AgentRegistrationPage = ({ isOfflineAgent }: Props) => {
   const { agentId = "" } = useParams<{ agentId: string }>();
   const { push } = useHistory();
   // eslint-disable-next-line @typescript-eslint/no-unused-vars
@@ -83,6 +87,7 @@ export const AgentRegistrationPage = () => {
           }
         }}
         onSuccessMessage={agentId ? "Agent has been registered" : "Offline agent has been preregistered"}
+        isOfflineAgent={isOfflineAgent}
       >
         <Step
           name="General Settings"
