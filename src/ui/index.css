@@ -647,6 +647,11 @@ video {
   margin-right: 1.5rem;
 }
 
+.my-6 {
+  margin-top: 1.5rem;
+  margin-bottom: 1.5rem;
+}
+
 .ml-27 {
   margin-left: 6.75rem;
 }
@@ -713,10 +718,6 @@ video {
 
 .mb-3 {
   margin-bottom: 0.75rem;
-}
-
-.mt-5 {
-  margin-top: 1.25rem;
 }
 
 .mt-1 {
@@ -1218,6 +1219,10 @@ video {
   padding-right: 0.5rem;
 }
 
+.pt-5 {
+  padding-top: 1.25rem;
+}
+
 .pb-7 {
   padding-bottom: 1.75rem;
 }
@@ -1232,10 +1237,6 @@ video {
 
 .pt-10 {
   padding-top: 2.5rem;
-}
-
-.pt-5 {
-  padding-top: 1.25rem;
 }
 
 .text-center {
@@ -1435,10 +1436,6 @@ video {
   white-space: nowrap;
   overflow: hidden;
   text-overflow: ellipsis;
-}
-
-.first\:border-t:first-child {
-  border-top-width: 1px;
 }
 
 .first\:px-4:first-child {
