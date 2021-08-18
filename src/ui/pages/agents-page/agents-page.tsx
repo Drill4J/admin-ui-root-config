@@ -39,7 +39,7 @@ export const AgentsPage = () => {
   ];
 
   return (
-    <div tw="flex flex-col flex-grow">
+    <div tw="flex flex-col">
       <PageHeader
         title="Agents"
         itemsCount={agentsList.length}

@@ -29,7 +29,7 @@ export const PageHeader = ({
   itemsActions,
   actions,
 }: Props) => (
-  <div tw="flex items-center w-full h-19.5 border-b border-monochrome-medium-tint">
+  <div tw="flex items-center w-full border-b border-monochrome-medium-tint" style={{ minHeight: "78px" }}>
     <div tw="flex flex-grow items-center mx-6">
       <span tw="text-24 leading-32 font-light">{title}</span>
       <span tw="ml-2 font-light text-18 leading-24 text-monochrome-dark-tint">
