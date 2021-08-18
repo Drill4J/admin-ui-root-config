@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 import React, { useEffect } from "react";
-import { getAppNames, registerApplication } from "single-spa";
+import { getAppNames, registerApplication, unregisterApplication } from "single-spa";
 import { useHistory, useParams } from "react-router-dom";
 import { sendNotificationEvent } from "@drill4j/send-notification-event";
 import "twin.macro";
@@ -29,7 +29,6 @@ export const Plugin = () => {
   const switchBuild = (version: string, path: string) => {
     push(`${getPagePath({ name: "agentPlugin", params: { buildVersion: version, agentId, pluginId } })}${path}`);
   };
-
   useEffect(() => {
     if (!paths) return;
     const isPluginAlreadyRegistered = getAppNames().includes(getPluginName(pluginId));
@@ -39,8 +38,13 @@ export const Plugin = () => {
       return;
     }
     registerAgentPlugin(pluginId, paths[pluginId], { switchBuild });
-  },
-  [pluginId, paths]);
+
+    // eslint-disable-next-line consistent-return
+    return () => {
+      // it need that switchBuild take new agentId and build version, after redesign it can be delete
+      unregisterApplication(getPluginName(pluginId));
+    };
+  }, [pluginId, paths]);
 
   return <div tw="w-full h-full px-6" id={pluginId} />;
 };
