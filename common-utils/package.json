@@ -5,9 +5,13 @@
   "types": "src/index.d.ts",
   "author": "Drill4J",
   "license": "Apache-2.0",
-  "dependencies": {
+  "dependencies": {},
+  "scripts": {
+    "build": "webpack --mode=production",
+    "serve": "ws -d dist --port=1000"
   },
   "devDependencies": {
+    "local-web-server": "^5.1.0",
     "typescript": "^4.1.2"
   }
 }
