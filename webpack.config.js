@@ -44,6 +44,7 @@ module.exports = (webpackConfigEnv, argv) => {
       }),
       new Dotenv({
         path: "./.env.local",
+        systemvars: true,
       }),
       new NodePolyfillPlugin(),
     ],

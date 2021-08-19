@@ -22,6 +22,8 @@ import {
 import microfrontendLayout from "./microfrontend-layout.html";
 import AdminUi from "./ui/Drill4J-admin-ui";
 
+console.log("Admin-ui version: ", process.env.REACT_APP_VERSION);
+
 const routes = constructRoutes(microfrontendLayout);
 const applications = constructApplications({
   routes,
