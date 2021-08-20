@@ -25,6 +25,7 @@ const Content = styled.div`height: calc(100vh - 270px);`;
 
 export const JavaGeneralRegistrationForm = () => {
   const { agentId = "" } = useParams<{ agentId: string }>();
+
   return (
     <>
       <GeneralAlerts type="INFO">
@@ -33,7 +34,12 @@ export const JavaGeneralRegistrationForm = () => {
       <Content tw="flex flex-col items-center pt-10 overflow-auto">
         <div tw="w-97 space-y-6">
           <FormGroup label="Agent ID">
-            <Field name="id" component={Fields.Input} placeholder="Enter agent's ID" disabled={Boolean(agentId)} />
+            <Field
+              name="id"
+              component={Fields.Input}
+              placeholder={agentId ? "Enter agent's ID" : "agent-id-example-123"}
+              disabled={Boolean(agentId)}
+            />
           </FormGroup>
           <FormGroup label="Agent version">
             <Field name="agentVersion" component={Fields.Input} placeholder="n/a" disabled />

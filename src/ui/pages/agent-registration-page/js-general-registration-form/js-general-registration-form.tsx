@@ -19,44 +19,49 @@ import {
 } from "@drill4j/ui-kit";
 
 import { styled } from "twin.macro";
+import { useParams } from "react-router-dom";
 
 const Content = styled.div`height: calc(100vh - 270px);`;
 
-export const JsGeneralRegistrationForm = () => (
-  <>
-    <GeneralAlerts type="INFO">
-      Set up basic agent settings.
-    </GeneralAlerts>
-    <Content tw="flex flex-col items-center pt-10 overflow-auto">
-      <div tw="w-97 space-y-6">
-        <FormGroup label="Agent ID">
-          <Field name="id" component={Fields.Input} placeholder="Enter agent's ID" disabled />
-        </FormGroup>
-        <FormGroup label="Agent version">
-          <Field name="agentVersion" component={Fields.Input} placeholder="n/a" disabled />
-        </FormGroup>
-        <FormGroup label="Service Group">
-          <Field name="group" component={Fields.Input} placeholder="n/a" disabled />
-        </FormGroup>
-        <FormGroup label="Agent name">
-          <Field name="name" component={Fields.Input} placeholder="Enter agent's name" />
-        </FormGroup>
-        <FormGroup label="Description" optional>
-          <Field
-            name="description"
-            component={Fields.Textarea}
-            normalize={(str: string) => str.replace(/(?:(?:\r\n|\r|\n)\s*){2}/gm, "")}
-            placeholder="Add agent's description"
-          />
-        </FormGroup>
-        <FormGroup label="Environment" optional>
-          <Field
-            name="environment"
-            component={Fields.Input}
-            placeholder="Specify an environment"
-          />
-        </FormGroup>
-      </div>
-    </Content>
-  </>
-);
+export const JsGeneralRegistrationForm = () => {
+  const { agentId = "" } = useParams<{ agentId: string }>();
+
+  return (
+    <>
+      <GeneralAlerts type="INFO">
+        Set up basic agent settings.
+      </GeneralAlerts>
+      <Content tw="flex flex-col items-center pt-10 overflow-auto">
+        <div tw="w-97 space-y-6">
+          <FormGroup label="Agent ID">
+            <Field name="id" component={Fields.Input} placeholder={agentId ? "Enter agent's ID" : "agent-id-example-123"} disabled />
+          </FormGroup>
+          <FormGroup label="Agent version">
+            <Field name="agentVersion" component={Fields.Input} placeholder="n/a" disabled />
+          </FormGroup>
+          <FormGroup label="Service Group">
+            <Field name="group" component={Fields.Input} placeholder="n/a" disabled />
+          </FormGroup>
+          <FormGroup label="Agent name">
+            <Field name="name" component={Fields.Input} placeholder="Enter agent's name" />
+          </FormGroup>
+          <FormGroup label="Description" optional>
+            <Field
+              name="description"
+              component={Fields.Textarea}
+              normalize={(str: string) => str.replace(/(?:(?:\r\n|\r|\n)\s*){2}/gm, "")}
+              placeholder="Add agent's description"
+            />
+          </FormGroup>
+          <FormGroup label="Environment" optional>
+            <Field
+              name="environment"
+              component={Fields.Input}
+              placeholder="Specify an environment"
+            />
+          </FormGroup>
+        </div>
+      </Content>
+    </>
+  );
+};
