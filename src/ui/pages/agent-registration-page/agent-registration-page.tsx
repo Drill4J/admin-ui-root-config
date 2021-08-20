@@ -19,7 +19,7 @@ import React, {
 import { useParams, useHistory } from "react-router-dom";
 import axios from "axios";
 import {
-  Icons, Button, GeneralAlerts, requiredArray, composeValidators, required, sizeLimit,
+  Icons, Button, GeneralAlerts, requiredArray, composeValidators, required, sizeLimit, toError, FormValidator,
 } from "@drill4j/ui-kit";
 import "twin.macro";
 
@@ -30,7 +30,7 @@ import { useAgent } from "hooks";
 import { CancelAgentRegistrationModal, InstallPluginsStep, SystemSettingsStep } from "modules";
 import { Agent } from "types/agent";
 import { getPagePath } from "common";
-import { parsePackages } from "@drill4j/common-utils";
+import { parsePackages, getPropertyByPath } from "@drill4j/common-utils";
 import { JavaGeneralRegistrationForm } from "./java-general-registration-form";
 import { JsGeneralRegistrationForm } from "./js-general-registration-form";
 import { JsSystemRegistrationForm } from "./js-system-registration-form";
@@ -38,6 +38,13 @@ import { JsSystemRegistrationForm } from "./js-system-registration-form";
 interface Props {
   isOfflineAgent?: boolean;
 }
+
+const idValidator = (id: string, alias?: string): FormValidator => {
+  const idRegexp = /^[a-z0-9-]{1,32}$/;
+  return (valitationItem: any) => (!idRegexp.exec(getPropertyByPath(valitationItem, id))
+    ? toError(id, `Incorrect ${alias}. Use lowercase letters, digits and dashes.`)
+    : undefined);
+};
 
 export const AgentRegistrationPage = ({ isOfflineAgent }: Props) => {
   const { agentId = "" } = useParams<{ agentId: string }>();
@@ -97,6 +104,7 @@ export const AgentRegistrationPage = ({ isOfflineAgent }: Props) => {
             !agentId && sizeLimit({
               name: "id", alias: "Agent ID", min: 3, max: 32,
             }),
+            !agentId && idValidator("id", "Agent ID"),
             required("name"),
             sizeLimit({ name: "name" }),
             sizeLimit({ name: "environment" }),
