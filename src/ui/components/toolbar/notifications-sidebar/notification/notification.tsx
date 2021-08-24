@@ -15,7 +15,7 @@
  */
 import React from "react";
 import { format } from "timeago.js";
-import { Icons, useHover } from "@drill4j/ui-kit";
+import { Icons, Typography, useHover } from "@drill4j/ui-kit";
 import tw, { styled } from "twin.macro";
 
 import { Notification as NotificationType } from "types/notificaiton";
@@ -49,8 +49,10 @@ export const Notification = ({
         <BuildVersion unread={!read} style={{ fontSize: "13px" }}>
           <div className="flex items-center">
             <NotificationStatusIndicator className="mr-2" unread={!read} />
-            <div className="text-ellipsis mr-1" title={`Build ${buildVersion}`}>
-              Build {buildVersion}
+            <div className="mr-1" title={`Build ${buildVersion}`}>
+              <Typography.MiddleEllipsis>
+                <span>Build {buildVersion}</span>
+              </Typography.MiddleEllipsis>
             </div>
             arrived
           </div>

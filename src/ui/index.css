@@ -784,14 +784,6 @@ video {
   height: 100%;
 }
 
-.h-19\.5 {
-  height: 4.875rem;
-}
-
-.h-19 {
-  height: 4.75rem;
-}
-
 .h-20 {
   height: 5rem;
 }
@@ -810,6 +802,10 @@ video {
 
 .h-10 {
   height: 2.5rem;
+}
+
+.h-19 {
+  height: 4.75rem;
 }
 
 .h-8 {
@@ -1293,6 +1289,10 @@ video {
 
 .text-64 {
   font-size: 64px;
+}
+
+.lowercase {
+  text-transform: lowercase;
 }
 
 .capitalize {
