@@ -46,7 +46,7 @@ export const AgentsTable = ({ agents }: Props) => {
           </span>
         ) : null),
       notSortable: true,
-      width: "48px",
+      width: "32px",
     },
     {
       Header: "Name",
@@ -122,7 +122,7 @@ export const AgentsTable = ({ agents }: Props) => {
                 key={x.id}
               >
                 {row.cells.map((cell: any) => (
-                  <td {...cell.getCellProps()} tw="first:px-4 last:px-4">
+                  <td {...cell.getCellProps()} tw="px-4">
                     {cell.render(cell.column.SubCell ? "SubCell" : "Cell", {
                       value: cell.column.accessor && cell.column.accessor(x, i),
                       row: { ...row, original: x },
