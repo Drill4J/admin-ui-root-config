@@ -40,9 +40,9 @@ interface Props {
 }
 
 const idValidator = (id: string, alias?: string): FormValidator => {
-  const idRegexp = /^[a-z0-9-]{1,32}$/;
-  return (valitationItem: any) => (!idRegexp.exec(getPropertyByPath(valitationItem, id))
-    ? toError(id, `Incorrect ${alias}. Use lowercase letters, digits and dashes.`)
+  const idRegexp = /^[a-z0-9-]{1,33}$/;
+  return (validationItem: any) => (!idRegexp.exec(getPropertyByPath(validationItem, id))
+    ? toError(id, `Incorrect ${alias}. Use lowercase Latin letters, digits and dashes.`)
     : undefined);
 };
 
@@ -100,11 +100,11 @@ export const AgentRegistrationPage = ({ isOfflineAgent }: Props) => {
           name="General Settings"
           component={agent.agentType === "Node.js" ? JsGeneralRegistrationForm : JavaGeneralRegistrationForm}
           validate={composeValidators(
+            !agentId && idValidator("id", "Agent ID"),
             !agentId && required("id", "Agent ID"),
             !agentId && sizeLimit({
               name: "id", alias: "Agent ID", min: 3, max: 32,
             }),
-            !agentId && idValidator("id", "Agent ID"),
             required("name"),
             sizeLimit({ name: "name" }),
             sizeLimit({ name: "environment" }),
