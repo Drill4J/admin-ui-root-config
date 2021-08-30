@@ -17,8 +17,7 @@ import React, {
   Children, ComponentType, ReactElement, useReducer, Component, useState, useEffect,
 } from "react";
 import {
-  Formik, Form,
-  Icons, Button, Spinner,
+  Formik, Form, Icons, Button, Spinner,
 } from "@drill4j/ui-kit";
 import { formatPackages } from "@drill4j/common-utils";
 import { sendNotificationEvent } from "@drill4j/send-notification-event";
@@ -54,10 +53,11 @@ export const Wizard = ({
   const [{ currentStepIndex }, dispatch] = useReducer(wizardReducer, state);
   const steps = Children.toArray(children);
   const { name, validate, component: StepComponent } = (steps[currentStepIndex] as Component<StepProps>).props;
-  const availablePlugins = useAdminConnection<Plugin[]>("/plugins") || [];
+  const availablePlugins = useAdminConnection<Plugin[]>("/plugins");
   const [isSubmitting, setIsSubmitting] = useState(false);
 
   if (!isOfflineAgent && !Object.keys(initialValues).length) return null;
+  if (!availablePlugins) return null;
 
   return (
     <div>
