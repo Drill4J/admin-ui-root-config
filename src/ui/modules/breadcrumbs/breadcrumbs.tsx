@@ -30,16 +30,14 @@ export const Breadcrumbs = ({ pathname }: Props) => {
 
   useEffect(() => {
     if (!paths) return;
-
     (async () => {
       const modules = await Promise
         .all(Object
           .values(paths)
           .map(pluginPath => System.import(pluginPath)));
-
       setPluginsRoutes(
         modules
-          .map(({ Routes }) =>
+          .map(({ Routes = {} }) =>
             Object
               .values(Routes)
               .map((route) => `${routes.agentPlugin}${route}`))
@@ -67,12 +65,13 @@ export const Breadcrumbs = ({ pathname }: Props) => {
       .replace(":pluginId", pluginId)
       .replace(":groupId", groupId)
       .replace(":scopeId", scopeId));
-
   const crumbs = pathname.slice(1).split("/");
+
   return (
     <BreadcrumbsContainer>
       {crumbs.map((crumb, index) => {
         const link = `/${crumbs.slice(0, index + 1).join("/")}`;
+
         return (
           <CrumbLink key={crumb} disable={!availableRoutes.includes(link)}>
             <Link
