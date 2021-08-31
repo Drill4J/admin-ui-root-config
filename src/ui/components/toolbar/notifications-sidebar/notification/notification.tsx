@@ -47,15 +47,12 @@ export const Notification = ({
           </SinceNotificationArrived>
         </div>
         <BuildVersion unread={!read} style={{ fontSize: "13px" }}>
-          <div className="flex items-center">
-            <NotificationStatusIndicator className="mr-2" unread={!read} />
-            <div className="mr-1" title={`Build ${buildVersion}`}>
-              <Typography.MiddleEllipsis>
-                <span>Build {buildVersion}</span>
-              </Typography.MiddleEllipsis>
-            </div>
-            arrived
-          </div>
+          <span tw="flex items-center w-full">
+            <NotificationStatusIndicator tw="mr-2" unread={!read} />
+            <Typography.MiddleEllipsis tw="inline" title={`Build ${buildVersion}`}>
+              <span tw="whitespace-nowrap">Build {buildVersion} arrived</span>
+            </Typography.MiddleEllipsis>
+          </span>
           <div
             css={[
               tw`hidden justify-end gap-x-4 items-center`,
