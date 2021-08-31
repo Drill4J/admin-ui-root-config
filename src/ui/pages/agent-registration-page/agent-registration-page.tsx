@@ -40,7 +40,7 @@ interface Props {
 }
 
 const idValidator = (id: string, alias?: string): FormValidator => {
-  const idRegexp = /^[a-z0-9-]{1,33}$/;
+  const idRegexp = /^[a-z0-9-]{1,32}$/;
   return (validationItem: any) => (!idRegexp.exec(getPropertyByPath(validationItem, id))
     ? toError(id, `Incorrect ${alias}. Use lowercase Latin letters, digits and dashes.`)
     : undefined);
