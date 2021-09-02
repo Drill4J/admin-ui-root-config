@@ -21,9 +21,9 @@ const devModePaths = {
   stateWatcher: "http://localhost:8090/Drill4J-state-watcher-ui.js",
 };
 
-const errorHandler = (func: () => any, message: string): any => {
+const errorHandler = async (func: () => any, message: string): Promise<any> => {
   try {
-    return func();
+    await func();
   } catch (e) {
     console.error(e);
     throw new Error(message);
@@ -49,8 +49,13 @@ export const usePluginUrls = () => {
   const getPluginUrls = async () => {
     if (process.env.NODE_ENV === "production") {
       try {
-        const response = await errorHandler(() => fetch("/plugin-urls.json"),
-          "CRITICAL ERROR: Failed to fetch JSON with plugin resources URLs");
+        const response = await errorHandler(async () => {
+          const res = await fetch("/plugin-urls.json");
+          if (res.status !== 200) {
+            throw new Error();
+          }
+        },
+        "CRITICAL ERROR: Failed to fetch JSON with plugin resources URLs");
         const data = await errorHandler(() => response.json(),
           "CRITICAL ERROR: JSON with plugin resources URLs is invalid. Check PLUGINS env variable value");
         errorHandler(() => {
