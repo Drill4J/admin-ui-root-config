@@ -1,4 +1,6 @@
 #! /bin/bash
+truncate -s 0 /usr/share/nginx/html/plugin-urls.json
+
 IFS=','
 read -a strarr <<<"$UI_PLUGINS_URLS"
 echo "{" >>/usr/share/nginx/html/plugin-urls.json
