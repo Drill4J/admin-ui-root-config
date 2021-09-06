@@ -30,6 +30,7 @@ interface Props {
 
 export const NotificationManager = ({ children }: Props) => {
   const [message, setMessage] = useState<Message | null>(null);
+  const [isLastMassageWasConnectionError, setIsLastMassageWasConnectionError] = useState(false);
   const { pathname = "" } = useLocation();
 
   function handleShowMessage(e: CustomEvent<Message>) {
@@ -47,18 +48,28 @@ export const NotificationManager = ({ children }: Props) => {
     document.addEventListener("notification", handleShowMessage as EventListener);
     return () => document.removeEventListener("notification", handleShowMessage as EventListener);
   }, []);
-
-  defaultAdminSocket.onCloseEvent = () => {
-    setMessage({
-      type: "ERROR",
-      text: "Backend connection has been lost. Trying to reconnect...",
-    });
-  };
-  defaultAdminSocket.onOpenEvent = () =>
-    sendNotificationEvent({
-      type: "SUCCESS",
-      text: "Backend connection has been successfully restored.",
-    });
+  useEffect(() => {
+    let timerId : NodeJS.Timeout;
+    defaultAdminSocket.onCloseEvent = () => {
+      timerId = setTimeout(() => {
+        setIsLastMassageWasConnectionError(true);
+        sendNotificationEvent({
+          type: "ERROR",
+          text: "Backend connection has been lost. Trying to reconnect...",
+        });
+      }, 3000);
+    };
+    defaultAdminSocket.onOpenEvent = () => {
+      clearTimeout(timerId);
+      if (isLastMassageWasConnectionError) {
+        sendNotificationEvent({
+          type: "SUCCESS",
+          text: "Backend connection has been successfully restored.",
+        });
+        setIsLastMassageWasConnectionError(false);
+      }
+    };
+  }, [isLastMassageWasConnectionError]);
 
   return (
     <>
