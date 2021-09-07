@@ -51,13 +51,14 @@ export const NotificationManager = ({ children }: Props) => {
   useEffect(() => {
     let timerId : NodeJS.Timeout;
     defaultAdminSocket.onCloseEvent = () => {
+      if (isLastMassageWasConnectionError || timerId) return;
       timerId = setTimeout(() => {
         setIsLastMassageWasConnectionError(true);
         sendNotificationEvent({
           type: "ERROR",
           text: "Backend connection has been lost. Trying to reconnect...",
         });
-      }, 3000);
+      }, 4000);
     };
     defaultAdminSocket.onOpenEvent = () => {
       clearTimeout(timerId);
