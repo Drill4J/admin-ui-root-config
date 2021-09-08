@@ -72,6 +72,10 @@ export const usePluginUrls = () => {
     } else {
       setPaths(devModePaths);
     }
+    const localUrls = sessionStorage.getItem("plugins-urls");
+    if (localUrls) {
+      setPaths(JSON.parse(localUrls));
+    }
   };
 
   useEffect(() => {

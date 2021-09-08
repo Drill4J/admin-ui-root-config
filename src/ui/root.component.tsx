@@ -30,6 +30,7 @@ import { AppLayout } from "layouts";
 import { NotificationManager } from "./notification-manager";
 
 import "./index.css";
+import { SetPluginUrlModal } from "./components/set-plugin-url-modal";
 
 configureAxios();
 
@@ -62,6 +63,7 @@ const Root = () => (
         </Switch>
       </Switch>
     </AppLayout>
+    <SetPluginUrlModal />
   </BrowserRouter>
 );
 
