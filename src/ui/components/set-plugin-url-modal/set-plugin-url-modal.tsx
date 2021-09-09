@@ -31,6 +31,9 @@ export const SetPluginUrlModal = () => {
       }
     };
     document.addEventListener("keydown", listener);
+    return () => {
+      document.removeEventListener("keydown", listener);
+    };
   }, []);
 
   if (!plugins) return null;
