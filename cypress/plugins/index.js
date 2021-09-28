@@ -70,6 +70,22 @@ module.exports = (on) => {
       await promisifiedExec("docker-compose -f java-agent-example.yml --env-file java-agent-example.env up -d");
       return null;
     },
+    async startPetclinicMcr({ groupId = "dev-pet-mcr", build = "0.1.0" }) {
+      const data = `
+      adminAddress=drill-admin:8090
+      PET_MCR_BUILD=${build}
+      AGENT_VERSION=latest
+      groupId=${groupId}
+      LOG_LEVEL=DEBUG
+      `;
+      writeFile("./java-mcr-agent-example.env", data, "utf-8", (err) => {
+        if (err) {
+          console.log(err.message);
+        }
+      });
+      await promisifiedExec("docker-compose -f docker-compose-pet-mcr.yml --env-file java-mcr-agent-example.env up -d");
+      return null;
+    },
     async startPetclinicAutoTests() {
       await promisifiedExec("docker-compose -f start-petclinic-tests.yml up");
       console.log("petclinic tests container exited");

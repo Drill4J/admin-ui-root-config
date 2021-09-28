@@ -6,6 +6,7 @@ services:
     container_name: drill-admin
     environment:
       - TEST2CODE_PLUGIN_VERSION=${TEST2CODE_PLUGIN_VERSION}
+      - TEST2CODE_PLUGIN_URL=${TEST2CODE_PLUGIN_URL}
       - JAVA_TOOL_OPTIONS="-Dplugin.feature.drealtime=true"
       - LOG_LEVEL=trace
       - DRILL_DEFAULT_PACKAGES=org/springframework/samples/petclinic

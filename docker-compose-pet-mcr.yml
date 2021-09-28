@@ -1,0 +1,139 @@
+version: '2'
+services:
+  config-server:
+    image: adenmin/spring-petclinic-config-server:0.1.0
+    container_name: config-server
+    mem_limit: 512M
+    ports:
+      - 8888:8888
+    networks:
+      - drill4j-dev-network
+
+  discovery-server:
+    image: adenmin/spring-petclinic-discovery-server:0.1.0
+    container_name: discovery-server
+    mem_limit: 512M
+    volumes:
+      - ./distr:/data
+    depends_on:
+      - config-server
+    entrypoint: ["./dockerize","-wait=tcp://config-server:8888","-timeout=75s","--","java", "org.springframework.boot.loader.JarLauncher"]
+    ports:
+      - 8761:8761
+    networks:
+      - drill4j-dev-network
+
+  customers-service:
+    image: adenmin/spring-petclinic-customers-service:${PET_MCR_BUILD}
+    container_name: customers-service
+    mem_limit: 512M
+    volumes:
+      #- ./distr:/data
+      - agent-files:/data
+    environment:
+      - JAVA_TOOL_OPTIONS="-agentpath:/data/agent/libdrill_agent.so=drillInstallationDir=/data/agent,adminAddress=${adminAddress}:8090,agentId=customer-service,groupId=${groupId},buildVersion=${PET_MCR_BUILD},logLevel=${LOG_LEVEL}"
+    depends_on:
+      config-server:
+        condition: service_started
+      discovery-server:
+        condition: service_started
+      agent-files:
+        condition: service_completed_successfully
+    entrypoint: ["./dockerize","-wait=tcp://discovery-server:8761","-timeout=75s","--","java", "org.springframework.boot.loader.JarLauncher"]
+    ports:
+      - 8081:8081
+    networks:
+      - drill4j-dev-network
+
+  visits-service:
+    image: adenmin/spring-petclinic-visits-service:${PET_MCR_BUILD}
+    container_name: visits-service
+    mem_limit: 512M
+    volumes:
+      #- ./distr:/data
+      - agent-files:/data
+    environment:
+      - JAVA_TOOL_OPTIONS="-agentpath:/data/agent/libdrill_agent.so=drillInstallationDir=/data/agent,adminAddress=${adminAddress}:8090,agentId=visits-service,groupId=${groupId},buildVersion=${PET_MCR_BUILD},logLevel=${LOG_LEVEL}"
+    depends_on:
+      config-server:
+        condition: service_started
+      discovery-server:
+        condition: service_started
+      agent-files:
+        condition: service_completed_successfully
+    entrypoint: ["./dockerize","-wait=tcp://discovery-server:8761","-timeout=75s","--","java", "org.springframework.boot.loader.JarLauncher"]
+    ports:
+      - 8082:8082
+    networks:
+      - drill4j-dev-network
+
+  vets-service:
+    image: adenmin/spring-petclinic-vets-service:${PET_MCR_BUILD}
+    container_name: vets-service
+    mem_limit: 512M
+    volumes:
+      #- ./distr:/data
+      - agent-files:/data
+    environment:
+      - JAVA_TOOL_OPTIONS="-agentpath:/data/agent/libdrill_agent.so=drillInstallationDir=/data/agent,adminAddress=${adminAddress}:8090,agentId=vets-service,groupId=${groupId},buildVersion=${PET_MCR_BUILD},logLevel=${LOG_LEVEL}"
+    depends_on:
+      config-server:
+        condition: service_started
+      discovery-server:
+        condition: service_started
+      agent-files:
+        condition: service_completed_successfully
+    entrypoint: ["./dockerize","-wait=tcp://discovery-server:8761","-timeout=75s","--","java", "org.springframework.boot.loader.JarLauncher"]
+    ports:
+      - 8083:8083
+    networks:
+      - drill4j-dev-network
+
+  api-gateway:
+    image: adenmin/spring-petclinic-api-gateway:${PET_MCR_BUILD}
+    container_name: api-gateway
+    mem_limit: 512M
+    volumes:
+      #- ./distr:/data
+      - agent-files:/data
+    environment:
+      - JAVA_TOOL_OPTIONS="-agentpath:/data/agent/libdrill_agent.so=drillInstallationDir=/data/agent,adminAddress=${adminAddress}:8090,agentId=api-gateway,groupId=${groupId},buildVersion=${PET_MCR_BUILD},logLevel=${LOG_LEVEL}"
+    depends_on:
+      config-server:
+        condition: service_started
+      discovery-server:
+        condition: service_started
+      agent-files:
+        condition: service_completed_successfully
+    entrypoint: ["./dockerize","-wait=tcp://discovery-server:8761","-timeout=75s","--","java", "org.springframework.boot.loader.JarLauncher"]
+    ports:
+      - 8080:8080
+    networks:
+      - drill4j-dev-network
+
+  tracing-server:
+    image: openzipkin/zipkin
+    container_name: tracing-server
+    mem_limit: 512M
+    environment:
+      - JAVA_OPTS=-XX:+UnlockExperimentalVMOptions -Djava.security.egd=file:/dev/./urandom
+    ports:
+      - 9411:9411
+    networks:
+      - drill4j-dev-network
+
+  agent-files:
+    image: drill4j/java-agent:${AGENT_VERSION}
+    environment:
+      - AGENT_VERSION=${AGENT_VERSION}
+    volumes:
+      - agent-files:/data
+    networks:
+      - drill4j-dev-network
+
+
+volumes:
+  agent-files:
+
+networks:
+  drill4j-dev-network:

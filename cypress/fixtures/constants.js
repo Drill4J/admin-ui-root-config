@@ -15,4 +15,5 @@
  */
 export const BASE_URL = "http://localhost:9091";
 export const AGENT_NAME = "dev-pet-standalone";
+export const JAVA_GROUP_NAME = "dev-pet-mcr";
 export const TEST_2_CODE_ID = "test2code";

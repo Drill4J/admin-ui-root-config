@@ -18,7 +18,7 @@
 import { AGENT_NAME } from "../../fixtures/constants";
 import { checkSystemMessage, convertUrl } from "../../utils";
 
-context("Register agent flow", () => {
+context("Java agent smoke", () => {
   before(() => {
     cy.task("removeContainers");
     cy.task("startAdmin");
