@@ -70,7 +70,7 @@ module.exports = (on) => {
       await promisifiedExec("docker-compose -f java-agent-example.yml --env-file java-agent-example.env up -d");
       return null;
     },
-    async startPetclinicMcr({ groupId = "dev-pet-mcr", build = "0.1.0" }) {
+    async startPetclinicMicroservice({ groupId = "dev-pet-mcr", build = "0.1.0" }) {
       const data = `
       adminAddress=drill-admin:8090
       PET_MCR_BUILD=${build}
@@ -89,6 +89,11 @@ module.exports = (on) => {
     async startPetclinicAutoTests() {
       await promisifiedExec("docker-compose -f start-petclinic-tests.yml up");
       console.log("petclinic tests container exited");
+      return null;
+    },
+    async startPetclinicMicroserviceAutoTests() {
+      await promisifiedExec("docker-compose -f start-petclinic-microservice-tests.yml up");
+      console.log("petclinic microservice tests container exited");
       return null;
     },
   });

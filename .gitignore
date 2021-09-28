@@ -73,3 +73,4 @@ dist
 .DS_Store
 /src/ui/src/index.css
 /java-agent-example.env
+/java-mcr-agent-example.env

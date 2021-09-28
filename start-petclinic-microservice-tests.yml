@@ -1,0 +1,11 @@
+version: '3'
+
+services:
+  start-petclinic-microservice-tests:
+    image: drill4j/petclinic-microservice-autotests-execute:0.1.0
+    container_name: start-petclinic-microservice-tests
+    environment:
+      - petclinicUrl=http://host.docker.internal:8080
+      - adminHost=host.docker.internal
+      - adminPort=9090
+      - groupId=dev-pet-mcr

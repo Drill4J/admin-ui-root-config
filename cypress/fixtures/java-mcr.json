@@ -1,0 +1,59 @@
+{
+  "id": "dev-pet-mcr",
+  "builds": {
+    "0.1.0": {
+      "summary": {
+        "coverage": "9.9%"
+      },
+      "customer-service": {
+        "coverage": "15.9%"
+      },
+      "visits-service": {
+        "coverage": "42.9%"
+      },
+      "api-gateway": {
+        "coverage": "0%"
+      },
+      "vets-service": {
+        "coverage": "28.4%"
+      }
+    },
+    "0.2.0": {
+      "summary": {
+        "coverage": "2.4%",
+        "initialRisks": "5",
+        "risksAfterRunTests": "4",
+        "initialTestsToRun": "3",
+        "testsToRunAfterRunTests": "2"
+      },
+      "customer-service": {
+        "coverage": "17.3%",
+        "initialRisks": "3",
+        "risksAfterRunTests": "0",
+        "initialTestsToRun": "1",
+        "testsToRunAfterRunTests": "0"
+      },
+      "visits-service": {
+        "coverage": "44.7%",
+        "initialRisks": "1",
+        "risksAfterRunTests": "0",
+        "initialTestsToRun": "1",
+        "testsToRunAfterRunTests": "0"
+      },
+      "api-gateway": {
+        "coverage": "0%",
+        "initialRisks": "0",
+        "risksAfterRunTests": "0",
+        "initialTestsToRun": "0",
+        "testsToRunAfterRunTests": "0"
+      },
+      "vets-service": {
+        "coverage": "0%",
+        "initialRisks": "1",
+        "risksAfterRunTests": "0",
+        "initialTestsToRun": "01",
+        "testsToRunAfterRunTests": "0"
+      }
+    }
+  }
+}
