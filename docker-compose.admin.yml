@@ -3,6 +3,7 @@ version: '3'
 services:
   drill-admin:
     image: drill4j/admin:${BACK_VERSION}
+    container_name: drill-admin
     environment:
       - TEST2CODE_PLUGIN_VERSION=${TEST2CODE_PLUGIN_VERSION}
       - JAVA_TOOL_OPTIONS="-Dplugin.feature.drealtime=true"
@@ -16,6 +17,7 @@ services:
 
   admin-ui:
     image: admin-ui-cypress:latest
+    container_name: admin-ui
     environment:
       - UI_PLUGINS_URLS=test2code#https://cdn.jsdelivr.net/npm/@drill4j/test2code-ui@beta/dist/Drill4J-test-to-code.js
     ports:
@@ -24,6 +26,7 @@ services:
       - drill4j-dev-network
 
   browser-proxy:
+    container_name: browser-proxy
     image: drill4j/browser-proxy:0.2.0
     ports:
       - 7777:7777

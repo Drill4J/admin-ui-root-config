@@ -3,6 +3,7 @@ version: '3'
 services:
   start-petclinic-tests:
     image: drill4j/petclinic-autotests-execute:0.1.0
+    container_name: start-petclinic-tests
     environment:
       - petclinicUrl=http://host.docker.internal:8087
       - adminHost=host.docker.internal
