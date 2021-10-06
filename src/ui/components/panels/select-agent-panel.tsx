@@ -27,6 +27,7 @@ import { AGENT_STATUS, getPagePath } from "common";
 import { Panel } from "./panel";
 import { PanelProps } from "./panel-props";
 import { Cube } from "../cubes";
+import { AgentStatusBadge } from "../agent-status-badge";
 
 export const SelectAgentPanel = ({ isOpen, onClosePanel }: PanelProps) => {
   const agentsList = useAdminConnection<Agent[]>("/api/agents") || [];
@@ -83,10 +84,13 @@ const AgentRow = ({
       {isRegistering
         ? <div tw="flex justify-center items-center"><Spinner /></div>
         : <CubeWrapper tw="ml-2" isActive={isSelectedAgent}>{convertAgentName(name)}</CubeWrapper>}
-      <ColumnWithMargin tw="text-monochrome-medium-tint text-opacity-[inherit]" title={name}>
-        {isRegistering && "Registering: "}
-        {isPreregisteredAgent && "Preregistered "}
-        {name}
+      <ColumnWithMargin tw="flex gap-x-1 items-center text-monochrome-medium-tint text-opacity-[inherit]" title={name}>
+        <AgentStatusBadge status={status} />
+        <span>
+          {isRegistering && "Registering: "}
+          {isPreregisteredAgent && "Preregistered "}
+          {name}
+        </span>
       </ColumnWithMargin>
       <ColumnWithMargin title={description}>{description}</ColumnWithMargin>
       <ColumnWithMargin title={agentType}>{agentType}</ColumnWithMargin>
