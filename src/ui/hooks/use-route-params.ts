@@ -13,8 +13,13 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-export { Panels } from "./panels";
-export {
-  useSetPanelContext, PanelContext, PanelProvider, usePanelContext, SetPanelContext,
-} from "./panel-context";
-export type { PanelsType } from "./panel-context";
+import { matchPath, useLocation } from "react-router-dom";
+import { routes } from "../common";
+
+export const useRouteParams = () => {
+  const { pathname } = useLocation();
+  const { params: { agentId = "", buildVersion = "", groupId = "" } = {} } = matchPath<{
+    agentId?: string; buildVersion?: string; groupId?: string;
+  }>(pathname, { path: [routes.agentPlugin, routes.agentDashboard, routes.serviceGroupDashboard, routes.serviceGroupPlugin] }) || {};
+  return { agentId, buildVersion, groupId };
+};

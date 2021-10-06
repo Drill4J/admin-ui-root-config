@@ -17,12 +17,11 @@ import React from "react";
 import { Button, Icons } from "@drill4j/ui-kit";
 import "twin.macro";
 
-import { PageHeader, Stub, useSetPanelContext } from "components";
+import { PageHeader, useSetPanelContext } from "components";
 import { useAdminConnection } from "hooks";
 import { Agent } from "types/agent";
 import { ServiceGroup } from "types/service-group";
 import { AgentsTable } from "./agents-table";
-import NoAgentsSvg from "./no-agents.svg";
 
 export const AgentsPage = () => {
   const setPanel = useSetPanelContext();
@@ -50,27 +49,7 @@ export const AgentsPage = () => {
         )}
       />
       <div tw="flex flex-row flex-grow flex-wrap m-6">
-        {agentsList.length > 0 ? (
-          <AgentsTable agents={agents} />
-        ) : (
-          <Stub
-            icon={<img src={NoAgentsSvg} alt="" />}
-            title="No agents online at the moment"
-            message={(
-              <>
-                Run your application with Drill4J Agent using&nbsp;
-                <a
-                  tw="text-blue-default"
-                  href="https://drill4j.github.io/how-to-start/"
-                  rel="noopener noreferrer"
-                  target="_blank"
-                >
-                  this guide.
-                </a>
-              </>
-            )}
-          />
-        )}
+        <AgentsTable agents={agents} />
       </div>
     </div>
   );

@@ -18,14 +18,14 @@ import { Tooltip } from "@drill4j/ui-kit";
 import { Link } from "react-router-dom";
 import "twin.macro";
 
-import { useAgentRouteParams } from "hooks/use-agent-route-params";
+import { useRouteParams } from "hooks/use-route-params";
 import { useAgent } from "hooks";
 import { getPagePath } from "common";
 import { convertAgentName } from "utils";
 import { CubeWithTooltip } from "../cubes";
 
 export const SelectedAgent = () => {
-  const { agentId } = useAgentRouteParams();
+  const { agentId } = useRouteParams();
   const { name = "", buildVersion = "" } = useAgent(agentId);
 
   if (!agentId) {

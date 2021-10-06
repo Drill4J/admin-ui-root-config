@@ -22,3 +22,4 @@ export { AgentRegistrationPage } from "./agent-registration-page";
 export { ServiceGroupRegistrationPage } from "./service-group-registration-page";
 export { ServiceGroup } from "./service-group";
 export { Builds } from "./builds";
+export { PageSwitcher } from "./page-switcher";

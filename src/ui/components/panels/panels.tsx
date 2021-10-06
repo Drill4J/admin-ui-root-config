@@ -20,7 +20,7 @@ import { SelectAgentPanel } from "./select-agent-panel";
 import { SettingsPanel } from "./settings";
 import { AddAgentPanel } from "./add-agent-panel";
 import { NotificationsPanel } from "./notifications-panel";
-import { PanelsType, usePanelContext, useSetPanelContext } from "../navigation";
+import { PanelsType, usePanelContext, useSetPanelContext } from "./panel-context";
 import { PanelProps } from "./panel-props";
 
 const panels: Record<PanelsType, ({ isOpen, onClosePanel }: PanelProps) => JSX.Element> = {

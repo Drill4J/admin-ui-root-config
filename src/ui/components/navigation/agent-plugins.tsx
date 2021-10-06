@@ -18,12 +18,12 @@ import { Icons } from "@drill4j/ui-kit";
 import { Link, matchPath, useLocation } from "react-router-dom";
 import "twin.macro";
 
-import { useAgentRouteParams, useAgent } from "hooks";
+import { useRouteParams, useAgent } from "hooks";
 import { getPagePath, routes } from "common";
 import { CubeWithTooltip } from "../cubes";
 
 export const AgentPlugins = () => {
-  const { agentId, buildVersion } = useAgentRouteParams();
+  const { agentId, buildVersion } = useRouteParams();
   const { pathname } = useLocation();
   const { params: { pluginId: selectedPluginId = "" } = {} } = matchPath<{
     pluginId?: string; }>(pathname, { path: routes.agentPlugin }) || {};

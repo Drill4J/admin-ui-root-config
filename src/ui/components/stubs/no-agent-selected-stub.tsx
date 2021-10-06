@@ -14,23 +14,24 @@
  * limitations under the License.
  */
 import React from "react";
-import { Icons } from "@drill4j/ui-kit";
-import { useRouteParams } from "hooks";
-import { CubeWithTooltip } from "../cubes";
-import { usePanelContext, useSetPanelContext } from "../panels";
+import { Button, Stub } from "@drill4j/ui-kit";
+import "twin.macro";
 
-export const SelectAgent = () => {
+import NoAgentsSvg from "./no-agents.svg";
+import { useSetPanelContext } from "../panels";
+
+export const NoAgentSelectedStub = () => {
   const setPanel = useSetPanelContext();
-  const activePanel = usePanelContext();
-  const { groupId, agentId } = useRouteParams();
   return (
-    <CubeWithTooltip
-      tooltip="Select Agent"
-      isActive={activePanel?.type === "SELECT_AGENT"}
-      onClick={() => setPanel({ type: "SELECT_AGENT" })}
-    >
-      {groupId && <Icons.ServiceGroup />}
-      {agentId && <Icons.Agent /> }
-    </CubeWithTooltip>
+    <Stub
+      icon={<img src={NoAgentsSvg} alt="" />}
+      title="No Agent selected"
+      message={(
+        <>
+          Please select the Agent in the navigation bar.
+          <Button primary size="large" tw="mt-12 mx-auto" onClick={() => setPanel({ type: "SELECT_AGENT" })}>Select Agent</Button>
+        </>
+      )}
+    />
   );
 };

@@ -16,7 +16,7 @@
 import React from "react";
 import { Icons } from "@drill4j/ui-kit";
 import { CubeWithTooltip } from "../cubes";
-import { usePanelContext, useSetPanelContext } from "./panel-context";
+import { usePanelContext, useSetPanelContext } from "../panels";
 
 export const Notifications = () => {
   const openModal = useSetPanelContext();

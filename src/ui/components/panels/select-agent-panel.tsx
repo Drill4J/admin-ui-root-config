@@ -19,7 +19,7 @@ import { Badge, Icons, Spinner } from "@drill4j/ui-kit";
 import tw, { styled } from "twin.macro";
 
 import { convertAgentName } from "utils";
-import { useAdminConnection, useAgentRouteParams } from "hooks";
+import { useAdminConnection, useRouteParams } from "hooks";
 import {
   Agent, ServiceGroup,
 } from "types";
@@ -38,6 +38,7 @@ export const SelectAgentPanel = ({ isOpen, onClosePanel }: PanelProps) => {
     group,
     agents: groupsAgents.filter((agent) => group.name === agent.group),
   }));
+
   return (
     <Panel header={<div tw="flex items-center h-21">Select Agent</div>} isOpen={isOpen} onClosePanel={onClosePanel}>
       <div tw="w-[1024px] text-monochrome-medium-tint text-14 leading-20">
@@ -59,7 +60,7 @@ export const SelectAgentPanel = ({ isOpen, onClosePanel }: PanelProps) => {
 const AgentRow = ({
   name = "", description = "", agentType = "", status, id = "", group, buildVersion = "", agentVersion,
 }: Agent) => {
-  const { agentId } = useAgentRouteParams();
+  const { agentId } = useRouteParams();
   const { push } = useHistory();
   const isPreregisteredAgent = agentType === "Java" && !agentVersion;
   const isRegistering = status === AGENT_STATUS.REGISTERING;
@@ -115,7 +116,7 @@ interface GroupRowProps {
 
 const GroupRow = ({ agents = [], group: { id = "", name: groupName = "", description } }: GroupRowProps) => {
   const [isOpen, setIsOpen] = useState(false);
-  const { groupId } = useAgentRouteParams();
+  const { groupId } = useRouteParams();
   const { push } = useHistory();
   const isSelectedGroup = groupId === id;
 
@@ -165,7 +166,7 @@ const GroupRow = ({ agents = [], group: { id = "", name: groupName = "", descrip
 };
 
 const Layout = styled.div`
-  ${tw`grid items-center grid-cols-[28px 44px 3fr 4fr 112px 16px] h-[60px] pl-4 pr-6`}
+  ${tw`grid items-center grid-cols-[28px 44px 3fr 4fr 112px 16px] h-[60px] px-4`}
 `;
 
 const Row = styled(Layout)(({
