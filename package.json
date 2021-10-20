@@ -3,7 +3,7 @@
   "author": "Drill4J",
   "license": "Apache-2.0",
   "description": "Drill4J admin ui root config",
-  "version": "0.1.0-57",
+  "version": "0.1.0-58",
   "scripts": {
     "start": "npm run tailwind:css && webpack serve --port 9000 --env isLocal",
     "lint": "eslint src --ext js,ts,tsx",
