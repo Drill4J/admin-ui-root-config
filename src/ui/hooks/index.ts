@@ -18,3 +18,4 @@ export { useAgent } from "./use-agent";
 export { usePluginUrls } from "./use-plugin-urls";
 export { useRouteParams } from "./use-route-params";
 export { useGroup } from "./use-group";
+export { useSessionStorage } from "./use-session-storage";

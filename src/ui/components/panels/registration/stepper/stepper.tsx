@@ -21,7 +21,8 @@ import "twin.macro";
 
 import { sendNotificationEvent } from "@drill4j/send-notification-event";
 import { useSetPanelContext } from "components";
-import { CancelAgentRegistrationModal } from "../cancel-agent-registration-modal";
+import { useSessionStorage } from "hooks";
+import { Agent } from "types/agent";
 import { StepLabel } from "./step-label";
 import { PanelWithCloseIcon } from "../../panel-with-close-icon";
 
@@ -34,7 +35,7 @@ interface Step {
 interface Props {
   label: React.ReactNode;
   steps: Step[];
-  initialValues?: any;
+  initialValues?: Agent;
   onSubmit: (val: Record<string, unknown>) => Promise<void>;
   isOpen?: any;
   setIsOpen?: any;
@@ -49,7 +50,6 @@ export const Stepper = ({
   setIsOpen,
 }: Props) => {
   const setPanel = useSetPanelContext();
-  const [isCancelModalOpened, setIsCancelModalOpened] = useState(false);
   const [stepNumber, setStepNumber] = useState(0);
   const isLastStep = steps.length - 1;
   const currentValidationSchema = steps[stepNumber].validationSchema;
@@ -71,109 +71,103 @@ export const Stepper = ({
 
   if (!initialValues) return null;
 
+  const [state, setState] = useSessionStorage(initialValues?.id || "preregistered", initialValues);
+  const returnToList = async (values: Agent) => {
+    await setState(values);
+    setPanel({ type: "ADD_AGENT" });
+  };
+
   return (
-    <>
-      <Formik
-        initialValues={initialValues}
-        onSubmit={(values: any) => {
-          try {
-            onSubmit(values);
-            setPanel({ type: "SELECT_AGENT" });
-          } catch (e) {
-            sendNotificationEvent({
-              type: "ERROR",
-              text: "On-submit error. Server problem or operation could not be processed in real-time.",
-            });
-          }
-        }}
-        validate={currentValidationSchema}
-        validateOnMount
-      >
-        {({ isValid, setFieldValue }) => (
-          <Form autoComplete="off">
-            <PanelWithCloseIcon
-              header={(
-                <div tw="space-y-8 pt-6 pb-4 w-[976px]">
-                  <div tw="flex justify-between">
-                    {label}
-                    <Button secondary size="large" type="button" onClick={() => setIsCancelModalOpened(true)}>
-                      Return to List
-                    </Button>
-                  </div>
-                  <div tw="flex justify-center gap-6">
-                    {steps.map(({ stepLabel }, index) => (
-                      <div onClick={() => {
-                        isValid && goTo(index);
-                        setFieldValue("disableFocus", true);
-                      }}
-                      >
-                        <StepLabel
-                          key={stepLabel}
-                          isActive={index === stepNumber}
-                          isCompleted={index < stepNumber}
-                          stepNumber={index + 1}
-                          stepLabel={stepLabel}
-                        />
-                      </div>
-                    ))}
-                  </div>
+    <Formik
+      initialValues={state}
+      onSubmit={(values: any) => {
+        try {
+          onSubmit(values);
+          setPanel({ type: "SELECT_AGENT" });
+        } catch (e) {
+          sendNotificationEvent({
+            type: "ERROR",
+            text: "On-submit error. Server problem or operation could not be processed in real-time.",
+          });
+        }
+      }}
+      validate={currentValidationSchema as any}
+      validateOnMount
+    >
+      {({ isValid, values }) => (
+        <Form autoComplete="off">
+          <PanelWithCloseIcon
+            header={(
+              <div tw="space-y-8 pt-6 pb-4 w-[976px]">
+                <div tw="flex justify-between">
+                  {label}
+                  <Button secondary size="large" type="button" onClick={() => returnToList(values)}>
+                    Return to List
+                  </Button>
                 </div>
-              )}
-              footer={(
-                <div tw="flex gap-4 items-center justify-center w-full h-full">
-                  {stepNumber > 0 && (
-                    <Button
-                      secondary
-                      size="large"
-                      type="button"
-                      onClick={goToPrevStep}
-                      disabled={!isValid}
-                    >
-                      <Icons.Expander width={7} height={12} rotate={180} />
-                      Back
-                    </Button>
-                  )}
-                  {stepNumber === isLastStep ? (
-                    <Button
-                      primary
-                      key="finish"
-                      size="large"
-                      data-test="wizard:finishng-button"
-                      type="submit"
-                    >
-                      Finish
-                    </Button>
-                  ) : (
-                    <Button
-                      primary
-                      key="next"
-                      size="large"
-                      type="button"
-                      onClick={goToNextStep}
-                      disabled={!isValid}
-                    >
-                      Next
-                      <Icons.Expander width={7} height={12} />
-                    </Button>
-                  )}
+                <div tw="flex justify-center gap-6">
+                  {steps.map(({ stepLabel }, index) => (
+                    <div onClick={() => isValid && goTo(index)}>
+                      <StepLabel
+                        key={stepLabel}
+                        isActive={index === stepNumber}
+                        isCompleted={index < stepNumber}
+                        stepNumber={index + 1}
+                        stepLabel={stepLabel}
+                      />
+                    </div>
+                  ))}
                 </div>
-              )}
-              isOpen={isOpen}
-              onClosePanel={() => setIsOpen(false)}
-            >
-              <div tw="flex w-full h-full py-16 justify-center">
-                {currentStep}
               </div>
-            </PanelWithCloseIcon>
-          </Form>
-        )}
-      </Formik>
-      {isCancelModalOpened && (
-        <CancelAgentRegistrationModal
-          isOpen={isCancelModalOpened}
-          onToggle={setIsCancelModalOpened}
-        />
+            )}
+            footer={(
+              <div tw="flex gap-4 items-center justify-center w-full h-full">
+                {stepNumber > 0 && (
+                  <Button
+                    secondary
+                    size="large"
+                    type="button"
+                    onClick={goToPrevStep}
+                    disabled={!isValid}
+                  >
+                    <Icons.Expander width={7} height={12} rotate={180} />
+                    Back
+                  </Button>
+                )}
+                {stepNumber === isLastStep ? (
+                  <Button
+                    primary
+                    key="finish"
+                    size="large"
+                    data-test="wizard:finishng-button"
+                    type="submit"
+                  >
+                    Finish
+                  </Button>
+                ) : (
+                  <Button
+                    primary
+                    key="next"
+                    size="large"
+                    type="button"
+                    onClick={goToNextStep}
+                    disabled={!isValid}
+                  >
+                    Next
+                    <Icons.Expander width={7} height={12} />
+                  </Button>
+                )}
+              </div>
+            )}
+            isOpen={isOpen}
+            onClosePanel={() => setIsOpen(false)}
+          >
+            <div tw="flex w-full h-full py-16 justify-center">
+              {currentStep}
+            </div>
+          </PanelWithCloseIcon>
+        </Form>
       )}
-    </>
+    </Formik>
   );
 };

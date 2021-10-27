@@ -103,4 +103,5 @@ async function preregisterOfflineAgent({
       packages: parsePackages(systemSettings?.packages as unknown as string).filter(Boolean),
     },
   });
+  sessionStorage.removeItem("preregistered");
 }
