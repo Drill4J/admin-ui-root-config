@@ -49,7 +49,7 @@ export const PluginListEntry = ({
       <PluginElements selected={field?.checked}>
         {field && <Checkbox field={field} />}
         <PluginsIconWrapper selected={field?.checked}>
-          <PluginIcon />
+          <PluginIcon viewBox="0 0 24 24" />
         </PluginsIconWrapper>
         <div>
           {children}

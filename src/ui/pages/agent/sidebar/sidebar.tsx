@@ -46,7 +46,7 @@ export const Sidebar = ({ links }: Props) => {
           <Tooltip message={<div>{name}</div>} position="right" key={id}>
             <ReactRouterLink to={path} data-test={`sidebar:link:${name}`}>
               <SidebarLink isActive={id === "dashboard" ? !pathname.match("dashboard\\/\\w") : pathname.includes(path)}>
-                <Icon />
+                <Icon viewBox={name === "Test2Code" ? "0 0 24 24" : "0 0 32 32"} />
               </SidebarLink>
             </ReactRouterLink>
           </Tooltip>
