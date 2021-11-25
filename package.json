@@ -88,7 +88,8 @@
     "webpack-config-single-spa-react-ts": "^3.0.0",
     "webpack-config-single-spa-ts": "^3.0.0",
     "webpack-dev-server": "^4.0.0-beta.0",
-    "webpack-merge": "^5.5.0"
+    "webpack-merge": "^5.5.0",
+    "babel-plugin-styled-components": "1.13.3"
   },
   "dependencies": {
     "@drill4j/common-hooks": "1.0.5",
