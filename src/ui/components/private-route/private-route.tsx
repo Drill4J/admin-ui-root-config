@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 import React from "react";
-import { RouteProps, Route, Redirect } from "react-router-dom";
+import { RouteProps, Route, Redirect } from "@drill4j/ui-kit";
 
 import { TOKEN_KEY } from "common/constants";
 

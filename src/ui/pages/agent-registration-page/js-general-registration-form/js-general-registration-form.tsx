@@ -16,10 +16,10 @@
 import React from "react";
 import {
   Field, FormGroup, GeneralAlerts, Fields,
+  useParams,
 } from "@drill4j/ui-kit";
 
 import { styled } from "twin.macro";
-import { useParams } from "react-router-dom";
 
 const Content = styled.div`height: calc(100vh - 270px);`;
 

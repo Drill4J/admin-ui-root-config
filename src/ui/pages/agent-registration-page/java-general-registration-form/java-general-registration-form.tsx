@@ -16,8 +16,8 @@
 import React from "react";
 import {
   Field, FormGroup, GeneralAlerts, Fields,
+  useParams,
 } from "@drill4j/ui-kit";
-import { useParams } from "react-router-dom";
 
 import { styled } from "twin.macro";
 

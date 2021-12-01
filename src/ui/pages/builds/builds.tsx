@@ -15,8 +15,10 @@
  */
 import React from "react";
 
-import { Link, useParams } from "react-router-dom";
-import { Table, Typography, dateTimeFormatter } from "@drill4j/ui-kit";
+import {
+  Link, useParams, Table, Typography, dateTimeFormatter,
+} from "@drill4j/ui-kit";
+
 import { BuildVersion } from "@drill4j/types-admin";
 import tw, { styled } from "twin.macro";
 

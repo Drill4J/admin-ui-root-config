@@ -15,7 +15,7 @@
  */
 import React, { useEffect } from "react";
 import { getAppNames, registerApplication, unregisterApplication } from "single-spa";
-import { useHistory, useParams } from "react-router-dom";
+import { useHistory, useParams } from "@drill4j/ui-kit";
 import { sendNotificationEvent } from "@drill4j/send-notification-event";
 import "twin.macro";
 

@@ -14,8 +14,9 @@
  * limitations under the License.
  */
 import React from "react";
-import { useHistory, Link, useLocation } from "react-router-dom";
-import { Icons } from "@drill4j/ui-kit";
+import {
+  useHistory, Link, useLocation, Icons, useQueryParams,
+} from "@drill4j/ui-kit";
 import tw, { styled } from "twin.macro";
 
 import { TOKEN_KEY } from "common/constants";
@@ -23,7 +24,6 @@ import { Notification } from "types/notificaiton";
 import { useAdminConnection } from "hooks";
 import { getPagePath } from "common";
 import { Breadcrumbs } from "modules";
-import { useQueryParams } from "@drill4j/common-hooks";
 import { NotificationsSidebar } from "./notifications-sidebar";
 
 const NOTIFICATION_SIDEBAR = "NOTIFICATION_SIDEBAR";

@@ -16,12 +16,13 @@
 import singleSpaReact from "single-spa-react";
 import React, { useEffect } from "react";
 import ReactDOM from "react-dom";
-import { BrowserRouter, Link } from "react-router-dom";
+import {
+  BrowserRouter, Link, Icons, Stub,
+} from "@drill4j/ui-kit";
 import {
   Application, getAppNames, registerApplication, unregisterApplication,
 } from "single-spa";
 import { css } from "twin.macro";
-import { Icons, Stub } from "@drill4j/ui-kit";
 
 import { useAdminConnection, usePluginUrls } from "hooks";
 import { Plugin } from "types";

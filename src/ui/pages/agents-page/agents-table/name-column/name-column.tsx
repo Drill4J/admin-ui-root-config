@@ -14,8 +14,10 @@
  * limitations under the License.
  */
 import React from "react";
-import { Link } from "react-router-dom";
-import { Icons, Badge, Tooltip } from "@drill4j/ui-kit";
+import {
+  Link, Icons, Badge, Tooltip,
+} from "@drill4j/ui-kit";
+
 import tw, { styled } from "twin.macro";
 
 import { AGENT_STATUS } from "common/constants";
