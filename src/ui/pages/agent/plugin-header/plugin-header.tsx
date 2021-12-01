@@ -14,10 +14,11 @@
  * limitations under the License.
  */
 import React from "react";
-import { useHistory, matchPath, Link } from "react-router-dom";
 import {
+  useHistory, matchPath, Link,
   Spinner, Icons, capitalize, snakeToSpaces,
 } from "@drill4j/ui-kit";
+
 import tw, { styled, css } from "twin.macro";
 
 import { AGENT_STATUS } from "common/constants";

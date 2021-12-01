@@ -14,8 +14,10 @@
  * limitations under the License.
  */
 import React, { useState } from "react";
-import { Modal, Button, Spinner } from "@drill4j/ui-kit";
-import { matchPath, useLocation } from "react-router-dom";
+import {
+  Modal, Button, Spinner, matchPath, useLocation,
+} from "@drill4j/ui-kit";
+
 import { useCloseModal } from "@drill4j/common-hooks";
 import tw, { styled } from "twin.macro";
 

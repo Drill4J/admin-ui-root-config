@@ -16,8 +16,8 @@
 import React, { useState } from "react";
 import {
   matchPath, Route, useLocation, Link,
-} from "react-router-dom";
-import { Icons, Button, GeneralAlerts } from "@drill4j/ui-kit";
+  Icons, Button, GeneralAlerts,
+} from "@drill4j/ui-kit";
 import "twin.macro";
 
 import { PluginListEntry, Stub } from "components";

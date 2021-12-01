@@ -16,8 +16,8 @@
 import React from "react";
 import {
   Switch, Route, matchPath, useLocation, Link,
-} from "react-router-dom";
-import { Icons, Tab } from "@drill4j/ui-kit";
+  Icons, Tab,
+} from "@drill4j/ui-kit";
 import "twin.macro";
 
 import { PageHeader } from "components";

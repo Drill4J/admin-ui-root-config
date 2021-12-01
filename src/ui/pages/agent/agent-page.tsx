@@ -16,8 +16,8 @@
 import React, { useEffect } from "react";
 import {
   Route, Switch, useParams,
-} from "react-router-dom";
-import { Icons } from "@drill4j/ui-kit";
+  Icons,
+} from "@drill4j/ui-kit";
 import axios from "axios";
 import "twin.macro";
 

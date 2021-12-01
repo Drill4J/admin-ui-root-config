@@ -15,8 +15,10 @@
  */
 import React, { useState } from "react";
 import { nanoid } from "nanoid";
-import { Icons, Modal, GeneralAlerts } from "@drill4j/ui-kit";
-import { useHistory } from "react-router-dom";
+import {
+  Icons, Modal, GeneralAlerts, useHistory,
+} from "@drill4j/ui-kit";
+
 import { useCloseModal } from "@drill4j/common-hooks";
 import tw, { styled } from "twin.macro";
 

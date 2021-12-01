@@ -14,8 +14,9 @@
  * limitations under the License.
  */
 import React from "react";
-import { Popup, Button, useFormikContext } from "@drill4j/ui-kit";
-import { Prompt, useHistory } from "react-router-dom";
+import {
+  Popup, Button, useFormikContext, Prompt, useHistory,
+} from "@drill4j/ui-kit";
 
 import "twin.macro";
 

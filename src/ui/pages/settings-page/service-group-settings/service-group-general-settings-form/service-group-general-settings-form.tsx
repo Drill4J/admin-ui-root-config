@@ -14,14 +14,13 @@
  * limitations under the License.
  */
 import React from "react";
-import { matchPath, useLocation } from "react-router-dom";
-import axios from "axios";
 import {
-  Formik, Field, Form,
-
+  matchPath, useLocation, Formik, Field, Form,
   Button, FormGroup, GeneralAlerts, Spinner, composeValidators, Fields, required, sizeLimit,
   formatPackages,
 } from "@drill4j/ui-kit";
+import axios from "axios";
+
 import { sendNotificationEvent } from "@drill4j/send-notification-event";
 
 import "twin.macro";

@@ -16,13 +16,14 @@
 import React, {
   useEffect, useRef, useState,
 } from "react";
-import { useParams, useHistory } from "react-router-dom";
-import axios from "axios";
 import {
+  useParams, useHistory,
   Icons, Button, GeneralAlerts, requiredArray,
   composeValidators, required, sizeLimit, toError, FormValidator,
   parsePackages, getPropertyByPath,
 } from "@drill4j/ui-kit";
+import axios from "axios";
+
 import "twin.macro";
 
 import {

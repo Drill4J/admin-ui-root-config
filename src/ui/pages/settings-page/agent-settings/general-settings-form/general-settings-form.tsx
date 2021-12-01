@@ -15,12 +15,13 @@
  */
 import React from "react";
 import axios from "axios";
-import { matchPath, useLocation } from "react-router-dom";
 import {
+  matchPath, useLocation,
   Formik, Field, Form,
 
   Button, FormGroup, GeneralAlerts, Spinner, composeValidators, Fields, required, sizeLimit,
 } from "@drill4j/ui-kit";
+
 import { sendNotificationEvent } from "@drill4j/send-notification-event";
 
 import "twin.macro";
