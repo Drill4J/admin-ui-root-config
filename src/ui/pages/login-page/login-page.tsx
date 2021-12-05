@@ -90,10 +90,11 @@ export const LoginPage = () => {
             Forgot your password?
           </div>
           <Button
-            tw="flex justify-center w-88 mt-10 "
+            tw="flex justify-center w-88 mt-10"
             secondary
             size="large"
             onClick={handleLogin}
+            data-test="login-button:continue-as-guest"
           >
             Continue as a guest (with admin rights)
           </Button>
