@@ -15,10 +15,9 @@
  */
 import React, { useState } from "react";
 import {
-  Modal, Button, Spinner, matchPath, useLocation,
+  Modal, Button, Spinner, matchPath, useLocation, useCloseModal,
 } from "@drill4j/ui-kit";
 
-import { useCloseModal } from "@drill4j/common-hooks";
 import tw, { styled } from "twin.macro";
 
 import { Plugin } from "types/plugin";
