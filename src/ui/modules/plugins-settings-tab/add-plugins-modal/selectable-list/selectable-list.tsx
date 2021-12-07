@@ -58,7 +58,7 @@ export const SelectableList = ({ plugins, handleSelect, selectedRows }: Props) =
             />
           )}
           <PluginsIcon selected={selectedRows.includes(id)}>
-            <Icons.Test2Code />
+            <Icons.Test2Code viewBox="0 0 24 24" />
           </PluginsIcon>
           <div tw="flex flex-col items-start">
             <div tw="flex items-center w-full gap-x-2">
