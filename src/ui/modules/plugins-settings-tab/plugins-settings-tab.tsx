@@ -15,8 +15,8 @@
  */
 import React, { useState } from "react";
 import {
-  matchPath, Route, useLocation, Link,
-  Icons, Button, GeneralAlerts,
+  matchPath, useLocation, Link,
+  Icons, Button, GeneralAlerts, useQueryParams,
 } from "@drill4j/ui-kit";
 import "twin.macro";
 
@@ -31,7 +31,10 @@ interface Props {
   agent: Agent;
 }
 
+const ADD_PLUGIN_MODAL = "ADD_PLUGIN_MODAL";
+
 export const PluginsSettingsTab = ({ agent: { buildVersion = "" } }: Props) => {
+  const { activeModal } = useQueryParams<{ activeModal?: string; }>();
   const { pathname } = useLocation();
   const { params: { agentId = "", groupId = "" } = {} } = matchPath<{ agentId?: string; groupId?: string; }>(pathname, {
     path: [routes.agentPluginsSettings, routes.serviceGroupPluginsSettings],
@@ -52,7 +55,7 @@ export const PluginsSettingsTab = ({ agent: { buildVersion = "" } }: Props) => {
           <span tw="ml-2 font-regular text-monochrome-default">{installedPlugins.length}</span>
         </span>
         <Link
-          to={`${pathname}/add-plugin-modal`}
+          to={`${pathname}?activeModal=${ADD_PLUGIN_MODAL}`}
           data-test={`${agentId ? "agent" : "service-group"}-info-page:add-plugin-button`}
         >
           <Button
@@ -95,16 +98,13 @@ export const PluginsSettingsTab = ({ agent: { buildVersion = "" } }: Props) => {
           />
         )}
       </div>
-      <Route
-        path="*/add-plugin-modal"
-        render={() => (
-          <AddPluginsModal
-            plugins={plugins}
-            selectedPlugins={selectedPlugins}
-            setSelectedPlugins={setSelectedPlugins}
-          />
-        )}
-      />
+      {activeModal === ADD_PLUGIN_MODAL && (
+        <AddPluginsModal
+          plugins={plugins}
+          selectedPlugins={selectedPlugins}
+          setSelectedPlugins={setSelectedPlugins}
+        />
+      )}
     </div>
   );
 };
