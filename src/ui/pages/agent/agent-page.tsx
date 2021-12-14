@@ -14,10 +14,8 @@
  * limitations under the License.
  */
 import React, { useEffect } from "react";
-import {
-  Route, Switch, useParams,
-  Icons,
-} from "@drill4j/ui-kit";
+import { Icons } from "@drill4j/ui-kit";
+import { Route, Switch, useParams } from "react-router-dom";
 import axios from "axios";
 import "twin.macro";
 

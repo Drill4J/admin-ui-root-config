@@ -13,7 +13,7 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-import { useParams } from "@drill4j/ui-kit";
+import { useParams } from "react-router-dom";
 
 import { Agent } from "types/agent";
 import { useAdminConnection } from "./use-admin-connection";

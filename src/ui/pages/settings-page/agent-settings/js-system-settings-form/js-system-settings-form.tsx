@@ -16,11 +16,10 @@
 import React from "react";
 import axios from "axios";
 import {
-  matchPath, useLocation,
   Formik, Field, Form,
   Button, GeneralAlerts, Icons, Spinner, Tooltip, composeValidators, Fields, required,
 } from "@drill4j/ui-kit";
-
+import { matchPath, useLocation } from "react-router-dom";
 import { sendNotificationEvent } from "@drill4j/send-notification-event";
 
 import "twin.macro";

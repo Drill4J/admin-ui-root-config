@@ -15,9 +15,9 @@
  */
 import React from "react";
 import {
-  Popup, Button, useFormikContext, Prompt, useHistory,
+  Popup, Button, useFormikContext,
 } from "@drill4j/ui-kit";
-
+import { Prompt, useHistory } from "react-router-dom";
 import "twin.macro";
 
 export const UnSaveChangeModal = () => {

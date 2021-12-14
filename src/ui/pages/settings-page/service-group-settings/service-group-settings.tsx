@@ -14,10 +14,10 @@
  * limitations under the License.
  */
 import React from "react";
+import { Icons, Tab } from "@drill4j/ui-kit";
 import {
   Switch, Route, matchPath, useLocation, Link,
-  Icons, Tab,
-} from "@drill4j/ui-kit";
+} from "react-router-dom";
 import "twin.macro";
 
 import { PageHeader } from "components";

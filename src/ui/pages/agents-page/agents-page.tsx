@@ -14,7 +14,8 @@
  * limitations under the License.
  */
 import React from "react";
-import { Button, Icons, Link } from "@drill4j/ui-kit";
+import { Button, Icons } from "@drill4j/ui-kit";
+import { Link } from "react-router-dom";
 
 import "twin.macro";
 

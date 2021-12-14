@@ -15,9 +15,9 @@
  */
 import React from "react";
 import {
-  useHistory, matchPath, Link,
   Spinner, Icons, capitalize, snakeToSpaces,
 } from "@drill4j/ui-kit";
+import { useHistory, matchPath, Link } from "react-router-dom";
 
 import tw, { styled, css } from "twin.macro";
 

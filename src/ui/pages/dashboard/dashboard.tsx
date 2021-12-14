@@ -16,9 +16,8 @@
 import singleSpaReact from "single-spa-react";
 import React, { useEffect } from "react";
 import ReactDOM from "react-dom";
-import {
-  BrowserRouter, Link, Icons, Stub,
-} from "@drill4j/ui-kit";
+import { Icons, Stub } from "@drill4j/ui-kit";
+import { BrowserRouter, Link } from "react-router-dom";
 import {
   Application, getAppNames, registerApplication, unregisterApplication,
 } from "single-spa";

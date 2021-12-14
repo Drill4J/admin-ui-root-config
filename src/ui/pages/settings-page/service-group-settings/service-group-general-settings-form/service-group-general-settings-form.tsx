@@ -15,10 +15,11 @@
  */
 import React from "react";
 import {
-  matchPath, useLocation, Formik, Field, Form,
+  Formik, Field, Form,
   Button, FormGroup, GeneralAlerts, Spinner, composeValidators, Fields, required, sizeLimit,
   formatPackages,
 } from "@drill4j/ui-kit";
+import { matchPath, useLocation } from "react-router-dom";
 import axios from "axios";
 
 import { sendNotificationEvent } from "@drill4j/send-notification-event";

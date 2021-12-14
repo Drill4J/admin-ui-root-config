@@ -14,9 +14,8 @@
  * limitations under the License.
  */
 import React from "react";
-import {
-  useHistory, Link, useLocation, Icons, useQueryParams,
-} from "@drill4j/ui-kit";
+import { Icons, useQueryParams } from "@drill4j/ui-kit";
+import { useHistory, Link, useLocation } from "react-router-dom";
 import tw, { styled } from "twin.macro";
 
 import { TOKEN_KEY } from "common/constants";

@@ -16,7 +16,7 @@
 import React from "react";
 import {
   BrowserRouter, Redirect, Route, Switch,
-} from "@drill4j/ui-kit";
+} from "react-router-dom";
 
 import {
   LoginPage, AgentsPage, AgentPage,

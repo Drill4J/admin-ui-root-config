@@ -14,8 +14,8 @@
  * limitations under the License.
  */
 import React from "react";
-import { useParams, Link, Icons } from "@drill4j/ui-kit";
-
+import { Icons } from "@drill4j/ui-kit";
+import { useParams, Link } from "react-router-dom";
 import "twin.macro";
 
 import { getPagePath } from "common";
