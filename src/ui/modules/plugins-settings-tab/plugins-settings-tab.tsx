@@ -15,9 +15,9 @@
  */
 import React, { useState } from "react";
 import {
-  matchPath, useLocation, Link,
   Icons, Button, GeneralAlerts, useQueryParams,
 } from "@drill4j/ui-kit";
+import { matchPath, useLocation, Link } from "react-router-dom";
 import "twin.macro";
 
 import { PluginListEntry, Stub } from "components";

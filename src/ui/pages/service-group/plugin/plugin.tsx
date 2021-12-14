@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 import React, { useEffect } from "react";
-import { useParams } from "@drill4j/ui-kit";
+import { useParams } from "react-router-dom";
 import { sendNotificationEvent } from "@drill4j/send-notification-event";
 import "twin.macro";
 

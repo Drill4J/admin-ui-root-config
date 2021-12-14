@@ -14,7 +14,8 @@
  * limitations under the License.
  */
 import React from "react";
-import { useHistory, Button, Popup } from "@drill4j/ui-kit";
+import { Button, Popup } from "@drill4j/ui-kit";
+import { useHistory } from "react-router-dom";
 
 import "twin.macro";
 

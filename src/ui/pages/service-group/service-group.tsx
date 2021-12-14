@@ -15,10 +15,8 @@
  */
 import React from "react";
 import "twin.macro";
-import {
-  useParams, Route, Switch,
-  Icons,
-} from "@drill4j/ui-kit";
+import { Icons } from "@drill4j/ui-kit";
+import { useParams, Route, Switch } from "react-router-dom";
 
 import { PluginsLayout } from "layouts";
 import { Plugin as PluginType } from "types/plugin";

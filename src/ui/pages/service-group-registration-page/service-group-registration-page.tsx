@@ -17,10 +17,10 @@ import React, {
   useEffect, useRef, useState,
 } from "react";
 import {
-  useParams, useHistory,
   Icons, Button, GeneralAlerts,
   composeValidators, required, requiredArray, sizeLimit, parsePackages,
 } from "@drill4j/ui-kit";
+import { useParams, useHistory } from "react-router-dom";
 import axios from "axios";
 
 import "twin.macro";

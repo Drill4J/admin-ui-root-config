@@ -15,7 +15,7 @@
  */
 import { routes } from "common";
 import React from "react";
-import { Switch, Route } from "@drill4j/ui-kit";
+import { Switch, Route } from "react-router-dom";
 import { AgentSettings } from "./agent-settings";
 import { ServiceGroupSettings } from "./service-group-settings";
 

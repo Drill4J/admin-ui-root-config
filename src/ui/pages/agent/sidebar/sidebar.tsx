@@ -14,10 +14,8 @@
  * limitations under the License.
  */
 import React from "react";
-import {
-  Icons, Tooltip,
-  useLocation, Link as ReactRouterLink,
-} from "@drill4j/ui-kit";
+import { Icons, Tooltip } from "@drill4j/ui-kit";
+import { useLocation, Link as ReactRouterLink } from "react-router-dom";
 import "twin.macro";
 
 import { SidebarLink } from "components";

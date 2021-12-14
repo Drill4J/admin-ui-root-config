@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 import React, { useEffect, useState } from "react";
-import { Link, matchPath } from "@drill4j/ui-kit";
+import { Link, matchPath } from "react-router-dom";
 import tw, { styled } from "twin.macro";
 
 import { routes } from "common";

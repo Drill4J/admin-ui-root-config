@@ -16,7 +16,7 @@
 import React from "react";
 import {
   useLocation, matchPath, Link,
-} from "@drill4j/ui-kit";
+} from "react-router-dom";
 import tw, { styled } from "twin.macro";
 
 import { routes } from "common";

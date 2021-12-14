@@ -14,9 +14,8 @@
  * limitations under the License.
  */
 import React, { useLayoutEffect, useState } from "react";
-import {
-  useHistory, Inputs, Button, GeneralAlerts,
-} from "@drill4j/ui-kit";
+import { Inputs, Button, GeneralAlerts } from "@drill4j/ui-kit";
+import { useHistory } from "react-router-dom";
 import axios from "axios";
 
 import tw, { styled } from "twin.macro";
