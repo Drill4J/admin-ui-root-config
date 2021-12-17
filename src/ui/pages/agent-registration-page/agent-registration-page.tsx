@@ -14,6 +14,7 @@
 * limitations under the License.
 */
 import React, {
+  FC,
   useEffect, useRef, useState,
 } from "react";
 import {
@@ -36,6 +37,7 @@ import { getPagePath } from "common";
 import { JavaGeneralRegistrationForm } from "./java-general-registration-form";
 import { JsGeneralRegistrationForm } from "./js-general-registration-form";
 import { JsSystemRegistrationForm } from "./js-system-registration-form";
+import { DotNetSystemRegistrationForm } from "./dotnet-system-registration-form";
 
 interface Props {
   isOfflineAgent?: boolean;
@@ -115,9 +117,9 @@ export const AgentRegistrationPage = ({ isOfflineAgent }: Props) => {
         />
         <Step
           name="System settings"
-          component={agent.agentType === "Node.js" ? JsSystemRegistrationForm : SystemSettingsStep}
-          validate={agent.agentType === "Node.js"
-            ? composeValidators(!agent.group && required("systemSettings.targetHost", "Target Host"))
+          component={getSystemFormComponent(agent.agentType)}
+          validate={agent.agentType === "Node.js" || agent.agentType === ".NET"
+            ? composeValidators(!agent.group && agent.agentType !== ".NET" && required("systemSettings.targetHost", "Target Host"))
             : composeValidators(
               requiredArray("systemSettings.packages", "Path prefix is required."),
               sizeLimit({
@@ -155,6 +157,12 @@ export const AgentRegistrationPage = ({ isOfflineAgent }: Props) => {
     </div>
   );
 };
+
+function getSystemFormComponent(type? : string): FC {
+  if (type === "Node.js") return JsSystemRegistrationForm;
+  if (type === ".NET") return DotNetSystemRegistrationForm;
+  return SystemSettingsStep;
+}
 
 async function preregisterOfflineAgent({
   id,
