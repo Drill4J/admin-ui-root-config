@@ -15,7 +15,9 @@
  */
 import React from "react";
 
-import { Table, Typography, dateTimeFormatter } from "@drill4j/ui-kit";
+import {
+  Table, Typography, dateTimeFormatter, Cells, Stub, Icons,
+} from "@drill4j/ui-kit";
 import { Link, useParams } from "react-router-dom";
 
 import { BuildVersion } from "@drill4j/types-admin";
@@ -26,21 +28,43 @@ import { getPagePath } from "common";
 
 export const Builds = () => {
   const { agentId = "" } = useParams<{agentId?: string;}>();
-  const buildVersions = useAdminConnection<BuildVersion[]>(`/agents/${agentId}/builds`) || [];
+  const builds = useAdminConnection<BuildVersion[]>(`/agents/${agentId}/builds`) || [];
 
   return (
-    <div tw="mx-6">
-      <div>
-        <div tw="flex items-center gap-x-2 w-full my-6 font-light text-24 leading-32 text-monochrome-black">
-          <span>All builds </span>
-          <span tw="text-monochrome-default">{buildVersions.length}</span>
-        </div>
+    <div>
+      <div tw="py-8 px-6 space-x-2 text-24 leading-32 border-b border-monochrome-medium-tint">
+        <span>All Builds</span>
+        <span tw="text-monochrome-default font-light">
+          {builds.length}
+        </span>
+      </div>
+      <div tw="px-6">
         <Table
+          defaultSortBy={[{
+            id: "detectedAt",
+            desc: false,
+          }]}
+          renderHeader={({ currentCount, totalCount }) => (
+            <div tw="flex justify-between text-monochrome-default text-14 leading-24 pt-9 pb-3">
+              <div tw="font-bold uppercase">Builds list</div>
+              <div>{`Displaying ${currentCount} of ${totalCount} builds`}</div>
+            </div>
+          )}
+          stub={(
+            <Stub
+              icon={<Icons.BuildList height={104} width={107} />}
+              title="No results found"
+              message="Try adjusting your search or filter to find what you are looking for."
+            />
+          )}
           columns={[
             {
               Header: "Name",
               accessor: "buildVersion",
-              Cell: ({ value: buildVersion }: any) => (
+              filterable: true,
+              isCustomCell: true,
+              width: "60%",
+              Cell: ({ value: buildVersion, state }: any) => (
                 <NameCell title={buildVersion}>
                   <Link
                     tw="link text-ellipsis"
@@ -48,7 +72,7 @@ export const Builds = () => {
                     data-test="builds-table:buildVersion"
                   >
                     <Typography.MiddleEllipsis>
-                      <span>{buildVersion}</span>
+                      <Cells.Highlight text={buildVersion} searchWords={state.filters.map((filter: {value: string}) => filter.value)} />
                     </Typography.MiddleEllipsis>
                   </Link>
                 </NameCell>
@@ -60,9 +84,10 @@ export const Builds = () => {
               accessor: "detectedAt",
               Cell: ({ value }: any) => <span>{dateTimeFormatter(value)}</span>,
               textAlign: "left",
+              width: "40%",
             },
           ]}
-          data={buildVersions}
+          data={builds}
         />
       </div>
     </div>
