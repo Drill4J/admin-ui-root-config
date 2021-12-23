@@ -78,7 +78,6 @@ export const Builds = () => {
                 </NameCell>
               ),
               textAlign: "left",
-              sortType: "number",
             },
             {
               Header: "Added",
