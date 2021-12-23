@@ -78,6 +78,7 @@ export const Builds = () => {
                 </NameCell>
               ),
               textAlign: "left",
+              sortType: "number",
             },
             {
               Header: "Added",
@@ -85,6 +86,7 @@ export const Builds = () => {
               Cell: ({ value }: any) => <span>{dateTimeFormatter(value)}</span>,
               textAlign: "left",
               width: "40%",
+              sortType: "number",
             },
           ]}
           data={builds}
