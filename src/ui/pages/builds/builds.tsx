@@ -21,22 +21,33 @@ import {
 import { Link, useParams } from "react-router-dom";
 
 import { BuildVersion } from "@drill4j/types-admin";
-import tw, { styled } from "twin.macro";
+import tw, { styled, css } from "twin.macro";
 
-import { useAdminConnection } from "hooks";
-import { getPagePath } from "common";
+import { useAdminConnection, useAgent } from "hooks";
+import { AGENT_STATUS, getPagePath } from "common";
 
 export const Builds = () => {
   const { agentId = "" } = useParams<{agentId?: string;}>();
   const builds = useAdminConnection<BuildVersion[]>(`/agents/${agentId}/builds`) || [];
+  const agent = useAgent();
 
   return (
     <div>
-      <div tw="py-8 px-6 space-x-2 text-24 leading-32 border-b border-monochrome-medium-tint">
-        <span>All Builds</span>
-        <span tw="text-monochrome-default font-light">
-          {builds.length}
-        </span>
+      <div tw="flex justify-between items-center py-8 px-6 space-x-2 text-24 leading-32 border-b border-monochrome-medium-tint">
+        <div>
+          <span>All Builds</span>
+          <span tw="text-monochrome-default font-light">
+            {builds.length}
+          </span>
+        </div>
+        <SettingsButton
+          tw="link"
+          to={getPagePath({ name: "agentGeneralSettings", params: { agentId } })}
+          disabled={agent.status === AGENT_STATUS.OFFLINE}
+          data-test="builds:settings-button"
+        >
+          <Icons.Settings />
+        </SettingsButton>
       </div>
       <div tw="px-6">
         <Table
@@ -100,3 +111,12 @@ const NameCell = styled.div`
   grid-template-columns: minmax(auto, max-content) max-content;
   ${tw`font-bold text-14`}
 `;
+
+const SettingsButton = styled(Link)(({ disabled }: { disabled?: boolean }) => [
+  disabled && tw`opacity-25 pointer-events-none`,
+  css`
+    & > svg {
+      ${tw`w-8 h-8`}
+    }
+  `,
+]);
