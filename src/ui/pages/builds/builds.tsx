@@ -93,7 +93,7 @@ export const Builds = () => {
             {
               Header: "Added",
               accessor: "detectedAt",
-              Cell: ({ value }: any) => <span>{dateTimeFormatter(value)}</span>,
+              Cell: ({ value }: any) => <span title={dateTimeFormatter(value)}>{dateTimeFormatter(value)}</span>,
               textAlign: "left",
               width: "40%",
               sortType: "number",
