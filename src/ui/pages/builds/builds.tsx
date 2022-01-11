@@ -32,7 +32,7 @@ export const Builds = () => {
   const agent = useAgent();
 
   return (
-    <div>
+    <div tw="flex flex-col w-full h-full">
       <div tw="flex justify-between items-center py-8 px-6 space-x-2 text-24 leading-32 border-b border-monochrome-medium-tint">
         <div>
           <span>All Builds</span>
@@ -49,7 +49,7 @@ export const Builds = () => {
           <Icons.Settings />
         </SettingsButton>
       </div>
-      <div tw="px-6">
+      <div tw="px-6 flex-grow">
         <Table
           defaultSortBy={[{
             id: "detectedAt",
