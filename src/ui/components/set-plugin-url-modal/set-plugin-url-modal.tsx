@@ -15,7 +15,7 @@
  */
 import React, { useEffect, useState } from "react";
 import {
-  Button, Field, Fields, Form, FormGroup, Formik, Popup,
+  Button, Field, Fields, Form, FormGroup, Formik, Modal,
 } from "@drill4j/ui-kit";
 import "twin.macro";
 import { usePluginUrls } from "hooks";
@@ -37,8 +37,9 @@ export const SetPluginUrlModal = () => {
   }, []);
 
   if (!plugins) return null;
+  if (!isOpen) return null;
   return (
-    <Popup isOpen={isOpen} onToggle={setIsOpen} header="Plugin urls" closeOnFadeClick>
+    <Modal.Panel closeOnFadeClick>
       <div tw="w-147 px-4 py-6">
         <div tw="mb-6 text-16">
           After submitting the form, the page will be reloaded. The plugin urls will be cleared after closing the browser
@@ -82,6 +83,6 @@ export const SetPluginUrlModal = () => {
           )}
         </Formik>
       </div>
-    </Popup>
+    </Modal.Panel>
   );
 };

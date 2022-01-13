@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 import React from "react";
-import { Button, Popup } from "@drill4j/ui-kit";
+import { Button, Modal } from "@drill4j/ui-kit";
 import { useHistory } from "react-router-dom";
 
 import "twin.macro";
@@ -33,27 +33,25 @@ export const CancelAgentRegistrationModal = ({
 }: Props) => {
   const { push } = useHistory();
   return (
-    <Popup
-      isOpen={isOpen}
-      onToggle={onToggle}
-      header={header}
-      closeOnFadeClick
-    >
-      <div tw="w-108">
-        <div tw="m-6">
-          <span tw="text-14">
-            {message}
-          </span>
-          <div tw="flex mt-6 gap-4">
-            <Button primary size="large" onClick={() => push(getPagePath({ name: "agentsTable" }))}>
-              Abort
-            </Button>
-            <Button secondary size="large" onClick={() => onToggle(false)}>
-              Cancel
-            </Button>
+    <Modal>
+      <Modal.Panel>
+        <Modal.Header>{header}</Modal.Header>
+        <div tw="w-108">
+          <div tw="m-6">
+            <span tw="text-14">
+              {message}
+            </span>
+            <div tw="flex mt-6 gap-4">
+              <Button primary size="large" onClick={() => push(getPagePath({ name: "agentsTable" }))}>
+                Abort
+              </Button>
+              <Button secondary size="large" onClick={() => onToggle(false)}>
+                Cancel
+              </Button>
+            </div>
           </div>
         </div>
-      </div>
-    </Popup>
+      </Modal.Panel>
+    </Modal>
   );
 };
