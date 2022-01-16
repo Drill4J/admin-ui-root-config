@@ -24,17 +24,19 @@ interface Props {
 }
 
 export const UnlockingSystemSettingsFormModal = ({ isOpen, onToggle, setUnlocked }: Props) => (
-  <Modal>
-    <Modal.Panel type="error" closeOnFadeClick>
-      <Modal.Header>Unlocking Secured Field</Modal.Header>
-      <div tw="w-108 p-6">
-        <span tw="text-14">
-          Please be aware that any change to the package list will result in a
-          <strong> complete loss of gathered data </strong>
-          in plugins that have been using these packages.
-        </span>
-        <Modal.Footer>
-          <div tw="flex mt-6 gap-x-4">
+  <>
+    {isOpen && (
+      <Modal>
+        <Modal.Content type="error" closeOnFadeClick>
+          <Modal.Header>Unlocking Secured Field</Modal.Header>
+          <Modal.Body tw="w-108">
+            <span tw="text-14">
+              Please be aware that any change to the package list will result in a
+              <strong> complete loss of gathered data </strong>
+              in plugins that have been using these packages.
+            </span>
+          </Modal.Body>
+          <Modal.Footer tw="flex gap-x-4">
             <NegativeActionButton
               size="large"
               onClick={() => {
@@ -47,9 +49,9 @@ export const UnlockingSystemSettingsFormModal = ({ isOpen, onToggle, setUnlocked
             <Button secondary size="large" onClick={() => onToggle(false)}>
               Cancel
             </Button>
-          </div>
-        </Modal.Footer>
-      </div>
-    </Modal.Panel>
-  </Modal>
+          </Modal.Footer>
+        </Modal.Content>
+      </Modal>
+    )}
+  </>
 );

@@ -15,7 +15,7 @@
  */
 import React, { useState } from "react";
 import {
-  Modal, Button, Spinner, useCloseModal,
+  Panel, Button, Spinner, useCloseModal,
 } from "@drill4j/ui-kit";
 import { matchPath, useLocation } from "react-router-dom";
 import tw, { styled } from "twin.macro";
@@ -61,12 +61,12 @@ export const AddPluginsModal = ({
   });
 
   return (
-    <Modal isOpen onToggle={closeModal}>
-      <div tw="flex flex-col h-full">
-        <div tw="pt-4 pb-4 pr-6 pl-6 text-20 leading-32 text-monochrome-black border-b border-monochrome-medium-tint">
+    <Panel onClose={() => closeModal()}>
+      <Panel.Content>
+        <Panel.Header tw="text-20 leading-32 text-monochrome-black">
           Add new plugin
-        </div>
-        <div tw="h-full flex-grow pr-6 pl-6">
+        </Panel.Header>
+        <Panel.Body tw="px-6">
           <div tw="mt-4 font-bold text-14 leading-40 text-monochrome-black">Choose one or more plugins:</div>
           <PluginsList>
             <SelectableList
@@ -75,8 +75,8 @@ export const AddPluginsModal = ({
               handleSelect={setSelectedPlugins}
             />
           </PluginsList>
-        </div>
-        <div tw="flex items-center h-20 w-full gap-x-4 pl-6 bg-monochrome-light-tint">
+        </Panel.Body>
+        <Panel.Footer tw="flex items-center h-20 w-full gap-x-4">
           <Button
             className="flex justify-center items-center gap-x-1 w-27"
             primary
@@ -93,8 +93,8 @@ export const AddPluginsModal = ({
           <Button secondary size="large" onClick={closeModal}>
             Cancel
           </Button>
-        </div>
-      </div>
-    </Modal>
+        </Panel.Footer>
+      </Panel.Content>
+    </Panel>
   );
 };

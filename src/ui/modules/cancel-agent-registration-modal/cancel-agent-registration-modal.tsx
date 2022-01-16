@@ -33,25 +33,27 @@ export const CancelAgentRegistrationModal = ({
 }: Props) => {
   const { push } = useHistory();
   return (
-    <Modal>
-      <Modal.Panel>
-        <Modal.Header>{header}</Modal.Header>
-        <div tw="w-108">
-          <div tw="m-6">
-            <span tw="text-14">
-              {message}
-            </span>
-            <div tw="flex mt-6 gap-4">
+    <>
+      {isOpen && (
+        <Modal>
+          <Modal.Content closeOnFadeClick={false}>
+            <Modal.Header>{header}</Modal.Header>
+            <Modal.Body tw="w-108">
+              <span tw="text-14">
+                {message}
+              </span>
+            </Modal.Body>
+            <Modal.Footer tw="flex mt-6 gap-4">
               <Button primary size="large" onClick={() => push(getPagePath({ name: "agentsTable" }))}>
                 Abort
               </Button>
               <Button secondary size="large" onClick={() => onToggle(false)}>
                 Cancel
               </Button>
-            </div>
-          </div>
-        </div>
-      </Modal.Panel>
-    </Modal>
+            </Modal.Footer>
+          </Modal.Content>
+        </Modal>
+      )}
+    </>
   );
 };
