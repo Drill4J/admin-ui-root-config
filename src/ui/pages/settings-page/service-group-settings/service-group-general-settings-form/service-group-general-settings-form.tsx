@@ -77,7 +77,7 @@ export const ServiceGroupGeneralSettingsForm = ({ serviceGroup }: Props) => {
           <div tw="flex flex-col items-center">
             <div tw="w-97 space-y-6">
               <FormGroup label="Service Group ID">
-                <Field name="id" component={Fields.Input} />
+                <Field name="id" component={Fields.Input} disabled />
               </FormGroup>
               <FormGroup label="Service Group Name">
                 <Field
