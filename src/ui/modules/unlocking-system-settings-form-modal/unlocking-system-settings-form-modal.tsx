@@ -13,7 +13,7 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-import React from "react";
+import React, { FC } from "react";
 import { Button, Modal, NegativeActionButton } from "@drill4j/ui-kit";
 import "twin.macro";
 
@@ -23,7 +23,7 @@ interface Props {
   setUnlocked: (value: boolean) => void;
 }
 
-export const UnlockingSystemSettingsFormModal = ({ isOpen, onToggle, setUnlocked }: Props) => (
+export const UnlockingSystemSettingsFormModal: FC<Props> = ({ isOpen, onToggle, setUnlocked }) => (
   <>
     {isOpen && (
       <Modal>

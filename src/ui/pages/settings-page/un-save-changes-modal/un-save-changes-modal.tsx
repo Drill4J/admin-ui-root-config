@@ -33,11 +33,11 @@ export const UnSaveChangeModal = () => {
   return (
     <>
       {path && (
-        <Modal>
+        <Modal onClose={() => setPath("")}>
           {({ isOpen, setIsOpen }) => (
             <>
-              <Modal.Panel type="info" tw="w-108">
-                <Modal.Header onClose={() => setPath("")}>Unsaved Changes</Modal.Header>
+              <Modal.Content type="info" tw="w-108">
+                <Modal.Header>Unsaved Changes</Modal.Header>
                 <Modal.Body>
                   <div tw=" text-14 leading-20 text-monochrome-black">
                     There are unsaved changes. If you would like to keep changes,<br /> press the “Continue Editing” button.
@@ -50,7 +50,7 @@ export const UnSaveChangeModal = () => {
                     Leave Without Saving
                   </Button>
                 </Modal.Footer>
-              </Modal.Panel>
+              </Modal.Content>
             </>
           )}
         </Modal>

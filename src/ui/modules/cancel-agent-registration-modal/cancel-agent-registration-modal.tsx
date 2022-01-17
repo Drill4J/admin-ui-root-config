@@ -35,15 +35,15 @@ export const CancelAgentRegistrationModal = ({
   return (
     <>
       {isOpen && (
-        <Modal>
-          <Modal.Content closeOnFadeClick={false}>
+        <Modal isOpen={isOpen}>
+          <Modal.Content closeOnFadeClick={false} type="info">
             <Modal.Header>{header}</Modal.Header>
             <Modal.Body tw="w-108">
               <span tw="text-14">
                 {message}
               </span>
             </Modal.Body>
-            <Modal.Footer tw="flex mt-6 gap-4">
+            <Modal.Footer tw="flex gap-4">
               <Button primary size="large" onClick={() => push(getPagePath({ name: "agentsTable" }))}>
                 Abort
               </Button>
