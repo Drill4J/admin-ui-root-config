@@ -35,7 +35,7 @@ export const Builds = () => {
     <div tw="flex flex-col w-full h-full">
       <div tw="flex justify-between items-center py-8 px-6 space-x-2 text-24 leading-32 border-b border-monochrome-medium-tint">
         <div>
-          <span>All Builds</span>
+          <span tw="mr-2">All Builds</span>
           <span tw="text-monochrome-default font-light">
             {builds.length}
           </span>
