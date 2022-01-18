@@ -61,7 +61,7 @@ export const AddPluginsModal = ({
   });
 
   return (
-    <Panel onClose={() => closeModal()}>
+    <Panel onClose={closeModal}>
       <Panel.Content>
         <Panel.Header tw="text-20 leading-32 text-monochrome-black">
           Add new plugin

@@ -26,8 +26,8 @@ interface Props {
 export const UnlockingSystemSettingsFormModal: FC<Props> = ({ isOpen, onToggle, setUnlocked }) => (
   <>
     {isOpen && (
-      <Modal>
-        <Modal.Content type="error" closeOnFadeClick>
+      <Modal onClose={() => onToggle(false)}>
+        <Modal.Content type="error">
           <Modal.Header>Unlocking Secured Field</Modal.Header>
           <Modal.Body tw="w-108">
             <span tw="text-14">

@@ -35,8 +35,8 @@ export const CancelAgentRegistrationModal = ({
   return (
     <>
       {isOpen && (
-        <Modal isOpen={isOpen}>
-          <Modal.Content closeOnFadeClick={false} type="info">
+        <Modal isOpen={isOpen} onClose={() => onToggle(false)}>
+          <Modal.Content type="info">
             <Modal.Header>{header}</Modal.Header>
             <Modal.Body tw="w-108">
               <span tw="text-14">

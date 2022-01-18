@@ -34,11 +34,13 @@ export const NotificationsSidebar = ({ notifications }: Props) => {
   const onToggle = useCloseModal("/notification-sidebar");
 
   return (
-    <Panel onClose={() => onToggle()}>
+    <Panel onClose={onToggle}>
       <Panel.Content>
-        <Panel.Header tw="flex items-center space-x-2 min-h-60px pl-6 text-18 leading-24 text-monochrome-black">
-          <Icons.Notification />
-          <span>Notifications</span>
+        <Panel.Header>
+          <Header>
+            <Icons.Notification />
+            <span>Notifications</span>
+          </Header>
         </Panel.Header>
         <Panel.Body>
           {notifications.length > 0 ? (
@@ -86,8 +88,8 @@ export const NotificationsSidebar = ({ notifications }: Props) => {
 };
 
 const Header = styled.div`
-  ${tw`flex items-center space-x-2 min-h-60px pl-6`}
-  ${tw`text-18 leading-24 text-monochrome-black border-b border-monochrome-medium-tint`}
+  ${tw`flex items-center space-x-2`}
+  ${tw`text-18 leading-24 text-monochrome-black`}
 `;
 
 const ActionsPanel = styled.div`
