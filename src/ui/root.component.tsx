@@ -31,6 +31,7 @@ import { NotificationManager } from "./notification-manager";
 
 import "./index.css";
 import { SetPluginUrlModal } from "./components/set-plugin-url-modal";
+import { AlertManager } from "./alert-manager";
 
 configureAxios();
 
@@ -39,7 +40,7 @@ const Root = () => (
     <FontsStyles />
     <TypographyStyles />
     <LayoutStyles />
-    <NotificationManager />
+    <AlertManager />
     <Route exact path={routes.login} component={LoginPage} />
     <AppLayout footer={<Footer />}>
       <Switch>

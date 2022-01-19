@@ -13,24 +13,4 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-
-import { ReactElement } from "react";
-
-interface Alert {
-  type: "SUCCESS" | "ERROR" | "WARNING" | "INFO";
-  title: string;
-  text?: string;
-  action?: ReactElement;
-}
-
-export const sendNotificationEvent = (alert: Alert) => {
-  const event = new CustomEvent<Alert>("systemalert", {
-    detail: {
-      title: alert.title,
-      text: alert.text,
-      type: alert.type,
-      action: alert.action,
-    },
-  });
-  document.dispatchEvent(event);
-};
+export { AlertManager } from "./alert-manager";

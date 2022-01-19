@@ -13,24 +13,22 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
+import React from "react";
+import "twin.macro";
+import { SystemAlert } from "@drill4j/ui-kit";
+import { Alert } from "../types/alert";
 
-import { ReactElement } from "react";
-
-interface Alert {
-  type: "SUCCESS" | "ERROR" | "WARNING" | "INFO";
-  title: string;
-  text?: string;
-  action?: ReactElement;
+interface Props {
+  alerts: Set<Alert>;
 }
 
-export const sendNotificationEvent = (alert: Alert) => {
-  const event = new CustomEvent<Alert>("systemalert", {
-    detail: {
-      title: alert.title,
-      text: alert.text,
-      type: alert.type,
-      action: alert.action,
-    },
-  });
-  document.dispatchEvent(event);
-};
+export const AlertPanel = ({ alerts }: Props) => (
+  <div tw="absolute h-full w-full flex flex-col items-center justify-end gap-y-2 pb-8 z-[100]">
+    {Array.from(alerts).map(message => {
+      const {
+        title, type, text, onClose,
+      } = message;
+      return <SystemAlert title={title} type={type} onClose={onClose}>{text}</SystemAlert>;
+    })}
+  </div>
+);
