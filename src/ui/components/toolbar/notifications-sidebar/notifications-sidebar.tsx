@@ -42,9 +42,9 @@ export const NotificationsSidebar = ({ notifications }: Props) => {
             <span>Notifications</span>
           </Header>
         </Panel.Header>
-        <Panel.Body>
+        <Panel.Body tw="min-h-80px">
           {notifications.length > 0 ? (
-            <div tw="flex flex-col flex-grow overflow-y-hidden">
+            <div tw="flex flex-col overflow-y-hidden h-full">
               <ActionsPanel>
                 <span
                   onClick={() =>
@@ -64,7 +64,7 @@ export const NotificationsSidebar = ({ notifications }: Props) => {
               {errorMessage && (
                 <GeneralAlerts type="ERROR">{errorMessage}</GeneralAlerts>
               )}
-              <div tw="overflow-hidden overflow-y-auto">
+              <div tw="overflow-hidden overflow-y-auto flex-grow">
                 {notifications.map((notification) => (
                   <Notification notification={notification} key={nanoid()} />
                 ))}
