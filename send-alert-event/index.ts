@@ -23,7 +23,7 @@ interface Alert {
   action?: ReactElement;
 }
 
-export const sendNotificationEvent = (alert: Alert) => {
+export const sendAlertEvent = (alert: Alert) => {
   const event = new CustomEvent<Alert>("systemalert", {
     detail: {
       title: alert.title,

@@ -17,23 +17,25 @@ import React, {
   useState, useEffect,
 } from "react";
 import { useLocation } from "react-router-dom";
+import { uuid } from "uuidv4";
 
 import { Alert } from "types/alert";
 import { defaultAdminSocket } from "common/connection";
 
-import { sendNotificationEvent } from "../../../send-notification-event";
+import { sendAlertEvent } from "../../../send-alert-event"; // TODO: rewrite after tests
 import { AlertPanel } from "./alert-panel";
 
 export const AlertManager = () => {
-  const [alerts, setAlerts] = useState<Set<Alert>>(new Set());
+  const [alerts, setAlerts] = useState<Map<string, Alert>>(new Map());
   const [isLastMassageWasConnectionError, setIsLastMassageWasConnectionError] = useState(false);
   const { pathname = "" } = useLocation();
 
   function handleShowMessage(e: CustomEvent<Alert>) {
     const alert = e.detail;
+    const alertId = uuid();
     const deleteAlert = () => {
-      alerts.delete(alert);
-      setAlerts(new Set(alerts));
+      alerts.delete(alertId);
+      setAlerts(new Map(alerts));
     };
     if (e.detail.type === "SUCCESS") {
       const timerId = setTimeout(() => {
@@ -49,7 +51,7 @@ export const AlertManager = () => {
       };
     }
 
-    setAlerts(new Set(alerts.add(alert)));
+    setAlerts(new Map(alerts.set(alertId, alert)));
   }
 
   useEffect(() => {
@@ -62,7 +64,7 @@ export const AlertManager = () => {
       if (isLastMassageWasConnectionError || timerId) return;
       timerId = setTimeout(() => {
         setIsLastMassageWasConnectionError(true);
-        sendNotificationEvent({
+        sendAlertEvent({
           type: "ERROR",
           title: "Backend connection has been lost. Trying to reconnect...",
         });
@@ -71,7 +73,7 @@ export const AlertManager = () => {
     defaultAdminSocket.onOpenEvent = () => {
       clearTimeout(timerId);
       if (isLastMassageWasConnectionError) {
-        sendNotificationEvent({
+        sendAlertEvent({
           type: "SUCCESS",
           title: "Backend connection has been successfully restored.",
         });

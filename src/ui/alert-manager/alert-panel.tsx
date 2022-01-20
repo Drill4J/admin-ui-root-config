@@ -19,16 +19,17 @@ import { SystemAlert } from "@drill4j/ui-kit";
 import { Alert } from "../types/alert";
 
 interface Props {
-  alerts: Set<Alert>;
+  alerts: Map<string, Alert>;
 }
 
 export const AlertPanel = ({ alerts }: Props) => (
   <div tw="absolute h-full w-full flex flex-col items-center justify-end gap-y-2 pb-8 z-[100]">
-    {Array.from(alerts).map(message => {
+    {Array.from(alerts).map(value => {
+      const [id, alert] = value;
       const {
         title, type, text, onClose,
-      } = message;
-      return <SystemAlert title={title} type={type} onClose={onClose}>{text}</SystemAlert>;
+      } = alert;
+      return <SystemAlert key={id} title={title} type={type} onClose={onClose}>{text}</SystemAlert>;
     })}
   </div>
 );

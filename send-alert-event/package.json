@@ -1,5 +1,5 @@
 {
-  "name": "@drill4j/send-notification-event",
+  "name": "@drill4j/send-alert-event",
   "version": "1.0.0",
   "main": "dist/index.js",
   "types": "index.d.ts",
