@@ -13,8 +13,8 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-import React from "react";
-import { Button, Popup, NegativeActionButton } from "@drill4j/ui-kit";
+import React, { FC } from "react";
+import { Button, Modal, NegativeActionButton } from "@drill4j/ui-kit";
 import "twin.macro";
 
 interface Props {
@@ -23,34 +23,35 @@ interface Props {
   setUnlocked: (value: boolean) => void;
 }
 
-export const UnlockingSystemSettingsFormModal = ({ isOpen, onToggle, setUnlocked }: Props) => (
-  <Popup
-    isOpen={isOpen}
-    onToggle={onToggle}
-    header="Unlocking Secured Field"
-    type="error"
-    closeOnFadeClick
-  >
-    <div tw="w-108 p-6">
-      <span tw="text-14">
-        Please be aware that any change to the package list will result in a
-        <strong> complete loss of gathered data </strong>
-        in plugins that have been using these packages.
-      </span>
-      <div tw="flex mt-6 gap-x-4">
-        <NegativeActionButton
-          size="large"
-          onClick={() => {
-            setUnlocked(true);
-            onToggle(false);
-          }}
-        >
-          Unlock and Proceed
-        </NegativeActionButton>
-        <Button secondary size="large" onClick={() => onToggle(false)}>
-          Cancel
-        </Button>
-      </div>
-    </div>
-  </Popup>
+export const UnlockingSystemSettingsFormModal: FC<Props> = ({ isOpen, onToggle, setUnlocked }) => (
+  <>
+    {isOpen && (
+      <Modal onClose={() => onToggle(false)}>
+        <Modal.Content type="error">
+          <Modal.Header>Unlocking Secured Field</Modal.Header>
+          <Modal.Body tw="w-108">
+            <span tw="text-14">
+              Please be aware that any change to the package list will result in a
+              <strong> complete loss of gathered data </strong>
+              in plugins that have been using these packages.
+            </span>
+          </Modal.Body>
+          <Modal.Footer tw="flex gap-x-4">
+            <NegativeActionButton
+              size="large"
+              onClick={() => {
+                setUnlocked(true);
+                onToggle(false);
+              }}
+            >
+              Unlock and Proceed
+            </NegativeActionButton>
+            <Button secondary size="large" onClick={() => onToggle(false)}>
+              Cancel
+            </Button>
+          </Modal.Footer>
+        </Modal.Content>
+      </Modal>
+    )}
+  </>
 );

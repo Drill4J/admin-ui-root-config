@@ -15,7 +15,7 @@
  */
 import React from "react";
 import {
-  Popup, Button, useFormikContext,
+  Modal, Button, useFormikContext,
 } from "@drill4j/ui-kit";
 import { Prompt, useHistory } from "react-router-dom";
 import "twin.macro";
@@ -32,19 +32,29 @@ export const UnSaveChangeModal = () => {
 
   return (
     <>
-      <Popup isOpen={Boolean(path)} onToggle={() => setPath("")} header="Unsaved Changes">
-        <div tw="pt-5 px-6 pb-6 w-108">
-          <div tw="mb-6 text-14 leading-20 text-monochrome-black">
-            There are unsaved changes. If you would like to keep changes,<br /> press the “Continue Editing” button.
-          </div>
-          <div tw="flex gap-x-4">
-            <Button primary size="large" onClick={() => setPath("")}>Continue Editing</Button>
-            <Button secondary size="large" onClick={handleLeave}>
-              Leave Without Saving
-            </Button>
-          </div>
-        </div>
-      </Popup>
+      {path && (
+        <Modal onClose={() => setPath("")}>
+          {({ isOpen, setIsOpen }) => (
+            <>
+              <Modal.Content type="info" tw="w-108">
+                <Modal.Header>Unsaved Changes</Modal.Header>
+                <Modal.Body>
+                  <div tw=" text-14 leading-20 text-monochrome-black">
+                    There are unsaved changes. If you would like to keep changes,<br /> press the “Continue Editing” button.
+                  </div>
+                </Modal.Body>
+                <div />
+                <Modal.Footer tw="flex gap-x-4">
+                  <Button primary size="large" onClick={() => { setPath(""); setIsOpen(!isOpen); }}>Continue Editing</Button>
+                  <Button secondary size="large" onClick={handleLeave}>
+                    Leave Without Saving
+                  </Button>
+                </Modal.Footer>
+              </Modal.Content>
+            </>
+          )}
+        </Modal>
+      )}
       <Prompt
         when={dirty}
         message={

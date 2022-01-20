@@ -16,7 +16,7 @@
 import React, { useState } from "react";
 import { nanoid } from "nanoid";
 import {
-  Icons, Modal, GeneralAlerts, useCloseModal,
+  Icons, Panel, GeneralAlerts, useCloseModal,
 } from "@drill4j/ui-kit";
 
 import tw, { styled } from "twin.macro";
@@ -34,58 +34,62 @@ export const NotificationsSidebar = ({ notifications }: Props) => {
   const onToggle = useCloseModal("/notification-sidebar");
 
   return (
-    <Modal isOpen onToggle={onToggle}>
-      <div tw="flex flex-col h-full bg-monochrome-white">
-        <Header>
-          <Icons.Notification />
-          <span>Notifications</span>
-        </Header>
-        {notifications.length > 0 ? (
-          <div tw="flex flex-col flex-grow overflow-y-hidden">
-            <ActionsPanel>
-              <span
-                onClick={() =>
-                  readAllNotifications({ onError: setErrorMessage })}
-                data-test="notification-sidebar:mark-all-as-read"
-              >
-                Mark all as read
-              </span>
-              <span
-                onClick={() =>
-                  deleteAllNotifications({ onError: setErrorMessage })}
-                data-test="notification-sidebar:clear-all"
-              >
-                Clear all
-              </span>
-            </ActionsPanel>
-            {errorMessage && (
-              <GeneralAlerts type="ERROR">{errorMessage}</GeneralAlerts>
-            )}
-            <div tw="overflow-hidden overflow-y-auto">
-              {notifications.map((notification) => (
-                <Notification notification={notification} key={nanoid()} />
-              ))}
+    <Panel onClose={onToggle}>
+      <Panel.Content>
+        <Panel.Header>
+          <Header>
+            <Icons.Notification />
+            <span>Notifications</span>
+          </Header>
+        </Panel.Header>
+        <Panel.Body tw="min-h-80px">
+          {notifications.length > 0 ? (
+            <div tw="flex flex-col overflow-y-hidden h-full">
+              <ActionsPanel>
+                <span
+                  onClick={() =>
+                    readAllNotifications({ onError: setErrorMessage })}
+                  data-test="notification-sidebar:mark-all-as-read"
+                >
+                  Mark all as read
+                </span>
+                <span
+                  onClick={() =>
+                    deleteAllNotifications({ onError: setErrorMessage })}
+                  data-test="notification-sidebar:clear-all"
+                >
+                  Clear all
+                </span>
+              </ActionsPanel>
+              {errorMessage && (
+                <GeneralAlerts type="ERROR">{errorMessage}</GeneralAlerts>
+              )}
+              <div tw="overflow-hidden overflow-y-auto flex-grow">
+                {notifications.map((notification) => (
+                  <Notification notification={notification} key={nanoid()} />
+                ))}
+              </div>
             </div>
-          </div>
-        ) : (
-          <div tw="flex flex-grow flex-col justify-center items-center text-monochrome-medium-tint">
-            <Icons.Notification width={120} height={130} />
-            <div tw="mt-10 mb-2 text-24 leading-32 text-monochrome-medium-tint text-center">
-              There are no notifications
+          ) : (
+            <div tw="flex flex-grow flex-col justify-center items-center text-monochrome-medium-tint">
+              <Icons.Notification width={120} height={130} />
+              <div tw="mt-10 mb-2 text-24 leading-32 text-monochrome-medium-tint text-center">
+                There are no notifications
+              </div>
+              <div tw="text-14 leading-24 text-monochrome-default text-center">
+                No worries, we’ll keep you posted!
+              </div>
             </div>
-            <div tw="text-14 leading-24 text-monochrome-default text-center">
-              No worries, we’ll keep you posted!
-            </div>
-          </div>
-        )}
-      </div>
-    </Modal>
+          )}
+        </Panel.Body>
+      </Panel.Content>
+    </Panel>
   );
 };
 
 const Header = styled.div`
-  ${tw`flex items-center space-x-2 min-h-60px pl-6`}
-  ${tw`text-18 leading-24 text-monochrome-black border-b border-monochrome-medium-tint`}
+  ${tw`flex items-center space-x-2`}
+  ${tw`text-18 leading-24 text-monochrome-black`}
 `;
 
 const ActionsPanel = styled.div`

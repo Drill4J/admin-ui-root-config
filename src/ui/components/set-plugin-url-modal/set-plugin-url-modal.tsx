@@ -15,7 +15,7 @@
  */
 import React, { useEffect, useState } from "react";
 import {
-  Button, Field, Fields, Form, FormGroup, Formik, Popup,
+  Button, Field, Fields, Form, FormGroup, Formik, Modal,
 } from "@drill4j/ui-kit";
 import "twin.macro";
 import { usePluginUrls } from "hooks";
@@ -38,50 +38,54 @@ export const SetPluginUrlModal = () => {
 
   if (!plugins) return null;
   return (
-    <Popup isOpen={isOpen} onToggle={setIsOpen} header="Plugin urls" closeOnFadeClick>
-      <div tw="w-147 px-4 py-6">
-        <div tw="mb-6 text-16">
-          After submitting the form, the page will be reloaded. The plugin urls will be cleared after closing the browser
-        </div>
-        <Formik
-          initialValues={plugins}
-          onSubmit={(value) => {
-            sessionStorage.setItem("plugins-urls", JSON.stringify(value));
-            document.location.reload();
-          }}
-        >
-          {({ dirty }) => (
-            <Form tw="space-y-6">
-              {Object.keys(plugins).map((key) => (
-                <FormGroup label={key} tw="w-full">
-                  <Field name={key} component={Fields.Input} placeholder={`Enter ${key} url`} />
-                </FormGroup>
-              ))}
-              <div tw="flex gap-x-4">
-                <Button
-                  primary
-                  size="large"
-                  type="submit"
-                  disabled={!dirty}
-                >
-                  Save Changes
-                </Button>
-                <Button
-                  primary
-                  size="large"
-                  type="button"
-                  onClick={() => {
-                    sessionStorage.removeItem("plugins-urls");
-                    document.location.reload();
-                  }}
-                >
-                  Clear local data
-                </Button>
-              </div>
-            </Form>
-          )}
-        </Formik>
-      </div>
-    </Popup>
+    <>
+      <Modal isOpen={isOpen}>
+        <Modal.Content>
+          <Formik
+            initialValues={plugins}
+            onSubmit={(value) => {
+              sessionStorage.setItem("plugins-urls", JSON.stringify(value));
+              document.location.reload();
+            }}
+          >
+            {({ dirty }) => (
+              <Form tw="space-y-6">
+                <Modal.Body tw="w-147">
+                  <div tw="mb-6 text-16">
+                    After submitting the form, the page will be reloaded. The plugin urls will be cleared after closing the browser
+                  </div>
+                  {Object.keys(plugins).map((key) => (
+                    <FormGroup label={key} tw="w-full">
+                      <Field name={key} component={Fields.Input} placeholder={`Enter ${key} url`} />
+                    </FormGroup>
+                  ))}
+                </Modal.Body>
+                <Modal.Footer tw="flex gap-x-4">
+                  <Button
+                    primary
+                    size="large"
+                    type="submit"
+                    disabled={!dirty}
+                  >
+                    Save Changes
+                  </Button>
+                  <Button
+                    primary
+                    size="large"
+                    type="button"
+                    onClick={() => {
+                      sessionStorage.removeItem("plugins-urls");
+                      document.location.reload();
+                    }}
+                  >
+                    Clear local data
+                  </Button>
+                </Modal.Footer>
+              </Form>
+            )}
+          </Formik>
+        </Modal.Content>
+      </Modal>
+    </>
   );
 };
