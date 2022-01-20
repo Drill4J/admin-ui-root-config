@@ -22,7 +22,7 @@ import { useLocation } from "react-router-dom";
 import { Message } from "types/message";
 import { defaultAdminSocket } from "common/connection";
 
-import { sendNotificationEvent } from "@drill4j/send-notification-event";
+import { sendAlertEvent } from "@drill4j/send-alert-event";
 
 interface Props {
   className?: string;
@@ -55,18 +55,18 @@ export const NotificationManager = ({ children }: Props) => {
       if (isLastMassageWasConnectionError || timerId) return;
       timerId = setTimeout(() => {
         setIsLastMassageWasConnectionError(true);
-        sendNotificationEvent({
+        sendAlertEvent({
           type: "ERROR",
-          text: "Backend connection has been lost. Trying to reconnect...",
+          title: "Backend connection has been lost. Trying to reconnect...",
         });
       }, 4000);
     };
     defaultAdminSocket.onOpenEvent = () => {
       clearTimeout(timerId);
       if (isLastMassageWasConnectionError) {
-        sendNotificationEvent({
+        sendAlertEvent({
           type: "SUCCESS",
-          text: "Backend connection has been successfully restored.",
+          title: "Backend connection has been successfully restored.",
         });
         setIsLastMassageWasConnectionError(false);
       }

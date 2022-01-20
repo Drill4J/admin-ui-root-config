@@ -22,7 +22,7 @@ import {
 import { matchPath, useLocation } from "react-router-dom";
 import axios from "axios";
 
-import { sendNotificationEvent } from "@drill4j/send-notification-event";
+import { sendAlertEvent } from "@drill4j/send-alert-event";
 
 import "twin.macro";
 
@@ -46,11 +46,11 @@ export const ServiceGroupGeneralSettingsForm = ({ serviceGroup }: Props) => {
       onSubmit={async ({ name, description, environment }: ServiceGroupEntity) => {
         try {
           await axios.put(`/groups/${groupId}`, { name, description, environment });
-          sendNotificationEvent({ type: "SUCCESS", text: "New settings have been saved" });
+          sendAlertEvent({ type: "SUCCESS", title: "New settings have been saved" });
         } catch ({ response: { data: { message } = {} } = {} }) {
-          sendNotificationEvent({
+          sendAlertEvent({
             type: "ERROR",
-            text: "On-submit error. Server problem or operation could not be processed in real-time",
+            title: "On-submit error. Server problem or operation could not be processed in real-time",
           });
         }
       }}

@@ -15,7 +15,7 @@
  */
 import React from "react";
 import { Spinner, Inputs } from "@drill4j/ui-kit";
-import { sendNotificationEvent } from "@drill4j/send-notification-event";
+import { sendAlertEvent } from "@drill4j/send-alert-event";
 import axios from "axios";
 import "twin.macro";
 
@@ -40,16 +40,16 @@ export const AgentStatusToggle = ({ className, agent }: Props) => (
         onChange={async () => {
           try {
             await axios.post(`/agents/${agent.id}/toggle`);
-            sendNotificationEvent({
+            sendAlertEvent({
               type: "SUCCESS",
-              text: `Agent has been ${
+              title: `Agent has been ${
                 agent.status === AGENT_STATUS.ONLINE ? "disabled" : "enabled"
               }.`,
             });
           } catch ({ response: { data: { message = "" } = {} } = {} }) {
-            sendNotificationEvent({
+            sendAlertEvent({
               type: "ERROR",
-              text:
+              title:
                   message as string ||
                   "There is some issue with your action. Please try again later.",
             });

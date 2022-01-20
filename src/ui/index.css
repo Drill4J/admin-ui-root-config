@@ -649,6 +649,10 @@ button:focus {
   left: 0px;
 }
 
+.z-\[100\] {
+  z-index: 100;
+}
+
 .m-0 {
   margin: 0px;
 }
@@ -665,11 +669,6 @@ button:focus {
 .mx-6 {
   margin-left: 1.5rem;
   margin-right: 1.5rem;
-}
-
-.my-6 {
-  margin-top: 1.5rem;
-  margin-bottom: 1.5rem;
 }
 
 .ml-27 {
@@ -740,6 +739,10 @@ button:focus {
   margin-bottom: 0.75rem;
 }
 
+.mr-2 {
+  margin-right: 0.5rem;
+}
+
 .mt-1 {
   margin-top: 0.25rem;
 }
@@ -762,10 +765,6 @@ button:focus {
 
 .mt-\[2px\] {
   margin-top: 2px;
-}
-
-.mr-2 {
-  margin-right: 0.5rem;
 }
 
 .mr-8 {
@@ -824,16 +823,16 @@ button:focus {
   height: 7rem;
 }
 
+.h-8 {
+  height: 2rem;
+}
+
 .h-10 {
   height: 2.5rem;
 }
 
 .h-19 {
   height: 4.75rem;
-}
-
-.h-8 {
-  height: 2rem;
 }
 
 .h-4 {
@@ -888,6 +887,10 @@ button:focus {
   width: 8rem;
 }
 
+.w-8 {
+  width: 2rem;
+}
+
 .w-88 {
   width: 22rem;
 }
@@ -898,10 +901,6 @@ button:focus {
 
 .w-19 {
   width: 4.75rem;
-}
-
-.w-8 {
-  width: 2rem;
 }
 
 .w-4 {
@@ -1006,6 +1005,10 @@ button:focus {
 
 .gap-4 {
   gap: 1rem;
+}
+
+.gap-y-2 {
+  row-gap: 0.5rem;
 }
 
 .gap-x-4 {
@@ -1215,6 +1218,11 @@ button:focus {
   padding-bottom: 1rem;
 }
 
+.py-8 {
+  padding-top: 2rem;
+  padding-bottom: 2rem;
+}
+
 .px-16 {
   padding-left: 4rem;
   padding-right: 4rem;
@@ -1223,6 +1231,10 @@ button:focus {
 .px-2 {
   padding-left: 0.5rem;
   padding-right: 0.5rem;
+}
+
+.pb-8 {
+  padding-bottom: 2rem;
 }
 
 .pr-4 {
@@ -1255,6 +1267,14 @@ button:focus {
 
 .pr-2 {
   padding-right: 0.5rem;
+}
+
+.pt-9 {
+  padding-top: 2.25rem;
+}
+
+.pb-3 {
+  padding-bottom: 0.75rem;
 }
 
 .pt-5 {
@@ -1331,6 +1351,10 @@ button:focus {
 
 .text-64 {
   font-size: 64px;
+}
+
+.uppercase {
+  text-transform: uppercase;
 }
 
 .lowercase {

@@ -20,7 +20,7 @@ import {
   Button, GeneralAlerts, Icons, Spinner, Tooltip, composeValidators, Fields, required,
 } from "@drill4j/ui-kit";
 import { matchPath, useLocation } from "react-router-dom";
-import { sendNotificationEvent } from "@drill4j/send-notification-event";
+import { sendAlertEvent } from "@drill4j/send-alert-event";
 
 import "twin.macro";
 
@@ -43,11 +43,11 @@ export const JsSystemSettingsForm = ({ agent }: Props) => {
       onSubmit={async ({ systemSettings: { targetHost } = {} }: Agent) => {
         try {
           await axios.put(`/agents/${agentId}/system-settings`, { targetHost });
-          sendNotificationEvent({ type: "SUCCESS", text: "New settings have been saved" });
+          sendAlertEvent({ type: "SUCCESS", title: "New settings have been saved" });
         } catch ({ response: { data: { message } = {} } = {} }) {
-          sendNotificationEvent({
+          sendAlertEvent({
             type: "ERROR",
-            text: "On-submit error. Server problem or operation could not be processed in real-time",
+            title: "On-submit error. Server problem or operation could not be processed in real-time",
           });
         }
       }}

@@ -17,12 +17,11 @@ import React, {
   useState, useEffect,
 } from "react";
 import { useLocation } from "react-router-dom";
-import { uuid } from "uuidv4";
 
 import { Alert } from "types/alert";
 import { defaultAdminSocket } from "common/connection";
 
-import { sendAlertEvent } from "../../../send-alert-event"; // TODO: rewrite after tests
+import { sendAlertEvent } from "@drill4j/send-alert-event";
 import { AlertPanel } from "./alert-panel";
 
 export const AlertManager = () => {
@@ -32,10 +31,10 @@ export const AlertManager = () => {
 
   function handleShowMessage(e: CustomEvent<Alert>) {
     const alert = e.detail;
-    const alertId = uuid();
+    const alertId = `${Math.random()}`;
     const deleteAlert = () => {
       alerts.delete(alertId);
-      setAlerts(new Map(alerts));
+      setAlerts(new Map(alerts.entries()));
     };
     if (e.detail.type === "SUCCESS") {
       const timerId = setTimeout(() => {
@@ -51,7 +50,7 @@ export const AlertManager = () => {
       };
     }
 
-    setAlerts(new Map(alerts.set(alertId, alert)));
+    setAlerts(new Map(alerts.set(alertId, alert).entries()));
   }
 
   useEffect(() => {
