@@ -40,7 +40,7 @@ export const AlertManager = () => {
         deleteAlert();
       };
     } else {
-      alert.onClose = () => deleteAlert();
+      alert.onClose = deleteAlert;
     }
 
     setAlerts([...alerts, alert]);
