@@ -15,7 +15,7 @@
  */
 import React, { useState } from "react";
 import {
-  Panel, Button, Spinner, useCloseModal, sendAlertEvent,m
+  Panel, Button, Spinner, useCloseModal, sendAlertEvent,
 } from "@drill4j/ui-kit";
 import { matchPath, useLocation } from "react-router-dom";
 import tw, { styled } from "twin.macro";
