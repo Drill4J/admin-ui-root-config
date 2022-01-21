@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 import { useEffect, useState } from "react";
-import { sendAlertEvent } from "@drill4j/send-alert-event";
+import { sendAlertEvent } from "@drill4j/ui-kit";
 
 const devModePaths = {
   test2code: "http://localhost:7087/Drill4J-test-to-code.js",

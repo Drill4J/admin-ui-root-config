@@ -15,7 +15,7 @@
  */
 import React, { useEffect } from "react";
 import { useParams } from "react-router-dom";
-import { sendAlertEvent } from "@drill4j/send-alert-event";
+import { sendAlertEvent } from "@drill4j/ui-kit";
 import "twin.macro";
 
 import { getPagePath } from "common";

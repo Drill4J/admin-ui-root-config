@@ -17,10 +17,9 @@ import React from "react";
 import axios from "axios";
 import {
   Formik, Field, Form,
-  Button, FormGroup, GeneralAlerts, Spinner, composeValidators, Fields, required, sizeLimit,
+  Button, FormGroup, GeneralAlerts, Spinner, composeValidators, Fields, required, sizeLimit, sendAlertEvent,
 } from "@drill4j/ui-kit";
 import { matchPath, useLocation } from "react-router-dom";
-import { sendAlertEvent } from "@drill4j/send-alert-event";
 
 import "twin.macro";
 

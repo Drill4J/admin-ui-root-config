@@ -18,14 +18,13 @@ import axios from "axios";
 import {
   Icons, Tooltip, GeneralAlerts, FormGroup, Spinner, Button, composeValidators, Fields, requiredArray, sizeLimit,
   Formik, Field, Form,
-  dotsAndSlashesToSlash, formatPackages, parsePackages,
+  dotsAndSlashesToSlash, formatPackages, parsePackages, sendAlertEvent,
 } from "@drill4j/ui-kit";
 import { matchPath, useLocation } from "react-router-dom";
 import "twin.macro";
 
 import { UnlockingSystemSettingsFormModal } from "modules";
 import { Agent } from "types/agent";
-import { sendAlertEvent } from "@drill4j/send-alert-event";
 import { routes } from "common";
 import { UnSaveChangeModal } from "pages/settings-page/un-save-changes-modal";
 

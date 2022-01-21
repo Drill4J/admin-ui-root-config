@@ -16,13 +16,11 @@
 import React from "react";
 import {
   Formik, Field, Form,
-  Button, FormGroup, GeneralAlerts, Spinner, composeValidators, Fields, required, sizeLimit,
+  Button, FormGroup, GeneralAlerts, Spinner, composeValidators, Fields, required, sizeLimit, sendAlertEvent,
   formatPackages,
 } from "@drill4j/ui-kit";
 import { matchPath, useLocation } from "react-router-dom";
 import axios from "axios";
-
-import { sendAlertEvent } from "@drill4j/send-alert-event";
 
 import "twin.macro";
 

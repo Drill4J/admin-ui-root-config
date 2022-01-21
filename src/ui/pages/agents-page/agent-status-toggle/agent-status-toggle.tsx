@@ -14,8 +14,7 @@
  * limitations under the License.
  */
 import React from "react";
-import { Spinner, Inputs } from "@drill4j/ui-kit";
-import { sendAlertEvent } from "@drill4j/send-alert-event";
+import { Spinner, Inputs, sendAlertEvent } from "@drill4j/ui-kit";
 import axios from "axios";
 import "twin.macro";
 

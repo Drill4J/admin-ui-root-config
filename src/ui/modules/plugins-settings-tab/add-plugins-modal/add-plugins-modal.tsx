@@ -15,14 +15,13 @@
  */
 import React, { useState } from "react";
 import {
-  Panel, Button, Spinner, useCloseModal,
+  Panel, Button, Spinner, useCloseModal, sendAlertEvent,m
 } from "@drill4j/ui-kit";
 import { matchPath, useLocation } from "react-router-dom";
 import tw, { styled } from "twin.macro";
 
 import { Plugin } from "types/plugin";
 import { routes } from "common";
-import { sendAlertEvent } from "@drill4j/send-alert-event";
 import { SelectableList } from "./selectable-list";
 import { loadPlugins } from "./load-plugins";
 

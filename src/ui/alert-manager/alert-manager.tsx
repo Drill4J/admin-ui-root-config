@@ -18,44 +18,37 @@ import React, {
 } from "react";
 import { useLocation } from "react-router-dom";
 
-import { Alert } from "types/alert";
 import { defaultAdminSocket } from "common/connection";
 
-import { sendAlertEvent } from "@drill4j/send-alert-event";
+import { sendAlertEvent, IAlert } from "@drill4j/ui-kit";
 import { AlertPanel } from "./alert-panel";
 
 export const AlertManager = () => {
-  const [alerts, setAlerts] = useState<Map<string, Alert>>(new Map());
+  const [alerts, setAlerts] = useState<IAlert[]>([]);
   const [isLastMassageWasConnectionError, setIsLastMassageWasConnectionError] = useState(false);
   const { pathname = "" } = useLocation();
 
-  function handleShowMessage(e: CustomEvent<Alert>) {
+  function handleShowMessage(e: CustomEvent<IAlert>) {
     const alert = e.detail;
-    const alertId = `${Math.random()}`;
     const deleteAlert = () => {
-      alerts.delete(alertId);
-      setAlerts(new Map(alerts.entries()));
+      setAlerts(alerts.filter(value => value.id !== alert.id));
     };
     if (e.detail.type === "SUCCESS") {
-      const timerId = setTimeout(() => {
-        deleteAlert();
-      }, 3000);
+      const timerId = setTimeout(deleteAlert, 3000);
       alert.onClose = () => {
         clearTimeout(timerId);
         deleteAlert();
       };
     } else {
-      alert.onClose = () => {
-        deleteAlert();
-      };
+      alert.onClose = () => deleteAlert();
     }
 
-    setAlerts(new Map(alerts.set(alertId, alert).entries()));
+    setAlerts([...alerts, alert]);
   }
 
   useEffect(() => {
-    document.addEventListener("systemalert", handleShowMessage as EventListener);
-    return () => document.removeEventListener("systemalert", handleShowMessage as EventListener);
+    document.addEventListener("system-alert", handleShowMessage as EventListener);
+    return () => document.removeEventListener("system-alert", handleShowMessage as EventListener);
   }, []);
   useEffect(() => {
     let timerId : NodeJS.Timeout;

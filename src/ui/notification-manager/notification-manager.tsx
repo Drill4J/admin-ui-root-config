@@ -16,13 +16,11 @@
 import React, {
   ReactNode, useState, useEffect,
 } from "react";
-import { MessagePanel } from "@drill4j/ui-kit";
+import { MessagePanel, sendAlertEvent } from "@drill4j/ui-kit";
 import { useLocation } from "react-router-dom";
 
 import { Message } from "types/message";
 import { defaultAdminSocket } from "common/connection";
-
-import { sendAlertEvent } from "@drill4j/send-alert-event";
 
 interface Props {
   className?: string;

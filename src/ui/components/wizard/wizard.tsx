@@ -17,9 +17,8 @@ import React, {
   Children, ComponentType, ReactElement, useReducer, Component, useState, useEffect,
 } from "react";
 import {
-  Formik, Form, Icons, Button, Spinner, formatPackages,
+  Formik, Form, Icons, Button, Spinner, formatPackages, sendAlertEvent,
 } from "@drill4j/ui-kit";
-import { sendAlertEvent } from "@drill4j/send-alert-event";
 import "twin.macro";
 
 import { Agent } from "types/agent";
