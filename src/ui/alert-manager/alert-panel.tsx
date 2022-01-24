@@ -15,14 +15,14 @@
  */
 import React from "react";
 import "twin.macro";
-import { SystemAlert, IAlert } from "@drill4j/ui-kit";
+import { IAlert, SystemAlert } from "@drill4j/ui-kit";
 
 interface Props {
   alerts: IAlert[];
 }
 
 export const AlertPanel = ({ alerts }: Props) => (
-  <div tw="absolute h-fit w-min left-0 right-0 bottom-10 m-auto flex flex-col-reverse items-center gap-y-2 z-[100]">
+  <div tw="absolute h-fit w-min left-0 right-0 bottom-10 m-auto flex flex-col-reverse items-center gap-y-2 z-[200]">
     {alerts.map(alert => {
       const {
         id, title, text, onClose = () => {}, type,

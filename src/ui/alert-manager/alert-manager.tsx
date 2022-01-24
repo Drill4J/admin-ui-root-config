@@ -13,14 +13,12 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-import React, {
-  useState, useEffect,
-} from "react";
+import React, { useEffect, useState } from "react";
 import { useLocation } from "react-router-dom";
 
 import { defaultAdminSocket } from "common/connection";
 
-import { sendAlertEvent, IAlert } from "@drill4j/ui-kit";
+import { IAlert, sendAlertEvent } from "@drill4j/ui-kit";
 import { AlertPanel } from "./alert-panel";
 
 export const AlertManager = () => {
@@ -50,6 +48,7 @@ export const AlertManager = () => {
     document.addEventListener("system-alert", handleShowMessage as EventListener);
     return () => document.removeEventListener("system-alert", handleShowMessage as EventListener);
   }, []);
+
   useEffect(() => {
     let timerId : NodeJS.Timeout;
     defaultAdminSocket.onCloseEvent = () => {

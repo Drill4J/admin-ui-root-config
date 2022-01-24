@@ -48,9 +48,7 @@ export const NotificationsSidebar = ({ notifications }: Props) => {
                 <span
                   onClick={() =>
                     readAllNotifications({
-                      onError: message => {
-                        sendAlertEvent({ type: "ERROR", title: message });
-                      },
+                      onError: message => sendAlertEvent({ type: "ERROR", title: message }),
                     })}
                   data-test="notification-sidebar:mark-all-as-read"
                 >
@@ -59,9 +57,7 @@ export const NotificationsSidebar = ({ notifications }: Props) => {
                 <span
                   onClick={() =>
                     deleteAllNotifications({
-                      onError: message => {
-                        sendAlertEvent({ type: "ERROR", title: message });
-                      },
+                      onError: message => sendAlertEvent({ type: "ERROR", title: message }),
                     })}
                   data-test="notification-sidebar:clear-all"
                 >
