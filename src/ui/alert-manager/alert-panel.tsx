@@ -22,7 +22,7 @@ interface Props {
 }
 
 export const AlertPanel = ({ alerts }: Props) => (
-  <div tw="absolute h-full w-full flex flex-col items-center justify-end gap-y-2 pb-8 z-[100]">
+  <div tw="absolute h-fit w-min left-0 right-0 bottom-10 m-auto flex flex-col-reverse items-center gap-y-2 z-[100]">
     {alerts.map(alert => {
       const {
         id, title, text, onClose = () => {}, type,
