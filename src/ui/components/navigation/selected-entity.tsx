@@ -17,10 +17,13 @@ import React from "react";
 import { Link, matchPath, useLocation } from "react-router-dom";
 import "twin.macro";
 
-import { useAgent, useGroup, useRouteParams } from "hooks";
+import {
+  useAdminConnection, useAgent, useGroup, useRouteParams,
+} from "hooks";
 import { getPagePath, routes } from "common";
 import { convertAgentName } from "utils";
 import { IndicatorInEdge } from "components/indicator-in-edge";
+import { AgentBuildInfo } from "types";
 import { CubeWithTooltip } from "../cubes";
 import { AgentStatusBadge } from "../agent-status-badge";
 import { usePanelContext } from "../panels";
@@ -43,9 +46,8 @@ export const SelectedEntity = () => {
 };
 
 const SelectedAgent = ({ isSelectedPanelOpen }: Props) => {
-  const {
-    name = "", id = "", status,
-  } = useAgent();
+  const { name = "", id = "" } = useAgent();
+  const [activeBuildInfo] = useAdminConnection<AgentBuildInfo[]>(`/api/agent/${id}/builds`) || [];
   const { pathname } = useLocation();
   const { isExact } = matchPath(pathname, { path: routes.agentDashboard }) || {};
 
@@ -54,7 +56,7 @@ const SelectedAgent = ({ isSelectedPanelOpen }: Props) => {
       <IndicatorInEdge
         isHidden={false}
         position="bottom-right"
-        indicatorContent={<AgentStatusBadge status={status} />}
+        indicatorContent={<AgentStatusBadge status={activeBuildInfo?.buildStatus} />}
         style={{ bottom: "3px", right: "3px" }}
       >
         <CubeWithTooltip tooltip={name} isActive={isExact && !isSelectedPanelOpen} tw="text-14 text-monochrome-medium-tint">

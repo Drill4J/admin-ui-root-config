@@ -13,11 +13,14 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-import { AgentInfo } from "types";
-import { useAdminConnection } from "./use-admin-connection";
-import { useRouteParams } from "./use-route-params";
+import { BuildStatus } from "types";
 
-export const useAgent = (id?:string) => {
-  const { agentId = "" } = useRouteParams();
-  return useAdminConnection<AgentInfo>(`/agents/${id || agentId}`) || {};
+const BUSY: BuildStatus = "BUSY";
+const OFFLINE: BuildStatus = "OFFLINE";
+const ONLINE: BuildStatus = "ONLINE";
+
+export const BUILD_STATUS = {
+  BUSY,
+  OFFLINE,
+  ONLINE,
 };

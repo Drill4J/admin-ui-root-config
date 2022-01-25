@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 import React from "react";
-import { BrowserRouter, Route } from "react-router-dom";
+import { BrowserRouter, Route, Switch } from "react-router-dom";
 import "twin.macro";
 
 import { LoginPage, PageSwitcher } from "pages";
@@ -34,14 +34,16 @@ const Root = () => (
     <TypographyStyles />
     <LayoutStyles />
     <NotificationManager />
-    <Route exact path={routes.login} component={LoginPage} />
-    <PanelProvider>
-      <div tw="flex flex-row w-full h-full">
-        <Navigation />
-        <PageSwitcher />
-      </div>
-      <Panels />
-    </PanelProvider>
+    <Switch>
+      <Route exact path={routes.login} component={LoginPage} />
+      <PanelProvider>
+        <div tw="flex flex-row w-full h-full">
+          <Navigation />
+          <PageSwitcher />
+        </div>
+        <Panels />
+      </PanelProvider>
+    </Switch>
     <SetPluginUrlModal />
   </BrowserRouter>
 );

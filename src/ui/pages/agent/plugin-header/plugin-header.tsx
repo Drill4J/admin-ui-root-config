@@ -20,14 +20,47 @@ import {
 } from "@drill4j/ui-kit";
 import tw, { styled, css } from "twin.macro";
 
-import { AGENT_STATUS } from "common/constants";
-import { AgentStatus } from "types/agent-status";
+import { BuildStatus } from "types";
+import { BUILD_STATUS } from "common";
 import LogoSvg from "./logo.svg";
 
 interface Props {
   agentName?: string;
-  agentStatus?: AgentStatus;
+  agentBuildStatus?: BuildStatus;
 }
+
+export const PluginHeader = ({ agentName, agentBuildStatus }: Props) => (
+  <div tw="flex w-full h-28">
+    <div tw="flex justify-between items-center w-full h-full px-6">
+      <div className="flex items-center w-full">
+        <LogoWrapper>
+          <img tw="absolute bottom-0 left-0" src={LogoSvg} alt="" />
+        </LogoWrapper>
+        <AgentInfo>
+          <div className="text-ellipsis text-32 leading-40" title={agentName}>
+            {agentName}
+          </div>
+          <div className="flex items-center w-full">
+            <AgentStatusWrapper status={agentBuildStatus}>
+              {capitalize(snakeToSpaces(agentBuildStatus))}
+            </AgentStatusWrapper>
+            <div className="flex items-center ml-2">
+              {agentBuildStatus === BUILD_STATUS.BUSY && <Spinner />}
+            </div>
+          </div>
+        </AgentInfo>
+      </div>
+      <SettingsButton
+        tw="link"
+        to=""
+        disabled={agentBuildStatus === BUILD_STATUS.OFFLINE}
+        data-test="plugin-header:settings-button"
+      >
+        <Icons.Settings />
+      </SettingsButton>
+    </div>
+  </div>
+);
 
 const LogoWrapper = styled.div`
   ${tw`relative w-20 h-20 border-2 border-monochrome-black rounded-full`}
@@ -72,45 +105,11 @@ const SettingsButton = styled(Link)(({ disabled }: { disabled?: boolean }) => [
   `,
 ]);
 const AgentStatusWrapper = styled.div(
-  ({ status }: { status?: AgentStatus }) => [
+  ({ status }: { status?: BuildStatus }) => [
     tw`flex justify-center items-center px-2`,
     tw`border border-current-color rounded-full font-bold text-12 leading-20`,
-    status === "BUSY" && tw`text-orange-default`,
-    status === "NOT_REGISTERED" && tw`text-monochrome-default`,
-    status === "OFFLINE" && tw`text-monochrome-default`,
-    status === "ONLINE" && tw`text-green-default`,
+    status === BUILD_STATUS.BUSY && tw`text-orange-default`,
+    status === BUILD_STATUS.OFFLINE && tw`text-monochrome-default`,
+    status === BUILD_STATUS.ONLINE && tw`text-green-default`,
   ],
-);
-
-export const PluginHeader = ({ agentName, agentStatus }: Props) => (
-  <div tw="flex w-full h-28">
-    <div tw="flex justify-between items-center w-full h-full px-6">
-      <div className="flex items-center w-full">
-        <LogoWrapper>
-          <img tw="absolute bottom-0 left-0" src={LogoSvg} alt="" />
-        </LogoWrapper>
-        <AgentInfo>
-          <div className="text-ellipsis text-32 leading-40" title={agentName}>
-            {agentName}
-          </div>
-          <div className="flex items-center w-full">
-            <AgentStatusWrapper status={agentStatus}>
-              {capitalize(snakeToSpaces(agentStatus))}
-            </AgentStatusWrapper>
-            <div className="flex items-center ml-2">
-              {agentStatus === AGENT_STATUS.BUSY && <Spinner />}
-            </div>
-          </div>
-        </AgentInfo>
-      </div>
-      <SettingsButton
-        tw="link"
-        to=""
-        disabled={agentStatus === AGENT_STATUS.OFFLINE}
-        data-test="plugin-header:settings-button"
-      >
-        <Icons.Settings />
-      </SettingsButton>
-    </div>
-  </div>
 );

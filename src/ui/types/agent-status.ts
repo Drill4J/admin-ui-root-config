@@ -13,4 +13,4 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-export type AgentStatus = "ONLINE" | "OFFLINE" | "NOT_REGISTERED" | "BUSY";
+export type AgentStatus = "NOT_REGISTERED" | "PREREGISTERED" | "REGISTERING" | "REGISTERED"

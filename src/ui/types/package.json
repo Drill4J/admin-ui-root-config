@@ -1,8 +1,11 @@
 {
   "name": "@drill4j/types-admin",
-  "version": "1.0.1",
+  "version": "1.1.0",
   "main": "dist/index.js",
   "types": "index.d.ts",
+  "scripts": {
+    "build": "tsc"
+  },
   "dependencies": {
     "typescript": "^4.1.2"
   }

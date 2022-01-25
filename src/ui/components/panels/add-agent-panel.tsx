@@ -18,7 +18,7 @@ import { Button, LinkButton, Icons } from "@drill4j/ui-kit";
 import tw, { styled } from "twin.macro";
 
 import { useAdminConnection } from "hooks";
-import { Agent, ServiceGroup } from "types";
+import { AgentInfo, ServiceGroup } from "types";
 import { AGENT_STATUS } from "common";
 import { PanelProps } from "./panel-props";
 import { PanelWithCloseIcon } from "./panel-with-close-icon";
@@ -26,11 +26,11 @@ import { useSetPanelContext } from "./panel-context";
 import { PanelStub } from "../panel-stub";
 
 export const AddAgentPanel = ({ isOpen, onClosePanel }: PanelProps) => {
-  const agentsList = useAdminConnection<Agent[]>("/api/agents") || [];
+  const agentsList = useAdminConnection<AgentInfo[]>("/api/agents") || [];
   const groupsList = useAdminConnection<ServiceGroup[]>("/api/groups") || [];
   const setPanel = useSetPanelContext();
-  const notRegisteredAgents = agentsList.filter((agent) => !agent.group && agent.status === AGENT_STATUS.NOT_REGISTERED);
-  const notRegisteredGroupsAgents = agentsList.filter((agent) => agent.group && agent.status === AGENT_STATUS.NOT_REGISTERED);
+  const notRegisteredAgents = agentsList.filter((agent) => !agent.group && agent.agentStatus === AGENT_STATUS.NOT_REGISTERED);
+  const notRegisteredGroupsAgents = agentsList.filter((agent) => agent.group && agent.agentStatus === AGENT_STATUS.NOT_REGISTERED);
   const groups = groupsList.map((group) => ({
     group,
     agents: notRegisteredGroupsAgents.filter((agent) => group.name === agent.group),
@@ -95,7 +95,7 @@ export const AddAgentPanel = ({ isOpen, onClosePanel }: PanelProps) => {
 };
 
 interface GroupRowProps {
-  agents: Agent[];
+  agents: AgentInfo[];
   group: ServiceGroup;
 }
 
@@ -134,7 +134,7 @@ const GroupRow = ({ group, agents }:GroupRowProps) => {
   );
 };
 
-const AgentRow = ({ agent }: { agent: Agent}) => {
+const AgentRow = ({ agent }: { agent: AgentInfo}) => {
   const setPanel = useSetPanelContext();
   const { name, agentType, group } = agent;
   return (

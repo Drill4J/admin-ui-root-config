@@ -13,11 +13,14 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-import { AgentInfo } from "types";
-import { useAdminConnection } from "./use-admin-connection";
-import { useRouteParams } from "./use-route-params";
+import { BuildStatus } from "./build-status";
+import { SystemSettings } from "./system-settings";
 
-export const useAgent = (id?:string) => {
-  const { agentId = "" } = useRouteParams();
-  return useAdminConnection<AgentInfo>(`/agents/${id || agentId}`) || {};
-};
+export interface AgentBuildInfo {
+  buildVersion?: string;
+  buildStatus?: BuildStatus;
+  ipAddress?: string;
+  agentVersion?: string ;
+  systemSettings?: SystemSettings;
+  instanceIds?: string[];
+}
