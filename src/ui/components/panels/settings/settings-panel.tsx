@@ -16,7 +16,17 @@
 import React, { useState } from "react";
 import axios from "axios";
 import {
-  Button, capitalize, Formik, Form, formatPackages, parsePackages, composeValidators, requiredArray, sizeLimit, required, Spinner,
+  Button,
+  capitalize,
+  Formik,
+  Form,
+  formatPackages,
+  parsePackages,
+  composeValidators,
+  requiredArray,
+  sizeLimit,
+  required,
+  Spinner,
 } from "@drill4j/ui-kit";
 import { sendNotificationEvent } from "@drill4j/send-notification-event";
 import tw, { styled } from "twin.macro";
@@ -29,19 +39,29 @@ import { SystemSettingsForm } from "./agent-settings/system-settings-form";
 import { PluginsSettingsTab } from "./agent-settings/plugins-settings-tab";
 import { UnSaveChangesModal } from "./un-save-changes-modal";
 
-export const SettingsPanel = ({ isOpen, onClosePanel, payload }: PanelProps) => {
+export const SettingsPanel = ({
+  isOpen,
+  onClosePanel,
+  payload,
+}: PanelProps) => {
   const [activeTab, setActiveTab] = useState("general");
   const [nextTab, setNextTab] = useState("");
-  const SystemSettings = payload.agentType === "Node.js" ? JsSystemSettingsForm : SystemSettingsForm;
+  const SystemSettings =
+    payload.agentType === "Node.js" ? JsSystemSettingsForm : SystemSettingsForm;
 
   const handleSubmit = async (values: Agent) => {
     try {
       await saveSettings(activeTab, values);
-      sendNotificationEvent({ type: "SUCCESS", text: "New settings have been saved" });
+      sendNotificationEvent({
+        type: "SUCCESS",
+        text: "New settings have been saved",
+      });
     } catch ({ response: { data: { message } = {} } = {} }) {
       sendNotificationEvent({
         type: "ERROR",
-        text: message || "On-submit error. Server problem or operation could not be processed in real-time",
+        text:
+          message ||
+          "On-submit error. Server problem or operation could not be processed in real-time",
       });
     }
   };
@@ -106,7 +126,11 @@ export const SettingsPanel = ({ isOpen, onClosePanel, payload }: PanelProps) => 
             <UnSaveChangesModal
               isOpen={Boolean(nextTab)}
               onToggle={() => setNextTab("")}
-              onLeave={() => { resetForm(); setNextTab(""); setActiveTab(nextTab); }}
+              onLeave={() => {
+                resetForm();
+                setNextTab("");
+                setActiveTab(nextTab);
+              }}
             />
           </Form>
         </PanelWithCloseIcon>
@@ -114,58 +138,80 @@ export const SettingsPanel = ({ isOpen, onClosePanel, payload }: PanelProps) => 
     </Formik>
   );
 };
-// MOVE to ui-ki
+// TODO MOVE to ui-ki
 const Tab = styled.div`
   ${tw`
       relative inline-flex text-14 leading-20 text-monochrome-default font-bold cursor-pointer capitalize
       hover:text-blue-medium-tint
   `};
 
-  ${({ active }: { active: boolean }) => active && tw`
+  ${({ active }: { active: boolean }) =>
+    active &&
+    tw`
     text-blue-default
     after:(content block absolute top-7 h-1 w-full bg-blue-default rounded-t-lg)
   `}
 `;
 
-function saveSettings(activeTab: string, values: Agent): undefined | Promise<any> {
+function saveSettings(
+  activeTab: string,
+  values: Agent,
+): undefined | Promise<any> {
   const {
-    id, name, agentType, description, environment, systemSettings: { sessionIdHeaderName, packages = "", targetHost } = {},
+    id,
+    name,
+    agentType,
+    description,
+    environment,
+    systemSettings: { sessionIdHeaderName, packages = "", targetHost } = {},
   } = values;
   // fix this
-  const systemSettings = agentType === "Node.js"
-    ? { targetHost }
-    : {
-      packages: Array.isArray(packages) ? packages : parsePackages(packages).filter(Boolean),
-      sessionIdHeaderName,
-      targetHost,
-    };
+  const systemSettings =
+    agentType === "Node.js"
+      ? { targetHost }
+      : {
+        packages: Array.isArray(packages)
+          ? packages
+          : parsePackages(packages).filter(Boolean),
+        sessionIdHeaderName,
+        targetHost,
+      };
 
   switch (activeTab) {
-    case "general": return agentType === "Group"
-      ? axios.put(`/groups/${id}`, { name, description, environment })
-      : axios.patch(`/agents/${id}/info`, { name, description, environment });
-    case "system": return axios.put(`/${agentType === "Group" ? "groups" : "agents"}/${id}/system-settings`, systemSettings);
-    default: return undefined;
+    case "general":
+      return agentType === "Group"
+        ? axios.put(`/groups/${id}`, { name, description, environment })
+        : axios.patch(`/agents/${id}/info`, { name, description, environment });
+    case "system":
+      return axios.put(
+        `/${agentType === "Group" ? "groups" : "agents"}/${id}/system-settings`,
+        systemSettings,
+      );
+    default:
+      return undefined;
   }
 }
 
 function getTabValidationSchema(activeTab: string) {
   switch (activeTab) {
-    case "general": return composeValidators(
-      required("name"),
-      sizeLimit({ name: "name" }),
-      sizeLimit({ name: "environment" }),
-      sizeLimit({ name: "description", min: 3, max: 256 }),
-    );
-    case "system": return composeValidators(
-      requiredArray("systemSettings.packages", "Path prefix is required."),
-      sizeLimit({
-        name: "systemSettings.sessionIdHeaderName",
-        alias: "Session header name",
-        min: 1,
-        max: 256,
-      }),
-    );
-    default: return undefined;
+    case "general":
+      return composeValidators(
+        required("name"),
+        sizeLimit({ name: "name" }),
+        sizeLimit({ name: "environment" }),
+        sizeLimit({ name: "description", min: 3, max: 256 }),
+      );
+    case "system":
+      return composeValidators(
+        requiredArray("systemSettings.packages", "Path prefix is required."),
+        sizeLimit({
+          name: "systemSettings.sessionIdHeaderName",
+          alias: "Session header name",
+          min: 1,
+          max: 256,
+        }),
+      );
+    default:
+      return undefined;
   }
 }

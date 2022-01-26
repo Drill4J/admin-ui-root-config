@@ -74,7 +74,7 @@ async function registerAgent({
   plugins,
   systemSettings,
 }: Agent) {
-  await axios.patch(`/agents/${id}`, {
+  await axios.post(`/agents/${id}`, {
     name,
     environment,
     description,

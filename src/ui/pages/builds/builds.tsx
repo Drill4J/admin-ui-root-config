@@ -35,7 +35,6 @@ export const Builds = () => {
           <span tw="text-monochrome-default">{buildVersions.length}</span>
         </div>
         <Table
-          isDefaulToggleSortBy
           columns={[
             {
               Header: "Name",

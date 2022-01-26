@@ -13,18 +13,16 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-import React, { useState } from "react";
+import React, { useMemo, useState } from "react";
 import { useHistory } from "react-router-dom";
-import {
-  Badge, Icons, Spinner, Button,
-} from "@drill4j/ui-kit";
+import { Icons, Spinner, Button } from "@drill4j/ui-kit";
 import "twin.macro";
 
 import { convertAgentName } from "utils";
 import { AgentStatusBadge, NoAgentsSvg, PanelStub } from "components";
 import { useAdminConnection, useRouteParams } from "hooks";
 import {
-  Agent, ServiceGroup,
+  ActiveAgentBuilds, AgentInfo, BuildStatus, ServiceGroup,
 } from "types";
 import { AGENT_STATUS, getPagePath } from "common";
 import { Panel } from "../panel";
@@ -35,15 +33,21 @@ import {
 import { useSetPanelContext } from "../panel-context";
 
 export const SelectAgentPanel = ({ isOpen, onClosePanel }: PanelProps) => {
-  const agentsList = useAdminConnection<Agent[]>("/api/agents") || [];
+  const agentsList = useAdminConnection<AgentInfo[]>("/api/agents") || [];
   const groupsList = useAdminConnection<ServiceGroup[]>("/api/groups") || [];
+  const registeredAgentsBuilds = useAdminConnection<ActiveAgentBuilds[]>("/api/agents/build") || [];
   const setPanel = useSetPanelContext();
-  const agents = agentsList.filter((agent) => !agent.group && agent.status !== AGENT_STATUS.NOT_REGISTERED);
-  const groupsAgents = agentsList.filter((agent) => agent.group && agent.status !== AGENT_STATUS.NOT_REGISTERED);
-  const groups = groupsList.map((group) => ({
+
+  const agents = useMemo(() => agentsList
+    .filter((agent) => !agent.group && agent.agentStatus !== AGENT_STATUS.NOT_REGISTERED), [agentsList]);
+  const groupsAgents = useMemo(() => agentsList
+    .filter((agent) => agent.group && agent.agentStatus !== AGENT_STATUS.NOT_REGISTERED), [agentsList]);
+  const registeredAgentsBuildsStatuses = useMemo(() => registeredAgentsBuilds
+    .reduce((acc, { agentId, builds }) => ({ ...acc, [agentId]: builds.buildStatus }), {}), [registeredAgentsBuilds]);
+  const groups = useMemo(() => groupsList.map((group) => ({
     group,
     agents: groupsAgents.filter((agent) => group.id === agent.group),
-  }));
+  })), [groupsList, groupsAgents]);
 
   return (
     <Panel
@@ -65,8 +69,8 @@ export const SelectAgentPanel = ({ isOpen, onClosePanel }: PanelProps) => {
           </Layout>
           <div tw="flex flex-col gap-y-[6px] overflow-y-auto">
             {groups.map(({ group, agents: groupAgents }) => groupAgents.length > 0
-            && <GroupRow key={group?.id} group={group} agents={groupAgents} />)}
-            {agents.map((agent) => <AgentRow key={agent.id} {...agent} />)}
+            && <GroupRow key={group?.id} group={group} agents={groupAgents} agentBuildStatuses={registeredAgentsBuildsStatuses} />)}
+            {agents.map((agent) => <AgentRow key={agent.id} agent={agent} buildStatus={registeredAgentsBuildsStatuses[agent.id]} />)}
           </div>
         </div>
       ) : (
@@ -93,15 +97,20 @@ export const SelectAgentPanel = ({ isOpen, onClosePanel }: PanelProps) => {
   );
 };
 
-const AgentRow = (agent: Agent) => {
+interface AgentRowProps {
+  agent: AgentInfo;
+  buildStatus?: BuildStatus;
+}
+
+const AgentRow = ({ agent, buildStatus }: AgentRowProps) => {
   const {
-    name = "", description = "", agentType = "", status, id = "", group, agentVersion,
+    name = "", description = "", agentType = "", agentStatus, id = "", group,
   } = agent;
   const { agentId } = useRouteParams();
   const { push } = useHistory();
   const setPanel = useSetPanelContext();
-  const isPreregisteredAgent = agentType === "Java" && !agentVersion;
-  const isRegistering = status === AGENT_STATUS.REGISTERING;
+  const isPreregisteredAgent = agentStatus === AGENT_STATUS.PREREGISTERED;
+  const isRegistering = agentStatus === AGENT_STATUS.REGISTERING;
   const isSelectedAgent = agentId === id;
 
   if (isRegistering) return <RegisteringAgentRow {...agent} />;
@@ -122,10 +131,10 @@ const AgentRow = (agent: Agent) => {
         }
       }}
     >
-      <Badge color="green" bold tw="opacity-0">NEW</Badge>
+      <div /> {/* Hack for save layout */}
       <CubeWrapper isActive={isSelectedAgent}>{convertAgentName(name)}</CubeWrapper>
       <NameColumn title={name}>
-        <AgentStatusBadge status={status} />
+        <AgentStatusBadge status={buildStatus} />
         <span>{name}</span>
       </NameColumn>
       <Column title={description}>{description}</Column>
@@ -144,13 +153,15 @@ const AgentRow = (agent: Agent) => {
 };
 
 interface GroupRowProps {
-  agents: Agent[];
+  agents: AgentInfo[];
   group: ServiceGroup;
+  agentBuildStatuses: Record<string, BuildStatus>
 }
 
-const GroupRow = ({ agents = [], group }: GroupRowProps) => {
+const GroupRow = ({ agents = [], group, agentBuildStatuses }: GroupRowProps) => {
   const { groupId, agentId: selectedAgentId } = useRouteParams();
-  const [isOpen, setIsOpen] = useState(agents.some(agent => agent.id === selectedAgentId || agent.status === AGENT_STATUS.REGISTERING));
+  const [isOpen, setIsOpen] = useState(agents.some(agent =>
+    agent.id === selectedAgentId || agent.agentStatus === AGENT_STATUS.REGISTERING));
   const { push } = useHistory();
   const setPanel = useSetPanelContext();
   const { id = "", name: groupName = "", description } = group;
@@ -194,12 +205,12 @@ const GroupRow = ({ agents = [], group }: GroupRowProps) => {
           }) as any}
         />
       </StyledGroupRow>
-      {isOpen && agents.map((agent) => <AgentRow key={agent.id} {...agent} />)}
+      {isOpen && agents.map((agent) => <AgentRow key={agent.id} agent={agent} buildStatus={agentBuildStatuses[agent.id]} />)}
     </div>
   );
 };
 
-const PreregisteredAgentRow = (agent: Agent) => {
+const PreregisteredAgentRow = (agent: AgentInfo) => {
   const setPanel = useSetPanelContext();
   const {
     name = "", description, agentType,
@@ -207,7 +218,7 @@ const PreregisteredAgentRow = (agent: Agent) => {
   return (
     <Row tw="text-opacity-40">
       <CubeWrapper tw="col-start-2">{convertAgentName(name)}</CubeWrapper>
-      <NameColumn title={name}>{name}      </NameColumn>
+      <NameColumn title={name}>{name}</NameColumn>
       <Column title={description}>{description}</Column>
       <Column title={agentType}>{agentType}</Column>
       <Icons.Settings
@@ -224,12 +235,12 @@ const PreregisteredAgentRow = (agent: Agent) => {
 };
 
 const RegisteringAgentRow = ({
-  name = "", status, description, agentType,
-}: Agent) => (
+  name = "", description, agentType,
+}: AgentInfo) => (
   <Row tw="text-opacity-40">
+    <div /> {/* Hack for save layout */}
     <div tw="flex justify-center items-center"><Spinner /></div>
     <NameColumn title={name}>
-      <AgentStatusBadge status={status} />
       <span>Registering: {name}</span>
     </NameColumn>
     <Column title={description}>{description}</Column>

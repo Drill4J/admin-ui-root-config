@@ -14,26 +14,29 @@
  * limitations under the License.
  */
 import React, { useEffect } from "react";
-import {
-  Route, Switch, useParams,
-} from "react-router-dom";
+import { Route, Switch, useParams } from "react-router-dom";
 import axios from "axios";
 import "twin.macro";
 
 import { useAdminConnection, useAgent } from "hooks";
 import { routes } from "common";
-import { Notification } from "types";
+import { AgentBuildInfo, Notification } from "types";
+import { useSetPanelContext } from "components";
 import { Dashboard } from "../dashboard";
 import { Plugin } from "./plugin";
 import { PluginHeader } from "./plugin-header";
-import { useSetPanelContext } from "../../components";
 
 export const AgentPage = () => {
-  const { agentId = "", buildVersion = "" } = useParams<{ agentId?: string; buildVersion?: string; }>();
+  const { agentId = "", buildVersion = "" } =
+    useParams<{ agentId?: string; buildVersion?: string }>();
   const agent = useAgent();
+  const [activeBuildInfo] = useAdminConnection<AgentBuildInfo[]>(`/api/agent/${agent.id}/builds`) || [];
   const setPanel = useSetPanelContext();
-  const notifications = useAdminConnection<Notification[]>("/notifications") || [];
-  const newBuildNotification = notifications.find((notification) => notification.agentId === agentId) || {};
+  const notifications =
+    useAdminConnection<Notification[]>("/notifications") || [];
+  const newBuildNotification =
+    notifications.find((notification) => notification.agentId === agentId) ||
+    {};
   useEffect(() => {
     if (
       !newBuildNotification?.read &&
@@ -47,7 +50,7 @@ export const AgentPage = () => {
 
   return (
     <div tw="flex flex-col w-full">
-      <PluginHeader agentName={agent.name} agentStatus={agent.status} />
+      <PluginHeader agentName={agent.name} agentBuildStatus={activeBuildInfo?.buildStatus} />
       <Switch>
         <Route
           exact
@@ -62,7 +65,10 @@ export const AgentPage = () => {
 
 async function readNotification(
   notificationId: string,
-  { onSuccess, onError }: { onSuccess?: () => void; onError?: (message: string) => void } = {},
+  {
+    onSuccess,
+    onError,
+  }: { onSuccess?: () => void; onError?: (message: string) => void } = {},
 ) {
   try {
     await axios.patch(`/notifications/${notificationId}/read`);

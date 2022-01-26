@@ -15,10 +15,22 @@
  */
 import React from "react";
 import { Icons } from "@drill4j/ui-kit";
+import { getPagePath, TOKEN_KEY } from "common";
+import { useHistory } from "react-router-dom";
 import { CubeWithTooltip } from "../cubes";
 
-export const Logout = () => (
-  <CubeWithTooltip tooltip="Logout">
-    <Icons.Logout />
-  </CubeWithTooltip>
-);
+export const Logout = () => {
+  const { push } = useHistory();
+
+  return (
+    <CubeWithTooltip
+      tooltip="Logout"
+      onClick={() => {
+        localStorage.removeItem(TOKEN_KEY);
+        push(getPagePath({ name: "login" }));
+      }}
+    >
+      <Icons.Logout />
+    </CubeWithTooltip>
+  );
+};

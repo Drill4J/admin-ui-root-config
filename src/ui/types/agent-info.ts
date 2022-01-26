@@ -13,11 +13,18 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-import { AgentInfo } from "types";
-import { useAdminConnection } from "./use-admin-connection";
-import { useRouteParams } from "./use-route-params";
+import { AgentStatus } from "./agent-status";
+import { Plugin } from "./plugin";
 
-export const useAgent = (id?:string) => {
-  const { agentId = "" } = useRouteParams();
-  return useAdminConnection<AgentInfo>(`/agents/${id || agentId}`) || {};
-};
+export interface AgentInfo {
+  id: string;
+  group: string;
+  name: string;
+  description: string ;
+  environment: string
+  agentStatus: AgentStatus;
+  adminUrl: string;
+  activePluginsCount: number;
+  agentType: string;
+  plugins: Plugin[];
+}

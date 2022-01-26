@@ -30,3 +30,7 @@ export type { ServiceGroupAgents } from "./service-group-agents";
 export type { ServiceGroupEntity } from "./service-group-entity";
 export type { Sort, Order } from "./sort";
 export type { SystemSettings } from "./system-settings";
+export type { BuildStatus } from "./build-status";
+export type { AgentInfo } from "./agent-info";
+export type { AgentBuildInfo } from "./agent-build-info";
+export type { ActiveAgentBuilds } from "./active-agent-builds";
