@@ -25,13 +25,12 @@ export const AlertManager = () => {
   const [alerts, setAlerts] = useState<IAlert[]>([]);
   const [isLastMassageWasConnectionError, setIsLastMassageWasConnectionError] = useState(false);
   const { pathname = "" } = useLocation();
-
   function handleShowMessage(e: CustomEvent<IAlert>) {
     const alert = e.detail;
     const deleteAlert = () => {
-      setAlerts(alerts.filter(value => value.id !== alert.id));
+      setAlerts((prevAlertsState) => prevAlertsState.filter(value => value.id !== alert.id));
     };
-    if (e.detail.type === "SUCCESS") {
+    if (alert.type === "SUCCESS") {
       const timerId = setTimeout(deleteAlert, 3000);
       alert.onClose = () => {
         clearTimeout(timerId);
@@ -41,7 +40,7 @@ export const AlertManager = () => {
       alert.onClose = deleteAlert;
     }
 
-    setAlerts([...alerts, alert]);
+    setAlerts((prevAlertsState) => [...prevAlertsState, alert]);
   }
 
   useEffect(() => {
