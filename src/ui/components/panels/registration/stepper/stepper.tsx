@@ -22,7 +22,7 @@ import "twin.macro";
 import { sendNotificationEvent } from "@drill4j/send-notification-event";
 import { useSetPanelContext } from "components";
 import { useSessionStorage } from "hooks";
-import { Agent } from "types/agent";
+import { Agent } from "types";
 import { StepLabel } from "./step-label";
 import { PanelWithCloseIcon } from "../../panel-with-close-icon";
 

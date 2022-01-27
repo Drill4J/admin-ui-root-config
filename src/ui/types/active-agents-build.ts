@@ -15,7 +15,7 @@
  */
 import { AgentBuildInfo } from "./agent-build-info";
 
-export interface ActiveAgentBuilds {
-  agentId?: string;
-  builds?: AgentBuildInfo;
+export interface ActiveAgentsBuild {
+  agentId: string;
+  build: AgentBuildInfo;
 }

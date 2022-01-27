@@ -17,7 +17,7 @@ import React from "react";
 import { nanoid } from "nanoid";
 import tw, { styled } from "twin.macro";
 
-import { DrillVersion } from "types/drill-version";
+import { DrillVersion } from "types";
 import packageJson from "../../../../package.json";
 import { useAdminConnection } from "../../hooks";
 

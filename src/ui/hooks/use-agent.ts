@@ -17,7 +17,7 @@ import { AgentInfo } from "types";
 import { useAdminConnection } from "./use-admin-connection";
 import { useRouteParams } from "./use-route-params";
 
-export const useAgent = (id?:string) => {
+export const useAgent = (id?:string): AgentInfo => {
   const { agentId = "" } = useRouteParams();
-  return useAdminConnection<AgentInfo>(`/agents/${id || agentId}`) || {};
+  return useAdminConnection<AgentInfo>(`/agents/${id || agentId}`) || {} as AgentInfo;
 };

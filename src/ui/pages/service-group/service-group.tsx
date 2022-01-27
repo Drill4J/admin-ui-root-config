@@ -19,9 +19,8 @@ import {
   useParams, Route, Switch,
 } from "react-router-dom";
 
-import { ServiceGroup as ServiceGroupType } from "types/service-group";
+import { ServiceGroup as ServiceGroupType, Agent } from "types";
 import { useAdminConnection } from "hooks";
-import { Agent } from "types/agent";
 import { routes } from "common";
 import { useSetPanelContext } from "components";
 import { ServiceGroupHeader } from "./service-group-header";

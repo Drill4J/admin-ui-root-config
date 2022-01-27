@@ -19,8 +19,7 @@ import { Link } from "react-router-dom";
 import { Icons, Button } from "@drill4j/ui-kit";
 import "twin.macro";
 
-import { Agent } from "types/agent";
-import { Plugin } from "types/plugin";
+import { Agent, Plugin } from "types";
 import { useAdminConnection } from "hooks";
 import { PluginCard } from "components";
 import { getPagePath } from "common";
@@ -33,7 +32,7 @@ interface Props {
 export const PluginsSettingsTab = ({ agent }: Props) => {
   const plugins = useAdminConnection<Plugin[]>(`/${agent.agentType === "Group" ? "groups" : "agents"}/${agent.id}/plugins`) || [];
   const installedPlugins = plugins.filter((plugin) => !plugin.available);
-  const { id: agentId = "", buildVersion = "" } = agent;
+  const { id: agentId = "" } = agent;
 
   return (
     <div tw="w-full space-y-1">

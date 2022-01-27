@@ -20,8 +20,8 @@ export interface AgentInfo {
   id: string;
   group: string;
   name: string;
-  description: string ;
-  environment: string
+  description: string;
+  environment: string;
   agentStatus: AgentStatus;
   adminUrl: string;
   activePluginsCount: number;

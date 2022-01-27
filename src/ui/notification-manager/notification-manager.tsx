@@ -18,7 +18,7 @@ import React, {
 } from "react";
 import { MessagePanel } from "@drill4j/ui-kit";
 
-import { Message } from "types/message";
+import { Message } from "types";
 import { defaultAdminSocket } from "common/connection";
 import { useLocation } from "react-router-dom";
 import { sendNotificationEvent } from "@drill4j/send-notification-event";

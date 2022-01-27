@@ -22,7 +22,7 @@ import { convertAgentName } from "utils";
 import { AgentStatusBadge, NoAgentsSvg, PanelStub } from "components";
 import { useAdminConnection, useRouteParams } from "hooks";
 import {
-  ActiveAgentBuilds, AgentInfo, BuildStatus, ServiceGroup,
+  AgentInfo, BuildStatus, ServiceGroup, ActiveAgentsBuild,
 } from "types";
 import { AGENT_STATUS, getPagePath } from "common";
 import { Panel } from "../panel";
@@ -35,15 +35,15 @@ import { useSetPanelContext } from "../panel-context";
 export const SelectAgentPanel = ({ isOpen, onClosePanel }: PanelProps) => {
   const agentsList = useAdminConnection<AgentInfo[]>("/api/agents") || [];
   const groupsList = useAdminConnection<ServiceGroup[]>("/api/groups") || [];
-  const registeredAgentsBuilds = useAdminConnection<ActiveAgentBuilds[]>("/api/agents/build") || [];
+  const registeredAgentsBuilds = useAdminConnection<ActiveAgentsBuild[]>("/api/agents/build") || [];
   const setPanel = useSetPanelContext();
 
   const agents = useMemo(() => agentsList
     .filter((agent) => !agent.group && agent.agentStatus !== AGENT_STATUS.NOT_REGISTERED), [agentsList]);
   const groupsAgents = useMemo(() => agentsList
     .filter((agent) => agent.group && agent.agentStatus !== AGENT_STATUS.NOT_REGISTERED), [agentsList]);
-  const registeredAgentsBuildsStatuses = useMemo(() => registeredAgentsBuilds
-    .reduce((acc, { agentId, builds }) => ({ ...acc, [agentId]: builds.buildStatus }), {}), [registeredAgentsBuilds]);
+  const registeredAgentsBuildsStatuses: Record<string, BuildStatus> = useMemo(() => registeredAgentsBuilds
+    .reduce((acc, { agentId, build }) => ({ ...acc, [agentId]: build.buildStatus }), {}), [registeredAgentsBuilds]);
   const groups = useMemo(() => groupsList.map((group) => ({
     group,
     agents: groupsAgents.filter((agent) => group.id === agent.group),
@@ -205,7 +205,7 @@ const GroupRow = ({ agents = [], group, agentBuildStatuses }: GroupRowProps) => 
           }) as any}
         />
       </StyledGroupRow>
-      {isOpen && agents.map((agent) => <AgentRow key={agent.id} agent={agent} buildStatus={agentBuildStatuses[agent.id]} />)}
+      {isOpen && agents.map((agent: AgentInfo) => <AgentRow key={agent.id} agent={agent} buildStatus={agentBuildStatuses[agent.id]} />)}
     </div>
   );
 };
