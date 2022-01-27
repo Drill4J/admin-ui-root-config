@@ -17,7 +17,7 @@ import { useEffect, useState } from "react";
 import { sendNotificationEvent } from "@drill4j/send-notification-event";
 
 const devModePaths = {
-  test2code: "http://localhost:8080/Drill4J-test-to-code.js",
+  test2code: "http://localhost:7087/Drill4J-test-to-code.js",
   stateWatcher: "http://localhost:8090/Drill4J-state-watcher-ui.js",
 };
 

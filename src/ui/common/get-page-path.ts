@@ -28,7 +28,7 @@ export const routes = {
   agentDashboard: "/agents/:agentId",
   agentPlugin: "/agents/:agentId/plugins/:pluginId",
   serviceGroupPlugin: "/groups/:groupId/plugins/:pluginId",
-  serviceGroupDashboard: "/groups/group/:groupId/dashboard",
+  serviceGroupDashboard: "/groups/:groupId/dashboard",
   login: "/login",
   builds: "/agents/:agentId/builds",
 };
