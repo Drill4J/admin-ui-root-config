@@ -15,14 +15,13 @@
  */
 import React, { useState } from "react";
 import {
-  Panel, Button, Spinner, useCloseModal,
+  Panel, Button, Spinner, useCloseModal, sendAlertEvent,
 } from "@drill4j/ui-kit";
 import { matchPath, useLocation } from "react-router-dom";
 import tw, { styled } from "twin.macro";
 
 import { Plugin } from "types/plugin";
 import { routes } from "common";
-import { sendNotificationEvent } from "@drill4j/send-notification-event";
 import { SelectableList } from "./selectable-list";
 import { loadPlugins } from "./load-plugins";
 
@@ -52,11 +51,11 @@ export const AddPluginsModal = ({
   const handleLoadPlugins = loadPlugins(agentId ? `/agents/${agentId}/plugins` : `/groups/${groupId}/plugins`, {
     onSuccess: () => {
       closeModal();
-      sendNotificationEvent({ type: "SUCCESS", text: "Plugin has been added" });
+      sendAlertEvent({ type: "SUCCESS", title: "Plugin has been added" });
     },
-    onError: () => sendNotificationEvent({
+    onError: () => sendAlertEvent({
       type: "ERROR",
-      text: "On-submit error. Server problem or operation could not be processed in real-time",
+      title: "On-submit error. Server problem or operation could not be processed in real-time",
     }),
   });
 

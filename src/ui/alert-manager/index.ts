@@ -13,18 +13,4 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-
-interface Message {
-  type: "SUCCESS" | "ERROR" | "WARNING" | "INFO";
-  text: string;
-}
-
-export const sendNotificationEvent = (message: Message) => {
-  const event = new CustomEvent<Message>("notification", {
-    detail: {
-      text: message.text,
-      type: message.type,
-    },
-  });
-  document.dispatchEvent(event);
-};
+export { AlertManager } from "./alert-manager";

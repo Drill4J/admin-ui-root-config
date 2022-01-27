@@ -13,10 +13,10 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-import React, { useState } from "react";
+import React from "react";
 import { nanoid } from "nanoid";
 import {
-  Icons, Panel, GeneralAlerts, useCloseModal,
+  Icons, Panel, sendAlertEvent, useCloseModal,
 } from "@drill4j/ui-kit";
 
 import tw, { styled } from "twin.macro";
@@ -30,7 +30,6 @@ interface Props {
 }
 
 export const NotificationsSidebar = ({ notifications }: Props) => {
-  const [errorMessage, setErrorMessage] = useState("");
   const onToggle = useCloseModal("/notification-sidebar");
 
   return (
@@ -48,22 +47,23 @@ export const NotificationsSidebar = ({ notifications }: Props) => {
               <ActionsPanel>
                 <span
                   onClick={() =>
-                    readAllNotifications({ onError: setErrorMessage })}
+                    readAllNotifications({
+                      onError: message => sendAlertEvent({ type: "ERROR", title: message }),
+                    })}
                   data-test="notification-sidebar:mark-all-as-read"
                 >
                   Mark all as read
                 </span>
                 <span
                   onClick={() =>
-                    deleteAllNotifications({ onError: setErrorMessage })}
+                    deleteAllNotifications({
+                      onError: message => sendAlertEvent({ type: "ERROR", title: message }),
+                    })}
                   data-test="notification-sidebar:clear-all"
                 >
                   Clear all
                 </span>
               </ActionsPanel>
-              {errorMessage && (
-                <GeneralAlerts type="ERROR">{errorMessage}</GeneralAlerts>
-              )}
               <div tw="overflow-hidden overflow-y-auto flex-grow">
                 {notifications.map((notification) => (
                   <Notification notification={notification} key={nanoid()} />

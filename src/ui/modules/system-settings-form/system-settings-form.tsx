@@ -18,14 +18,13 @@ import axios from "axios";
 import {
   Icons, Tooltip, GeneralAlerts, FormGroup, Spinner, Button, composeValidators, Fields, requiredArray, sizeLimit,
   Formik, Field, Form,
-  dotsAndSlashesToSlash, formatPackages, parsePackages,
+  dotsAndSlashesToSlash, formatPackages, parsePackages, sendAlertEvent,
 } from "@drill4j/ui-kit";
 import { matchPath, useLocation } from "react-router-dom";
 import "twin.macro";
 
 import { UnlockingSystemSettingsFormModal } from "modules";
 import { Agent } from "types/agent";
-import { sendNotificationEvent } from "@drill4j/send-notification-event";
 import { routes } from "common";
 import { UnSaveChangeModal } from "pages/settings-page/un-save-changes-modal";
 
@@ -51,12 +50,12 @@ export const SystemSettingsForm = ({ agent }: Props) => {
             targetHost,
           };
           await axios.put(groupId ? `/groups/${groupId}/system-settings` : `/agents/${agentId}/system-settings`, systemSettings);
-          sendNotificationEvent({ type: "SUCCESS", text: "New settings have been saved" });
+          sendAlertEvent({ type: "SUCCESS", title: "New settings have been saved" });
           setUnlockedPackages(false);
         } catch ({ response: { data: { message } = {} } = {} }) {
-          sendNotificationEvent({
+          sendAlertEvent({
             type: "ERROR",
-            text: "On-submit error. Server problem or operation could not be processed in real-time",
+            title: "On-submit error. Server problem or operation could not be processed in real-time",
           });
         }
       }}

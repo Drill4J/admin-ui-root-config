@@ -13,40 +13,41 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-import React, {
-  ReactNode, useState, useEffect,
-} from "react";
-import { MessagePanel, sendAlertEvent } from "@drill4j/ui-kit";
+import React, { useEffect, useState } from "react";
 import { useLocation } from "react-router-dom";
 
-import { Message } from "types/message";
 import { defaultAdminSocket } from "common/connection";
 
-interface Props {
-  className?: string;
-  children?: ReactNode;
-}
+import { IAlert, sendAlertEvent } from "@drill4j/ui-kit";
+import { AlertPanel } from "./alert-panel";
 
-export const NotificationManager = ({ children }: Props) => {
-  const [message, setMessage] = useState<Message | null>(null);
+export const AlertManager = () => {
+  const [alerts, setAlerts] = useState<IAlert[]>([]);
   const [isLastMassageWasConnectionError, setIsLastMassageWasConnectionError] = useState(false);
   const { pathname = "" } = useLocation();
-
-  function handleShowMessage(e: CustomEvent<Message>) {
-    if (e.detail.type === "SUCCESS") {
-      setMessage(e.detail);
-      setTimeout(() => {
-        setMessage(null);
-      }, 3000);
+  function handleShowMessage(e: CustomEvent<IAlert>) {
+    const alert = e.detail;
+    const deleteAlert = () => {
+      setAlerts((prevAlertsState) => prevAlertsState.filter(value => value.id !== alert.id));
+    };
+    if (alert.type === "SUCCESS") {
+      const timerId = setTimeout(deleteAlert, 3000);
+      alert.onClose = () => {
+        clearTimeout(timerId);
+        deleteAlert();
+      };
+    } else {
+      alert.onClose = deleteAlert;
     }
 
-    setMessage(e.detail);
+    setAlerts((prevAlertsState) => [...prevAlertsState, alert]);
   }
 
   useEffect(() => {
-    document.addEventListener("notification", handleShowMessage as EventListener);
-    return () => document.removeEventListener("notification", handleShowMessage as EventListener);
+    document.addEventListener("system-alert", handleShowMessage as EventListener);
+    return () => document.removeEventListener("system-alert", handleShowMessage as EventListener);
   }, []);
+
   useEffect(() => {
     let timerId : NodeJS.Timeout;
     defaultAdminSocket.onCloseEvent = () => {
@@ -73,10 +74,9 @@ export const NotificationManager = ({ children }: Props) => {
 
   return (
     <>
-      {message && pathname !== "/login" && (
-        <MessagePanel message={message} onClose={() => setMessage(null)} />
+      {pathname !== "/login" && (
+        <AlertPanel alerts={alerts.slice(alerts.length - 3)} />
       )}
-      {children}
     </>
   );
 };

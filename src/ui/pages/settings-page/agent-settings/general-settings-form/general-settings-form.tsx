@@ -17,10 +17,9 @@ import React from "react";
 import axios from "axios";
 import {
   Formik, Field, Form,
-  Button, FormGroup, GeneralAlerts, Spinner, composeValidators, Fields, required, sizeLimit,
+  Button, FormGroup, GeneralAlerts, Spinner, composeValidators, Fields, required, sizeLimit, sendAlertEvent,
 } from "@drill4j/ui-kit";
 import { matchPath, useLocation } from "react-router-dom";
-import { sendNotificationEvent } from "@drill4j/send-notification-event";
 
 import "twin.macro";
 
@@ -42,11 +41,11 @@ export const GeneralSettingsForm = ({ agent }: Props) => {
       onSubmit={async ({ name, description, environment }: Agent) => {
         try {
           await axios.patch(`/agents/${agentId}/info`, { name, description, environment });
-          sendNotificationEvent({ type: "SUCCESS", text: "New settings have been saved" });
+          sendAlertEvent({ type: "SUCCESS", title: "New settings have been saved" });
         } catch ({ response: { data: { message } = {} } = {} }) {
-          sendNotificationEvent({
+          sendAlertEvent({
             type: "ERROR",
-            text: "On-submit error. Server problem or operation could not be processed in real-time",
+            title: "On-submit error. Server problem or operation could not be processed in real-time",
           });
         }
       }}
