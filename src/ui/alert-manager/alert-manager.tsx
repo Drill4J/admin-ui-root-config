@@ -75,7 +75,7 @@ export const AlertManager = () => {
   return (
     <>
       {pathname !== "/login" && (
-        <AlertPanel alerts={alerts.slice(alerts.length - 3)} />
+        <AlertPanel alerts={alerts.length > 3 ? alerts.slice(-3) : alerts} />
       )}
     </>
   );
