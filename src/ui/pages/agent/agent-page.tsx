@@ -50,12 +50,16 @@ export const AgentPage = () => {
 
   return (
     <div tw="flex flex-col w-full">
-      <PluginHeader agentName={agent.name} agentBuildStatus={activeBuildInfo?.buildStatus} />
       <Switch>
         <Route
           exact
           path={routes.agentDashboard}
-          render={() => <Dashboard id={agentId} setPanel={setPanel} />}
+          render={() => (
+            <>
+              <PluginHeader agentName={agent.name} agentBuildStatus={activeBuildInfo?.buildStatus} />
+              <Dashboard id={agentId} setPanel={setPanel} />
+            </>
+          )}
         />
         <Route path={routes.agentPlugin} component={Plugin} />
       </Switch>

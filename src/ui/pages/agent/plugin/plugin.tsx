@@ -41,7 +41,7 @@ export const Plugin = () => {
     };
   }, [pluginId, paths]);
 
-  return <div tw="w-full h-full px-6 overflow-y-auto" id={pluginId} />;
+  return <div tw="w-full h-full overflow-y-auto" id={pluginId} />;
 };
 
 const registerAgentPlugin = (pluginName: string, pluginPath: string) => {
