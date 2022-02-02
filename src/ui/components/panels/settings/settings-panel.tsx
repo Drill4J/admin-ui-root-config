@@ -27,9 +27,10 @@ import {
   sizeLimit,
   required,
   Spinner,
+  Tab,
 } from "@drill4j/ui-kit";
 import { sendNotificationEvent } from "@drill4j/send-notification-event";
-import tw, { styled } from "twin.macro";
+import "twin.macro";
 import { Agent } from "types";
 import { PanelProps } from "../panel-props";
 import { PanelWithCloseIcon } from "../panel-with-close-icon";
@@ -85,7 +86,7 @@ export const SettingsPanel = ({
       }) => (
         <PanelWithCloseIcon
           header={(
-            <div tw="space-y-8 pt-6 pb-3 w-[1024px]">
+            <div tw="space-y-8 pt-6 w-[1024px]">
               <div tw="">Settings: {capitalize(payload.id)}</div>
               <div tw="flex justify-center gap-x-6">
                 {["general", "system", "plugins"].map((tab) => (
@@ -138,20 +139,6 @@ export const SettingsPanel = ({
     </Formik>
   );
 };
-// TODO MOVE to ui-ki
-const Tab = styled.div`
-  ${tw`
-      relative inline-flex text-14 leading-20 text-monochrome-default font-bold cursor-pointer capitalize
-      hover:text-blue-medium-tint
-  `};
-
-  ${({ active }: { active: boolean }) =>
-    active &&
-    tw`
-    text-blue-default
-    after:(content block absolute top-7 h-1 w-full bg-blue-default rounded-t-lg)
-  `}
-`;
 
 function saveSettings(
   activeTab: string,
