@@ -49,7 +49,7 @@ export const Plugin = () => {
     });
   }, [pluginId, paths]);
 
-  return <div tw="w-full h-full px-6" id={pluginId} />;
+  return <div tw="w-full h-full" id={pluginId} />;
 };
 
 const registerAgentPlugin = (pluginName: string, pluginPath: string, customProps: any) => {
