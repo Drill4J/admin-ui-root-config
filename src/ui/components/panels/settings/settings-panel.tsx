@@ -17,7 +17,6 @@ import React, { useState } from "react";
 import axios from "axios";
 import {
   Button,
-  capitalize,
   Formik,
   Form,
   formatPackages,
@@ -87,7 +86,7 @@ export const SettingsPanel = ({
         <PanelWithCloseIcon
           header={(
             <div tw="space-y-8 pt-6 w-[1024px]">
-              <div tw="">Settings: {capitalize(payload.id)}</div>
+              <div tw="">Settings: {payload.id}</div>
               <div tw="flex justify-center gap-x-6">
                 {["general", "system", "plugins"].map((tab) => (
                   <Tab

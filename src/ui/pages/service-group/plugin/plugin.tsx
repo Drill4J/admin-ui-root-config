@@ -38,6 +38,10 @@ export const Plugin = () => {
       return;
     }
     registerAgentPlugin(pluginId, paths[pluginId], {
+      getAgentPluginPath: ({ agentId, path = "" }:
+      { agentId: string; buildVersion: string; path?: string }) => `${getPagePath(
+        { name: "agentPlugin", params: { agentId, pluginId } },
+      )}${path}`,
       getAgentDashboardPath: ({ agentId }: { agentId: string; }) => getPagePath(
         { name: "agentDashboard", params: { agentId } },
       ),
