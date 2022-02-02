@@ -21,7 +21,6 @@ import { useAdminConnection, useRouteParams } from "hooks";
 import { Agent } from "types";
 
 import { AgentPage } from "../agent";
-import { Builds } from "../builds";
 import { ServiceGroup } from "../service-group";
 
 export const PageSwitcher = () => {
@@ -40,7 +39,6 @@ export const PageSwitcher = () => {
   return (
     <Switch>
       <PrivateRoute path={[routes.agentPlugin, routes.agentDashboard]} component={AgentPage} />
-      <PrivateRoute path={routes.builds} component={Builds} />
       <PrivateRoute
         path={[routes.serviceGroupPlugin, routes.serviceGroupDashboard]}
         component={ServiceGroup}

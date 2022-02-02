@@ -37,7 +37,7 @@ interface Props {
 const Wrapper = ({ children }: { children: React.ReactNode }) => (
   <BrowserRouter>
     <div tw="flex flex-col pt-5 px-6 h-full">
-      <div tw="pb-7 text-24 leading-32 font-light border-b border-monochrome-medium-tint">Dashboard</div>
+      <div tw="mb-6 text-24 leading-32 text-monochrome-black">Dashboard</div>
       {children}
     </div>
   </BrowserRouter>

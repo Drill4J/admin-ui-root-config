@@ -17,5 +17,4 @@ export { LoginPage } from "./login-page";
 export { NotFoundPage } from "./not-found-page";
 export { Plugin, AgentPage } from "./agent";
 export { ServiceGroup } from "./service-group";
-export { Builds } from "./builds";
 export { PageSwitcher } from "./page-switcher";

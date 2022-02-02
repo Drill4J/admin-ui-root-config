@@ -22,9 +22,10 @@ import { useAdminConnection, useAgent } from "hooks";
 import { routes } from "common";
 import { AgentBuildInfo, Notification } from "types";
 import { useSetPanelContext } from "components";
+import { Icons } from "@drill4j/ui-kit";
 import { Dashboard } from "../dashboard";
 import { Plugin } from "./plugin";
-import { PluginHeader } from "./plugin-header";
+import { DashboardHeader } from "./dashboard-header";
 
 export const AgentPage = () => {
   const { agentId = "", buildVersion = "" } =
@@ -56,7 +57,7 @@ export const AgentPage = () => {
           path={routes.agentDashboard}
           render={() => (
             <>
-              <PluginHeader agentName={agent.name} agentBuildStatus={activeBuildInfo?.buildStatus} />
+              <DashboardHeader name={agent.name} status={activeBuildInfo?.buildStatus} icon={<Icons.Agent width={32} height={36} />} />
               <Dashboard id={agentId} setPanel={setPanel} />
             </>
           )}

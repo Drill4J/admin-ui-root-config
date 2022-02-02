@@ -19,30 +19,33 @@ import {
   useParams, Route, Switch,
 } from "react-router-dom";
 
-import { ServiceGroup as ServiceGroupType, Agent } from "types";
+import { ServiceGroup as ServiceGroupType } from "types";
 import { useAdminConnection } from "hooks";
 import { routes } from "common";
 import { useSetPanelContext } from "components";
-import { ServiceGroupHeader } from "./service-group-header";
+import { Icons } from "@drill4j/ui-kit";
 import { Dashboard } from "../dashboard";
 import { Plugin } from "./plugin";
+import { DashboardHeader } from "../agent/dashboard-header";
 
 export const ServiceGroup = () => {
   const { groupId = "" } = useParams<{ groupId: string, pluginId: string }>();
   const { name = "" } = useAdminConnection<ServiceGroupType>(`/groups/${groupId}`) || {};
-  const agentsList = useAdminConnection<Agent[]>("/api/agents") || [];
   const setPanel = useSetPanelContext();
-  const agentCount = agentsList.filter((agent) => agent.group === groupId).length;
 
   return (
     <div tw="flex flex-col w-full">
-      <ServiceGroupHeader name={name} agentsCount={agentCount} />
       <div tw="w-full h-full">
         <Switch>
           <Route
             exact
             path={routes.serviceGroupDashboard}
-            render={() => <Dashboard id={groupId} isGroup setPanel={setPanel} />}
+            render={() => (
+              <>
+                <DashboardHeader name={name} icon={<Icons.ServiceGroup width={32} height={36} />} />
+                <Dashboard id={groupId} isGroup setPanel={setPanel} />
+              </>
+            )}
           />
           <Route path={routes.serviceGroupPlugin} component={Plugin} />
         </Switch>
