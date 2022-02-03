@@ -1634,10 +1634,6 @@ button:focus {
   text-transform: lowercase;
 }
 
-.capitalize {
-  text-transform: capitalize;
-}
-
 .ordinal, .slashed-zero, .lining-nums, .oldstyle-nums, .proportional-nums, .tabular-nums, .diagonal-fractions, .stacked-fractions {
   --tw-ordinal: var(--tw-empty,/*!*/ /*!*/);
   --tw-slashed-zero: var(--tw-empty,/*!*/ /*!*/);

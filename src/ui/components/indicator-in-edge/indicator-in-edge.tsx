@@ -23,15 +23,15 @@ interface Props {
   indicatorContent?: React.ReactNode;
   isHidden?: boolean;
   position?: Position;
-  style?: Record<string, string>
+  className?: string;
 }
 
 export const IndicatorInEdge = ({
-  indicatorContent, isHidden, position, children, style,
+  indicatorContent, isHidden, position, children, className,
 }: Props) => (
   <div tw="relative inline-flex">
     {children}
-    <Wrapper isHidden={isHidden} position={position} style={style}>
+    <Wrapper isHidden={isHidden} position={position} className={className}>
       {indicatorContent || <div tw="rounded-lg w-2 h-2 bg-green-medium-tint" />}
     </Wrapper>
   </div>

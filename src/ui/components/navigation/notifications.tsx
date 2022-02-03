@@ -17,7 +17,7 @@ import React from "react";
 import { Icons } from "@drill4j/ui-kit";
 import { useAdminConnection } from "hooks";
 import { Notification as NotificationType } from "types";
-import "twin.macro";
+import tw, { styled } from "twin.macro";
 
 import { CubeWithTooltip } from "../cubes";
 import { usePanelContext, useSetPanelContext } from "../panels";
@@ -27,7 +27,7 @@ export const Notifications = () => {
   const openModal = useSetPanelContext();
   const activePane = usePanelContext();
   const notifications = useAdminConnection<NotificationType[]>("/notifications") || [];
-  const hasUnreadNotification = notifications.some((notification) => !notification.read);
+  const unreadNotifications = notifications.filter((notification) => !notification.read);
 
   return (
     <CubeWithTooltip
@@ -36,15 +36,25 @@ export const Notifications = () => {
       onClick={() => openModal({ type: "NOTIFICATIONS" })}
     >
       <div tw="text-monochrome-black">
-        <IndicatorInEdge
+        <Indicator
+          isCentered={unreadNotifications.length > 99}
           position="top-right"
-          isHidden={!hasUnreadNotification}
-          indicatorContent={<div tw="rounded-lg w-2 h-2 bg-blue-default" />}
-          style={{ top: "4px", right: "3px" }}
+          isHidden={!unreadNotifications.length}
+          indicatorContent={(
+            <NotificationsCount tw="min-w-[19px] h-5 flex justify-center items-center px-1 py-[2px]">
+              {unreadNotifications.length > 99 ? "99+" : unreadNotifications.length}
+            </NotificationsCount>
+          )}
         >
           <Icons.Notification tw="text-monochrome-white" />
-        </IndicatorInEdge>
+        </Indicator>
       </div>
     </CubeWithTooltip>
   );
 };
+
+const NotificationsCount = styled.div`
+  ${tw`rounded-full bg-blue-default text-12 leading-14 text-monochrome-white box-border border-2 border-monochrome-black`}
+`;
+
+const Indicator = styled(IndicatorInEdge)(({ isCentered }: {isCentered: boolean}) => [isCentered && tw`right-2`]);

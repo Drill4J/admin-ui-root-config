@@ -54,10 +54,10 @@ const SelectedAgent = ({ isSelectedPanelOpen }: Props) => {
   return (
     <Link tw="bg-monochrome-dark100 rounded" to={getPagePath({ name: "agentDashboard", params: { agentId: id } })}>
       <IndicatorInEdge
+        tw="bottom-[3px] right-[3px]"
         isHidden={false}
         position="bottom-right"
         indicatorContent={<AgentStatusBadge status={activeBuildInfo?.buildStatus} />}
-        style={{ bottom: "3px", right: "3px" }}
       >
         <CubeWithTooltip tooltip={name} isActive={isExact && !isSelectedPanelOpen} tw="text-14 text-monochrome-medium-tint">
           {convertAgentName(name)}
