@@ -19,11 +19,16 @@ import { useParams } from "react-router-dom";
 import { sendNotificationEvent } from "@drill4j/send-notification-event";
 import "twin.macro";
 
-import { usePluginUrls } from "hooks";
+import { useAdminConnection, usePluginUrls, useRouteParams } from "hooks";
+import { Spinner, Stub } from "@drill4j/ui-kit";
+import { ActiveAgentsBuild } from "../../../types";
+import { BUILD_STATUS } from "../../../common";
 
 export const Plugin = () => {
-  const { pluginId } = useParams<{ pluginId: string; agentId: string; }>();
+  const { agentId, pluginId } = useRouteParams();
   const paths = usePluginUrls();
+  const registeredAgentsBuilds = useAdminConnection<ActiveAgentsBuild[]>("/api/agents/build") || [];
+  const { build: agentActiveBuild } = registeredAgentsBuilds.find(({ agentId: id }) => id === agentId) || {};
 
   useEffect(() => {
     if (!paths) return;
@@ -41,7 +46,16 @@ export const Plugin = () => {
     };
   }, [pluginId, paths]);
 
-  return <div tw="w-full h-full overflow-y-auto" id={pluginId} />;
+  return (
+    <div tw="relative">
+      {agentActiveBuild?.buildStatus === BUILD_STATUS.BUSY && (
+        <div tw="absolute inset-0 bg-monochrome-white bg-opacity-[0.95] z-[100]">
+          <Stub icon={<Spinner tw="!w-16 !h-16" />} title="Please wait" message="Agent is busy at the moment." />
+        </div>
+      )}
+      <div tw="w-full h-full overflow-y-auto" id={pluginId} />
+    </div>
+  );
 };
 
 const registerAgentPlugin = (pluginName: string, pluginPath: string) => {
