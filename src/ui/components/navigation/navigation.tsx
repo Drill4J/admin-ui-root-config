@@ -23,8 +23,8 @@ import { Notifications } from "./notifications";
 import { Logout } from "./logout";
 import { SelectedEntity } from "./selected-entity";
 
-export const Navigation = () => (
-  <div tw="flex flex-col w-12 h-full px-[6px] bg-monochrome-black">
+export const Navigation = (props: unknown) => (
+  <div tw="flex flex-col w-12 h-full px-[6px] bg-monochrome-black" {...props}>
     <div tw="flex justify-center items-center w-full h-22 flex-grow-0 text-monochrome-white">
       <Icons.TransparentLogo width={24} height={24} viewBox="0 0 24 24" />
     </div>

@@ -37,8 +37,9 @@ const Root = () => (
     <Switch>
       <Route exact path={routes.login} component={LoginPage} />
       <PanelProvider>
-        <div tw="flex flex-row w-full h-full">
-          <Navigation />
+        <Navigation tw="fixed" />
+        {/* Navigation width = 48px */}
+        <div tw="ml-12 w-[calc(100% - 48px)]">
           <PageSwitcher />
         </div>
         <Panels />
