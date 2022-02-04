@@ -13,23 +13,28 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-import React from "react";
-import { BuildStatus } from "types";
-import { Badge } from "@drill4j/ui-kit";
+import React, { Dispatch, SetStateAction } from "react";
+import { AgentInfo, BuildStatus, ServiceGroup } from "types";
+import { Badge, Icons } from "@drill4j/ui-kit";
 import "twin.macro";
 import { BUILD_STATUS } from "common";
+import { PanelType } from "../../../components";
 
 interface Props {
-  name: string;
+  data?: AgentInfo | ServiceGroup;
   status?: BuildStatus;
   icon: React.ReactNode;
+  setPanel: Dispatch<SetStateAction<PanelType | null>>;
 }
 
-export const DashboardHeader = ({ name, status, icon }: Props) => (
+export const DashboardHeader = ({
+  data, status, icon, setPanel,
+}: Props) => (
   <div tw="flex items-center gap-x-4 h-24 px-6 border-b border-monochrome-medium-tint">
     {icon}
-    <span tw="max-w-1/2 text-ellipsis text-32 leading-40 text-monochrome-black" title={name}>{name}</span>
+    <span tw="max-w-1/2 text-ellipsis text-32 leading-40 text-monochrome-black" title={data?.name}>{data?.name}</span>
     {getBadge(status)}
+    <Icons.Settings tw="link ml-auto" onClick={() => setPanel({ type: "SETTINGS", payload: data })} />
   </div>
 );
 

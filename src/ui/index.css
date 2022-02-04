@@ -845,6 +845,18 @@ button:focus {
   bottom: 0px;
 }
 
+.right-2 {
+  right: 0.5rem;
+}
+
+.bottom-\[3px\] {
+  bottom: 3px;
+}
+
+.right-\[3px\] {
+  right: 3px;
+}
+
 .left-0 {
   left: 0px;
 }
@@ -853,8 +865,12 @@ button:focus {
   left: 3rem;
 }
 
-.z-40 {
-  z-index: 40;
+.z-\[120\] {
+  z-index: 120;
+}
+
+.z-\[100\] {
+  z-index: 100;
 }
 
 .col-start-2 {
@@ -890,6 +906,10 @@ button:focus {
 .mx-auto {
   margin-left: auto;
   margin-right: auto;
+}
+
+.ml-12 {
+  margin-left: 3rem;
 }
 
 .ml-1 {
@@ -964,6 +984,10 @@ button:focus {
   margin-left: 0.75rem;
 }
 
+.ml-auto {
+  margin-left: auto;
+}
+
 .box-border {
   box-sizing: border-box;
 }
@@ -1028,6 +1052,10 @@ button:focus {
   height: 5.5rem;
 }
 
+.h-5 {
+  height: 1.25rem;
+}
+
 .h-20 {
   height: 5rem;
 }
@@ -1070,6 +1098,10 @@ button:focus {
 
 .h-24 {
   height: 6rem;
+}
+
+.\!h-16 {
+  height: 4rem !important;
 }
 
 .w-full {
@@ -1124,12 +1156,20 @@ button:focus {
   width: 1.5rem;
 }
 
+.\!w-16 {
+  width: 4rem !important;
+}
+
 .w-\[976px\] {
   width: 976px;
 }
 
 .w-97 {
   width: 25rem;
+}
+
+.min-w-\[19px\] {
+  min-width: 19px;
 }
 
 .min-w-8px {
@@ -1243,8 +1283,8 @@ button:focus {
   gap: 0.5rem;
 }
 
-.gap-6 {
-  gap: 1.5rem;
+.gap-8 {
+  gap: 2rem;
 }
 
 .gap-y-4 {
@@ -1299,12 +1339,6 @@ button:focus {
   --tw-space-y-reverse: 0;
   margin-top: calc(2rem * calc(1 - var(--tw-space-y-reverse)));
   margin-bottom: calc(2rem * var(--tw-space-y-reverse));
-}
-
-.space-y-4 > :not([hidden]) ~ :not([hidden]) {
-  --tw-space-y-reverse: 0;
-  margin-top: calc(1rem * calc(1 - var(--tw-space-y-reverse)));
-  margin-bottom: calc(1rem * var(--tw-space-y-reverse));
 }
 
 .space-y-1 > :not([hidden]) ~ :not([hidden]) {
@@ -1363,6 +1397,10 @@ button:focus {
   border-bottom-left-radius: 0px;
 }
 
+.border-2 {
+  border-width: 2px;
+}
+
 .border {
   border-width: 1px;
 }
@@ -1382,6 +1420,11 @@ button:focus {
 .border-monochrome-medium-tint {
   --tw-border-opacity: 1;
   border-color: rgba(227, 230, 232, var(--tw-border-opacity));
+}
+
+.border-monochrome-black {
+  --tw-border-opacity: 1;
+  border-color: rgba(27, 25, 27, var(--tw-border-opacity));
 }
 
 .border-monochrome-dark {
@@ -1488,6 +1531,10 @@ button:focus {
   --tw-bg-opacity: 0.05;
 }
 
+.bg-opacity-\[0\.95\] {
+  --tw-bg-opacity: 0.95;
+}
+
 .p-0 {
   padding: 0px;
 }
@@ -1513,6 +1560,16 @@ button:focus {
 .py-4 {
   padding-top: 1rem;
   padding-bottom: 1rem;
+}
+
+.px-1 {
+  padding-left: 0.25rem;
+  padding-right: 0.25rem;
+}
+
+.py-\[2px\] {
+  padding-top: 2px;
+  padding-bottom: 2px;
 }
 
 .py-10 {
@@ -1653,6 +1710,10 @@ button:focus {
 
 .leading-32 {
   line-height: 32px;
+}
+
+.leading-14 {
+  line-height: 14px;
 }
 
 .leading-20 {

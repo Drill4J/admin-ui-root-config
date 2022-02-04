@@ -18,7 +18,7 @@ import { Route, Switch, useParams } from "react-router-dom";
 import axios from "axios";
 import "twin.macro";
 
-import { useAdminConnection, useAgent } from "hooks";
+import { useActiveBuild, useAdminConnection, useAgent } from "hooks";
 import { routes } from "common";
 import { AgentBuildInfo, Notification } from "types";
 import { useSetPanelContext } from "components";
@@ -31,6 +31,7 @@ export const AgentPage = () => {
   const { agentId = "", buildVersion = "" } =
     useParams<{ agentId?: string; buildVersion?: string }>();
   const agent = useAgent();
+  const { systemSettings } = useActiveBuild(agent?.id) || {};
   const [activeBuildInfo] = useAdminConnection<AgentBuildInfo[]>(`/api/agent/${agent.id}/builds`) || [];
   const setPanel = useSetPanelContext();
   const notifications =
@@ -57,7 +58,12 @@ export const AgentPage = () => {
           path={routes.agentDashboard}
           render={() => (
             <>
-              <DashboardHeader name={agent.name} status={activeBuildInfo?.buildStatus} icon={<Icons.Agent width={32} height={36} />} />
+              <DashboardHeader
+                data={{ ...agent, systemSettings }}
+                status={activeBuildInfo?.buildStatus}
+                icon={<Icons.Agent width={32} height={36} />}
+                setPanel={setPanel}
+              />
               <Dashboard id={agentId} setPanel={setPanel} />
             </>
           )}

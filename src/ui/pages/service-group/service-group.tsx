@@ -30,19 +30,19 @@ import { DashboardHeader } from "../agent/dashboard-header";
 
 export const ServiceGroup = () => {
   const { groupId = "" } = useParams<{ groupId: string, pluginId: string }>();
-  const { name = "" } = useAdminConnection<ServiceGroupType>(`/groups/${groupId}`) || {};
+  const group = useAdminConnection<ServiceGroupType>(`/groups/${groupId}`) || {} as ServiceGroupType;
   const setPanel = useSetPanelContext();
 
   return (
-    <div tw="flex flex-col w-full">
-      <div tw="w-full h-full">
+    <div tw="flex flex-col w-full h-full">
+      <div tw="flex flex-col flex-grow w-full">
         <Switch>
           <Route
             exact
             path={routes.serviceGroupDashboard}
             render={() => (
               <>
-                <DashboardHeader name={name} icon={<Icons.ServiceGroup width={32} height={36} />} />
+                <DashboardHeader data={group} icon={<Icons.ServiceGroup width={32} height={36} />} setPanel={setPanel} />
                 <Dashboard id={groupId} isGroup setPanel={setPanel} />
               </>
             )}

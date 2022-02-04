@@ -22,7 +22,7 @@ import { convertAgentName } from "utils";
 import { AgentStatusBadge, NoAgentsSvg, PanelStub } from "components";
 import { useAdminConnection, useRouteParams } from "hooks";
 import {
-  AgentInfo, BuildStatus, ServiceGroup, ActiveAgentsBuild,
+  AgentInfo, BuildStatus, ServiceGroup, ActiveAgentsBuild, AgentBuildInfo,
 } from "types";
 import { AGENT_STATUS, getPagePath } from "common";
 import { Panel } from "../panel";
@@ -109,13 +109,12 @@ const AgentRow = ({ agent, buildStatus }: AgentRowProps) => {
   const { agentId } = useRouteParams();
   const { push } = useHistory();
   const setPanel = useSetPanelContext();
-  const isPreregisteredAgent = agentStatus === AGENT_STATUS.PREREGISTERED;
-  const isRegistering = agentStatus === AGENT_STATUS.REGISTERING;
+  const [buildInfo] = useAdminConnection<[AgentBuildInfo]>(`/api/agent/${id}/builds`) || [];
   const isSelectedAgent = agentId === id;
 
-  if (isRegistering) return <RegisteringAgentRow {...agent} />;
+  if (agentStatus === AGENT_STATUS.REGISTERING) return <RegisteringAgentRow {...agent} />;
 
-  if (isPreregisteredAgent) return <PreregisteredAgentRow {...agent} />;
+  if (agentStatus === AGENT_STATUS.PREREGISTERED) return <PreregisteredAgentRow {...agent} />;
 
   const Wrapper = group ? GroupAgentRow : StyledAgentRow;
 
@@ -123,7 +122,7 @@ const AgentRow = ({ agent, buildStatus }: AgentRowProps) => {
     <Wrapper
       selected={isSelectedAgent}
       onClick={() => {
-        if (!String(window.getSelection())) {
+        if (!String(window.getSelection())) { // no open dashboard if we have smth in clipboard
           push(getPagePath({
             name: "agentDashboard",
             params: { agentId: id },
@@ -144,7 +143,13 @@ const AgentRow = ({ agent, buildStatus }: AgentRowProps) => {
         height={16}
         onClick={((event: any) => {
           event?.stopPropagation();
-          setPanel({ type: "SETTINGS", payload: agent });
+          setPanel({
+            type: "SETTINGS",
+            payload: {
+              ...agent,
+              systemSettings: buildInfo?.systemSettings,
+            },
+          });
         }) as any}
         tw="action-icon w-6 h-6"
       />
@@ -166,6 +171,7 @@ const GroupRow = ({ agents = [], group, agentBuildStatuses }: GroupRowProps) => 
   const setPanel = useSetPanelContext();
   const { id = "", name: groupName = "", description } = group;
   const isSelectedGroup = groupId === id;
+  const hasRegisteredAgent = agents.some(agent => agent.agentStatus === AGENT_STATUS.REGISTERED);
 
   return (
     <div tw="rounded-lg bg-monochrome-black100">
@@ -173,7 +179,8 @@ const GroupRow = ({ agents = [], group, agentBuildStatuses }: GroupRowProps) => 
         selected={isSelectedGroup}
         isOpen={isOpen}
         onClick={() => {
-          if (!String(window.getSelection())) {
+          // window.getSelection() - clipboard. This check is need that we can copy group name without redirect to dashboard
+          if (hasRegisteredAgent && !String(window.getSelection())) {
             push(getPagePath({
               name: "serviceGroupDashboard",
               params: { groupId: id },
@@ -213,12 +220,14 @@ const GroupRow = ({ agents = [], group, agentBuildStatuses }: GroupRowProps) => 
 const PreregisteredAgentRow = (agent: AgentInfo) => {
   const setPanel = useSetPanelContext();
   const {
-    name = "", description, agentType,
+    name = "", description, agentType, id,
   } = agent;
+  const [buildInfo] = useAdminConnection<[AgentBuildInfo]>(`/api/agent/${id}/builds`) || [];
+
   return (
-    <Row tw="text-opacity-40">
+    <Row tw="bg-transparent text-monochrome-dark-tint">
       <CubeWrapper tw="col-start-2">{convertAgentName(name)}</CubeWrapper>
-      <NameColumn title={name}>{name}</NameColumn>
+      <NameColumn tw="text-monochrome-dark-tint" title={name}>{name}</NameColumn>
       <Column title={description}>{description}</Column>
       <Column title={agentType}>{agentType}</Column>
       <Icons.Settings
@@ -226,7 +235,13 @@ const PreregisteredAgentRow = (agent: AgentInfo) => {
         height={16}
         onClick={((event: any) => {
           event?.stopPropagation();
-          setPanel({ type: "SETTINGS", payload: agent });
+          setPanel({
+            type: "SETTINGS",
+            payload: {
+              ...agent,
+              systemSettings: buildInfo?.systemSettings,
+            },
+          });
         }) as any}
         tw="action-icon w-6 h-6"
       />
@@ -239,7 +254,7 @@ const RegisteringAgentRow = ({
 }: AgentInfo) => (
   <Row tw="text-opacity-40">
     <div /> {/* Hack for save layout */}
-    <div tw="flex justify-center items-center"><Spinner /></div>
+    <div tw="flex justify-center items-center"><Spinner color="blue" /></div>
     <NameColumn title={name}>
       <span>Registering: {name}</span>
     </NameColumn>

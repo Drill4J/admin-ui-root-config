@@ -54,7 +54,7 @@ const DashboardComponent = ({ id, isGroup, setPanel }: Props) => {
 
   if (!installedPlugins.length) {
     return (
-      <Wrapper>
+      <Wrapper tw="flex-grow">
         <Stub
           icon={<Icons.Plugins width={160} height={160} />}
           title="No data available"
@@ -126,7 +126,7 @@ export const Dashboard = ({ id = "", isGroup = false, setPanel }: Props) => {
     };
   }, []);
 
-  return <div tw="w-full h-full" id="dashboard" />;
+  return <div tw="w-full h-full flex-grow" id="dashboard" />;
 };
 
 const loaderStyles = css`

@@ -27,7 +27,7 @@ export const SystemSettingsForm = () => {
   return (
     <>
       {unlockedPackages && (
-        <div tw="flex w-[400px] gap-x-4 p-6 border border-orange-default rounded text-orange-default text-14 leading-24">
+        <div tw="flex w-[400px] gap-x-4 p-6 border border-orange-default rounded-lg text-orange-default text-14 leading-24">
           <div tw="pt-1">
             <Icons.Danger />
           </div>

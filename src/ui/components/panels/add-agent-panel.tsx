@@ -18,7 +18,7 @@ import { Button, LinkButton, Icons } from "@drill4j/ui-kit";
 import tw, { styled } from "twin.macro";
 
 import { useAdminConnection } from "hooks";
-import { AgentInfo, ServiceGroup } from "types";
+import { AgentBuildInfo, AgentInfo, ServiceGroup } from "types";
 import { AGENT_STATUS } from "common";
 import { PanelProps } from "./panel-props";
 import { PanelWithCloseIcon } from "./panel-with-close-icon";
@@ -137,12 +137,20 @@ const GroupRow = ({ group, agents }:GroupRowProps) => {
 const AgentRow = ({ agent }: { agent: AgentInfo}) => {
   const setPanel = useSetPanelContext();
   const { name, agentType, group } = agent;
+  const [buildInfo] = useAdminConnection<[AgentBuildInfo]>(`/api/agent/${agent.id}/builds`) || [];
+
   return (
     <>
       <Column tw="col-start-2" title={name}>{name}</Column>
       <Column title={agentType}>{agentType}</Column>
       <Button
-        onClick={() => setPanel({ type: agentType === "Java" ? "JAVA_AGENT_REGISTRATION" : "JS_AGENT_REGISTRATION", payload: agent })}
+        onClick={() => setPanel({
+          type: agentType === "Java" ? "JAVA_AGENT_REGISTRATION" : "JS_AGENT_REGISTRATION",
+          payload: {
+            ...agent,
+            systemSettings: buildInfo?.systemSettings,
+          },
+        })}
         primary={!group}
         secondary={Boolean(group)}
         size="small"

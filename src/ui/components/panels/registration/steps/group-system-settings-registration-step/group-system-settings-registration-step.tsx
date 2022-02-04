@@ -14,22 +14,11 @@
  * limitations under the License.
  */
 import React from "react";
-import { Inputs } from "@drill4j/ui-kit";
 import "twin.macro";
 import { SystemSettingsRegistrationStep } from "../system-settings-registration-step";
 
 export const GroupSystemSettingsRegistrationStep = () => (
   <div tw="space-y-8">
-    <div tw="space-y-4">
-      <label tw="flex items-center gap-2 text-14 leading-20">
-        <Inputs.Radio tw="text-blue-default" checked disabled />
-        Apply parameters to all Agents
-      </label>
-      <label tw="flex items-center gap-2 text-14 leading-20">
-        <Inputs.Radio tw="text-blue-default" disabled />
-        Add parameters separately
-      </label>
-    </div>
     <SystemSettingsRegistrationStep />
   </div>
 );

@@ -30,7 +30,8 @@ import {
 } from "@drill4j/ui-kit";
 import { sendNotificationEvent } from "@drill4j/send-notification-event";
 import "twin.macro";
-import { Agent } from "types";
+import { AgentInfoWithSystemSetting } from "types";
+import { AGENT_STATUS } from "common";
 import { PanelProps } from "../panel-props";
 import { PanelWithCloseIcon } from "../panel-with-close-icon";
 import { GeneralSettingsForm } from "./agent-settings/general-settings-form";
@@ -49,7 +50,7 @@ export const SettingsPanel = ({
   const SystemSettings =
     payload.agentType === "Node.js" ? JsSystemSettingsForm : SystemSettingsForm;
 
-  const handleSubmit = async (values: Agent) => {
+  const handleSubmit = async (values: AgentInfoWithSystemSetting) => {
     try {
       await saveSettings(activeTab, values);
       sendNotificationEvent({
@@ -67,7 +68,7 @@ export const SettingsPanel = ({
   };
   return (
     <Formik
-      onSubmit={handleSubmit}
+      onSubmit={handleSubmit as any}
       initialValues={{
         ...payload,
         systemSettings: {
@@ -86,7 +87,7 @@ export const SettingsPanel = ({
         <PanelWithCloseIcon
           header={(
             <div tw="space-y-8 pt-6 w-[1024px]">
-              <div tw="">Settings: {payload.id}</div>
+              <div>Settings: {payload.id}</div>
               <div tw="flex justify-center gap-x-6">
                 {["general", "system", "plugins"].map((tab) => (
                   <Tab
@@ -107,22 +108,24 @@ export const SettingsPanel = ({
           isOpen={isOpen}
           onClosePanel={onClosePanel}
         >
-          <Form tw="flex flex-col items-center py-16 space-y-8">
-            {activeTab === "general" && <GeneralSettingsForm />}
-            {activeTab === "system" && <SystemSettings />}
-            {activeTab === "plugins" && <PluginsSettingsTab agent={payload} />}
-            {activeTab !== "plugins" && (
-              <Button
-                tw="min-w-[130px]"
-                primary
-                size="large"
-                type="submit"
-                disabled={isSubmitting || !isValid || !dirty}
-                data-test="save-changes-button"
-              >
-                {isSubmitting ? <Spinner /> : "Save Changes"}
-              </Button>
-            )}
+          <Form tw="flex flex-col items-center py-16 ">
+            <div tw="space-y-8">
+              {activeTab === "general" && <GeneralSettingsForm />}
+              {activeTab === "system" && <SystemSettings />}
+              {activeTab === "plugins" && <PluginsSettingsTab agent={payload} />}
+              {activeTab !== "plugins" && (
+                <Button
+                  tw="flex justify-center min-w-[130px]"
+                  primary
+                  size="large"
+                  type="submit"
+                  disabled={isSubmitting || !isValid || !dirty}
+                  data-test="save-changes-button"
+                >
+                  {isSubmitting ? <Spinner /> : "Save Changes"}
+                </Button>
+              )}
+            </div>
             <UnSaveChangesModal
               isOpen={Boolean(nextTab)}
               onToggle={() => setNextTab("")}
@@ -139,9 +142,11 @@ export const SettingsPanel = ({
   );
 };
 
+// TODO refactor to different functions
+
 function saveSettings(
   activeTab: string,
-  values: Agent,
+  values: AgentInfoWithSystemSetting,
 ): undefined | Promise<any> {
   const {
     id,
@@ -151,7 +156,10 @@ function saveSettings(
     environment,
     systemSettings: { sessionIdHeaderName, packages = "", targetHost } = {},
   } = values;
-  // fix this
+  if (values?.agentStatus === AGENT_STATUS.PREREGISTERED) {
+    return saveSettingForPreregisteredAgent(values);
+  }
+
   const systemSettings =
     agentType === "Node.js"
       ? { targetHost }
@@ -176,6 +184,30 @@ function saveSettings(
     default:
       return undefined;
   }
+}
+
+async function saveSettingForPreregisteredAgent(values: AgentInfoWithSystemSetting) {
+  const {
+    id,
+    name,
+    description,
+    environment,
+    plugins,
+    systemSettings,
+  } = values;
+
+  return axios.post("/agents", {
+    id,
+    name,
+    agentType: "JAVA",
+    environment,
+    description,
+    plugins: plugins.map(({ id: pluginId }) => pluginId),
+    systemSettings: {
+      ...systemSettings,
+      packages: parsePackages(systemSettings?.packages as unknown as string).filter(Boolean),
+    },
+  });
 }
 
 function getTabValidationSchema(activeTab: string) {

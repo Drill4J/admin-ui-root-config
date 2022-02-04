@@ -13,13 +13,12 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-import { SystemSettings } from "./system-settings";
+import { ActiveAgentsBuild, AgentBuildInfo } from "types";
+import { useAdminConnection } from "./use-admin-connection";
 
-export interface ServiceGroup {
-  id: string;
-  name: string;
-  environment: string;
-  description: string;
-  agentType: string;
-  systemSettings: SystemSettings;
+export function useActiveBuild(id: string): AgentBuildInfo | null {
+  const builds = useAdminConnection<ActiveAgentsBuild[]>("/api/agents/build") || [];
+  const build = builds.find(({ agentId }) => agentId === id);
+
+  return build?.build || null;
 }

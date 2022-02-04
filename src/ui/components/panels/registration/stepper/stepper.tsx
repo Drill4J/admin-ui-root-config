@@ -105,7 +105,7 @@ export const Stepper = ({
                     Return to List
                   </Button>
                 </div>
-                <div tw="flex justify-center gap-6">
+                <div tw="flex justify-center gap-8">
                   {steps.map(({ stepLabel }, index) => (
                     <div onClick={() => isValid && goTo(index)}>
                       <StepLabel

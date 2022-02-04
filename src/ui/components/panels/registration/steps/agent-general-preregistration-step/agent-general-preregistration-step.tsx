@@ -20,7 +20,7 @@ import {
 import "twin.macro";
 
 export const AgentGeneralPreregistrationStep = () => (
-  <div tw="space-y-8">
+  <div tw="space-y-6">
     <DarkFormGroup label="Agent ID">
       <Field name="id" component={Fields.DarkInput} placeholder="Enter agent's name" />
     </DarkFormGroup>

@@ -15,6 +15,7 @@
  */
 import { AgentStatus } from "./agent-status";
 import { Plugin } from "./plugin";
+import { SystemSettings } from "./system-settings";
 
 export interface AgentInfo {
   id: string;
@@ -27,4 +28,18 @@ export interface AgentInfo {
   activePluginsCount: number;
   agentType: string;
   plugins: Plugin[];
+}
+
+export interface AgentInfoWithSystemSetting {
+  id: string;
+  group: string;
+  name: string;
+  description: string;
+  environment: string;
+  agentStatus: AgentStatus;
+  adminUrl: string;
+  activePluginsCount: number;
+  agentType: string;
+  plugins: Plugin[];
+  systemSettings: SystemSettings;
 }

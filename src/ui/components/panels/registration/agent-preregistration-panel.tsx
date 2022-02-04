@@ -31,7 +31,7 @@ export const AgentPreregistrationPanel = ({ isOpen, onClosePanel, payload }: Pan
   <Stepper
     label={(
       <div tw="space-y-2">
-        <div>Agent Preregistration</div>
+        <div>Java Agent Preregistration</div>
         <div tw="text-14 leading-24 text-monochrome-dark-tint">
           Preconfiguration for background instrumentation until the Agent syncs with the Drill4j Admin.
         </div>
