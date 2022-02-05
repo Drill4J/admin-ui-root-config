@@ -27,8 +27,8 @@ import {
   required,
   Spinner,
   Tab,
+  sendAlertEvent,
 } from "@drill4j/ui-kit";
-import { sendNotificationEvent } from "@drill4j/send-notification-event";
 import "twin.macro";
 import { AgentInfoWithSystemSetting } from "types";
 import { AGENT_STATUS } from "common";
@@ -53,14 +53,14 @@ export const SettingsPanel = ({
   const handleSubmit = async (values: AgentInfoWithSystemSetting) => {
     try {
       await saveSettings(activeTab, values);
-      sendNotificationEvent({
+      sendAlertEvent({
         type: "SUCCESS",
-        text: "New settings have been saved",
+        title: "New settings have been saved",
       });
     } catch ({ response: { data: { message } = {} } = {} }) {
-      sendNotificationEvent({
+      sendAlertEvent({
         type: "ERROR",
-        text:
+        title:
           message ||
           "On-submit error. Server problem or operation could not be processed in real-time",
       });

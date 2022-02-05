@@ -15,11 +15,10 @@
  */
 import React, { useEffect } from "react";
 import { getAppNames, registerApplication, unregisterApplication } from "single-spa";
-import { sendNotificationEvent } from "@drill4j/send-notification-event";
 import "twin.macro";
 
 import { useAdminConnection, usePluginUrls, useRouteParams } from "hooks";
-import { Spinner, Stub } from "@drill4j/ui-kit";
+import { Spinner, Stub, sendAlertEvent } from "@drill4j/ui-kit";
 import { ActiveAgentsBuild } from "types";
 import { BUILD_STATUS } from "common";
 
@@ -34,7 +33,7 @@ export const Plugin = () => {
     const isPluginAlreadyRegistered = getAppNames().includes(getPluginName(pluginId));
     if (isPluginAlreadyRegistered) return;
     if (!paths[pluginId]) {
-      sendNotificationEvent({ type: "ERROR", text: "CRITICAL ERROR: Plugin URL is not exist. Check PLUGINS env variable value" });
+      sendAlertEvent({ type: "ERROR", title: "CRITICAL ERROR: Plugin URL is not exist. Check PLUGINS env variable value" });
       return;
     }
     registerAgentPlugin(pluginId, paths[pluginId]);

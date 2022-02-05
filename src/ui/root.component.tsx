@@ -22,7 +22,7 @@ import { TypographyStyles, LayoutStyles, FontsStyles } from "global-styles";
 import { PanelProvider, Panels, Navigation } from "components";
 import { configureAxios, routes } from "common";
 import { SetPluginUrlModal } from "components/set-plugin-url-modal";
-import { NotificationManager } from "./notification-manager";
+import { AlertManager } from "./alert-manager";
 
 import "./index.css";
 
@@ -33,7 +33,7 @@ const Root = () => (
     <FontsStyles />
     <TypographyStyles />
     <LayoutStyles />
-    <NotificationManager />
+    <AlertManager />
     <Switch>
       <Route exact path={routes.login} component={LoginPage} />
       <PanelProvider>

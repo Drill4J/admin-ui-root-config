@@ -833,6 +833,10 @@ button:focus {
   left: 0px;
 }
 
+.bottom-10 {
+  bottom: 2.5rem;
+}
+
 .top-0 {
   top: 0px;
 }
@@ -863,6 +867,10 @@ button:focus {
 
 .left-12 {
   left: 3rem;
+}
+
+.z-\[200\] {
+  z-index: 200;
 }
 
 .z-\[120\] {
@@ -1251,6 +1259,10 @@ button:focus {
   flex-direction: column;
 }
 
+.flex-col-reverse {
+  flex-direction: column-reverse;
+}
+
 .items-start {
   align-items: flex-start;
 }
@@ -1287,6 +1299,10 @@ button:focus {
   gap: 2rem;
 }
 
+.gap-y-2 {
+  row-gap: 0.5rem;
+}
+
 .gap-y-4 {
   row-gap: 1rem;
 }
@@ -1317,10 +1333,6 @@ button:focus {
 
 .gap-y-6 {
   row-gap: 1.5rem;
-}
-
-.gap-y-2 {
-  row-gap: 0.5rem;
 }
 
 .space-y-2 > :not([hidden]) ~ :not([hidden]) {

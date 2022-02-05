@@ -14,11 +14,6 @@
     "build": "npm run tailwind:css && webpack --mode=production",
     "tailwind:css": "tailwind build src/ui/tailwind.css -c tailwind.config.js -o src/ui/index.css"
   },
-  "husky": {
-    "hooks": {
-      "pre-commit": "lint-staged && concurrently npm:test"
-    }
-  },
   "lint-staged": {
     "*.{ts,tsx}": [
       "eslint src --ext js,ts,tsx --fix"

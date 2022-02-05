@@ -16,14 +16,13 @@
 import React from "react";
 import axios from "axios";
 import { Link } from "react-router-dom";
-import { Icons, Button } from "@drill4j/ui-kit";
+import { Icons, Button, sendAlertEvent } from "@drill4j/ui-kit";
 import "twin.macro";
 
 import { Agent, Plugin } from "types";
 import { useAdminConnection } from "hooks";
 import { PluginCard } from "components";
 import { getPagePath } from "common";
-import { sendNotificationEvent } from "@drill4j/send-notification-event";
 
 interface Props {
   agent: Agent;
@@ -55,11 +54,11 @@ export const PluginsSettingsTab = ({ agent }: Props) => {
                 onClick={async () => {
                   try {
                     await axios.post(`/agents/${agentId}/plugins`, { pluginId: id });
-                    sendNotificationEvent({ type: "SUCCESS", text: "Plugin has been added" });
+                    sendAlertEvent({ type: "SUCCESS", title: "Plugin has been added" });
                   } catch ({ response: { data: { message } = {} } = {} }) {
-                    sendNotificationEvent({
+                    sendAlertEvent({
                       type: "ERROR",
-                      text: "On-submit error. Server problem or operation could not be processed in real-time",
+                      title: "On-submit error. Server problem or operation could not be processed in real-time",
                     });
                   }
                 }}

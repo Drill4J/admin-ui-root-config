@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 import { useEffect, useState } from "react";
-import { sendNotificationEvent } from "@drill4j/send-notification-event";
+import { sendAlertEvent } from "@drill4j/ui-kit";
 
 const devModePaths = {
   test2code: "http://localhost:7087/Drill4J-test-to-code.js",
@@ -67,7 +67,7 @@ export const usePluginUrls = () => {
         },
         "CRITICAL ERROR: plugin URL is invalid. Check PLUGINS env variable value");
       } catch ({ message = "" }) {
-        sendNotificationEvent({ type: "ERROR", text: message as string });
+        sendAlertEvent({ type: "ERROR", title: message as string });
       }
     } else {
       setPaths(devModePaths);

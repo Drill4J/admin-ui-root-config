@@ -16,10 +16,10 @@
 import React, { useState } from "react";
 import {
   Formik, Form, Button, Icons, FormValidator,
+  sendAlertEvent,
 } from "@drill4j/ui-kit";
 import "twin.macro";
 
-import { sendNotificationEvent } from "@drill4j/send-notification-event";
 import { useSetPanelContext } from "components";
 import { useSessionStorage } from "hooks";
 import { Agent } from "types";
@@ -85,9 +85,9 @@ export const Stepper = ({
           onSubmit(values);
           setPanel({ type: "SELECT_AGENT" });
         } catch (e) {
-          sendNotificationEvent({
+          sendAlertEvent({
             type: "ERROR",
-            text: "On-submit error. Server problem or operation could not be processed in real-time.",
+            title: "On-submit error. Server problem or operation could not be processed in real-time.",
           });
         }
       }}
