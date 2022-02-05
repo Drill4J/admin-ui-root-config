@@ -32,6 +32,7 @@ import {
 import "twin.macro";
 import { AgentInfoWithSystemSetting } from "types";
 import { AGENT_STATUS } from "common";
+import { FormikBag } from "formik";
 import { PanelProps } from "../panel-props";
 import { PanelWithCloseIcon } from "../panel-with-close-icon";
 import { GeneralSettingsForm } from "./agent-settings/general-settings-form";
@@ -50,13 +51,14 @@ export const SettingsPanel = ({
   const SystemSettings =
     payload.agentType === "Node.js" ? JsSystemSettingsForm : SystemSettingsForm;
 
-  const handleSubmit = async (values: AgentInfoWithSystemSetting) => {
+  const handleSubmit = async (values: AgentInfoWithSystemSetting, { resetForm }: any) => {
     try {
       await saveSettings(activeTab, values);
       sendAlertEvent({
         type: "SUCCESS",
         title: "New settings have been saved",
       });
+      resetForm({ values });
     } catch ({ response: { data: { message } = {} } = {} }) {
       sendAlertEvent({
         type: "ERROR",
