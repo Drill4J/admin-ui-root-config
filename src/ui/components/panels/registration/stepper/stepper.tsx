@@ -13,7 +13,7 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import {
   Formik, Form, Button, Icons, FormValidator,
   sendAlertEvent,
@@ -92,80 +92,88 @@ export const Stepper = ({
       validate={currentValidationSchema as any}
       validateOnMount
     >
-      {({ isValid, values }) => (
-        <Form autoComplete="off">
-          <PanelWithCloseIcon
-            header={(
-              <div tw="space-y-8 pt-6 pb-4 w-[976px]">
-                <div tw="flex justify-between">
-                  {label}
-                  <Button secondary size="large" type="button" onClick={() => returnToList(values)}>
-                    Return to List
-                  </Button>
+      {({
+        isValid, values, validateForm,
+      }) => {
+        useEffect(() => {
+          validateForm(values);
+        }, [stepNumber]);
+
+        return (
+          <Form autoComplete="off">
+            <PanelWithCloseIcon
+              header={(
+                <div tw="space-y-8 pt-6 pb-4 w-[976px]">
+                  <div tw="flex justify-between">
+                    {label}
+                    <Button secondary size="large" type="button" onClick={() => returnToList(values)}>
+                      Return to List
+                    </Button>
+                  </div>
+                  <div tw="flex justify-center gap-8">
+                    {steps.map(({ stepLabel }, index) => (
+                      <div onClick={() => isValid && goTo(index)} key={stepLabel}>
+                        <StepLabel
+                          key={stepLabel}
+                          isActive={index === stepNumber}
+                          isCompleted={index < stepNumber}
+                          stepNumber={index + 1}
+                          stepLabel={stepLabel}
+                        />
+                      </div>
+                    ))}
+                  </div>
                 </div>
-                <div tw="flex justify-center gap-8">
-                  {steps.map(({ stepLabel }, index) => (
-                    <div onClick={() => isValid && goTo(index)} key={stepLabel}>
-                      <StepLabel
-                        key={stepLabel}
-                        isActive={index === stepNumber}
-                        isCompleted={index < stepNumber}
-                        stepNumber={index + 1}
-                        stepLabel={stepLabel}
-                      />
-                    </div>
-                  ))}
+              )}
+              footer={(
+                <div tw="flex gap-4 items-center justify-center w-full h-full">
+                  {stepNumber > 0 && (
+                    <Button
+                      secondary
+                      size="large"
+                      type="button"
+                      onClick={goToPrevStep}
+                      disabled={!isValid}
+                    >
+                      <Icons.Expander width={7} height={12} rotate={180} />
+                      Back
+                    </Button>
+                  )}
+                  {stepNumber === isLastStep ? (
+                    <Button
+                      primary
+                      key="finish"
+                      size="large"
+                      data-test="wizard:finishng-button"
+                      type="submit"
+                    >
+                      Finish
+                    </Button>
+                  ) : (
+                    <Button
+                      primary
+                      key="next"
+                      size="large"
+                      type="button"
+                      onClick={goToNextStep}
+                      disabled={!isValid}
+                    >
+                      Next
+                      <Icons.Expander width={7} height={12} />
+                    </Button>
+                  )}
                 </div>
+              )}
+              isOpen={isOpen}
+              onClosePanel={() => setIsOpen(false)}
+            >
+              <div tw="flex w-full h-full py-16 justify-center">
+                {currentStep}
               </div>
-            )}
-            footer={(
-              <div tw="flex gap-4 items-center justify-center w-full h-full">
-                {stepNumber > 0 && (
-                  <Button
-                    secondary
-                    size="large"
-                    type="button"
-                    onClick={goToPrevStep}
-                    disabled={!isValid}
-                  >
-                    <Icons.Expander width={7} height={12} rotate={180} />
-                    Back
-                  </Button>
-                )}
-                {stepNumber === isLastStep ? (
-                  <Button
-                    primary
-                    key="finish"
-                    size="large"
-                    data-test="wizard:finishng-button"
-                    type="submit"
-                  >
-                    Finish
-                  </Button>
-                ) : (
-                  <Button
-                    primary
-                    key="next"
-                    size="large"
-                    type="button"
-                    onClick={goToNextStep}
-                    disabled={!isValid}
-                  >
-                    Next
-                    <Icons.Expander width={7} height={12} />
-                  </Button>
-                )}
-              </div>
-            )}
-            isOpen={isOpen}
-            onClosePanel={() => setIsOpen(false)}
-          >
-            <div tw="flex w-full h-full py-16 justify-center">
-              {currentStep}
-            </div>
-          </PanelWithCloseIcon>
-        </Form>
-      )}
+            </PanelWithCloseIcon>
+          </Form>
+        );
+      }}
     </Formik>
   );
 };
