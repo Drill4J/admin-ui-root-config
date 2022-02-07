@@ -16,6 +16,7 @@
   "root": true,
   "ignorePatterns": ["src/utils/*spec.ts", "dist"],
   "rules": {
+    "linebreak-style": ["error", "unix"],
     "drill4j/license-header": ["error"],
     "react/jsx-filename-extension": [
       2,

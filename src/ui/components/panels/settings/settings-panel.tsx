@@ -32,7 +32,6 @@ import {
 import "twin.macro";
 import { AgentInfoWithSystemSetting } from "types";
 import { AGENT_STATUS } from "common";
-import { FormikBag } from "formik";
 import { PanelProps } from "../panel-props";
 import { PanelWithCloseIcon } from "../panel-with-close-icon";
 import { GeneralSettingsForm } from "./agent-settings/general-settings-form";
