@@ -20,12 +20,12 @@ export const useRouteParams = () => {
   const { pathname } = useLocation();
   const {
     params: {
-      agentId = "", buildVersion = "", groupId = "", pluginId = "",
+      agentId = "", groupId = "", pluginId = "",
     } = {},
   } = matchPath<{
     agentId?: string; buildVersion?: string; groupId?: string; pluginId?: string;
   }>(pathname, { path: [routes.agentPlugin, routes.agentDashboard, routes.serviceGroupDashboard, routes.serviceGroupPlugin] }) || {};
   return {
-    agentId, buildVersion, groupId, pluginId,
+    agentId, groupId, pluginId,
   };
 };

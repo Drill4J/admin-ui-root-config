@@ -15,12 +15,10 @@
  */
 import React from "react";
 import "twin.macro";
-import {
-  useParams, Route, Switch,
-} from "react-router-dom";
+import { Route, Switch } from "react-router-dom";
 
 import { ServiceGroup as ServiceGroupType } from "types";
-import { useAdminConnection } from "hooks";
+import { useAdminConnection, useRouteParams } from "hooks";
 import { routes } from "common";
 import { useSetPanelContext } from "components";
 import { Icons } from "@drill4j/ui-kit";
@@ -29,27 +27,25 @@ import { Plugin } from "./plugin";
 import { DashboardHeader } from "../agent/dashboard-header";
 
 export const ServiceGroup = () => {
-  const { groupId = "" } = useParams<{ groupId: string, pluginId: string }>();
+  const { groupId = "" } = useRouteParams();
   const group = useAdminConnection<ServiceGroupType>(`/groups/${groupId}`) || {} as ServiceGroupType;
   const setPanel = useSetPanelContext();
 
   return (
     <div tw="flex flex-col w-full h-full">
-      <div tw="flex flex-col flex-grow w-full">
-        <Switch>
-          <Route
-            exact
-            path={routes.serviceGroupDashboard}
-            render={() => (
-              <>
-                <DashboardHeader data={group} icon={<Icons.ServiceGroup width={32} height={36} />} setPanel={setPanel} />
-                <Dashboard id={groupId} isGroup setPanel={setPanel} />
-              </>
-            )}
-          />
-          <Route path={routes.serviceGroupPlugin} component={Plugin} />
-        </Switch>
-      </div>
+      <Switch>
+        <Route
+          exact
+          path={routes.serviceGroupDashboard}
+          render={() => (
+            <>
+              <DashboardHeader data={group} icon={<Icons.ServiceGroup width={32} height={36} />} setPanel={setPanel} />
+              <Dashboard data={group} isGroup setPanel={setPanel} />
+            </>
+          )}
+        />
+        <Route path={routes.serviceGroupPlugin} component={Plugin} />
+      </Switch>
     </div>
   );
 };

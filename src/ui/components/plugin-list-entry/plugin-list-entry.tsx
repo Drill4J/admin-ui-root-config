@@ -43,7 +43,7 @@ export const PluginCard = ({
         <div tw="space-y-2">
           <div tw="flex gap-x-2">
             <Label>{name}</Label>
-            <Version>({version})</Version>
+            <Version>{version}</Version>
           </div>
           <Description>{description}</Description>
         </div>

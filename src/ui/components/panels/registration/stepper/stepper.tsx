@@ -80,16 +80,14 @@ export const Stepper = ({
   return (
     <Formik
       initialValues={state}
-      onSubmit={(values: any) => {
-        try {
-          onSubmit(values);
-          setPanel({ type: "SELECT_AGENT" });
-        } catch (e) {
+      onSubmit={async (values: any) => {
+        onSubmit(values).catch(() => {
           sendAlertEvent({
             type: "ERROR",
             title: "On-submit error. Server problem or operation could not be processed in real-time.",
           });
-        }
+        });
+        setPanel({ type: "SELECT_AGENT" });
       }}
       validate={currentValidationSchema as any}
       validateOnMount
@@ -107,7 +105,7 @@ export const Stepper = ({
                 </div>
                 <div tw="flex justify-center gap-8">
                   {steps.map(({ stepLabel }, index) => (
-                    <div onClick={() => isValid && goTo(index)}>
+                    <div onClick={() => isValid && goTo(index)} key={stepLabel}>
                       <StepLabel
                         key={stepLabel}
                         isActive={index === stepNumber}

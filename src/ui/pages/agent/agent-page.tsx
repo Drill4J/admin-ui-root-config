@@ -14,11 +14,13 @@
  * limitations under the License.
  */
 import React, { useEffect } from "react";
-import { Route, Switch, useParams } from "react-router-dom";
+import { Route, Switch } from "react-router-dom";
 import axios from "axios";
 import "twin.macro";
 
-import { useActiveBuild, useAdminConnection, useAgent } from "hooks";
+import {
+  useActiveBuild, useAdminConnection, useAgent, useRouteParams,
+} from "hooks";
 import { routes } from "common";
 import { AgentBuildInfo, Notification } from "types";
 import { useSetPanelContext } from "components";
@@ -28,8 +30,7 @@ import { Plugin } from "./plugin";
 import { DashboardHeader } from "./dashboard-header";
 
 export const AgentPage = () => {
-  const { agentId = "", buildVersion = "" } =
-    useParams<{ agentId?: string; buildVersion?: string }>();
+  const { agentId = "" } = useRouteParams();
   const agent = useAgent();
   const { systemSettings } = useActiveBuild(agent?.id) || {};
   const [activeBuildInfo] = useAdminConnection<AgentBuildInfo[]>(`/api/agent/${agent.id}/builds`) || [];
@@ -40,18 +41,15 @@ export const AgentPage = () => {
     notifications.find((notification) => notification.agentId === agentId) ||
     {};
   useEffect(() => {
-    if (
-      !newBuildNotification?.read &&
-      newBuildNotification?.agentId === agentId &&
-      newBuildNotification?.message?.currentId === buildVersion &&
-      newBuildNotification?.id
-    ) {
-      readNotification(newBuildNotification.id);
+    if (!newBuildNotification?.read && newBuildNotification?.agentId === agentId) {
+      readNotification(newBuildNotification.id as string);
     }
-  }, [buildVersion, newBuildNotification?.id]);
+  }, [newBuildNotification?.id]);
+
+  const agentWithSystemSettings = { ...agent, systemSettings };
 
   return (
-    <div tw="flex flex-col w-full">
+    <div tw="flex flex-col flex-grow w-full h-full">
       <Switch>
         <Route
           exact
@@ -59,12 +57,12 @@ export const AgentPage = () => {
           render={() => (
             <>
               <DashboardHeader
-                data={{ ...agent, systemSettings }}
+                data={agentWithSystemSettings}
                 status={activeBuildInfo?.buildStatus}
                 icon={<Icons.Agent width={32} height={36} />}
                 setPanel={setPanel}
               />
-              <Dashboard id={agentId} setPanel={setPanel} />
+              <Dashboard data={agentWithSystemSettings} setPanel={setPanel} />
             </>
           )}
         />

@@ -13,23 +13,18 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-import singleSpaReact from "single-spa-react";
-import React, { Dispatch, SetStateAction, useEffect } from "react";
-import ReactDOM from "react-dom";
+import React, { Dispatch, SetStateAction } from "react";
 import { BrowserRouter } from "react-router-dom";
-import {
-  Application, getAppNames, registerApplication, unregisterApplication,
-} from "single-spa";
 import { css } from "twin.macro";
 import { Icons, Stub } from "@drill4j/ui-kit";
 
 import { useAdminConnection, usePluginUrls } from "hooks";
-import { Plugin } from "types";
+import { AgentInfo, Plugin, ServiceGroup } from "types";
 import { HUD, PanelType } from "components";
-import { getPagePath, routes } from "common";
+import { getPagePath } from "common";
 
 interface Props {
-  id: string;
+  data?: AgentInfo | ServiceGroup;
   isGroup?: boolean;
   setPanel: Dispatch<SetStateAction<PanelType | null>>;
 }
@@ -43,7 +38,8 @@ const Wrapper = ({ children }: { children: React.ReactNode }) => (
   </BrowserRouter>
 );
 
-const DashboardComponent = ({ id, isGroup, setPanel }: Props) => {
+export const Dashboard = ({ data, isGroup, setPanel }: Props) => {
+  const { id = "" } = data || {};
   const plugins = useAdminConnection<Plugin[]>(isGroup ? `/groups/${id}/plugins` : `/agents/${id}/plugins`) || [];
   const installedPlugins = plugins.filter((plugin) => !plugin.available);
   const paths = usePluginUrls();
@@ -63,7 +59,7 @@ const DashboardComponent = ({ id, isGroup, setPanel }: Props) => {
               There are no enabled plugins on this {isGroup ? "service Group" : "agent"} to collect the data from.
               <br /> To install a plugin go to
               <div
-                onClick={() => setPanel({ type: "SETTINGS", payload: id })}
+                onClick={() => setPanel({ type: "SETTINGS", payload: data })}
                 tw="link block mt-1 font-bold"
               >
                 {isGroup ? "Service Group" : "Agent"} settings page
@@ -94,39 +90,6 @@ const DashboardComponent = ({ id, isGroup, setPanel }: Props) => {
       })}
     </Wrapper>
   );
-};
-
-const DashboardLifecycle = singleSpaReact({
-  React,
-  ReactDOM,
-  rootComponent: DashboardComponent,
-  domElementGetter: () => document.getElementById("dashboard") || document.body,
-  errorBoundary: () => <div>smth went wrong</div>,
-});
-
-export const Dashboard = ({ id = "", isGroup = false, setPanel }: Props) => {
-  useEffect(() => {
-    !getAppNames().includes(isGroup ? "group-dashboard" : "agent-dashboard") && registerApplication({
-      name: isGroup ? "group-dashboard" : "agent-dashboard",
-      app: ({
-        mount: [
-          DashboardLifecycle.mount,
-        ],
-        unmount: [
-          DashboardLifecycle.unmount,
-        ],
-        update: DashboardLifecycle.update,
-        bootstrap: DashboardLifecycle.bootstrap,
-      } as Application),
-      activeWhen: [routes.agentDashboard, routes.serviceGroupDashboard],
-      customProps: { id, isGroup, setPanel },
-    });
-    return () => {
-      unregisterApplication(isGroup ? "group-dashboard" : "agent-dashboard");
-    };
-  }, []);
-
-  return <div tw="w-full h-full flex-grow" id="dashboard" />;
 };
 
 const loaderStyles = css`

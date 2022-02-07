@@ -27,7 +27,7 @@ import { CubeWithTooltip } from "../cubes";
 import { usePanelContext } from "../panels";
 
 export const PluginsSelector = () => {
-  const { agentId, groupId, buildVersion } = useRouteParams();
+  const { agentId, groupId } = useRouteParams();
   const plugins = useAdminConnection<Plugin[]>(agentId ? `/agents/${agentId}/plugins` : `/groups/${groupId}/plugins`) || [];
   const { pathname } = useLocation();
   const selectedPanel = usePanelContext();
@@ -43,7 +43,7 @@ export const PluginsSelector = () => {
       {plugins.map(({ name = "", id: pluginId = "" }) => {
         const Icon = Icons[name as keyof typeof Icons];
         const pageObject = agentId
-          ? { name: "agentPlugin", params: { agentId, buildVersion, pluginId } }
+          ? { name: "agentPlugin", params: { agentId, pluginId } }
           : { name: "serviceGroupPlugin", params: { groupId, pluginId } };
 
         return (

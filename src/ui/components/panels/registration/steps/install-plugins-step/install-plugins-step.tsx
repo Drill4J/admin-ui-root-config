@@ -62,6 +62,6 @@ export const InstallPluginsStep = () => {
 };
 
 const PluginWrapper = styled.div`
-  ${tw`border border-monochrome-dark100 rounded-lg hover:(border-blue-default border-opacity-50)`}
+  ${tw`border border-monochrome-dark100 rounded-lg cursor-pointer hover:(border-blue-default border-opacity-50)`}
   ${({ selected }: { selected: boolean }) => selected && tw`border-blue-default`}
 `;
