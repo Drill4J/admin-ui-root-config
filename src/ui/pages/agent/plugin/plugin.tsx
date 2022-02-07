@@ -45,7 +45,7 @@ export const Plugin = () => {
   }, [pluginId, paths]);
 
   return (
-    <div tw="relative">
+    <div tw="relative h-full">
       {agentActiveBuild?.buildStatus === BUILD_STATUS.BUSY && (
         <div tw="absolute inset-0 bg-monochrome-white bg-opacity-[0.95] z-[100]">
           <Stub icon={<Spinner color="blue" tw="!w-16 !h-16" />} title="Please wait" message="Agent is busy at the moment." />

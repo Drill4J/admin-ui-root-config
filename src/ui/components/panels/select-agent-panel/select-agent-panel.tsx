@@ -151,7 +151,7 @@ const AgentRow = ({ agent, buildStatus }: AgentRowProps) => {
             },
           });
         }) as any}
-        tw="action-icon w-6 h-6"
+        tw="action-icon w-6 h-6 flex items-center justify-center"
       />
     </Wrapper>
   );
@@ -205,7 +205,7 @@ const GroupRow = ({ agents = [], group, agentBuildStatuses }: GroupRowProps) => 
         <Icons.Settings
           width={16}
           height={16}
-          tw="action-icon w-6 h-6"
+          tw="action-icon w-6 h-6 flex items-center justify-center"
           onClick={((event: any) => {
             event?.stopPropagation();
             setPanel({ type: "SETTINGS", payload: { ...group, agentType: "Group" } });
@@ -243,7 +243,7 @@ const PreregisteredAgentRow = (agent: AgentInfo) => {
             },
           });
         }) as any}
-        tw="action-icon w-6 h-6"
+        tw="action-icon w-6 h-6 flex items-center justify-center"
       />
     </Row>
   );
