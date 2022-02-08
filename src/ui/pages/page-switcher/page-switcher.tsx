@@ -18,15 +18,15 @@ import { Switch } from "react-router-dom";
 import { AGENT_STATUS, routes } from "common";
 import { NoAgentSelectedStub, NoAgentsRegisteredStub, PrivateRoute } from "components";
 import { useAdminConnection, useRouteParams } from "hooks";
-import { Agent } from "types";
+import { AgentInfo } from "types";
 
 import { AgentPage } from "../agent";
 import { ServiceGroup } from "../service-group";
 
 export const PageSwitcher = () => {
   const { agentId, groupId } = useRouteParams();
-  const agentsList = useAdminConnection<Agent[]>("/api/agents") || [];
-  const isAllAgentsUnregistered = agentsList.every((agent) => agent.status === AGENT_STATUS.NOT_REGISTERED);
+  const agentsList = useAdminConnection<AgentInfo[]>("/api/agents") || [];
+  const isAllAgentsUnregistered = agentsList.every((agent) => agent.agentStatus === AGENT_STATUS.NOT_REGISTERED);
 
   if (isAllAgentsUnregistered) {
     return <NoAgentsRegisteredStub />;
