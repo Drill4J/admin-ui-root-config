@@ -260,6 +260,18 @@ module.exports = {
         ".action-icon:active": {
           color: "#a4acb3",
         },
+        ".custom-scroll::-webkit-scrollbar": {
+          maxWidth: "16px",
+          maxHeight: "16px",
+        },
+        ".custom-scroll::-webkit-scrollbar-thumb": {
+          border: "4px solid rgba(27, 27, 27, .94)",
+          borderRadius: "9999px",
+          backgroundColor: "#81868B",
+        },
+        ".custom-scroll::--webkit-scrollbar-track": {
+          backgroundColor: "transparent",
+        },
       };
 
       addUtilities(newUtilities);

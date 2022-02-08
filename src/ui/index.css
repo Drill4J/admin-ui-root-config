@@ -881,6 +881,10 @@ button:focus {
   z-index: 100;
 }
 
+.\!z-\[200\] {
+  z-index: 200 !important;
+}
+
 .col-start-2 {
   grid-column-start: 2;
 }
@@ -1926,6 +1930,21 @@ button:focus {
 
 .action-icon:active {
   color: #a4acb3;
+}
+
+.custom-scroll::-webkit-scrollbar {
+  max-width: 16px;
+  max-height: 16px;
+}
+
+.custom-scroll::-webkit-scrollbar-thumb {
+  border: 4px solid rgba(27, 27, 27, .94);
+  border-radius: 9999px;
+  background-color: #81868B;
+}
+
+.custom-scroll::--webkit-scrollbar-track {
+  background-color: transparent;
 }
 
 .first\:border-t:first-child {

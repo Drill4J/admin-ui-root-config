@@ -54,7 +54,14 @@ export const SelectAgentPanel = ({ isOpen, onClosePanel }: PanelProps) => {
       header={(
         <div tw="w-[1024px] flex justify-between items-center h-21">
           Select Agent
-          <Button onClick={() => setPanel({ type: "ADD_AGENT" })} secondary size="large"><Icons.Plus /> Add Agent</Button>
+          <Button
+            onClick={() => setPanel({ type: "ADD_AGENT" })}
+            secondary
+            size="large"
+            data-test="select-agent-panel:open-add-agent-panel"
+          >
+            <Icons.Plus /> Add Agent
+          </Button>
         </div>
       )}
       isOpen={isOpen}
@@ -129,6 +136,7 @@ const AgentRow = ({ agent, buildStatus }: AgentRowProps) => {
           }));
         }
       }}
+      data-test="select-agent-panel:agent-row"
     >
       <div /> {/* Hack for save layout */}
       <CubeWrapper isActive={isSelectedAgent}>{convertAgentName(name)}</CubeWrapper>
@@ -176,6 +184,7 @@ const GroupRow = ({ agents = [], group, agentBuildStatuses }: GroupRowProps) => 
   return (
     <div tw="rounded-lg bg-monochrome-black100">
       <StyledGroupRow
+        data-test="select-agent-panel:group-row"
         selected={isSelectedGroup}
         isOpen={isOpen}
         onClick={() => {

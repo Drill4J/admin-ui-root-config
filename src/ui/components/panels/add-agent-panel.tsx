@@ -47,6 +47,7 @@ export const AddAgentPanel = ({ isOpen, onClosePanel }: PanelProps) => {
               type: "AGENT_PREREGISTRATION",
               payload: agentsList.map(({ id }) => id) as string[],
             })}
+            data-test="add-agent-panel:open-preregister-agent-panel"
           >
             <Icons.Register /> Preregister Agent
           </LinkButton>
@@ -65,7 +66,7 @@ export const AddAgentPanel = ({ isOpen, onClosePanel }: PanelProps) => {
             {groups.map(({ group, agents: groupAgents }) => groupAgents.length > 0
             && <GroupRow key={group?.id} group={group} agents={groupAgents} />)}
             {notRegisteredAgents.map((agent) => (
-              <Layout key={agent.id} bordered>
+              <Layout key={agent.id} bordered data-test="add-agent-panel:agent-row">
                 <AgentRow agent={agent} />
               </Layout>
             ))}
@@ -104,7 +105,10 @@ const GroupRow = ({ group, agents }:GroupRowProps) => {
   const setPanel = useSetPanelContext();
   return (
     <div tw="rounded-lg border border-monochrome-dark text-monochrome-dark-tint text-14 leading-20">
-      <Layout css={[tw`border-monochrome-dark`, isOpen && tw`border-b`]}>
+      <Layout
+        css={[tw`border-monochrome-dark`, isOpen && tw`border-b`]}
+        data-test="add-agent-panel:group-row"
+      >
         <div
           tw="flex items-center justify-center cursor-pointer"
           onClick={() => setIsOpen(!isOpen)}
@@ -121,12 +125,13 @@ const GroupRow = ({ group, agents }:GroupRowProps) => {
           primary
           size="small"
           onClick={() => setPanel({ type: "GROUP_REGISTRATION", payload: group })}
+          data-test="add-agent-panel:group-row:register"
         >
           <Icons.Register width={16} height={16} /> Register
         </Button>
       </Layout>
       {isOpen && agents.map((agent) => (
-        <Layout key={agent.id}>
+        <Layout key={agent.id} data-test="add-agent-panel:agent-row">
           <AgentRow agent={agent} />
         </Layout>
       ))}
@@ -154,6 +159,7 @@ const AgentRow = ({ agent }: { agent: AgentInfo}) => {
         primary={!group}
         secondary={Boolean(group)}
         size="small"
+        data-test="add-agent-panel:agent-row:register"
       >
         <Icons.Register width={16} height={16} /> Register
       </Button>

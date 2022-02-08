@@ -109,7 +109,7 @@ export const SettingsPanel = ({
           isOpen={isOpen}
           onClosePanel={onClosePanel}
         >
-          <Form tw="flex flex-col items-center py-16 ">
+          <Form tw="flex flex-col items-center py-16">
             <div tw="space-y-8">
               {activeTab === "general" && <GeneralSettingsForm />}
               {activeTab === "system" && <SystemSettings />}

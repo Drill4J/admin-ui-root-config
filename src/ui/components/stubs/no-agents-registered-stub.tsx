@@ -40,7 +40,13 @@ export const NoAgentsRegisteredStub = () => {
             </a>
             &nbsp;and add it.
           </span>
-          <Button primary size="large" tw="mt-12 mx-auto" onClick={() => setPanel({ type: "ADD_AGENT" })}>
+          <Button
+            primary
+            size="large"
+            tw="mt-12 mx-auto"
+            onClick={() => setPanel({ type: "ADD_AGENT" })}
+            data-test="no-agent-registered-stub:open-add-agent-panel"
+          >
             <Icons.Plus /> Add Agent
           </Button>
         </>

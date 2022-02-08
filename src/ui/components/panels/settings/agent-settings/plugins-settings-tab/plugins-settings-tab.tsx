@@ -64,6 +64,7 @@ export const PluginsSettingsTab = ({ agent }: Props) => {
                 }}
                 primary
                 size="large"
+                type="button"
               >
                 Install
               </Button>

@@ -28,10 +28,13 @@ export const Panel = ({
   children, header, isOpen, onClosePanel, footer,
 }: Props) => (isOpen
   ? (
-    <div tw="absolute inset-0 left-12 z-[120] grid w-auto h-auto grid-cols-[auto 1fr] overflow-hidden">
+    <div data-test="panel" tw="absolute inset-0 left-12 z-[120] grid w-auto h-auto grid-cols-[auto 1fr]">
       <div tw="h-full flex flex-col text-monochrome-light-tint text-24">
         <div tw="px-6 leading-32 bg-monochrome-black">{header}</div>
-        <div tw="relative px-6 bg-monochrome-black flex-grow bg-opacity-[0.97]">{children}</div>
+        {/* fixed height need that browser can apply scroll styles */}
+        <div tw="relative px-6 bg-monochrome-black flex-grow bg-opacity-[0.97] overflow-y-auto custom-scroll h-4">
+          {children}
+        </div>
         {footer && <div tw="h-18 bg-monochrome-black">{footer}</div>}
       </div>
       <div onClick={onClosePanel} style={{ background: "rgba(0, 0, 0, 0.4)" }} />

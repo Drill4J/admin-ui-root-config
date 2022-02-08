@@ -24,24 +24,22 @@ interface Props {
   onLeave: () => void;
 }
 
-export const UnSaveChangesModal = ({ isOpen, onToggle, onLeave }: Props) => (
+export const UnSaveChangesModal = ({ isOpen, onToggle, onLeave }: Props) => (isOpen ? (
   <Modal onClose={onToggle} isOpen={isOpen}>
-    <>
-      <Modal.Content type="info" tw="w-108">
-        <Modal.Header>Unsaved Changes</Modal.Header>
-        <Modal.Body>
-          <div tw=" text-14 leading-20 text-monochrome-black">
-            There are unsaved changes. If you would like to keep changes,<br /> press the “Continue Editing” button.
-          </div>
-        </Modal.Body>
-        <div />
-        <Modal.Footer tw="flex gap-x-4">
-          <Button primary size="large" onClick={onToggle}>Continue Editing</Button>
-          <Button secondary size="large" onClick={onLeave}>
-            Leave Without Saving
-          </Button>
-        </Modal.Footer>
-      </Modal.Content>
-    </>
+    <Modal.Content type="info" tw="w-108 !z-[200]">
+      <Modal.Header>Unsaved Changes</Modal.Header>
+      <Modal.Body>
+        <div tw=" text-14 leading-20 text-monochrome-black">
+          There are unsaved changes. If you would like to keep changes,<br /> press the “Continue Editing” button.
+        </div>
+      </Modal.Body>
+      <div />
+      <Modal.Footer tw="flex gap-x-4">
+        <Button primary size="large" onClick={onToggle}>Continue Editing</Button>
+        <Button secondary size="large" onClick={onLeave}>
+          Leave Without Saving
+        </Button>
+      </Modal.Footer>
+    </Modal.Content>
   </Modal>
-);
+) : null);

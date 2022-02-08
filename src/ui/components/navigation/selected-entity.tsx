@@ -52,7 +52,11 @@ const SelectedAgent = ({ isSelectedPanelOpen }: Props) => {
   const { isExact } = matchPath(pathname, { path: routes.agentDashboard }) || {};
 
   return (
-    <Link tw="bg-monochrome-dark100 rounded" to={getPagePath({ name: "agentDashboard", params: { agentId: id } })}>
+    <Link
+      tw="bg-monochrome-dark100 rounded"
+      to={getPagePath({ name: "agentDashboard", params: { agentId: id } })}
+      data-test="navigation:open-dashboard"
+    >
       <IndicatorInEdge
         tw="bottom-[3px] right-[3px]"
         isHidden={false}

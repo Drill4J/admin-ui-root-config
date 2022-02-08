@@ -17,7 +17,7 @@
     }
 
     .custom-scroll::-webkit-scrollbar-thumb {
-        border: 4px solid rgba(27, 27, 27, .94);;
+        border: 4px solid rgba(27, 27, 27, .94);
         border-radius: 9999px;
         background-color: #81868B;
     }

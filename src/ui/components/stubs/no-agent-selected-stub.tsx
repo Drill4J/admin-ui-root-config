@@ -29,7 +29,15 @@ export const NoAgentSelectedStub = () => {
       message={(
         <>
           Please select the Agent in the navigation bar.
-          <Button primary size="large" tw="mt-12 mx-auto" onClick={() => setPanel({ type: "SELECT_AGENT" })}>Select Agent</Button>
+          <Button
+            primary
+            size="large"
+            tw="mt-12 mx-auto"
+            onClick={() => setPanel({ type: "SELECT_AGENT" })}
+            data-test="no-agent-selected-stub:open-select-agent-panel"
+          >
+            Select Agent
+          </Button>
         </>
       )}
     />

@@ -47,7 +47,12 @@ export const PluginsSelector = () => {
           : { name: "serviceGroupPlugin", params: { groupId, pluginId } };
         const pagePath = getPagePath(pluginPageData as any);
         return (
-          <CustomLink to={pagePath} disabled={pathname.includes(pagePath)} key={pluginId}>
+          <CustomLink
+            to={pagePath}
+            disabled={pathname.includes(pagePath)}
+            key={pluginId}
+            data-test={`navigation:open-${pluginId}-plugin`}
+          >
             <CubeWithTooltip tooltip={name} isActive={selectedPluginId === pluginId && selectedPanel?.type !== "SELECT_AGENT"}>
               <Icon width={24} height={24} viewBox="0 0 24 24" />
             </CubeWithTooltip>

@@ -28,6 +28,7 @@ export const SelectAgent = () => {
       tooltip="Select Agent"
       isActive={activePanel?.type === "SELECT_AGENT"}
       onClick={() => setPanel({ type: "SELECT_AGENT" })}
+      data-test="navigation:open-select-agent-panel"
     >
       {groupId ? <Icons.ServiceGroup /> : <Icons.Agent />}
     </CubeWithTooltip>

@@ -133,7 +133,6 @@ export const Stepper = ({
                       size="large"
                       type="button"
                       onClick={goToPrevStep}
-                      disabled={!isValid}
                     >
                       <Icons.Expander width={7} height={12} rotate={180} />
                       Back
