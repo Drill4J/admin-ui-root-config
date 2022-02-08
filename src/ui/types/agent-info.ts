@@ -41,4 +41,5 @@ export interface AgentInfoWithSystemSetting {
   activePluginsCount: number;
   agentType: string;
   plugins: Plugin[];
+  systemSettings: SystemSettings;
 }

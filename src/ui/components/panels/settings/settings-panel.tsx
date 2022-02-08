@@ -30,7 +30,7 @@ import {
   sendAlertEvent,
 } from "@drill4j/ui-kit";
 import "twin.macro";
-import { AgentInfo, SystemSettings as SystemSettingsType } from "types";
+import { AgentInfoWithSystemSetting } from "types";
 import { AGENT_STATUS } from "common";
 import { PanelProps } from "../panel-props";
 import { PanelWithCloseIcon } from "../panel-with-close-icon";
@@ -39,10 +39,7 @@ import { JsSystemSettingsForm } from "./agent-settings/js-system-settings-form";
 import { SystemSettingsForm } from "./agent-settings/system-settings-form";
 import { PluginsSettingsTab } from "./agent-settings/plugins-settings-tab";
 import { UnSaveChangesModal } from "./un-save-changes-modal";
-
-interface AgentInfoWithSystemSetting extends AgentInfo {
-  systemSettings: SystemSettingsType;
-}
+import { saveSettingForPreregisteredAgent } from "./save-settings-api";
 
 export const SettingsPanel = ({
   isOpen,
@@ -87,7 +84,7 @@ export const SettingsPanel = ({
       enableReinitialize
     >
       {({
-        isSubmitting, isValid, dirty, resetForm,
+        isSubmitting, isValid, dirty, resetForm, values,
       }) => (
         <PanelWithCloseIcon
           header={(
@@ -117,7 +114,7 @@ export const SettingsPanel = ({
             <div tw="space-y-8">
               {activeTab === "general" && <GeneralSettingsForm />}
               {activeTab === "system" && <SystemSettings />}
-              {activeTab === "plugins" && <PluginsSettingsTab agent={payload} />}
+              {activeTab === "plugins" && <PluginsSettingsTab agent={values} />}
               {activeTab !== "plugins" && (
                 <Button
                   tw="flex justify-center min-w-[130px]"
@@ -189,30 +186,6 @@ function saveSettings(
     default:
       return undefined;
   }
-}
-
-async function saveSettingForPreregisteredAgent(values: AgentInfoWithSystemSetting) {
-  const {
-    id,
-    name,
-    description,
-    environment,
-    plugins,
-    systemSettings,
-  } = values;
-
-  return axios.post("/agents", {
-    id,
-    name,
-    agentType: "JAVA",
-    environment,
-    description,
-    plugins: plugins.map(({ id: pluginId }) => pluginId),
-    systemSettings: {
-      ...systemSettings,
-      packages: parsePackages(systemSettings?.packages as unknown as string).filter(Boolean),
-    },
-  });
 }
 
 function getTabValidationSchema(activeTab: string) {

@@ -14,18 +14,20 @@
  * limitations under the License.
  */
 import React from "react";
-import axios from "axios";
 import { Link } from "react-router-dom";
 import { Icons, Button, sendAlertEvent } from "@drill4j/ui-kit";
 import "twin.macro";
 
-import { Agent, Plugin } from "types";
+import {
+  AgentInfoWithSystemSetting, Plugin,
+} from "types";
 import { useAdminConnection } from "hooks";
 import { PluginCard } from "components";
-import { getPagePath } from "common";
+import { AGENT_STATUS, getPagePath } from "common";
+import { addPluginToAgent, addPluginToGroup, addPluginToPreregisteredAgent } from "../../save-settings-api";
 
 interface Props {
-  agent: Agent;
+  agent: AgentInfoWithSystemSetting;
 }
 
 export const PluginsSettingsTab = ({ agent }: Props) => {
@@ -53,7 +55,7 @@ export const PluginsSettingsTab = ({ agent }: Props) => {
               <Button
                 onClick={async () => {
                   try {
-                    await axios.post(`/agents/${agentId}/plugins`, { pluginId: id });
+                    await addPlugin(agent, id);
                     sendAlertEvent({ type: "SUCCESS", title: "Plugin has been added" });
                   } catch ({ response: { data: { message } = {} } = {} }) {
                     sendAlertEvent({
@@ -81,4 +83,16 @@ export const PluginsSettingsTab = ({ agent }: Props) => {
       ))}
     </div>
   );
+};
+
+const addPlugin = (agent: AgentInfoWithSystemSetting, pluginId: string) => {
+  if (agent.agentStatus === AGENT_STATUS.PREREGISTERED) {
+    return addPluginToPreregisteredAgent(agent, pluginId);
+  }
+
+  if (agent.agentType === "Group") {
+    return addPluginToGroup(agent.id, pluginId);
+  }
+
+  return addPluginToAgent(agent.id, pluginId);
 };
