@@ -30,7 +30,7 @@ import {
   sendAlertEvent,
 } from "@drill4j/ui-kit";
 import "twin.macro";
-import { AgentInfoWithSystemSetting } from "types";
+import { AgentInfo, SystemSettings as SystemSettingsType } from "types";
 import { AGENT_STATUS } from "common";
 import { PanelProps } from "../panel-props";
 import { PanelWithCloseIcon } from "../panel-with-close-icon";
@@ -39,6 +39,10 @@ import { JsSystemSettingsForm } from "./agent-settings/js-system-settings-form";
 import { SystemSettingsForm } from "./agent-settings/system-settings-form";
 import { PluginsSettingsTab } from "./agent-settings/plugins-settings-tab";
 import { UnSaveChangesModal } from "./un-save-changes-modal";
+
+interface AgentInfoWithSystemSetting extends AgentInfo {
+  systemSettings: SystemSettingsType;
+}
 
 export const SettingsPanel = ({
   isOpen,
