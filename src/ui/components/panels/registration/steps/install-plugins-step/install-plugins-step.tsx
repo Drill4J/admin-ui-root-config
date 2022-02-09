@@ -36,7 +36,7 @@ export const InstallPluginsStep = () => {
         {availablePlugins.map(({
           id, name, description, version,
         }) => (
-          <label key={id}>
+          <label key={id} data-test="add-agent:add-plugins-step:add-plugin">
             <Field
               type="checkbox"
               name="plugins"

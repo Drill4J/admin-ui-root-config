@@ -133,6 +133,7 @@ export const Stepper = ({
                       size="large"
                       type="button"
                       onClick={goToPrevStep}
+                      data-test="wizard:previous-step"
                     >
                       <Icons.Expander width={7} height={12} rotate={180} />
                       Back
@@ -143,7 +144,7 @@ export const Stepper = ({
                       primary
                       key="finish"
                       size="large"
-                      data-test="wizard:finishng-button"
+                      data-test="wizard:finish"
                       type="submit"
                     >
                       Finish
@@ -156,6 +157,7 @@ export const Stepper = ({
                       type="button"
                       onClick={goToNextStep}
                       disabled={!isValid}
+                      data-test="wizard:next-step"
                     >
                       Next
                       <Icons.Expander width={7} height={12} />

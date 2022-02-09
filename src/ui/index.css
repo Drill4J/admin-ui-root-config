@@ -1080,6 +1080,10 @@ button:focus {
   height: auto;
 }
 
+.h-4 {
+  height: 1rem;
+}
+
 .h-18 {
   height: 4.5rem;
 }
@@ -1094,10 +1098,6 @@ button:focus {
 
 .h-10 {
   height: 2.5rem;
-}
-
-.h-4 {
-  height: 1rem;
 }
 
 .h-21 {

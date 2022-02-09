@@ -91,6 +91,7 @@ export const LoginPage = () => {
             secondary
             size="large"
             onClick={handleLogin}
+            data-test="login-button:continue-as-guest"
           >
             Continue as a guest (with admin rights)
           </Button>

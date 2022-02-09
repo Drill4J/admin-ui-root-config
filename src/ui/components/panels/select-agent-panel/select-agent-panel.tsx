@@ -261,7 +261,10 @@ const PreregisteredAgentRow = (agent: AgentInfo) => {
 const RegisteringAgentRow = ({
   name = "", description, agentType,
 }: AgentInfo) => (
-  <Row tw="text-opacity-40">
+  <Row
+    tw="text-opacity-40"
+    data-test="select-agent-panel:registering-agent-row"
+  >
     <div /> {/* Hack for save layout */}
     <div tw="flex justify-center items-center"><Spinner color="blue" /></div>
     <NameColumn title={name}>
