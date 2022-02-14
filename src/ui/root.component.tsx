@@ -13,7 +13,8 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-import React from "react";
+import React, { useEffect } from "react";
+import ReactGA from "react-ga";
 import { BrowserRouter, Route, Switch } from "react-router-dom";
 import "twin.macro";
 
@@ -23,30 +24,42 @@ import { PanelProvider, Panels, Navigation } from "components";
 import { configureAxios, routes } from "common";
 import { SetPluginUrlModal } from "components/set-plugin-url-modal";
 import { AlertManager } from "./alert-manager";
-
 import "./index.css";
+import { useAdminConnection } from "./hooks";
+import { AnalyticsInfo } from "./types";
+
+ReactGA.initialize("UA-220101809-1");
+ReactGA.pageview(window.location.pathname + window.location.search);
 
 configureAxios();
 
-const Root = () => (
-  <BrowserRouter>
-    <FontsStyles />
-    <TypographyStyles />
-    <LayoutStyles />
-    <AlertManager />
-    <Switch>
-      <Route exact path={routes.login} component={LoginPage} />
-      <PanelProvider>
-        <Navigation tw="fixed" />
-        {/* Navigation width = 48px */}
-        <div tw="ml-12 w-[calc(100% - 48px)]">
-          <PageSwitcher />
-        </div>
-        <Panels />
-      </PanelProvider>
-    </Switch>
-    <SetPluginUrlModal />
-  </BrowserRouter>
-);
+const Root = () => {
+  const { clientId } = useAdminConnection<AnalyticsInfo>("/api/analytics/info") || {};
+
+  useEffect(() => {
+    ReactGA.set({ dimension1: clientId });
+  }, [clientId]);
+
+  return (
+    <BrowserRouter>
+      <FontsStyles />
+      <TypographyStyles />
+      <LayoutStyles />
+      <AlertManager />
+      <Switch>
+        <Route exact path={routes.login} component={LoginPage} />
+        <PanelProvider>
+          <Navigation tw="fixed" />
+          {/* Navigation width = 48px */}
+          <div tw="ml-12 w-[calc(100% - 48px)]">
+            <PageSwitcher />
+          </div>
+          <Panels />
+        </PanelProvider>
+      </Switch>
+      <SetPluginUrlModal />
+    </BrowserRouter>
+  );
+};
 
 export default Root;
