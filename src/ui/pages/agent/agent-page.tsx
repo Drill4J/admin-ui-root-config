@@ -22,6 +22,7 @@ import { BUILD_STATUS, getPagePath, routes } from "common";
 import { AgentBuildInfo, AgentInfo } from "types";
 import { useSetPanelContext } from "components";
 import { Icons, Spinner, Stub } from "@drill4j/ui-kit";
+import ReactGA from "react-ga";
 import { Dashboard } from "../dashboard";
 import { Plugin } from "./plugin";
 import { DashboardHeader } from "./dashboard-header";
@@ -35,6 +36,10 @@ export const AgentPage = () => {
   const [activeBuildInfo] = useAdminConnection<AgentBuildInfo[]>(`/api/agent/${id}/builds`) || [];
   const agentsList = useAdminConnection<AgentInfo[]>("/api/agents");
   const setPanel = useSetPanelContext();
+
+  useEffect(() => {
+    ReactGA.set({ dimension2: agentId });
+  }, [agentId]);
 
   const agentWithSystemSettings = { ...Object(agent), systemSettings };
 
