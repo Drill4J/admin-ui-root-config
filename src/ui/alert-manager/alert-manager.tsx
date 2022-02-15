@@ -114,7 +114,6 @@ export const AlertPanel = ({ alerts }: { alerts: IAlert[] }) => (
   </Portal>
 );
 
-function getLatestAlerts(alerts: (IAlert | null)[]): IAlert[] {
-  const alertsWithoutNull = alerts.filter(Boolean) as IAlert[];
-  return alertsWithoutNull.length > 3 ? alertsWithoutNull.slice(alertsWithoutNull.length - 3) : alertsWithoutNull;
+function getLatestAlerts(alerts: IAlert[]): IAlert[] {
+  return alerts.length > 3 ? alerts.slice(alerts.length - 3) : alerts;
 }
