@@ -22,15 +22,27 @@ import {
   IAlert, SystemAlert, Portal,
 } from "@drill4j/ui-kit";
 
+const LOST_CONNECTION_ID = "LOST_CONNECTION_WITH_BACKEND";
+const RESTORED_CONNECTION_ID = "SUCCESSFULLY_RESTORED_CONNECTION";
+
 export const AlertManager = () => {
   const [alerts, setAlerts] = useState<IAlert[]>([]);
-  const [connectionAlert, setConnectionAlert] = useState<IAlert | null>(null);
   const { pathname = "" } = useLocation();
+  const hasConnectionAlert = alerts.some(({ id }) => id === LOST_CONNECTION_ID || id === RESTORED_CONNECTION_ID);
+
   const deleteAlert = useCallback((id) => {
     setAlerts((prevAlertsState) => prevAlertsState.filter(value => value.id !== id));
   }, []);
 
-  function handleShowMessage(e: CustomEvent<IAlert>) {
+  const deleteLostConnectionAlert = useCallback(() => {
+    setAlerts((currAlerts) => currAlerts.filter(({ id }) => id !== LOST_CONNECTION_ID));
+  }, []);
+
+  const deleteRestoredConnectionAlert = useCallback(() => {
+    setAlerts((currAlerts) => currAlerts.filter(({ id }) => id !== RESTORED_CONNECTION_ID));
+  }, []);
+
+  const handleShowMessage = useCallback((e: CustomEvent<IAlert>) => {
     const alert = e.detail;
     if (alert.type === "SUCCESS") {
       const timerId = setTimeout(() => deleteAlert(alert.id), 3000);
@@ -43,7 +55,7 @@ export const AlertManager = () => {
     }
 
     setAlerts((prevAlertsState) => [...prevAlertsState, alert]);
-  }
+  }, []);
 
   useEffect(() => {
     document.addEventListener("system-alert", handleShowMessage as EventListener);
@@ -51,37 +63,39 @@ export const AlertManager = () => {
   }, []);
 
   useEffect(() => {
-    let displayErrorAlertTimerId : NodeJS.Timeout;
     defaultAdminSocket.onCloseEvent = () => {
-      if (connectionAlert || displayErrorAlertTimerId) return;
-      setConnectionAlert({
-        id: "LOST_CONNECTION_WITH_BACKEND",
+      if (hasConnectionAlert) return;
+      setAlerts((prevAlertsState) => [...prevAlertsState, {
+        id: LOST_CONNECTION_ID,
         type: "ERROR",
         title: "Backend connection has been lost. Trying to reconnect...",
-        onClose: () => setConnectionAlert(null),
-      });
+        onClose: deleteLostConnectionAlert,
+      }]);
     };
     defaultAdminSocket.onOpenEvent = () => {
-      clearTimeout(displayErrorAlertTimerId);
-      if (connectionAlert) {
-        const displaySuccessAlertTimerId = setTimeout(() => setConnectionAlert(null), 3000);
-        setConnectionAlert({
-          id: "SUCCESSFULLY_RESTORED_CONNECTION",
-          type: "SUCCESS",
-          title: "Backend connection has been successfully restored.",
-          onClose: () => {
-            clearTimeout(displaySuccessAlertTimerId);
-            setConnectionAlert(null);
-          },
+      if (hasConnectionAlert) {
+        const displaySuccessAlertTimerId = setTimeout(deleteRestoredConnectionAlert, 3000);
+
+        setAlerts((currAlerts) => {
+          const alertsWithoutConnectionError = currAlerts.filter(({ id }) => id !== LOST_CONNECTION_ID);
+          return [...alertsWithoutConnectionError, {
+            id: "SUCCESSFULLY_RESTORED_CONNECTION",
+            type: "SUCCESS",
+            title: "Backend connection has been successfully restored.",
+            onClose: () => {
+              clearTimeout(displaySuccessAlertTimerId);
+              deleteRestoredConnectionAlert();
+            },
+          }];
         });
       }
     };
-  }, [connectionAlert, defaultAdminSocket]);
+  }, [defaultAdminSocket]);
 
   return (
     <>
       {pathname !== "/login" && (
-        <AlertPanel alerts={getLatestAlerts([connectionAlert, ...alerts])} />
+        <AlertPanel alerts={getLatestAlerts(alerts)} />
       )}
     </>
   );
