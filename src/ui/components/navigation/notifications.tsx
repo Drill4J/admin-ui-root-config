@@ -19,7 +19,7 @@ import { useAdminConnection } from "hooks";
 import { Notification as NotificationType } from "types";
 import tw, { styled } from "twin.macro";
 
-import { CubeWithTooltip } from "../cubes";
+import { Cube } from "../cubes";
 import { usePanelContext, useSetPanelContext } from "../panels";
 import { IndicatorInEdge } from "../indicator-in-edge";
 
@@ -30,8 +30,7 @@ export const Notifications = () => {
   const unreadNotifications = notifications.filter((notification) => !notification.read);
 
   return (
-    <CubeWithTooltip
-      tooltip="Notifications"
+    <Cube
       isActive={activePane?.type === "NOTIFICATIONS"}
       onClick={() => openModal({ type: "NOTIFICATIONS" })}
     >
@@ -49,7 +48,7 @@ export const Notifications = () => {
           <Icons.Notification tw="text-monochrome-white" />
         </Indicator>
       </div>
-    </CubeWithTooltip>
+    </Cube>
   );
 };
 

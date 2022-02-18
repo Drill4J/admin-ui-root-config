@@ -18,7 +18,7 @@ import tw, { styled, css } from "twin.macro";
 import { Cube } from "../../cubes";
 
 export const Layout = styled.div`
-  ${tw`grid items-center grid-cols-[24px 48px 3fr 4fr 112px 24px] h-[60px] px-4`}
+  ${tw`grid items-center grid-cols-[24px 48px 3fr 4fr 112px 24px] h-[60px] px-4 w-full`}
 `;
 
 export const Row = styled(Layout)`
@@ -49,7 +49,7 @@ export const CubeWrapper = styled(Cube)`
 `;
 
 export const Column = styled.div`
-  ${tw`px-3 text-ellipsis`}
+  ${tw`px-3 text-ellipsis truncate`}
 `;
 
 export const NameColumn = styled(Column)`

@@ -41,7 +41,7 @@ export const Notification = ({
   return (
     <Content ref={ref}>
       <div tw="flex justify-between items-center w-full leading-16 text-monochrome-gray">
-        <span>{agentId}</span>
+        <span tw="truncate" title={agentId}>{agentId}</span>
         <SinceNotificationArrived isHover={isVisible}>
           {format(createdAt || Date.now())}
         </SinceNotificationArrived>
@@ -115,7 +115,7 @@ const NotificationStatusIndicator = styled.div(
 );
 
 const SinceNotificationArrived = styled.div`
-  ${tw`h-4`}
+  ${tw`h-4 min-w-[100px] text-right`}
   ${({ isHover }: { isHover: boolean }) =>
     isHover &&
     `

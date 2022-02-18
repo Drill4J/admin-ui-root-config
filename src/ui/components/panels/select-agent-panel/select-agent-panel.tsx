@@ -51,8 +51,9 @@ export const SelectAgentPanel = ({ isOpen, onClosePanel }: PanelProps) => {
 
   return (
     <Panel
+      tw="w-[1024px]"
       header={(
-        <div tw="w-[1024px] flex justify-between items-center h-21">
+        <div tw="flex justify-between items-center h-21">
           Select Agent
           <Button
             onClick={() => setPanel({ type: "ADD_AGENT" })}
@@ -142,7 +143,7 @@ const AgentRow = ({ agent, buildStatus }: AgentRowProps) => {
       <CubeWrapper isActive={isSelectedAgent}>{convertAgentName(name)}</CubeWrapper>
       <NameColumn title={name}>
         <AgentStatusBadge status={buildStatus} />
-        <span>{name}</span>
+        <span tw="truncate">{name}</span>
       </NameColumn>
       <Column title={description}>{description}</Column>
       <Column title={agentType}>{agentType}</Column>

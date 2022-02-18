@@ -24,6 +24,7 @@ import { PanelProps } from "./panel-props";
 import { PanelWithCloseIcon } from "./panel-with-close-icon";
 import { useSetPanelContext } from "./panel-context";
 import { PanelStub } from "../panel-stub";
+import { Panel } from "./panel";
 
 export const AddAgentPanel = ({ isOpen, onClosePanel }: PanelProps) => {
   const agentsList = useAdminConnection<AgentInfo[]>("/api/agents") || [];
@@ -38,8 +39,9 @@ export const AddAgentPanel = ({ isOpen, onClosePanel }: PanelProps) => {
 
   return (
     <PanelWithCloseIcon
+      tw="w-[1024px]"
       header={(
-        <div tw="w-[1024px] flex justify-between items-center h-20">
+        <div tw="flex justify-between items-center h-20">
           Add Agent
           <LinkButton
             tw="text-14 leading-24"

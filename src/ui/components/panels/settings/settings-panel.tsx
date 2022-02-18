@@ -89,7 +89,7 @@ export const SettingsPanel = ({
         <PanelWithCloseIcon
           header={(
             <div tw="space-y-8 pt-6 w-[1024px]">
-              <div>Settings: {payload.id}</div>
+              <div tw="flex">Settings:&nbsp;<span title={payload.id} tw="truncate">{payload.id}</span></div>
               <div tw="flex justify-center gap-x-6">
                 {["general", "system", "plugins"].map((tab) => (
                   <Tab
