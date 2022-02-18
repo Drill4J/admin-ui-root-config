@@ -72,6 +72,7 @@ export const AlertManager = () => {
         onClose: deleteLostConnectionAlert,
       }]);
     };
+
     defaultAdminSocket.onOpenEvent = () => {
       if (hasConnectionAlert) {
         const displaySuccessAlertTimerId = setTimeout(deleteRestoredConnectionAlert, 3000);
@@ -90,7 +91,7 @@ export const AlertManager = () => {
         });
       }
     };
-  }, [defaultAdminSocket]);
+  }, [defaultAdminSocket, hasConnectionAlert]);
 
   return (
     <>
