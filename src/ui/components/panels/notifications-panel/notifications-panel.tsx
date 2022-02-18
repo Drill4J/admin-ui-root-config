@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 import React, { useState } from "react";
-import { GeneralAlerts, Icons } from "@drill4j/ui-kit";
+import { ContentAlert, Icons } from "@drill4j/ui-kit";
 import tw, { styled } from "twin.macro";
 
 import { useAdminConnection } from "hooks";
@@ -61,7 +61,7 @@ export const NotificationsPanel = ({ isOpen, onClosePanel }: PanelProps) => {
             </span>
           </ActionsPanel>
           {errorMessage && (
-            <GeneralAlerts type="ERROR">{errorMessage}</GeneralAlerts>
+            <ContentAlert type="ERROR">{errorMessage}</ContentAlert>
           )}
           <div className="custom-scroll" tw="overflow-hidden overflow-y-auto">
             {notifications.map((notification) => (

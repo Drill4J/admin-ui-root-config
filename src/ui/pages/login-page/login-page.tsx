@@ -16,11 +16,11 @@
 import React, { useLayoutEffect, useState } from "react";
 import { useHistory } from "react-router-dom";
 import axios from "axios";
-import { Inputs, Button, GeneralAlerts } from "@drill4j/ui-kit";
+import { Button, ContentAlert, Inputs } from "@drill4j/ui-kit";
 import tw, { styled } from "twin.macro";
 
 import { LoginLayout } from "layouts";
-import { TOKEN_KEY, TOKEN_HEADER } from "common/constants";
+import { TOKEN_HEADER, TOKEN_KEY } from "common/constants";
 
 const SignInForm = styled.div`
   ${tw`flex flex-col gap-y-6 mt-6`}
@@ -67,9 +67,9 @@ export const LoginPage = () => {
             admin privilege
           </div>
           {error && (
-            <GeneralAlerts tw="w-full mt-4" type="ERROR">
+            <ContentAlert tw="mt-4 mx-1" type="ERROR">
               {`${error}`}
-            </GeneralAlerts>
+            </ContentAlert>
           )}
           <SignInForm>
             <Inputs.Text placeholder="User ID" disabled />
