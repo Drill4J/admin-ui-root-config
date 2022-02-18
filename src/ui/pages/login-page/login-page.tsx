@@ -20,7 +20,8 @@ import { Button, ContentAlert, Inputs } from "@drill4j/ui-kit";
 import tw, { styled } from "twin.macro";
 
 import { LoginLayout } from "layouts";
-import { TOKEN_HEADER, TOKEN_KEY } from "common/constants";
+import { getCustomPath } from "common";
+import { TOKEN_KEY, TOKEN_HEADER } from "common/constants";
 
 const SignInForm = styled.div`
   ${tw`flex flex-col gap-y-6 mt-6`}
@@ -51,7 +52,7 @@ export const LoginPage = () => {
 
   useLayoutEffect(() => {
     if (localStorage.getItem(TOKEN_KEY)) {
-      push("/");
+      push(getCustomPath());
     }
   }, []);
 

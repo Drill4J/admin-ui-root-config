@@ -17,6 +17,7 @@ import React from "react";
 import { RouteProps, Route, Redirect } from "react-router-dom";
 
 import { TOKEN_KEY } from "common/constants";
+import { getPagePath } from "common";
 
 interface PrivateRouteProps extends RouteProps {
   component: React.ComponentType<any>;
@@ -36,7 +37,7 @@ export function PrivateRoute(props: PrivateRouteProps) {
         (isAuth() ? (
           <Component {...props} />
         ) : (
-          <Redirect to={{ pathname: "/login" }} />
+          <Redirect to={{ pathname: getPagePath({ name: "login" }) }} />
         ))}
       {...rest}
     />
