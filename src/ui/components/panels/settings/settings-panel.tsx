@@ -17,17 +17,17 @@ import React, { useState } from "react";
 import axios from "axios";
 import {
   Button,
-  Formik,
+  composeValidators,
   Form,
   formatPackages,
+  Formik,
   parsePackages,
-  composeValidators,
-  requiredArray,
-  sizeLimit,
   required,
+  requiredArray,
+  sendAlertEvent,
+  sizeLimit,
   Spinner,
   Tab,
-  sendAlertEvent,
 } from "@drill4j/ui-kit";
 import "twin.macro";
 import { AgentInfoWithSystemSetting } from "types";
@@ -81,7 +81,6 @@ export const SettingsPanel = ({
         },
       }}
       validate={getTabValidationSchema(activeTab) as any}
-      enableReinitialize
     >
       {({
         isSubmitting, isValid, dirty, resetForm, values,
