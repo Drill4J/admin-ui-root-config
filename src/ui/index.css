@@ -920,6 +920,11 @@ button:focus {
   margin-right: auto;
 }
 
+.mx-1 {
+  margin-left: 0.25rem;
+  margin-right: 0.25rem;
+}
+
 .ml-12 {
   margin-left: 3rem;
 }
@@ -1180,12 +1185,20 @@ button:focus {
   width: 25rem;
 }
 
+.min-w-\[16px\] {
+  min-width: 16px;
+}
+
 .min-w-\[19px\] {
   min-width: 19px;
 }
 
 .min-w-8px {
   min-width: 8px;
+}
+
+.min-w-\[100px\] {
+  min-width: 100px;
 }
 
 .min-w-\[130px\] {
@@ -1649,6 +1662,10 @@ button:focus {
 
 .text-center {
   text-align: center;
+}
+
+.text-right {
+  text-align: right;
 }
 
 .align-middle {
