@@ -14,6 +14,7 @@
  * limitations under the License.
  */
 import { createRouter, getPagePath as getPage } from "nanostores";
+import { getRoutePath } from "./get-route-path";
 
 interface Routes {
   login: void
@@ -25,12 +26,12 @@ interface Routes {
 }
 
 export const routes = {
-  agentDashboard: "/agents/:agentId",
-  agentPlugin: "/agents/:agentId/plugins/:pluginId",
-  serviceGroupPlugin: "/groups/:groupId/plugins/:pluginId",
-  serviceGroupDashboard: "/groups/:groupId/dashboard",
-  login: "/login",
-  builds: "/agents/:agentId/builds",
+  agentDashboard: getRoutePath("/agents/:agentId"),
+  agentPlugin: getRoutePath("/agents/:agentId/plugins/:pluginId"),
+  serviceGroupPlugin: getRoutePath("/groups/:groupId/plugins/:pluginId"),
+  serviceGroupDashboard: getRoutePath("/groups/:groupId/dashboard"),
+  login: getRoutePath("/login"),
+  builds: getRoutePath("/agents/:agentId/builds"),
 };
 
 export const router = createRouter<Routes>(routes);
