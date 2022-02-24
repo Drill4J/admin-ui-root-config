@@ -17,17 +17,17 @@ import React, { useState } from "react";
 import axios from "axios";
 import {
   Button,
-  Formik,
+  composeValidators,
   Form,
   formatPackages,
+  Formik,
   parsePackages,
-  composeValidators,
-  requiredArray,
-  sizeLimit,
   required,
+  requiredArray,
+  sendAlertEvent,
+  sizeLimit,
   Spinner,
   Tab,
-  sendAlertEvent,
 } from "@drill4j/ui-kit";
 import "twin.macro";
 import { AgentInfoWithSystemSetting } from "types";
@@ -46,7 +46,7 @@ export const SettingsPanel = ({
   onClosePanel,
   payload,
 }: PanelProps) => {
-  const [activeTab, setActiveTab] = useState("general");
+  const [activeTab, setActiveTab] = useState(payload.tab || "general");
   const [nextTab, setNextTab] = useState("");
   const SystemSettings =
     payload.agentType === "Node.js" ? JsSystemSettingsForm : SystemSettingsForm;

@@ -46,6 +46,7 @@ export const Plugin = () => {
         { name: "agentDashboard", params: { agentId } },
       ),
       openSettingsPanel: (agent: Agent) => setPanel({ type: "SETTINGS", payload: agent }),
+      setPanel,
     });
   }, [pluginId, paths]);
 
