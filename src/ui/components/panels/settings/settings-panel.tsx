@@ -87,8 +87,9 @@ export const SettingsPanel = ({
         isSubmitting, isValid, dirty, resetForm, values,
       }) => (
         <PanelWithCloseIcon
+          tw="w-[1024px]"
           header={(
-            <div tw="space-y-8 pt-6 w-[1024px]">
+            <div tw="space-y-8 pt-6 ">
               <div tw="flex">Settings:&nbsp;<span title={payload.id} tw="truncate">{payload.id}</span></div>
               <div tw="flex justify-center gap-x-6">
                 {["general", "system", "plugins"].map((tab) => (
@@ -111,10 +112,10 @@ export const SettingsPanel = ({
           onClosePanel={onClosePanel}
         >
           <Form tw="flex flex-col items-center py-16">
-            <div tw="space-y-8">
+            {activeTab === "plugins" && <PluginsSettingsTab agent={values} />}
+            <div tw=" space-y-8">
               {activeTab === "general" && <GeneralSettingsForm />}
               {activeTab === "system" && <SystemSettings />}
-              {activeTab === "plugins" && <PluginsSettingsTab agent={values} />}
               {activeTab !== "plugins" && (
                 <Button
                   tw="flex justify-center min-w-[130px]"

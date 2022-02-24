@@ -32,24 +32,22 @@ export const PluginCard = ({
 }: Props) => {
   const PluginIcon = Icons[icon] || Icons.Plugins;
   return (
-    <div tw="py-5 px-6 bg-monochrome-dark100 rounded-lg text-14 leading-20">
-      <div tw="flex gap-x-4">
-        <div tw="flex gap-x-6 items-center">
-          {checkbox}
-          <PluginIconWrapper>
-            <PluginIcon width={24} height={24} viewBox="" />
-          </PluginIconWrapper>
+    <div tw="w-full grid grid-cols-[min-content 1fr 90px] gap-x-4 py-5 px-6 bg-monochrome-dark100 rounded-lg text-14 leading-20">
+      <div tw="flex gap-x-6 items-center">
+        {checkbox}
+        <PluginIconWrapper>
+          <PluginIcon width={24} height={24} viewBox="" />
+        </PluginIconWrapper>
+      </div>
+      <div tw="space-y-2">
+        <div tw="flex gap-x-2">
+          <Label>{name}</Label>
+          <Version>{version}</Version>
         </div>
-        <div tw="space-y-2">
-          <div tw="flex gap-x-2">
-            <Label>{name}</Label>
-            <Version>{version}</Version>
-          </div>
-          <Description>{description}</Description>
-        </div>
-        <div tw="flex justify-end items-center w-full">
-          {button}
-        </div>
+        <Description>{description}</Description>
+      </div>
+      <div tw="flex justify-center items-center w-full">
+        {button}
       </div>
     </div>
   );

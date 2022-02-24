@@ -13,9 +13,10 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-import React from "react";
+import React, { useState } from "react";
 import { Link } from "react-router-dom";
 import { Icons, Button, sendAlertEvent } from "@drill4j/ui-kit";
+import { motion, useAnimation } from "framer-motion";
 import "twin.macro";
 
 import {
@@ -31,6 +32,8 @@ interface Props {
 }
 
 export const PluginsSettingsTab = ({ agent }: Props) => {
+  const [isLoading, setIsLoading] = useState(false);
+  const controls = useAnimation();
   const plugins = useAdminConnection<Plugin[]>(`/${agent.agentType === "Group" ? "groups" : "agents"}/${agent.id}/plugins`) || [];
   const installedPlugins = plugins.filter((plugin) => !plugin.available);
   const { id: agentId = "" } = agent;
@@ -52,12 +55,34 @@ export const PluginsSettingsTab = ({ agent }: Props) => {
           description={description}
           button={available
             ? (
-              <Button
+              <MotionButton
+                tw="w-full"
+                animate={controls}
                 onClick={async () => {
                   try {
-                    await addPlugin(agent, id);
-                    sendAlertEvent({ type: "SUCCESS", title: "Plugin has been added" });
+                    // await addPlugin(agent, id);
+                    controls.start({
+                      width: 24,
+                      height: 24,
+                      padding: 0,
+                      fontSize: "0",
+                    });
+
+                    await later(1000);
+                    await controls.start({
+                      backgroundColor: "#00b602",
+                      borderColor: "#00b602",
+                      width: "100%",
+                      fontSize: "0",
+                    });
+                    // sendAlertEvent({ type: "SUCCESS", title: "Plugin has been added" });
                   } catch ({ response: { data: { message } = {} } = {} }) {
+                    await controls.start({
+                      backgroundColor: "#ee0000",
+                      borderColor: "#ee0000",
+                      width: "100%",
+                      fontSize: "0",
+                    });
                     sendAlertEvent({
                       type: "ERROR",
                       title: "On-submit error. Server problem or operation could not be processed in real-time",
@@ -69,7 +94,7 @@ export const PluginsSettingsTab = ({ agent }: Props) => {
                 type="button"
               >
                 Install
-              </Button>
+              </MotionButton>
             )
             : (
               <Link
@@ -85,6 +110,13 @@ export const PluginsSettingsTab = ({ agent }: Props) => {
   );
 };
 
+function later(delay: number) {
+  return new Promise((resolve, reject) => {
+    setTimeout(resolve, delay);
+  });
+}
+
+const MotionButton = motion(Button);
 const addPlugin = (agent: AgentInfoWithSystemSetting, pluginId: string) => {
   if (agent.agentStatus === AGENT_STATUS.PREREGISTERED) {
     return addPluginToPreregisteredAgent(agent, pluginId);
