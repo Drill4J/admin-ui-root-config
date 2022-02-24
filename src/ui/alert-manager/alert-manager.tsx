@@ -17,7 +17,7 @@ import React, { useCallback, useEffect, useState } from "react";
 import { useLocation } from "react-router-dom";
 import "twin.macro";
 import { defaultAdminSocket } from "common/connection";
-
+import { AnimatePresence, motion } from "framer-motion";
 import {
   IAlert, SystemAlert, Portal,
 } from "@drill4j/ui-kit";
@@ -105,12 +105,24 @@ export const AlertManager = () => {
 export const AlertPanel = ({ alerts }: { alerts: IAlert[] }) => (
   <Portal displayContent rootElementId="alerts">
     <div tw="fixed bottom-10 flex flex-col-reverse items-center justify-center gap-y-2 w-full z-[200]">
-      {alerts.map(alert => {
-        const {
-          id, title, text, onClose = () => {}, type,
-        } = alert;
-        return <SystemAlert key={id} title={title} type={type} onClose={onClose}>{text}</SystemAlert>;
-      })}
+      <AnimatePresence>
+        {alerts.map(alert => {
+          const {
+            id, title, text, onClose = () => {}, type,
+          } = alert;
+          return (
+            <motion.div
+              key={id}
+              initial={{ scale: 0, opacity: 0 }}
+              animate={{ scale: 1, opacity: 1 }}
+              exit={{ scale: 0, opacity: 0 }}
+              transition={{ duration: 0.15 }}
+            >
+              <SystemAlert title={title} type={type} onClose={onClose}>{text}</SystemAlert>
+            </motion.div>
+          );
+        })}
+      </AnimatePresence>
     </div>
   </Portal>
 );
