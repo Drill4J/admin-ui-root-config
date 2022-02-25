@@ -16,8 +16,6 @@
 import React, { useState } from "react";
 import { ContentAlert, Icons } from "@drill4j/ui-kit";
 import tw, { styled } from "twin.macro";
-
-import { useAdminConnection } from "hooks";
 import { Notification as NotificationType } from "types";
 import { PanelWithCloseIcon } from "../panel-with-close-icon";
 import { PanelProps } from "../panel-props";
@@ -25,9 +23,12 @@ import { deleteAllNotifications, readAllNotifications } from "./api";
 import { Notification } from "./notification";
 import { PanelStub } from "../../panel-stub";
 
-export const NotificationsPanel = ({ isOpen, onClosePanel }: PanelProps) => {
+interface NotificationsPanelProps extends PanelProps {
+  payload: NotificationType[],
+}
+
+export const NotificationsPanel = ({ isOpen, onClosePanel, payload: notifications }: NotificationsPanelProps) => {
   const [errorMessage, setErrorMessage] = useState("");
-  const notifications = useAdminConnection<NotificationType[]>("/notifications") || [];
   const unreadNotifications = notifications.filter(({ read }) => !read).length;
 
   return (
