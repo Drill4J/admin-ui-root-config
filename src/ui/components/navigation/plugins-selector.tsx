@@ -18,9 +18,7 @@ import { Icons } from "@drill4j/ui-kit";
 import { Link, matchPath, useLocation } from "react-router-dom";
 import tw, { styled } from "twin.macro";
 
-import {
-  useAdminConnection, useRouteParams,
-} from "hooks";
+import { useAdminConnection, useRouteParams } from "hooks";
 import { getPagePath, routes } from "common";
 import { Plugin } from "types";
 import { CubeWithTooltip } from "../cubes";
@@ -49,7 +47,7 @@ export const PluginsSelector = () => {
         return (
           <CustomLink
             to={pagePath}
-            disabled={pathname.includes(pagePath)}
+            disabled={pathname.includes(pagePath) && selectedPanel?.type !== "SELECT_AGENT"}
             key={pluginId}
             data-test={`navigation:open-${pluginId}-plugin`}
           >
