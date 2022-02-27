@@ -18,9 +18,7 @@ import { useLocation } from "react-router-dom";
 import "twin.macro";
 import { defaultAdminSocket } from "common/connection";
 import { AnimatePresence, motion } from "framer-motion";
-import {
-  IAlert, SystemAlert, Portal,
-} from "@drill4j/ui-kit";
+import { IAlert, Portal, SystemAlert } from "@drill4j/ui-kit";
 
 const LOST_CONNECTION_ID = "LOST_CONNECTION_WITH_BACKEND";
 const RESTORED_CONNECTION_ID = "SUCCESSFULLY_RESTORED_CONNECTION";
@@ -54,7 +52,7 @@ export const AlertManager = () => {
       alert.onClose = () => deleteAlert(alert.id);
     }
 
-    setAlerts((prevAlertsState) => [...prevAlertsState, alert]);
+    setAlerts((prevAlertsState) => [...getLatestAlerts(prevAlertsState), alert]);
   }, []);
 
   useEffect(() => {
@@ -96,7 +94,7 @@ export const AlertManager = () => {
   return (
     <>
       {pathname !== "/login" && (
-        <AlertPanel alerts={getLatestAlerts(alerts)} />
+        <AlertPanel alerts={alerts} />
       )}
     </>
   );
@@ -128,5 +126,5 @@ export const AlertPanel = ({ alerts }: { alerts: IAlert[] }) => (
 );
 
 function getLatestAlerts(alerts: IAlert[]): IAlert[] {
-  return alerts.length > 3 ? alerts.slice(alerts.length - 3) : alerts;
+  return alerts.length > 2 ? alerts.slice(alerts.length - 2) : alerts;
 }
