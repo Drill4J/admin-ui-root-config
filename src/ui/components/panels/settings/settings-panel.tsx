@@ -154,7 +154,6 @@ function saveSettings(
     name,
     agentType,
     description,
-    environment,
     systemSettings: { sessionIdHeaderName, packages = "", targetHost } = {},
   } = values;
   if (values?.agentStatus === AGENT_STATUS.PREREGISTERED) {
@@ -175,8 +174,8 @@ function saveSettings(
   switch (activeTab) {
     case "general":
       return agentType === "Group"
-        ? axios.put(`/groups/${id}`, { name, description, environment })
-        : axios.patch(`/agents/${id}/info`, { name, description, environment });
+        ? axios.put(`/groups/${id}`, { name, description })
+        : axios.patch(`/agents/${id}/info`, { name, description });
     case "system":
       return axios.put(
         `/${agentType === "Group" ? "groups" : "agents"}/${id}/system-settings`,
@@ -193,7 +192,6 @@ function getTabValidationSchema(activeTab: string) {
       return composeValidators(
         required("name"),
         sizeLimit({ name: "name" }),
-        sizeLimit({ name: "environment" }),
         sizeLimit({ name: "description", min: 3, max: 256 }),
       );
     case "system":

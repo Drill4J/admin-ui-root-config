@@ -15,7 +15,7 @@
  */
 import React from "react";
 import {
-  Field, DisabledFormGroup, DarkFormGroup, Fields,
+  DarkFormGroup, DisabledFormGroup, Field, Fields,
 } from "@drill4j/ui-kit";
 
 import "twin.macro";
@@ -33,13 +33,6 @@ export const GeneralSettingsForm = () => (
         name="description"
         component={Fields.DarkTextarea}
         placeholder="Add agent's description"
-      />
-    </DarkFormGroup>
-    <DarkFormGroup label="Environment" optional>
-      <Field
-        name="environment"
-        component={Fields.DarkInput}
-        placeholder="Specify an environment"
       />
     </DarkFormGroup>
   </>
