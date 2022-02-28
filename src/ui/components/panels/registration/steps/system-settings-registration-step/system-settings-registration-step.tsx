@@ -15,12 +15,7 @@
  */
 import React from "react";
 import {
-  Field,
-  DarkFormGroup,
-  Fields,
-  dotsAndSlashesToSlash,
-  Icons,
-  Tooltip,
+  DarkFormGroup, dotsAndSlashesToSlash, Field, Fields, Icons, Tooltip,
 } from "@drill4j/ui-kit";
 
 import "twin.macro";
@@ -71,7 +66,7 @@ export const SystemSettingsRegistrationStep = () => (
         label={(
           <div tw="flex gap-x-2 items-center h-4">
             Header Mapping
-            <Tooltip message="Session header name to track User actions on your target app.">
+            <Tooltip message="Session header name to track User actions on your target app">
               <Icons.Info height={16} />
             </Tooltip>
           </div>
