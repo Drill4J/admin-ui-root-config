@@ -81,7 +81,6 @@ export const SettingsPanel = ({
         },
       }}
       validate={getTabValidationSchema(activeTab) as any}
-      enableReinitialize
     >
       {({
         isSubmitting, isValid, dirty, resetForm, values,
