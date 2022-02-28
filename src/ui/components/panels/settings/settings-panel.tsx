@@ -80,7 +80,7 @@ export const SettingsPanel = ({
             : payload.systemSettings?.packages) as any,
         },
       }}
-      validate={getTabValidationSchema(activeTab) as any}
+      validate={getTabValidationSchema(activeTab, payload.agentType) as any}
       initialStatus={{
         unlockedPackages: false,
       }}
@@ -189,12 +189,15 @@ function saveSettings(
   }
 }
 
-function getTabValidationSchema(activeTab: string) {
+function getTabValidationSchema(activeTab: string, agentType: string) {
+  const sizeLimitNameMessage = `${agentType === "Group" ? "Service Group" : ""} Name size should be between 3 and 64 characters`;
   switch (activeTab) {
     case "general":
       return composeValidators(
-        required("name"),
-        sizeLimit({ name: "name" }),
+        required("name", agentType === "Group" ? "Sevice Group Name is required" : "Agent Name is required"),
+        sizeLimit({
+          name: "name", alias: sizeLimitNameMessage, min: 3, max: 64,
+        }),
         sizeLimit({ name: "description", min: 3, max: 256 }),
       );
     case "system":
