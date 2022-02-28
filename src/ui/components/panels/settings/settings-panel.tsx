@@ -17,17 +17,17 @@ import React, { useState } from "react";
 import axios from "axios";
 import {
   Button,
-  Formik,
+  composeValidators,
   Form,
   formatPackages,
+  Formik,
   parsePackages,
-  composeValidators,
-  requiredArray,
-  sizeLimit,
   required,
+  requiredArray,
+  sendAlertEvent,
+  sizeLimit,
   Spinner,
   Tab,
-  sendAlertEvent,
 } from "@drill4j/ui-kit";
 import "twin.macro";
 import { AgentInfoWithSystemSetting } from "types";
@@ -56,7 +56,7 @@ export const SettingsPanel = ({
       await saveSettings(activeTab, values);
       sendAlertEvent({
         type: "SUCCESS",
-        title: "New settings have been saved",
+        title: "New settings have been saved.",
       });
       resetForm({ values });
     } catch ({ response: { data: { message } = {} } = {} }) {
@@ -64,7 +64,7 @@ export const SettingsPanel = ({
         type: "ERROR",
         title:
           message ||
-          "On-submit error. Server problem or operation could not be processed in real-time",
+          "On-submit error. Server problem or operation could not be processed in real-time.",
       });
     }
   };

@@ -18,7 +18,7 @@ import { getAppNames, registerApplication, unregisterApplication } from "single-
 import "twin.macro";
 
 import { useAdminConnection, usePluginUrls, useRouteParams } from "hooks";
-import { Spinner, Stub, sendAlertEvent } from "@drill4j/ui-kit";
+import { sendAlertEvent, Spinner, Stub } from "@drill4j/ui-kit";
 import { ActiveAgentsBuild } from "types";
 import { BUILD_STATUS } from "common";
 
@@ -33,7 +33,7 @@ export const Plugin = () => {
     const isPluginAlreadyRegistered = getAppNames().includes(getPluginName(pluginId));
     if (isPluginAlreadyRegistered) return;
     if (!paths[pluginId]) {
-      sendAlertEvent({ type: "ERROR", title: "CRITICAL ERROR: Plugin URL is not exist. Check PLUGINS env variable value" });
+      sendAlertEvent({ type: "ERROR", title: "CRITICAL ERROR: Plugin URL is not exist. Check PLUGINS env variable value." });
       return;
     }
     registerAgentPlugin(pluginId, paths[pluginId]);
