@@ -16,14 +16,12 @@
 import React from "react";
 import axios from "axios";
 import {
-  requiredArray, sizeLimit, required, composeValidators, parsePackages, formatPackages,
+  composeValidators, formatPackages, parsePackages, required, requiredArray, sizeLimit,
 } from "@drill4j/ui-kit";
 import "twin.macro";
 
 import { Agent } from "types";
-import {
-  GroupSystemSettingsRegistrationStep, InstallPluginsStep, GroupGeneralRegistrationStep,
-} from "./steps";
+import { GroupGeneralRegistrationStep, GroupSystemSettingsRegistrationStep, InstallPluginsStep } from "./steps";
 import { PanelProps } from "../panel-props";
 import { Stepper } from "./stepper";
 
@@ -44,7 +42,6 @@ export const GroupRegistrationPanel = ({ isOpen, onClosePanel, payload }: PanelP
         validationSchema: composeValidators(
           required("name"),
           sizeLimit({ name: "name" }),
-          sizeLimit({ name: "environment" }),
           sizeLimit({ name: "description", min: 3, max: 256 }),
         ),
         component: <GroupGeneralRegistrationStep />,
@@ -82,7 +79,6 @@ async function registerGroup({
   name = "",
   systemSettings,
   description,
-  environment,
 }: Agent) {
   await axios.patch(`/groups/${id}`, {
     plugins,
@@ -92,6 +88,5 @@ async function registerGroup({
       packages: parsePackages(systemSettings?.packages as unknown as string).filter(Boolean),
     },
     description,
-    environment,
   });
 }

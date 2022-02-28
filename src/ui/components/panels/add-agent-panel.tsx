@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 import React, { useState } from "react";
-import { Button, LinkButton, Icons } from "@drill4j/ui-kit";
+import { Button, Icons, LinkButton } from "@drill4j/ui-kit";
 import tw, { styled } from "twin.macro";
 
 import { useAdminConnection } from "hooks";
@@ -24,7 +24,6 @@ import { PanelProps } from "./panel-props";
 import { PanelWithCloseIcon } from "./panel-with-close-icon";
 import { useSetPanelContext } from "./panel-context";
 import { PanelStub } from "../panel-stub";
-import { Panel } from "./panel";
 
 export const AddAgentPanel = ({ isOpen, onClosePanel }: PanelProps) => {
   const agentsList = useAdminConnection<AgentInfo[]>("/api/agents") || [];
@@ -51,7 +50,7 @@ export const AddAgentPanel = ({ isOpen, onClosePanel }: PanelProps) => {
             })}
             data-test="add-agent-panel:open-preregister-agent-panel"
           >
-            <Icons.Register /> Preregister Agent
+            <Icons.Register /> Preregister Java Agent
           </LinkButton>
         </div>
       )}

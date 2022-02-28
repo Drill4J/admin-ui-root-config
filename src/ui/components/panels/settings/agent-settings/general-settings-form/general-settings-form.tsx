@@ -23,16 +23,16 @@ import "twin.macro";
 export const GeneralSettingsForm = () => (
   <>
     <div tw="w-[400px]">
-      <DisabledFormGroup fields={[{ name: "id", label: "AGENT ID" }, { name: "agentType", label: "AGENT TYPE" }]} />
+      <DisabledFormGroup fields={[{ name: "id", label: "Agent ID" }, { name: "agentType", label: "Type" }]} />
     </div>
     <DarkFormGroup label="Agent name">
-      <Field name="name" component={Fields.DarkInput} placeholder="Enter agent's name" />
+      <Field name="name" component={Fields.DarkInput} placeholder="Enter Agent's name" />
     </DarkFormGroup>
     <DarkFormGroup label="Description" optional>
       <Field
         name="description"
         component={Fields.DarkTextarea}
-        placeholder="Add agent's description"
+        placeholder="Add some details about the Agent"
       />
     </DarkFormGroup>
   </>

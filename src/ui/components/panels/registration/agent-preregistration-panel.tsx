@@ -16,14 +16,12 @@
 import React from "react";
 import axios from "axios";
 import {
-  requiredArray, sizeLimit, required, composeValidators, parsePackages, idValidator, alreadyExist,
+  alreadyExist, composeValidators, idValidator, parsePackages, required, requiredArray, sizeLimit,
 } from "@drill4j/ui-kit";
 import "twin.macro";
 
 import { Agent } from "types";
-import {
-  SystemSettingsRegistrationStep, InstallPluginsStep, AgentGeneralPreregistrationStep,
-} from "./steps";
+import { AgentGeneralPreregistrationStep, InstallPluginsStep, SystemSettingsRegistrationStep } from "./steps";
 import { Stepper } from "./stepper";
 import { PanelProps } from "../panel-props";
 
@@ -50,7 +48,6 @@ export const AgentPreregistrationPanel = ({ isOpen, onClosePanel, payload }: Pan
           }),
           required("name"),
           sizeLimit({ name: "name" }),
-          sizeLimit({ name: "environment" }),
           sizeLimit({ name: "description", min: 3, max: 256 }),
         ),
         component: <AgentGeneralPreregistrationStep />,
@@ -71,7 +68,6 @@ export const AgentPreregistrationPanel = ({ isOpen, onClosePanel, payload }: Pan
         validationSchema: composeValidators(
           required("name"),
           sizeLimit({ name: "name" }),
-          sizeLimit({ name: "environment" }),
           sizeLimit({ name: "description", min: 3, max: 256 }),
         ),
         component: <InstallPluginsStep />,
@@ -85,7 +81,6 @@ export const AgentPreregistrationPanel = ({ isOpen, onClosePanel, payload }: Pan
 async function preregisterOfflineAgent({
   id,
   name,
-  environment,
   description,
   plugins,
   systemSettings,
@@ -95,7 +90,6 @@ async function preregisterOfflineAgent({
     id,
     name,
     agentType,
-    environment,
     description,
     plugins,
     systemSettings: {

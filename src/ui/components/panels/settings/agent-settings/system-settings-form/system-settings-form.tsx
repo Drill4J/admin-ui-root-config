@@ -15,8 +15,7 @@
  */
 import React, { useState } from "react";
 import {
-  Icons, DarkFormGroup, Fields, Field,
-  dotsAndSlashesToSlash,
+  DarkFormGroup, dotsAndSlashesToSlash, Field, Fields, Icons,
 } from "@drill4j/ui-kit";
 
 import "twin.macro";
@@ -51,7 +50,7 @@ export const SystemSettingsForm = () => {
         <Field
           component={Fields.DarkTextarea}
           name="systemSettings.packages"
-          placeholder="e.g. com/example/mypackage&#10;foo/bar/baz&#10;and so on."
+          placeholder="e.g., package_name/class_name/method_name"
           disabled={!unlockedPackages}
           normalize={(str: string) => dotsAndSlashesToSlash(str).replace(/(?:(?:\r\n|\r|\n)\s*){2}/gm, "")}
         />
