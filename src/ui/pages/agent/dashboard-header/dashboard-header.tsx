@@ -34,7 +34,7 @@ export const DashboardHeader = ({
     {icon}
     <span tw="max-w-1/2 text-ellipsis text-32 leading-40 text-monochrome-black" title={data?.name}>{data?.name}</span>
     {getBadge(status)}
-    <Icons.Settings tw="link ml-auto" onClick={() => setPanel({ type: "SETTINGS", payload: data })} />
+    <Icons.Settings tw="link ml-auto" onClick={() => setPanel({ type: "SETTINGS", payload: { ...data, agentType: "Group" } })} />
   </div>
 );
 
