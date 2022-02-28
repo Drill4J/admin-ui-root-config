@@ -15,6 +15,7 @@
  */
 import React from "react";
 import axios from "axios";
+
 import {
   composeValidators, required, requiredArray, sizeLimit,
 } from "@drill4j/ui-kit";
@@ -39,9 +40,12 @@ export const JsAgentRegistrationPanel = ({ isOpen, onClosePanel, payload }: Pane
         {
           stepLabel: "General Info",
           validationSchema: composeValidators(
-            required("name"),
+            required("id", "Agent ID is required"),
+            required("name", "Agent Name is required"),
+            sizeLimit({
+              name: "name", alias: "Name size should be between 3 and 64 characters", min: 3, max: 64,
+            }),
             unusedAgentName("name", agents),
-            sizeLimit({ name: "name" }),
             sizeLimit({ name: "environment" }),
             sizeLimit({ name: "description", min: 3, max: 256 }),
           ),

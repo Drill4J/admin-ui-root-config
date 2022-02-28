@@ -45,9 +45,11 @@ export const GroupRegistrationPanel = ({ isOpen, onClosePanel, payload }: PanelP
         {
           stepLabel: "General Info",
           validationSchema: composeValidators(
-            required("name"),
+            required("name", "Service Group Name is required"),
+            sizeLimit({
+              name: "name", alias: "Service Group Name size should be between 3 and 64 characters", min: 3, max: 64,
+            }),
             unusedGroupName("name", groups, payload.name),
-            sizeLimit({ name: "name" }),
             sizeLimit({ name: "environment" }),
             sizeLimit({ name: "description", min: 3, max: 256 }),
           ),
