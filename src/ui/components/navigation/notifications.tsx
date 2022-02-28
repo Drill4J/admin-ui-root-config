@@ -32,7 +32,7 @@ export const Notifications = () => {
   return (
     <Cube
       isActive={activePane?.type === "NOTIFICATIONS"}
-      onClick={() => openModal({ type: "NOTIFICATIONS", payload: notifications })}
+      onClick={() => openModal({ type: "NOTIFICATIONS" })}
     >
       <div tw="text-monochrome-black">
         <Indicator
