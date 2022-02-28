@@ -39,7 +39,16 @@ export const ServiceGroup = () => {
           path={routes.serviceGroupDashboard}
           render={() => (
             <>
-              <DashboardHeader data={group} icon={<Icons.ServiceGroup width={32} height={36} />} setPanel={setPanel} />
+              <DashboardHeader
+                data={{ ...group, agentType: "Group" }}
+                icon={(
+                  <Icons.ServiceGroup
+                    width={32}
+                    height={36}
+                  />
+                )}
+                setPanel={setPanel}
+              />
               <Dashboard data={group} isGroup setPanel={setPanel} />
             </>
           )}
