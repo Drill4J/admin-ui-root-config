@@ -20,20 +20,41 @@ import {
 
 import "twin.macro";
 
-export const GeneralSettingsForm = () => (
-  <>
-    <div tw="w-[400px]">
-      <DisabledFormGroup fields={[{ name: "id", label: "Agent ID" }, { name: "agentType", label: "Type" }]} />
-    </div>
-    <DarkFormGroup label="Agent name">
-      <Field name="name" component={Fields.DarkInput} placeholder="Enter Agent's name" />
-    </DarkFormGroup>
-    <DarkFormGroup label="Description" optional>
-      <Field
-        name="description"
-        component={Fields.DarkTextarea}
-        placeholder="Add some details about the Agent"
-      />
-    </DarkFormGroup>
-  </>
-);
+interface Props {
+  type: string;
+}
+
+export const GeneralSettingsForm = ({ type }: Props) => {
+  const data: any = {};
+  switch (type) {
+    case "Group":
+      data.idLabel = "Service Group ID";
+      data.nameLabel = "Service Group Name";
+      data.namePlaceholder = "Enter Service Group's name";
+      data.descriptionPlaceholder = "Add some details about the Service Group";
+      break;
+    default:
+      data.idLabel = "Agent ID";
+      data.nameLabel = "Agent Name";
+      data.namePlaceholder = "Enter Agent's name";
+      data.descriptionPlaceholder = "Add some details about the Agent";
+  }
+
+  return (
+    <>
+      <div tw="w-[400px]">
+        <DisabledFormGroup fields={[{ name: "id", label: data.idLabel }, { name: "agentType", label: "Type" }]} />
+      </div>
+      <DarkFormGroup label={data.nameLabel}>
+        <Field name="name" component={Fields.DarkInput} placeholder={data.namePlaceholder} />
+      </DarkFormGroup>
+      <DarkFormGroup label="Description" optional>
+        <Field
+          name="description"
+          component={Fields.DarkTextarea}
+          placeholder={data.descriptionPlaceholder}
+        />
+      </DarkFormGroup>
+    </>
+  );
+};
