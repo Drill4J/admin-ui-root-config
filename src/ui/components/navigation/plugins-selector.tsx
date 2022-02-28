@@ -16,7 +16,7 @@
 import React from "react";
 import { Icons } from "@drill4j/ui-kit";
 import { Link, matchPath, useLocation } from "react-router-dom";
-import tw, { styled } from "twin.macro";
+import "twin.macro";
 
 import { useAdminConnection, useRouteParams } from "hooks";
 import { getPagePath, routes } from "common";
@@ -45,20 +45,17 @@ export const PluginsSelector = () => {
           : { name: "serviceGroupPlugin", params: { groupId, pluginId } };
         const pagePath = getPagePath(pluginPageData as any);
         return (
-          <CustomLink
+          <Link
             to={pagePath}
-            disabled={pathname.includes(pagePath) && selectedPanel?.type !== "SELECT_AGENT"}
             key={pluginId}
             data-test={`navigation:open-${pluginId}-plugin`}
           >
             <CubeWithTooltip tooltip={name} isActive={selectedPluginId === pluginId && selectedPanel?.type !== "SELECT_AGENT"}>
               <Icon width={24} height={24} viewBox="0 0 24 24" />
             </CubeWithTooltip>
-          </CustomLink>
+          </Link>
         );
       })}
     </div>
   );
 };
-
-const CustomLink = styled(Link)(({ disabled }: {disabled: boolean}) => disabled && tw`pointer-events-none`);
