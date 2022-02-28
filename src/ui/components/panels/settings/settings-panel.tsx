@@ -46,7 +46,7 @@ export const SettingsPanel = ({
   onClosePanel,
   payload,
 }: PanelProps) => {
-  const [activeTab, setActiveTab] = useState("general");
+  const [activeTab, setActiveTab] = useState(payload.tab || "general");
   const [nextTab, setNextTab] = useState("");
   const SystemSettings =
     payload.agentType === "Node.js" ? JsSystemSettingsForm : SystemSettingsForm;
