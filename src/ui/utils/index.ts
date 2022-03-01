@@ -14,3 +14,5 @@
  * limitations under the License.
  */
 export { convertAgentName } from "./covert-agent-name";
+export { unusedAgentName } from "./unusedAgentName";
+export { unusedGroupName } from "./unusedGroupName";
