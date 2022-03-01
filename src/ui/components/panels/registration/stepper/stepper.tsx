@@ -105,6 +105,7 @@ export const Stepper = ({
         return (
           <Form autoComplete="off">
             <PanelWithCloseIcon
+              isDisabledFade
               header={(
                 <div tw="space-y-8 pt-6 pb-4 w-[976px]">
                   <div tw="flex justify-between">
