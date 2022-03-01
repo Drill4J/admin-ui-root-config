@@ -22,10 +22,11 @@ export interface Props {
   children: React.ReactNode;
   isOpen: boolean;
   onClosePanel: () => void;
+  isDisabledFade?: boolean;
 }
 
 export const Panel = ({
-  children, header, isOpen, onClosePanel, footer, ...rest
+  children, header, isOpen, onClosePanel, footer, isDisabledFade = false, ...rest
 }: Props) => (isOpen
   ? (
     <div data-test="panel" tw="absolute inset-0 left-12 z-[120] grid w-auto h-auto grid-cols-[auto 1fr]">
@@ -37,7 +38,7 @@ export const Panel = ({
         </div>
         {footer && <div tw="h-18 bg-monochrome-black">{footer}</div>}
       </div>
-      <div onClick={onClosePanel} style={{ background: "rgba(0, 0, 0, 0.4)" }} />
+      <div onClick={!isDisabledFade ? onClosePanel : () => {}} style={{ background: "rgba(0, 0, 0, 0.4)" }} />
     </div>
   ) : null
 );
