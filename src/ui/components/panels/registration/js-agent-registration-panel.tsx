@@ -24,42 +24,48 @@ import { Agent } from "types";
 import { InstallPluginsStep, JsGeneralRegistrationStep, JsSystemSettingsRegistrationStep } from "./steps";
 import { PanelProps } from "../panel-props";
 import { Stepper } from "./stepper";
+import { unusedAgentName } from "../../../utils";
+import { useAdminConnection } from "../../../hooks";
 
-export const JsAgentRegistrationPanel = ({ isOpen, onClosePanel, payload }: PanelProps) => (
-  <Stepper
-    label="Agent Registration"
-    initialValues={payload}
-    onSubmit={registerAgent}
-    steps={[
-      {
-        stepLabel: "General Info",
-        validationSchema: composeValidators(
-          required("name"),
-          sizeLimit({ name: "name" }),
-          sizeLimit({ name: "environment" }),
-          sizeLimit({ name: "description", min: 3, max: 256 }),
-        ),
-        component: <JsGeneralRegistrationStep />,
-      },
-      {
-        stepLabel: "System Settings",
-        validationSchema: composeValidators(
-          required("systemSettings.targetHost", "Target Host"),
-        ),
-        component: <JsSystemSettingsRegistrationStep />,
-      },
-      {
-        stepLabel: "Plugins",
-        validationSchema: composeValidators(
-          requiredArray("plugins"),
-        ),
-        component: <InstallPluginsStep />,
-      },
-    ]}
-    isOpen={isOpen}
-    setIsOpen={onClosePanel}
-  />
-);
+export const JsAgentRegistrationPanel = ({ isOpen, onClosePanel, payload }: PanelProps) => {
+  const agents = useAdminConnection<{single: Agent[], grouped: Agent[]}>("/agents") || { single: [], grouped: [] };
+  return (
+    <Stepper
+      label="Agent Registration"
+      initialValues={payload}
+      onSubmit={registerAgent}
+      steps={[
+        {
+          stepLabel: "General Info",
+          validationSchema: composeValidators(
+            required("name"),
+            unusedAgentName("name", agents),
+            sizeLimit({ name: "name" }),
+            sizeLimit({ name: "environment" }),
+            sizeLimit({ name: "description", min: 3, max: 256 }),
+          ),
+          component: <JsGeneralRegistrationStep />,
+        },
+        {
+          stepLabel: "System Settings",
+          validationSchema: composeValidators(
+            required("systemSettings.targetHost", "Target Host"),
+          ),
+          component: <JsSystemSettingsRegistrationStep />,
+        },
+        {
+          stepLabel: "Plugins",
+          validationSchema: composeValidators(
+            requiredArray("plugins"),
+          ),
+          component: <InstallPluginsStep />,
+        },
+      ]}
+      isOpen={isOpen}
+      setIsOpen={onClosePanel}
+    />
+  );
+};
 
 async function registerAgent({
   id,

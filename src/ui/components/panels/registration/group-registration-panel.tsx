@@ -24,52 +24,58 @@ import { Agent } from "types";
 import { GroupGeneralRegistrationStep, GroupSystemSettingsRegistrationStep, InstallPluginsStep } from "./steps";
 import { PanelProps } from "../panel-props";
 import { Stepper } from "./stepper";
+import { useAdminConnection } from "../../../hooks";
+import { unusedGroupName } from "../../../utils";
 
-export const GroupRegistrationPanel = ({ isOpen, onClosePanel, payload }: PanelProps) => (
-  <Stepper
-    label="Service Group Registration"
-    initialValues={{
-      ...payload,
-      systemSettings: {
-        ...payload.systemSettings,
-        packages: formatPackages(payload.systemSettings?.packages),
-      },
-    }}
-    onSubmit={registerGroup}
-    steps={[
-      {
-        stepLabel: "General Info",
-        validationSchema: composeValidators(
-          required("name"),
-          sizeLimit({ name: "name" }),
-          sizeLimit({ name: "environment" }),
-          sizeLimit({ name: "description", min: 3, max: 256 }),
-        ),
-        component: <GroupGeneralRegistrationStep />,
-      },
-      {
-        stepLabel: "System Settings",
-        validationSchema: composeValidators(sizeLimit({
-          name: "systemSettings.sessionIdHeaderName",
-          alias: "Session header name",
-          min: 1,
-          max: 256,
-        }),
-        requiredArray("systemSettings.packages", "Path prefix is required.")),
-        component: <GroupSystemSettingsRegistrationStep />,
-      },
-      {
-        stepLabel: "Plugins",
-        validationSchema: composeValidators(
-          requiredArray("plugins"),
-        ),
-        component: <InstallPluginsStep />,
-      },
-    ]}
-    isOpen={isOpen}
-    setIsOpen={onClosePanel}
-  />
-);
+export const GroupRegistrationPanel = ({ isOpen, onClosePanel, payload }: PanelProps) => {
+  const agents = useAdminConnection<{ single: Agent[], grouped: Agent[] }>("/agents") || { single: [], grouped: [] };
+  return (
+    <Stepper
+      label="Service Group Registration"
+      initialValues={{
+        ...payload,
+        systemSettings: {
+          ...payload.systemSettings,
+          packages: formatPackages(payload.systemSettings?.packages),
+        },
+      }}
+      onSubmit={registerGroup}
+      steps={[
+        {
+          stepLabel: "General Info",
+          validationSchema: composeValidators(
+            required("name"),
+            unusedGroupName("name", agents, payload.name),
+            sizeLimit({ name: "name" }),
+            sizeLimit({ name: "environment" }),
+            sizeLimit({ name: "description", min: 3, max: 256 }),
+          ),
+          component: <GroupGeneralRegistrationStep />,
+        },
+        {
+          stepLabel: "System Settings",
+          validationSchema: composeValidators(sizeLimit({
+            name: "systemSettings.sessionIdHeaderName",
+            alias: "Session header name",
+            min: 1,
+            max: 256,
+          }),
+          requiredArray("systemSettings.packages", "Path prefix is required.")),
+          component: <GroupSystemSettingsRegistrationStep />,
+        },
+        {
+          stepLabel: "Plugins",
+          validationSchema: composeValidators(
+            requiredArray("plugins"),
+          ),
+          component: <InstallPluginsStep />,
+        },
+      ]}
+      isOpen={isOpen}
+      setIsOpen={onClosePanel}
+    />
+  );
+};
 
 async function registerGroup({
   id,

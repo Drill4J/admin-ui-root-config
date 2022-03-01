@@ -21,55 +21,61 @@ import {
 import "twin.macro";
 
 import { Agent } from "types";
-import { InstallPluginsStep, JavaGeneralRegistrationStep, SystemSettingsRegistrationStep } from "./steps";
 import { PanelProps } from "../panel-props";
 import { Stepper } from "./stepper";
+import { InstallPluginsStep, JavaGeneralRegistrationStep, SystemSettingsRegistrationStep } from "./steps";
+import { unusedAgentName } from "../../../utils";
+import { useAdminConnection } from "../../../hooks";
 
-export const JavaAgentRegistrationPanel = ({ isOpen, onClosePanel, payload }: PanelProps) => (
-  <Stepper
-    label="Agent Registration"
-    initialValues={{
-      ...payload,
-      systemSettings: {
-        ...payload.systemSettings,
-        packages: formatPackages(payload.systemSettings?.packages),
-      },
-    }}
-    onSubmit={registerAgent}
-    steps={[
-      {
-        stepLabel: "General Info",
-        validationSchema: composeValidators(
-          required("name"),
-          sizeLimit({ name: "name" }),
-          sizeLimit({ name: "environment" }),
-          sizeLimit({ name: "description", min: 3, max: 256 }),
-        ),
-        component: <JavaGeneralRegistrationStep />,
-      },
-      {
-        stepLabel: "System Settings",
-        validationSchema: composeValidators(sizeLimit({
-          name: "systemSettings.sessionIdHeaderName",
-          alias: "Session header name",
-          min: 1,
-          max: 256,
-        }),
-        requiredArray("systemSettings.packages", "Path prefix is required.")),
-        component: <SystemSettingsRegistrationStep />,
-      },
-      {
-        stepLabel: "Plugins",
-        validationSchema: composeValidators(
-          requiredArray("plugins"),
-        ),
-        component: <InstallPluginsStep />,
-      },
-    ]}
-    isOpen={isOpen}
-    setIsOpen={onClosePanel}
-  />
-);
+export const JavaAgentRegistrationPanel = ({ isOpen, onClosePanel, payload }: PanelProps) => {
+  const agents = useAdminConnection<{single: Agent[], grouped: Agent[]}>("/agents") || { single: [], grouped: [] };
+  return (
+    <Stepper
+      label="Agent Registration"
+      initialValues={{
+        ...payload,
+        systemSettings: {
+          ...payload.systemSettings,
+          packages: formatPackages(payload.systemSettings?.packages),
+        },
+      }}
+      onSubmit={registerAgent}
+      steps={[
+        {
+          stepLabel: "General Info",
+          validationSchema: composeValidators(
+            required("name"),
+            unusedAgentName("name", agents),
+            sizeLimit({ name: "name" }),
+            sizeLimit({ name: "environment" }),
+            sizeLimit({ name: "description", min: 3, max: 256 }),
+          ),
+          component: <JavaGeneralRegistrationStep />,
+        },
+        {
+          stepLabel: "System Settings",
+          validationSchema: composeValidators(sizeLimit({
+            name: "systemSettings.sessionIdHeaderName",
+            alias: "Session header name",
+            min: 1,
+            max: 256,
+          }),
+          requiredArray("systemSettings.packages", "Path prefix is required.")),
+          component: <SystemSettingsRegistrationStep />,
+        },
+        {
+          stepLabel: "Plugins",
+          validationSchema: composeValidators(
+            requiredArray("plugins"),
+          ),
+          component: <InstallPluginsStep />,
+        },
+      ]}
+      isOpen={isOpen}
+      setIsOpen={onClosePanel}
+    />
+  );
+};
 
 async function registerAgent({
   id,
