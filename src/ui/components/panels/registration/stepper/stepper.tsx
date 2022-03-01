@@ -73,7 +73,7 @@ export const Stepper = ({
   const [state, setState] = useSessionStorage(initialValues?.id || "preregistered", initialValues);
   const returnToList = async (values: Agent) => {
     await setState(values);
-    setPanel({ type: "ADD_AGENT" });
+    setPanel({ type: "SELECT_AGENT" });
   };
 
   return (
