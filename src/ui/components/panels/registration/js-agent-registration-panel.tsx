@@ -16,14 +16,12 @@
 import React from "react";
 import axios from "axios";
 import {
-  sizeLimit, required, composeValidators,
+  composeValidators, required, requiredArray, sizeLimit,
 } from "@drill4j/ui-kit";
 import "twin.macro";
 
 import { Agent } from "types";
-import {
-  JsSystemSettingsRegistrationStep, InstallPluginsStep, JsGeneralRegistrationStep,
-} from "./steps";
+import { InstallPluginsStep, JsGeneralRegistrationStep, JsSystemSettingsRegistrationStep } from "./steps";
 import { PanelProps } from "../panel-props";
 import { Stepper } from "./stepper";
 
@@ -53,10 +51,7 @@ export const JsAgentRegistrationPanel = ({ isOpen, onClosePanel, payload }: Pane
       {
         stepLabel: "Plugins",
         validationSchema: composeValidators(
-          required("name"),
-          sizeLimit({ name: "name" }),
-          sizeLimit({ name: "environment" }),
-          sizeLimit({ name: "description", min: 3, max: 256 }),
+          requiredArray("plugins"),
         ),
         component: <InstallPluginsStep />,
       },
