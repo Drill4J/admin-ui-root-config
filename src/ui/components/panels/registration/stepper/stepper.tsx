@@ -15,8 +15,7 @@
  */
 import React, { useEffect, useState } from "react";
 import {
-  Formik, Form, Button, Icons, FormValidator,
-  sendAlertEvent,
+  Button, Form, Formik, FormValidator, Icons, sendAlertEvent,
 } from "@drill4j/ui-kit";
 import "twin.macro";
 
@@ -81,7 +80,13 @@ export const Stepper = ({
     <Formik
       initialValues={state}
       onSubmit={async (values: any) => {
-        onSubmit(values).catch(() => {
+        onSubmit(values).then(() => {
+          sendAlertEvent({
+            type: "SUCCESS",
+            title: `${initialValues?.agentType === "Group" ? "Service Group" : "Agent"} has been 
+            ${initialValues?.id ? "registered" : "preregistered"}.`,
+          });
+        }).catch(() => {
           sendAlertEvent({
             type: "ERROR",
             title: "On-submit error. Server problem or operation could not be processed in real-time.",
