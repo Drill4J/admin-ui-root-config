@@ -21,10 +21,10 @@ import "twin.macro";
 import {
   useActiveBuild, useAdminConnection, useAgent, useRouteParams,
 } from "hooks";
-import { routes } from "common";
+import { BUILD_STATUS, routes } from "common";
 import { AgentBuildInfo, Notification } from "types";
 import { useSetPanelContext } from "components";
-import { Icons } from "@drill4j/ui-kit";
+import { Icons, Spinner, Stub } from "@drill4j/ui-kit";
 import { Dashboard } from "../dashboard";
 import { Plugin } from "./plugin";
 import { DashboardHeader } from "./dashboard-header";
@@ -50,6 +50,11 @@ export const AgentPage = () => {
 
   return (
     <div tw="flex flex-col flex-grow w-full h-full">
+      {activeBuildInfo?.buildStatus === BUILD_STATUS.BUSY && (
+        <div tw="absolute inset-0 bg-monochrome-white bg-opacity-[0.95] z-[100]">
+          <Stub icon={<Spinner color="blue" tw="!w-16 !h-16" />} title="Please wait" message="Agent is busy at the moment." />
+        </div>
+      )}
       <Switch>
         <Route
           exact
