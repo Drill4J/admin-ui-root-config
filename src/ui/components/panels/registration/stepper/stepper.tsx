@@ -15,8 +15,7 @@
  */
 import React, { useEffect, useState } from "react";
 import {
-  Formik, Form, Button, Icons, FormValidator,
-  sendAlertEvent,
+  Button, Form, Formik, FormValidator, Icons, sendAlertEvent,
 } from "@drill4j/ui-kit";
 import "twin.macro";
 
@@ -98,6 +97,10 @@ export const Stepper = ({
         useEffect(() => {
           validateForm(values);
         }, [stepNumber]);
+
+        useEffect(() => {
+          setState(values);
+        }, [values]);
 
         return (
           <Form autoComplete="off">
