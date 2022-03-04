@@ -38,16 +38,17 @@ export const SystemSettingsForm = () => {
             Application Packages
             <Tooltip
               message={(
-                <div tw="flex flex-col text-[13px] leading-20">
-                  <span>Specify all necessary parts of your application.</span>
-                  <span>Make sure, you add application packages only,<br />
-                    otherwise Agent's performance will be affected.
-                  </span>
-                  <br />
-                  <span>Please, use:</span>
-                  <span>– new line as a separator;</span>
-                  <span>– "!" before package/class for excluding;</span>
-                  <span>– "/" in a package path.</span>
+                <div tw="space-y-2 text-[13px] leading-20">
+                  <div>
+                    Specify all necessary parts of your application.{"\n"}
+                    Make sure you add application packages only,{"\n"}
+                    otherwise Agent&apos;s performance will be affected.
+                  </div>
+                  <div>
+                    Please, use:{"\n"}- new line as a separator;{"\n"}-
+                    &quot;!&quot; before package/class for excluding;{"\n"}-
+                    &quot;/&quot; in a package path.
+                  </div>
                 </div>
               )}
             >
@@ -73,12 +74,12 @@ export const SystemSettingsForm = () => {
       </DarkFormGroup>
       <DarkFormGroup
         label={(
-          <div tw="flex gap-x-2 items-center">
+          <div tw="flex gap-x-2 items-center h-4">
             Header Mapping
             <Tooltip
               message={(
-                <div tw="text-[13px] leading-20">
-                  <span>Session header name to track User actions on your target app</span>
+                <div tw="space-y-2 text-[13px] leading-20">
+                  Session header name to track User actions on your target app.
                 </div>
               )}
             >
