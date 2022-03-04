@@ -15,8 +15,7 @@
  */
 import React, { useState } from "react";
 import {
-  Icons, DarkFormGroup, Fields, Field,
-  dotsAndSlashesToSlash,
+  ContentAlert, DarkFormGroup, dotsAndSlashesToSlash, Field, Fields, Icons, Tooltip,
 } from "@drill4j/ui-kit";
 
 import "twin.macro";
@@ -25,25 +24,42 @@ export const SystemSettingsForm = () => {
   const [unlockedPackages, setUnlockedPackages] = useState(false);
 
   return (
-    <>
+    <div tw="w-[400px] flex flex-col gap-y-6">
       {unlockedPackages && (
-        <div tw="flex w-[400px] gap-x-4 p-6 border border-orange-default rounded-lg text-orange-default text-14 leading-24">
-          <div tw="pt-1">
-            <Icons.Danger />
-          </div>
+        <ContentAlert type="WARNING">
           Please be aware that any change to the package
-          list will result in a complete loss of gathered data
-          in plugins that have been using these packages.
-        </div>
+          list will result in a complete loss of gathered
+          data in plugins that have been using these packages.
+        </ContentAlert>
       )}
       <DarkFormGroup label={(
         <div tw="flex justify-between w-[400px]">
-          Application Packages
+          <div tw="flex gap-x-2 items-center">
+            Application Packages
+            <Tooltip
+              message={(
+                <div tw="flex flex-col items-center w-full font-regular text-12 leading-16">
+                  <span> Some message</span>
+                </div>
+              )}
+            >
+              <Icons.Info />
+            </Tooltip>
+          </div>
           {!unlockedPackages && (
-            <div onClick={() => setUnlockedPackages(true)} tw="flex items-center gap-x-2 font-regular cursor-pointer">
-              <Icons.Lock width={12} height={14} />
-              Unlock
-            </div>
+            <Tooltip
+              message={(
+                <div tw="flex flex-col items-center w-full font-regular text-12 leading-16">
+                  <span>Secured from editing.</span>
+                  <span> Click to unlock.</span>
+                </div>
+              )}
+            >
+              <div onClick={() => setUnlockedPackages(true)} tw="flex items-center gap-x-2 font-regular cursor-pointer">
+                <Icons.Lock width={12} height={14} />
+                Unlock
+              </div>
+            </Tooltip>
           )}
         </div>
       )}
@@ -63,6 +79,6 @@ export const SystemSettingsForm = () => {
           placeholder="Enter session header name"
         />
       </DarkFormGroup>
-    </>
+    </div>
   );
 };
