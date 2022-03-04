@@ -38,8 +38,16 @@ export const SystemSettingsForm = () => {
             Application Packages
             <Tooltip
               message={(
-                <div tw="flex flex-col items-center w-full font-regular text-12 leading-16">
-                  <span> Some message</span>
+                <div tw="flex flex-col text-[13px] leading-20">
+                  <span>Specify all necessary parts of your application.</span>
+                  <span>Make sure, you add application packages only,<br />
+                    otherwise Agent's performance will be affected.
+                  </span>
+                  <br />
+                  <span>Please, use:</span>
+                  <span>– new line as a separator;</span>
+                  <span>– "!" before package/class for excluding;</span>
+                  <span>– "/" in a package path.</span>
                 </div>
               )}
             >
@@ -47,19 +55,10 @@ export const SystemSettingsForm = () => {
             </Tooltip>
           </div>
           {!unlockedPackages && (
-            <Tooltip
-              message={(
-                <div tw="flex flex-col items-center w-full font-regular text-12 leading-16">
-                  <span>Secured from editing.</span>
-                  <span> Click to unlock.</span>
-                </div>
-              )}
-            >
-              <div onClick={() => setUnlockedPackages(true)} tw="flex items-center gap-x-2 font-regular cursor-pointer">
-                <Icons.Lock width={12} height={14} />
-                Unlock
-              </div>
-            </Tooltip>
+            <div onClick={() => setUnlockedPackages(true)} tw="flex items-center gap-x-2 font-regular cursor-pointer">
+              <Icons.Lock width={12} height={14} />
+              Unlock
+            </div>
           )}
         </div>
       )}
@@ -72,7 +71,23 @@ export const SystemSettingsForm = () => {
           normalize={(str: string) => dotsAndSlashesToSlash(str).replace(/(?:(?:\r\n|\r|\n)\s*){2}/gm, "")}
         />
       </DarkFormGroup>
-      <DarkFormGroup label="Header Mapping" optional>
+      <DarkFormGroup
+        label={(
+          <div tw="flex gap-x-2 items-center">
+            Header Mapping
+            <Tooltip
+              message={(
+                <div tw="text-[13px] leading-20">
+                  <span>Session header name to track User actions on your target app</span>
+                </div>
+              )}
+            >
+              <Icons.Info />
+            </Tooltip>
+          </div>
+        )}
+        optional
+      >
         <Field
           name="systemSettings.sessionIdHeaderName"
           component={Fields.DarkInput}
