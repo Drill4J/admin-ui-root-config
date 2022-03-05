@@ -15,7 +15,7 @@
  */
 import React from "react";
 import "twin.macro";
-import { Route, Switch } from "react-router-dom";
+import { Redirect, Route, Switch } from "react-router-dom";
 
 import { ServiceGroup as ServiceGroupType } from "types";
 import { useAdminConnection, useRouteParams } from "hooks";
@@ -45,6 +45,7 @@ export const ServiceGroup = () => {
           )}
         />
         <Route path={routes.serviceGroupPlugin} component={Plugin} />
+        <Redirect to="/" />
       </Switch>
     </div>
   );

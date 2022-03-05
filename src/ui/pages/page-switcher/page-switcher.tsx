@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 import React from "react";
-import { Switch } from "react-router-dom";
+import { Redirect, Switch } from "react-router-dom";
 import { AGENT_STATUS, routes } from "common";
 import { NoAgentSelectedStub, NoAgentsRegisteredStub, PrivateRoute } from "components";
 import { useAdminConnection, useRouteParams } from "hooks";
@@ -42,6 +42,7 @@ export const PageSwitcher = () => {
         path={[routes.serviceGroupPlugin, routes.serviceGroupDashboard]}
         component={ServiceGroup}
       />
+      <Redirect to="/" />
     </Switch>
   );
 };

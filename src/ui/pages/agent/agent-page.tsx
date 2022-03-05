@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 import React, { useEffect } from "react";
-import { Route, Switch } from "react-router-dom";
+import { Redirect, Route, Switch } from "react-router-dom";
 import axios from "axios";
 import "twin.macro";
 
@@ -72,6 +72,7 @@ export const AgentPage = () => {
           )}
         />
         <Route path={routes.agentPlugin} component={Plugin} />
+        <Redirect to="/" />
       </Switch>
     </div>
   );

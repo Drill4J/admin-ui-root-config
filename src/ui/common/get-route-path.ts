@@ -17,9 +17,6 @@ export const getRoutePath = (path: string) => `${getCustomPath()}${path}`;
 
 export const getCustomPath = () => {
   const path = window.location.pathname;
-  if (path === "/") {
-    return "";
-  }
   // All this strings is first part of all admin routes
   if (path.includes("agents")) {
     return removeSlashFromTheEnd(removeMultipleSlashes(path.split("agents")[0]));
@@ -31,7 +28,7 @@ export const getCustomPath = () => {
     return removeSlashFromTheEnd(removeMultipleSlashes(path.split("login")[0]));
   }
 
-  return removeSlashFromTheEnd(removeMultipleSlashes(path));
+  return "";
 };
 
 const removeSlashFromTheEnd = (path: string): string => (path.slice(-1) === "/" ? path.slice(0, -1) : path);
