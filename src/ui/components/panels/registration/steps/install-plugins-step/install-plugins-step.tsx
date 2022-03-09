@@ -14,8 +14,10 @@
 * limitations under the License.
 */
 /* eslint-disable max-len */
-import React from "react";
-import { Icons, Field, Checkbox } from "@drill4j/ui-kit";
+import React, { useEffect } from "react";
+import {
+  Checkbox, Field, Icons, useField,
+} from "@drill4j/ui-kit";
 import tw, { styled } from "twin.macro";
 
 import { PluginCard } from "components";
@@ -23,7 +25,14 @@ import { useAdminConnection } from "hooks";
 import { Plugin } from "types";
 
 export const InstallPluginsStep = () => {
-  const availablePlugins = useAdminConnection<Plugin[]>("/plugins");
+  const availablePlugins = useAdminConnection<Plugin[]>("/plugins") || [];
+  const [formField, , helpers] = useField("plugins");
+
+  useEffect(() => {
+    if (!formField.value && availablePlugins.length === 1) {
+      helpers.setValue([availablePlugins[0].id]);
+    }
+  }, [availablePlugins]);
 
   if (!availablePlugins) return null;
   return (
