@@ -29,7 +29,9 @@ export const InstallPluginsStep = () => {
   const [formField, , helpers] = useField("plugins");
 
   useEffect(() => {
-    if (!formField.value && availablePlugins.length === 1) helpers.setValue([availablePlugins[0].id]);
+    if (!formField.value && availablePlugins.length === 1) {
+      helpers.setValue([availablePlugins[0].id]);
+    }
   }, [availablePlugins]);
 
   if (!availablePlugins) return null;
