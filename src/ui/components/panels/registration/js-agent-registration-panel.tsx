@@ -21,14 +21,14 @@ import {
 import "twin.macro";
 
 import { Agent } from "types";
+import { unusedAgentName } from "utils";
+import { useAdminConnection } from "hooks";
 import { InstallPluginsStep, JsGeneralRegistrationStep, JsSystemSettingsRegistrationStep } from "./steps";
 import { PanelProps } from "../panel-props";
 import { Stepper } from "./stepper";
-import { unusedAgentName } from "../../../utils";
-import { useAdminConnection } from "../../../hooks";
 
 export const JsAgentRegistrationPanel = ({ isOpen, onClosePanel, payload }: PanelProps) => {
-  const agents = useAdminConnection<{single: Agent[], grouped: Agent[]}>("/agents") || { single: [], grouped: [] };
+  const agents = useAdminConnection<Agent[]>("/agents") || [];
   return (
     <Stepper
       label="Agent Registration"

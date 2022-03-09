@@ -20,15 +20,15 @@ import {
 } from "@drill4j/ui-kit";
 import "twin.macro";
 
-import { Agent } from "types";
+import { Agent, ServiceGroup } from "types";
+import { useAdminConnection } from "hooks";
+import { unusedGroupName } from "utils";
 import { GroupGeneralRegistrationStep, GroupSystemSettingsRegistrationStep, InstallPluginsStep } from "./steps";
 import { PanelProps } from "../panel-props";
 import { Stepper } from "./stepper";
-import { useAdminConnection } from "../../../hooks";
-import { unusedGroupName } from "../../../utils";
 
 export const GroupRegistrationPanel = ({ isOpen, onClosePanel, payload }: PanelProps) => {
-  const agents = useAdminConnection<{ single: Agent[], grouped: Agent[] }>("/agents") || { single: [], grouped: [] };
+  const groups = useAdminConnection<ServiceGroup[]>("/api/groups") || [];
   return (
     <Stepper
       label="Service Group Registration"
@@ -45,7 +45,7 @@ export const GroupRegistrationPanel = ({ isOpen, onClosePanel, payload }: PanelP
           stepLabel: "General Info",
           validationSchema: composeValidators(
             required("name"),
-            unusedGroupName("name", agents, payload.name),
+            unusedGroupName("name", groups, payload.name),
             sizeLimit({ name: "name" }),
             sizeLimit({ name: "environment" }),
             sizeLimit({ name: "description", min: 3, max: 256 }),

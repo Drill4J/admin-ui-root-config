@@ -14,12 +14,12 @@
  * limitations under the License.
  */
 import { FormValidator, getPropertyByPath } from "@drill4j/ui-kit";
-import { Agent } from "../types";
+import { Agent } from "types";
 
-export function unusedAgentName(field: string, agents: { single: Agent[], grouped: Agent[] }): FormValidator {
+export function unusedAgentName(field: string, agents: Agent[]): FormValidator {
   return (valitationItem) => {
     const value = getPropertyByPath<string>(valitationItem, field);
-    const registredAgents = agents.single.filter(agent => agent.agentStatus !== "NOT_REGISTERED");
+    const registredAgents = agents.filter(agent => agent.agentStatus !== "NOT_REGISTERED");
     const isSomeAgent = registredAgents.some(agent => agent.name === value);
     return isSomeAgent ? { [field]: "Agent with such name already exists. Please choose a different name." } : {};
   };
