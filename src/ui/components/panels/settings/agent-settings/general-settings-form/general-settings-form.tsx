@@ -24,20 +24,30 @@ interface Props {
   type: string;
 }
 
+interface labelsAndPlaceholdersData {
+  idLabel: string,
+  nameLabel: string,
+  namePlaceholder: string,
+  descriptionPlaceholder: string,
+}
+
 export const GeneralSettingsForm = ({ type }: Props) => {
-  const data: any = {};
-  switch (type) {
-    case "Group":
-      data.idLabel = "Service Group ID";
-      data.nameLabel = "Service Group Name";
-      data.namePlaceholder = "Enter Service Group's name";
-      data.descriptionPlaceholder = "Add some details about the Service Group";
-      break;
-    default:
-      data.idLabel = "Agent ID";
-      data.nameLabel = "Agent Name";
-      data.namePlaceholder = "Enter Agent's name";
-      data.descriptionPlaceholder = "Add some details about the Agent";
+  const data: labelsAndPlaceholdersData = {
+    idLabel: "",
+    nameLabel: "",
+    namePlaceholder: "",
+    descriptionPlaceholder: "",
+  };
+  if (type === "Group") {
+    data.idLabel = "Service Group ID";
+    data.nameLabel = "Service Group Name";
+    data.namePlaceholder = "Enter Service Group's name";
+    data.descriptionPlaceholder = "Add some details about the Service Group";
+  } else {
+    data.idLabel = "Agent ID";
+    data.nameLabel = "Agent Name";
+    data.namePlaceholder = "Enter Agent's name";
+    data.descriptionPlaceholder = "Add some details about the Agent";
   }
 
   return (
