@@ -73,6 +73,7 @@ export const SystemSettingsForm = () => {
         />
       </DarkFormGroup>
       <DarkFormGroup
+        optional
         label={(
           <div tw="flex gap-x-2 items-center h-4">
             Header Mapping
@@ -87,7 +88,6 @@ export const SystemSettingsForm = () => {
             </Tooltip>
           </div>
         )}
-        optional
       >
         <Field
           name="systemSettings.sessionIdHeaderName"
