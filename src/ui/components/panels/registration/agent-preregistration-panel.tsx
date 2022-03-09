@@ -20,15 +20,15 @@ import {
 } from "@drill4j/ui-kit";
 import "twin.macro";
 
+import { useAdminConnection } from "hooks";
+import { unusedAgentName } from "utils";
 import { Agent } from "types";
 import { AgentGeneralPreregistrationStep, InstallPluginsStep, SystemSettingsRegistrationStep } from "./steps";
 import { Stepper } from "./stepper";
 import { PanelProps } from "../panel-props";
-import { useAdminConnection } from "../../../hooks";
-import { unusedAgentName } from "../../../utils";
 
 export const AgentPreregistrationPanel = ({ isOpen, onClosePanel, payload }: PanelProps) => {
-  const agents = useAdminConnection<{single: Agent[], grouped: Agent[]}>("/agents") || { single: [], grouped: [] };
+  const agents = useAdminConnection<Agent[]>("/api/agents") || [];
   return (
     <Stepper
       label={(

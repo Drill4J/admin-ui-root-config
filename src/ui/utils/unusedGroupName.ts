@@ -14,13 +14,13 @@
  * limitations under the License.
  */
 import { FormValidator, getPropertyByPath } from "@drill4j/ui-kit";
-import { Agent } from "../types";
+import { ServiceGroup } from "types";
 
-export function unusedGroupName(field: string, agents: { single: Agent[], grouped: any[] }, ignoredName: string): FormValidator {
+export function unusedGroupName(field: string, groups: ServiceGroup[], ignoredName: string): FormValidator {
   return (valitationItem) => {
     const value = getPropertyByPath<string>(valitationItem, field);
-    const registeredGroup = agents.grouped.filter(agent => agent.group.name !== ignoredName).map(agent => agent.group.name);
-    const isSomeGroup = registeredGroup.some(agent => agent === value);
+    const registeredGroup = groups.filter(group => group.name !== ignoredName);
+    const isSomeGroup = registeredGroup.some(group => group.name === value);
     return isSomeGroup ? { [field]: "Service Group with such name already exists. Please choose a different name." } : {};
   };
 }

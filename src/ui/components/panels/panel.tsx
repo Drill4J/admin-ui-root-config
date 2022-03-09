@@ -38,7 +38,7 @@ export const Panel = ({
         </div>
         {footer && <div tw="h-18 bg-monochrome-black">{footer}</div>}
       </div>
-      <div onClick={!isDisabledFade ? onClosePanel : () => {}} style={{ background: "rgba(0, 0, 0, 0.4)" }} />
+      <div onClick={() => { !isDisabledFade && onClosePanel(); }} style={{ background: "rgba(0, 0, 0, 0.4)" }} />
     </div>
   ) : null
 );
