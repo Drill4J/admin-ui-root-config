@@ -15,8 +15,7 @@
  */
 import React, { useState } from "react";
 import {
-  Icons, DarkFormGroup, Fields, Field,
-  dotsAndSlashesToSlash,
+  ContentAlert, DarkFormGroup, dotsAndSlashesToSlash, Field, Fields, Icons, Tooltip,
 } from "@drill4j/ui-kit";
 
 import "twin.macro";
@@ -25,20 +24,37 @@ export const SystemSettingsForm = () => {
   const [unlockedPackages, setUnlockedPackages] = useState(false);
 
   return (
-    <>
+    <div tw="w-[400px] flex flex-col gap-y-6">
       {unlockedPackages && (
-        <div tw="flex w-[400px] gap-x-4 p-6 border border-orange-default rounded-lg text-orange-default text-14 leading-24">
-          <div tw="pt-1">
-            <Icons.Danger />
-          </div>
+        <ContentAlert type="WARNING">
           Please be aware that any change to the package
-          list will result in a complete loss of gathered data
-          in plugins that have been using these packages.
-        </div>
+          list will result in a complete loss of gathered
+          data in plugins that have been using these packages.
+        </ContentAlert>
       )}
       <DarkFormGroup label={(
         <div tw="flex justify-between w-[400px]">
-          Application Packages
+          <div tw="flex gap-x-2 items-center">
+            Application Packages
+            <Tooltip
+              message={(
+                <div tw="space-y-2 text-[13px] leading-20">
+                  <div>
+                    Specify all necessary parts of your application.{"\n"}
+                    Make sure you add application packages only,{"\n"}
+                    otherwise Agent&apos;s performance will be affected.
+                  </div>
+                  <div>
+                    Please, use:{"\n"}- new line as a separator;{"\n"}-
+                    &quot;!&quot; before package/class for excluding;{"\n"}-
+                    &quot;/&quot; in a package path.
+                  </div>
+                </div>
+              )}
+            >
+              <Icons.Info />
+            </Tooltip>
+          </div>
           {!unlockedPackages && (
             <div onClick={() => setUnlockedPackages(true)} tw="flex items-center gap-x-2 font-regular cursor-pointer">
               <Icons.Lock width={12} height={14} />
@@ -56,13 +72,29 @@ export const SystemSettingsForm = () => {
           normalize={(str: string) => dotsAndSlashesToSlash(str).replace(/(?:(?:\r\n|\r|\n)\s*){2}/gm, "")}
         />
       </DarkFormGroup>
-      <DarkFormGroup label="Header Mapping" optional>
+      <DarkFormGroup
+        optional
+        label={(
+          <div tw="flex gap-x-2 items-center h-4">
+            Header Mapping
+            <Tooltip
+              message={(
+                <div tw="space-y-2 text-[13px] leading-20">
+                  Session header name to track User actions on your target app.
+                </div>
+              )}
+            >
+              <Icons.Info />
+            </Tooltip>
+          </div>
+        )}
+      >
         <Field
           name="systemSettings.sessionIdHeaderName"
           component={Fields.DarkInput}
           placeholder="Enter session header name"
         />
       </DarkFormGroup>
-    </>
+    </div>
   );
 };
