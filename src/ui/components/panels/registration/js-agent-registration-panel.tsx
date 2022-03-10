@@ -15,15 +15,11 @@
  */
 import React from "react";
 import axios from "axios";
-import {
-  sizeLimit, required, composeValidators,
-} from "@drill4j/ui-kit";
+import { composeValidators, required, sizeLimit } from "@drill4j/ui-kit";
 import "twin.macro";
 
 import { Agent } from "types";
-import {
-  JsSystemSettingsRegistrationStep, InstallPluginsStep, JsGeneralRegistrationStep,
-} from "./steps";
+import { InstallPluginsStep, JsGeneralRegistrationStep, JsSystemSettingsRegistrationStep } from "./steps";
 import { PanelProps } from "../panel-props";
 import { Stepper } from "./stepper";
 
@@ -32,6 +28,7 @@ export const JsAgentRegistrationPanel = ({ isOpen, onClosePanel, payload }: Pane
     label="Agent Registration"
     initialValues={payload}
     onSubmit={registerAgent}
+    successSubmitMessage="Agent has been registered"
     steps={[
       {
         stepLabel: "General Info",

@@ -16,14 +16,12 @@
 import React from "react";
 import axios from "axios";
 import {
-  requiredArray, sizeLimit, required, composeValidators, parsePackages, formatPackages,
+  composeValidators, formatPackages, parsePackages, required, requiredArray, sizeLimit,
 } from "@drill4j/ui-kit";
 import "twin.macro";
 
 import { Agent } from "types";
-import {
-  GroupSystemSettingsRegistrationStep, InstallPluginsStep, GroupGeneralRegistrationStep,
-} from "./steps";
+import { GroupGeneralRegistrationStep, GroupSystemSettingsRegistrationStep, InstallPluginsStep } from "./steps";
 import { PanelProps } from "../panel-props";
 import { Stepper } from "./stepper";
 
@@ -38,6 +36,7 @@ export const GroupRegistrationPanel = ({ isOpen, onClosePanel, payload }: PanelP
       },
     }}
     onSubmit={registerGroup}
+    successSubmitMessage="Sevice Group has been registered"
     steps={[
       {
         stepLabel: "General Info",
