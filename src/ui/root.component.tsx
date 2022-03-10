@@ -14,14 +14,12 @@
  * limitations under the License.
  */
 import React from "react";
-import {
-  BrowserRouter, Redirect, Route, Switch,
-} from "react-router-dom";
+import { BrowserRouter, Route, Switch } from "react-router-dom";
 import "twin.macro";
 
 import { LoginPage, PageSwitcher } from "pages";
-import { FontsStyles, LayoutStyles, TypographyStyles } from "global-styles";
-import { Navigation, PanelProvider, Panels } from "components";
+import { TypographyStyles, LayoutStyles, FontsStyles } from "global-styles";
+import { PanelProvider, Panels, Navigation } from "components";
 import { configureAxios, routes } from "common";
 import { SetPluginUrlModal } from "components/set-plugin-url-modal";
 import { AlertManager } from "./alert-manager";
@@ -42,15 +40,7 @@ const Root = () => (
         <Navigation tw="fixed" />
         {/* Navigation width = 48px */}
         <div tw="ml-12 w-[calc(100% - 48px)]">
-          <Switch>
-            <Route exact path="/">
-              <PageSwitcher />
-            </Route>
-            <Route path={[...Object.values(routes)]}>
-              <PageSwitcher />
-            </Route>
-            <Redirect to="/" />
-          </Switch>
+          <PageSwitcher />
         </div>
         <Panels />
       </PanelProvider>
