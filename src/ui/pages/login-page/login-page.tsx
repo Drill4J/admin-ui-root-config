@@ -21,7 +21,7 @@ import tw, { styled } from "twin.macro";
 
 import { LoginLayout } from "layouts";
 import { getCustomPath } from "common";
-import { TOKEN_KEY, TOKEN_HEADER } from "common/constants";
+import { TOKEN_HEADER, TOKEN_KEY } from "common/constants";
 
 const SignInForm = styled.div`
   ${tw`flex flex-col gap-y-6 mt-6`}
@@ -32,11 +32,16 @@ const SignInForm = styled.div`
 
 export const LoginPage = () => {
   const [error, setError] = useState<string | null>(null);
+  const [nameValue, setNameValue] = useState("");
+  const [passwordValue, setPasswordValue] = useState("");
   const { push } = useHistory();
 
-  async function handleLogin() {
+  async function handleLogin(name = "guest", password = "") {
     try {
-      const response = await axios.post("/login");
+      const response = await axios.post("/login", {
+        name,
+        password,
+      });
       const authToken = response.headers[TOKEN_HEADER.toLowerCase()];
       if (authToken) {
         localStorage.setItem(TOKEN_KEY, authToken);
@@ -73,14 +78,22 @@ export const LoginPage = () => {
             </ContentAlert>
           )}
           <SignInForm>
-            <Inputs.Text placeholder="User ID" disabled />
-            <Inputs.Text placeholder="Password" disabled />
+            <Inputs.Text
+              value={nameValue}
+              placeholder="User ID"
+              onChange={event => setNameValue((event.target as HTMLInputElement).value)}
+            />
+            <Inputs.Text
+              value={passwordValue}
+              placeholder="Password"
+              onChange={event => setPasswordValue((event.target as HTMLInputElement).value)}
+            />
           </SignInForm>
           <Button
             tw="flex justify-center w-88 mt-6"
             primary
             size="large"
-            disabled
+            onClick={() => handleLogin(nameValue, passwordValue)}
           >
             Sign in
           </Button>
@@ -91,7 +104,7 @@ export const LoginPage = () => {
             tw="flex justify-center w-88 mt-10 "
             secondary
             size="large"
-            onClick={handleLogin}
+            onClick={() => handleLogin()}
             data-test="login-button:continue-as-guest"
           >
             Continue as a guest (with admin rights)
