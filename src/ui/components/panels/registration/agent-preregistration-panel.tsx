@@ -16,14 +16,12 @@
 import React from "react";
 import axios from "axios";
 import {
-  requiredArray, sizeLimit, required, composeValidators, parsePackages, idValidator, alreadyExist,
+  alreadyExist, composeValidators, idValidator, parsePackages, required, requiredArray, sizeLimit,
 } from "@drill4j/ui-kit";
 import "twin.macro";
 
 import { Agent } from "types";
-import {
-  SystemSettingsRegistrationStep, InstallPluginsStep, AgentGeneralPreregistrationStep,
-} from "./steps";
+import { AgentGeneralPreregistrationStep, InstallPluginsStep, SystemSettingsRegistrationStep } from "./steps";
 import { Stepper } from "./stepper";
 import { PanelProps } from "../panel-props";
 
@@ -38,6 +36,7 @@ export const AgentPreregistrationPanel = ({ isOpen, onClosePanel, payload }: Pan
       </div>
     )}
     onSubmit={preregisterOfflineAgent}
+    successMessage="Agent has been preregistered"
     steps={[
       {
         stepLabel: "General Info",
