@@ -75,7 +75,7 @@ export const Stepper = ({
   const [state, setState] = useSessionStorage(initialValues?.id || "preregistered", initialValues);
   const returnToList = async (values: Agent) => {
     await setState(values);
-    setPanel({ type: "ADD_AGENT" });
+    setPanel({ type: "SELECT_AGENT" });
   };
 
   return (
@@ -112,6 +112,7 @@ export const Stepper = ({
         return (
           <Form autoComplete="off">
             <PanelWithCloseIcon
+              isDisabledFade
               header={(
                 <div tw="space-y-8 pt-6 pb-4 w-[976px]">
                   <div tw="flex justify-between">
@@ -129,6 +130,7 @@ export const Stepper = ({
                           isCompleted={index < stepNumber}
                           stepNumber={index + 1}
                           stepLabel={stepLabel}
+                          isValid={isValid}
                         />
                       </div>
                     ))}
@@ -144,6 +146,7 @@ export const Stepper = ({
                       type="button"
                       onClick={goToPrevStep}
                       data-test="wizard:previous-step"
+                      disabled={!isValid}
                     >
                       <Icons.Expander width={7} height={12} rotate={180} />
                       Back
@@ -156,6 +159,7 @@ export const Stepper = ({
                       size="large"
                       data-test="wizard:finish"
                       type="submit"
+                      disabled={!isValid}
                     >
                       Finish
                     </Button>

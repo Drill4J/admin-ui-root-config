@@ -20,59 +20,63 @@ import {
 } from "@drill4j/ui-kit";
 import "twin.macro";
 
-import { Agent } from "types";
+import { Agent, ServiceGroup } from "types";
+import { useAdminConnection } from "hooks";
+import { unusedGroupName } from "utils";
 import { GroupGeneralRegistrationStep, GroupSystemSettingsRegistrationStep, InstallPluginsStep } from "./steps";
 import { PanelProps } from "../panel-props";
 import { Stepper } from "./stepper";
 
-export const GroupRegistrationPanel = ({ isOpen, onClosePanel, payload }: PanelProps) => (
-  <Stepper
-    label="Service Group Registration"
-    initialValues={{
-      ...payload,
-      systemSettings: {
-        ...payload.systemSettings,
-        packages: formatPackages(payload.systemSettings?.packages),
-      },
-    }}
-    onSubmit={registerGroup}
-    successMessage="Sevice Group has been registered"
-    steps={[
-      {
-        stepLabel: "General Info",
-        validationSchema: composeValidators(
-          required("name"),
-          sizeLimit({ name: "name" }),
-          sizeLimit({ name: "description", min: 3, max: 256 }),
-        ),
-        component: <GroupGeneralRegistrationStep />,
-      },
-      {
-        stepLabel: "System Settings",
-        validationSchema: composeValidators(sizeLimit({
-          name: "systemSettings.sessionIdHeaderName",
-          alias: "Session header name",
-          min: 1,
-          max: 256,
-        }),
-        requiredArray("systemSettings.packages", "Path prefix is required.")),
-        component: <GroupSystemSettingsRegistrationStep />,
-      },
-      {
-        stepLabel: "Plugins",
-        validationSchema: composeValidators(
-          required("name"),
-          sizeLimit({ name: "name" }),
-          sizeLimit({ name: "environment" }),
-          sizeLimit({ name: "description", min: 3, max: 256 }),
-        ),
-        component: <InstallPluginsStep />,
-      },
-    ]}
-    isOpen={isOpen}
-    setIsOpen={onClosePanel}
-  />
-);
+export const GroupRegistrationPanel = ({ isOpen, onClosePanel, payload }: PanelProps) => {
+  const groups = useAdminConnection<ServiceGroup[]>("/api/groups") || [];
+  return (
+    <Stepper
+      label="Service Group Registration"
+      initialValues={{
+        ...payload,
+        systemSettings: {
+          ...payload.systemSettings,
+          packages: formatPackages(payload.systemSettings?.packages),
+        },
+      }}
+      onSubmit={registerGroup}
+      successMessage="Sevice Group has been registered"
+      steps={[
+        {
+          stepLabel: "General Info",
+          validationSchema: composeValidators(
+            required("name"),
+            unusedGroupName("name", groups, payload.name),
+            sizeLimit({ name: "name" }),
+            sizeLimit({ name: "environment" }),
+            sizeLimit({ name: "description", min: 3, max: 256 }),
+          ),
+          component: <GroupGeneralRegistrationStep />,
+        },
+        {
+          stepLabel: "System Settings",
+          validationSchema: composeValidators(sizeLimit({
+            name: "systemSettings.sessionIdHeaderName",
+            alias: "Session header name",
+            min: 1,
+            max: 256,
+          }),
+          requiredArray("systemSettings.packages", "Path prefix is required.")),
+          component: <GroupSystemSettingsRegistrationStep />,
+        },
+        {
+          stepLabel: "Plugins",
+          validationSchema: composeValidators(
+            requiredArray("plugins"),
+          ),
+          component: <InstallPluginsStep />,
+        },
+      ]}
+      isOpen={isOpen}
+      setIsOpen={onClosePanel}
+    />
+  );
+};
 
 async function registerGroup({
   id,

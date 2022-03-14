@@ -19,11 +19,13 @@ import { Icons } from "@drill4j/ui-kit";
 
 import { Props, Panel } from "./panel";
 
-export const PanelWithCloseIcon = ({ isOpen, onClosePanel, ...rest }: Props) => (isOpen ? (
+export const PanelWithCloseIcon = ({
+  isOpen, onClosePanel, isDisabledFade, ...rest
+}: Props) => (isOpen ? (
   <>
     <div tw="absolute left-0 top-0 h-full w-12 bg-monochrome-black text-monochrome-white pt-8 px-4">
       <Icons.Close onClick={onClosePanel} tw="action-icon" />
     </div>
-    <Panel isOpen={isOpen} onClosePanel={onClosePanel} {...rest} />
+    <Panel isOpen={isOpen} onClosePanel={onClosePanel} isDisabledFade={isDisabledFade} {...rest} />
   </>
 ) : null);

@@ -21,12 +21,13 @@ interface Props {
   stepLabel: string;
   isActive: boolean;
   isCompleted: boolean;
+  isValid?: boolean;
 }
 
 export const StepLabel = ({
-  stepNumber, stepLabel, isActive, isCompleted,
+  stepNumber, stepLabel, isActive, isCompleted, isValid = true,
 }: Props) => (
-  <Label isActive={isActive} isCompleted={isCompleted} className="group">
+  <Label isActive={isActive} isCompleted={isCompleted} isDisable={!isValid} className="group">
     {isActive
       ? <ActveCircle>{stepNumber}</ActveCircle>
       : <DefaultCircle isCompleted={isCompleted}>{stepNumber}</DefaultCircle>}
@@ -52,9 +53,10 @@ const DefaultCircle = styled(Circle)`
 
 const Label = styled.div`
   ${tw`flex gap-2 items-center text-14 leading-20 font-bold text-monochrome-shade hover:(text-blue-default cursor-pointer)`}
-  ${({ isActive, isCompleted }: { isActive: boolean, isCompleted: boolean }) => [
+  ${({ isActive, isCompleted, isDisable }: { isActive: boolean, isCompleted: boolean, isDisable: boolean }) => [
     isActive && tw`text-monochrome-white font-bold`,
     isCompleted && tw`text-monochrome-light-tint`,
+    isDisable && tw`pointer-events-none`,
   ]
 }
 `;
