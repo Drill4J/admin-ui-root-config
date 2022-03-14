@@ -13,19 +13,19 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-import React, { useState } from "react";
+import React from "react";
 import {
-  DarkFormGroup, dotsAndSlashesToSlash, Field, Fields, Icons,
+  DarkFormGroup, dotsAndSlashesToSlash, Field, Fields, Icons, useFormikContext,
 } from "@drill4j/ui-kit";
 
 import "twin.macro";
 
 export const SystemSettingsForm = () => {
-  const [unlockedPackages, setUnlockedPackages] = useState(false);
+  const { status, setStatus } = useFormikContext();
 
   return (
     <>
-      {unlockedPackages && (
+      {status.unlockedPackages && (
         <div tw="flex w-[400px] gap-x-4 p-6 border border-orange-default rounded-lg text-orange-default text-14 leading-24">
           <div tw="pt-1">
             <Icons.Danger />
@@ -38,8 +38,13 @@ export const SystemSettingsForm = () => {
       <DarkFormGroup label={(
         <div tw="flex justify-between w-[400px]">
           Application Packages
-          {!unlockedPackages && (
-            <div onClick={() => setUnlockedPackages(true)} tw="flex items-center gap-x-2 font-regular cursor-pointer">
+          {!status.unlockedPackages && (
+            <div
+              onClick={() => setStatus({
+                unlockedPackages: true,
+              })}
+              tw="flex items-center gap-x-2 font-regular cursor-pointer"
+            >
               <Icons.Lock width={12} height={14} />
               Unlock
             </div>
@@ -51,7 +56,7 @@ export const SystemSettingsForm = () => {
           component={Fields.DarkTextarea}
           name="systemSettings.packages"
           placeholder="e.g., package_name/class_name/method_name"
-          disabled={!unlockedPackages}
+          disabled={!status.unlockedPackages}
           normalize={(str: string) => dotsAndSlashesToSlash(str).replace(/(?:(?:\r\n|\r|\n)\s*){2}/gm, "")}
         />
       </DarkFormGroup>

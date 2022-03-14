@@ -36,6 +36,7 @@ export const GroupRegistrationPanel = ({ isOpen, onClosePanel, payload }: PanelP
       },
     }}
     onSubmit={registerGroup}
+    successMessage="Sevice Group has been registered"
     steps={[
       {
         stepLabel: "General Info",

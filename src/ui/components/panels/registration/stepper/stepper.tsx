@@ -15,8 +15,7 @@
  */
 import React, { useEffect, useState } from "react";
 import {
-  Formik, Form, Button, Icons, FormValidator,
-  sendAlertEvent,
+  Button, Form, Formik, FormValidator, Icons, sendAlertEvent,
 } from "@drill4j/ui-kit";
 import "twin.macro";
 
@@ -37,6 +36,7 @@ interface Props {
   steps: Step[];
   initialValues?: Agent;
   onSubmit: (val: Record<string, unknown>) => Promise<void>;
+  successMessage: string,
   isOpen?: any;
   setIsOpen?: any;
 }
@@ -46,6 +46,7 @@ export const Stepper = ({
   steps,
   initialValues = {},
   onSubmit,
+  successMessage,
   isOpen,
   setIsOpen,
 }: Props) => {
@@ -81,7 +82,12 @@ export const Stepper = ({
     <Formik
       initialValues={state}
       onSubmit={async (values: any) => {
-        onSubmit(values).catch(() => {
+        onSubmit(values).then(() => {
+          sendAlertEvent({
+            type: "SUCCESS",
+            title: successMessage,
+          });
+        }).catch(() => {
           sendAlertEvent({
             type: "ERROR",
             title: "On-submit error. Server problem or operation could not be processed in real-time.",
@@ -98,6 +104,10 @@ export const Stepper = ({
         useEffect(() => {
           validateForm(values);
         }, [stepNumber]);
+
+        useEffect(() => {
+          setState(values);
+        }, [values]);
 
         return (
           <Form autoComplete="off">

@@ -19,7 +19,6 @@ import { AGENT_STATUS, routes } from "common";
 import { NoAgentSelectedStub, NoAgentsRegisteredStub, PrivateRoute } from "components";
 import { useAdminConnection, useRouteParams } from "hooks";
 import { AgentInfo } from "types";
-
 import { AgentPage } from "../agent";
 import { ServiceGroup } from "../service-group";
 

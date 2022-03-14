@@ -32,17 +32,21 @@ interface labelsAndPlaceholdersData {
 }
 
 export const GeneralSettingsForm = ({ type }: Props) => {
-  const data: labelsAndPlaceholdersData = {};
+  let data: labelsAndPlaceholdersData = {};
   if (type === "Group") {
-    data.idLabel = "Service Group ID";
-    data.nameLabel = "Service Group Name";
-    data.namePlaceholder = "Enter Service Group's name";
-    data.descriptionPlaceholder = "Add some details about the Service Group";
+    data = {
+      idLabel: "Service Group ID",
+      nameLabel: "Service Group Name",
+      namePlaceholder: "Enter Service Group's name",
+      descriptionPlaceholder: "Add some details about the Service Group",
+    };
   } else {
-    data.idLabel = "Agent ID";
-    data.nameLabel = "Agent Name";
-    data.namePlaceholder = "Enter Agent's name";
-    data.descriptionPlaceholder = "Add some details about the Agent";
+    data = {
+      idLabel: "Agent ID",
+      nameLabel: "Agent Name",
+      namePlaceholder: "Enter Agent's name",
+      descriptionPlaceholder: "Add some details about the Agent",
+    };
   }
 
   return (

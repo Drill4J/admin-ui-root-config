@@ -81,6 +81,9 @@ export const SettingsPanel = ({
         },
       }}
       validate={getTabValidationSchema(activeTab) as any}
+      initialStatus={{
+        unlockedPackages: false,
+      }}
     >
       {({
         isSubmitting, isValid, dirty, resetForm, values,
