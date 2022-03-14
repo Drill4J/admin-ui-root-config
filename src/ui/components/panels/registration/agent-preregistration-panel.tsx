@@ -40,6 +40,7 @@ export const AgentPreregistrationPanel = ({ isOpen, onClosePanel, payload }: Pan
         </div>
       )}
       onSubmit={preregisterOfflineAgent}
+      successMessage="Agent has been preregistered"
       steps={[
         {
           stepLabel: "General Info",
@@ -65,6 +66,7 @@ export const AgentPreregistrationPanel = ({ isOpen, onClosePanel, payload }: Pan
             alias: "Session header name",
             min: 1,
             max: 256,
+
           }),
           requiredArray("systemSettings.packages", "Path prefix is required.")),
           component: <SystemSettingsRegistrationStep />,

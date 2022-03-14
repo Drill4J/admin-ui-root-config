@@ -27,6 +27,7 @@ import { GroupGeneralRegistrationStep, GroupSystemSettingsRegistrationStep, Inst
 import { PanelProps } from "../panel-props";
 import { Stepper } from "./stepper";
 
+
 export const GroupRegistrationPanel = ({ isOpen, onClosePanel, payload }: PanelProps) => {
   const groups = useAdminConnection<ServiceGroup[]>("/api/groups") || [];
   return (
@@ -40,6 +41,7 @@ export const GroupRegistrationPanel = ({ isOpen, onClosePanel, payload }: PanelP
         },
       }}
       onSubmit={registerGroup}
+      successMessage="Sevice Group has been registered"
       steps={[
         {
           stepLabel: "General Info",
