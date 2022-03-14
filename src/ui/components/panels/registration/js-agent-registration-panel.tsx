@@ -28,7 +28,7 @@ export const JsAgentRegistrationPanel = ({ isOpen, onClosePanel, payload }: Pane
     label="Agent Registration"
     initialValues={payload}
     onSubmit={registerAgent}
-    successSubmitMessage="Agent has been registered"
+    successMessage="Agent has been registered"
     steps={[
       {
         stepLabel: "General Info",

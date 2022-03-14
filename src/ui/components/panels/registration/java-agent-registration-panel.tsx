@@ -36,7 +36,7 @@ export const JavaAgentRegistrationPanel = ({ isOpen, onClosePanel, payload }: Pa
       },
     }}
     onSubmit={registerAgent}
-    successSubmitMessage="Agent has been registered"
+    successMessage="Agent has been registered"
     steps={[
       {
         stepLabel: "General Info",

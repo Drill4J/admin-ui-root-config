@@ -36,7 +36,7 @@ interface Props {
   steps: Step[];
   initialValues?: Agent;
   onSubmit: (val: Record<string, unknown>) => Promise<void>;
-  successSubmitMessage: string,
+  successMessage: string,
   isOpen?: any;
   setIsOpen?: any;
 }
@@ -46,7 +46,7 @@ export const Stepper = ({
   steps,
   initialValues = {},
   onSubmit,
-  successSubmitMessage,
+  successMessage,
   isOpen,
   setIsOpen,
 }: Props) => {
@@ -85,7 +85,7 @@ export const Stepper = ({
         onSubmit(values).then(() => {
           sendAlertEvent({
             type: "SUCCESS",
-            title: successSubmitMessage,
+            title: successMessage,
           });
         }).catch(() => {
           sendAlertEvent({

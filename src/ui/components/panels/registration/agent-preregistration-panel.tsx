@@ -36,7 +36,7 @@ export const AgentPreregistrationPanel = ({ isOpen, onClosePanel, payload }: Pan
       </div>
     )}
     onSubmit={preregisterOfflineAgent}
-    successSubmitMessage="Agent has been preregistered"
+    successMessage="Agent has been preregistered"
     steps={[
       {
         stepLabel: "General Info",
