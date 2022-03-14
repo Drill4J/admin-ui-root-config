@@ -88,7 +88,6 @@ export const AgentPreregistrationPanel = ({ isOpen, onClosePanel, payload }: Pan
 async function preregisterOfflineAgent({
   id,
   name,
-  environment,
   description,
   plugins,
   systemSettings,
@@ -98,7 +97,6 @@ async function preregisterOfflineAgent({
     id,
     name,
     agentType,
-    environment,
     description,
     plugins,
     systemSettings: {

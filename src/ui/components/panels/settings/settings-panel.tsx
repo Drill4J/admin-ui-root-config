@@ -114,7 +114,7 @@ export const SettingsPanel = ({
         >
           <Form tw="flex flex-col items-center py-16">
             <div tw="space-y-8">
-              {activeTab === "general" && <GeneralSettingsForm />}
+              {activeTab === "general" && <GeneralSettingsForm type={payload.agentType} />}
               {activeTab === "system" && <SystemSettings />}
               {activeTab === "plugins" && <PluginsSettingsTab agent={values} />}
               {activeTab !== "plugins" && (

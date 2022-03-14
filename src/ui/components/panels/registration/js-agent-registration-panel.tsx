@@ -71,14 +71,12 @@ export const JsAgentRegistrationPanel = ({ isOpen, onClosePanel, payload }: Pane
 async function registerAgent({
   id,
   name,
-  environment,
   description,
   plugins,
   systemSettings,
 }: Agent) {
   await axios.post(`/agents/${id}`, {
     name,
-    environment,
     description,
     plugins,
     systemSettings,

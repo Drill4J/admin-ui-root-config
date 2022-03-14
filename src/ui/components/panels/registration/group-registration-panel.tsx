@@ -84,7 +84,6 @@ async function registerGroup({
   name = "",
   systemSettings,
   description,
-  environment,
 }: Agent) {
   await axios.patch(`/groups/${id}`, {
     plugins,
@@ -94,6 +93,5 @@ async function registerGroup({
       packages: parsePackages(systemSettings?.packages as unknown as string).filter(Boolean),
     },
     description,
-    environment,
   });
 }
