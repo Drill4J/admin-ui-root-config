@@ -73,12 +73,9 @@ export const SettingsPanel = ({
       onSubmit={handleSubmit as any}
       initialValues={{
         ...payload,
-        systemSettings: {
-          ...payload.systemSettings,
-          packages: (Array.isArray(payload.systemSettings?.packages)
-            ? formatPackages(payload.systemSettings?.packages)
-            : payload.systemSettings?.packages) as any,
-        },
+        packages: (Array.isArray(payload.systemSettings?.packages)
+          ? formatPackages(payload.systemSettings?.packages)
+          : payload.systemSettings?.packages) as any,
       }}
       validate={getTabValidationSchema(activeTab, payload.agentType) as any}
       initialStatus={{
@@ -150,17 +147,26 @@ export const SettingsPanel = ({
 
 function saveSettings(
   activeTab: string,
-  values: AgentInfoWithSystemSetting,
+  values: any,
 ): undefined | Promise<any> {
   const {
     id,
     name,
     agentType,
     description,
-    systemSettings: { sessionIdHeaderName, packages = "", targetHost } = {},
+    sessionIdHeaderName,
+    packages = "",
+    targetHost,
   } = values;
   if (values?.agentStatus === AGENT_STATUS.PREREGISTERED) {
-    return saveSettingForPreregisteredAgent(values);
+    return saveSettingForPreregisteredAgent({
+      ...values,
+      systemSettings: {
+        sessionIdHeaderName,
+        packages,
+        targetHost,
+      },
+    });
   }
 
   const systemSettings =
@@ -203,9 +209,9 @@ function getTabValidationSchema(activeTab: string, agentType: string) {
       );
     case "system":
       return composeValidators(
-        requiredArray("systemSettings.packages", "Path prefix is required."),
+        requiredArray("packages", "Path prefix is required."),
         sizeLimit({
-          name: "systemSettings.sessionIdHeaderName",
+          name: "sessionIdHeaderName",
           alias: "Session header name",
           min: 1,
           max: 256,
