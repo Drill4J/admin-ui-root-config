@@ -14,15 +14,13 @@
  * limitations under the License.
  */
 import React, { useEffect } from "react";
-import { Route, Switch } from "react-router-dom";
+import { Route, Switch, useHistory } from "react-router-dom";
 import axios from "axios";
 import "twin.macro";
 
-import {
-  useActiveBuild, useAdminConnection, useAgent, useRouteParams,
-} from "hooks";
-import { BUILD_STATUS, routes } from "common";
-import { AgentBuildInfo, Notification } from "types";
+import { useActiveBuild, useAdminConnection, useRouteParams } from "hooks";
+import { BUILD_STATUS, getPagePath, routes } from "common";
+import { AgentBuildInfo, AgentInfo, Notification } from "types";
 import { useSetPanelContext } from "components";
 import { Icons, Spinner, Stub } from "@drill4j/ui-kit";
 import { Dashboard } from "../dashboard";
@@ -30,10 +28,12 @@ import { Plugin } from "./plugin";
 import { DashboardHeader } from "./dashboard-header";
 
 export const AgentPage = () => {
+  const { push } = useHistory();
   const { agentId = "" } = useRouteParams();
-  const agent = useAgent();
-  const { systemSettings } = useActiveBuild(agent?.id) || {};
-  const [activeBuildInfo] = useAdminConnection<AgentBuildInfo[]>(`/api/agent/${agent.id}/builds`) || [];
+  const agent = useAdminConnection<AgentInfo>(`/agents/${agentId}`);
+  const { id = "" } = agent || {};
+  const { systemSettings } = useActiveBuild(id) || {};
+  const [activeBuildInfo] = useAdminConnection<AgentBuildInfo[]>(`/api/agent/${id}/builds`) || [];
   const setPanel = useSetPanelContext();
   const notifications =
     useAdminConnection<Notification[]>("/notifications") || [];
@@ -46,7 +46,13 @@ export const AgentPage = () => {
     }
   }, [newBuildNotification?.id]);
 
-  const agentWithSystemSettings = { ...agent, systemSettings };
+  const agentWithSystemSettings = { ...Object(agent), systemSettings };
+
+  useEffect(() => {
+    if (agent !== null && !agent.id) {
+      push(getPagePath({ name: "root" }));
+    }
+  }, [agent]);
 
   return (
     <div tw="flex flex-col flex-grow w-full h-full">
