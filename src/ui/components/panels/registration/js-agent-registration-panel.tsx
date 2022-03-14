@@ -35,7 +35,6 @@ export const JsAgentRegistrationPanel = ({ isOpen, onClosePanel, payload }: Pane
         validationSchema: composeValidators(
           required("name"),
           sizeLimit({ name: "name" }),
-          sizeLimit({ name: "environment" }),
           sizeLimit({ name: "description", min: 3, max: 256 }),
         ),
         component: <JsGeneralRegistrationStep />,
@@ -52,7 +51,6 @@ export const JsAgentRegistrationPanel = ({ isOpen, onClosePanel, payload }: Pane
         validationSchema: composeValidators(
           required("name"),
           sizeLimit({ name: "name" }),
-          sizeLimit({ name: "environment" }),
           sizeLimit({ name: "description", min: 3, max: 256 }),
         ),
         component: <InstallPluginsStep />,
@@ -66,14 +64,12 @@ export const JsAgentRegistrationPanel = ({ isOpen, onClosePanel, payload }: Pane
 async function registerAgent({
   id,
   name,
-  environment,
   description,
   plugins,
   systemSettings,
 }: Agent) {
   await axios.post(`/agents/${id}`, {
     name,
-    environment,
     description,
     plugins,
     systemSettings,

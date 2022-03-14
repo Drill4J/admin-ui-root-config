@@ -43,7 +43,6 @@ export const GroupRegistrationPanel = ({ isOpen, onClosePanel, payload }: PanelP
         validationSchema: composeValidators(
           required("name"),
           sizeLimit({ name: "name" }),
-          sizeLimit({ name: "environment" }),
           sizeLimit({ name: "description", min: 3, max: 256 }),
         ),
         component: <GroupGeneralRegistrationStep />,
@@ -81,7 +80,6 @@ async function registerGroup({
   name = "",
   systemSettings,
   description,
-  environment,
 }: Agent) {
   await axios.patch(`/groups/${id}`, {
     plugins,
@@ -91,6 +89,5 @@ async function registerGroup({
       packages: parsePackages(systemSettings?.packages as unknown as string).filter(Boolean),
     },
     description,
-    environment,
   });
 }

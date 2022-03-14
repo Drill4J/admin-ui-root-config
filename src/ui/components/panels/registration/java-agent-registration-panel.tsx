@@ -43,7 +43,6 @@ export const JavaAgentRegistrationPanel = ({ isOpen, onClosePanel, payload }: Pa
         validationSchema: composeValidators(
           required("name"),
           sizeLimit({ name: "name" }),
-          sizeLimit({ name: "environment" }),
           sizeLimit({ name: "description", min: 3, max: 256 }),
         ),
         component: <JavaGeneralRegistrationStep />,
@@ -64,7 +63,6 @@ export const JavaAgentRegistrationPanel = ({ isOpen, onClosePanel, payload }: Pa
         validationSchema: composeValidators(
           required("name"),
           sizeLimit({ name: "name" }),
-          sizeLimit({ name: "environment" }),
           sizeLimit({ name: "description", min: 3, max: 256 }),
         ),
         component: <InstallPluginsStep />,

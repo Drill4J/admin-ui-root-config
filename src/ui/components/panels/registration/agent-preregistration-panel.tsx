@@ -49,7 +49,6 @@ export const AgentPreregistrationPanel = ({ isOpen, onClosePanel, payload }: Pan
           }),
           required("name"),
           sizeLimit({ name: "name" }),
-          sizeLimit({ name: "environment" }),
           sizeLimit({ name: "description", min: 3, max: 256 }),
         ),
         component: <AgentGeneralPreregistrationStep />,
@@ -70,7 +69,6 @@ export const AgentPreregistrationPanel = ({ isOpen, onClosePanel, payload }: Pan
         validationSchema: composeValidators(
           required("name"),
           sizeLimit({ name: "name" }),
-          sizeLimit({ name: "environment" }),
           sizeLimit({ name: "description", min: 3, max: 256 }),
         ),
         component: <InstallPluginsStep />,
@@ -84,7 +82,6 @@ export const AgentPreregistrationPanel = ({ isOpen, onClosePanel, payload }: Pan
 async function preregisterOfflineAgent({
   id,
   name,
-  environment,
   description,
   plugins,
   systemSettings,
@@ -94,7 +91,6 @@ async function preregisterOfflineAgent({
     id,
     name,
     agentType,
-    environment,
     description,
     plugins,
     systemSettings: {
