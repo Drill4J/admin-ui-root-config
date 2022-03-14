@@ -19,7 +19,7 @@ import axios from "axios";
 import "twin.macro";
 
 import { useActiveBuild, useAdminConnection, useRouteParams } from "hooks";
-import { getRoutePath, routes, BUILD_STATUS } from "common";
+import { BUILD_STATUS, getPagePath, routes } from "common";
 import { AgentBuildInfo, AgentInfo, Notification } from "types";
 import { useSetPanelContext } from "components";
 import { Icons, Spinner, Stub } from "@drill4j/ui-kit";
@@ -50,7 +50,7 @@ export const AgentPage = () => {
 
   useEffect(() => {
     if (agent !== null && !agent.id) {
-      push(getRoutePath(routes.root));
+      push(getPagePath({ name: "root" }));
     }
   }, [agent]);
 
