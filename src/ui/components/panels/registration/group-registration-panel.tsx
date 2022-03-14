@@ -27,7 +27,6 @@ import { GroupGeneralRegistrationStep, GroupSystemSettingsRegistrationStep, Inst
 import { PanelProps } from "../panel-props";
 import { Stepper } from "./stepper";
 
-
 export const GroupRegistrationPanel = ({ isOpen, onClosePanel, payload }: PanelProps) => {
   const groups = useAdminConnection<ServiceGroup[]>("/api/groups") || [];
   return (

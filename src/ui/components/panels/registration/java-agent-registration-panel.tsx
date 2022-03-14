@@ -27,7 +27,6 @@ import { PanelProps } from "../panel-props";
 import { Stepper } from "./stepper";
 import { InstallPluginsStep, JavaGeneralRegistrationStep, SystemSettingsRegistrationStep } from "./steps";
 
-
 export const JavaAgentRegistrationPanel = ({ isOpen, onClosePanel, payload }: PanelProps) => {
   const agents = useAdminConnection<Agent[]>("/api/agents") || [];
   return (
