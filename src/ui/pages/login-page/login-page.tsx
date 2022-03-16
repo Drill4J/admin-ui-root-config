@@ -16,32 +16,29 @@
 import React, { useLayoutEffect, useState } from "react";
 import { useHistory } from "react-router-dom";
 import axios from "axios";
-import { Button, ContentAlert, Inputs } from "@drill4j/ui-kit";
+import {
+  Button, ContentAlert, Field, Fields, Form, Formik,
+} from "@drill4j/ui-kit";
 import tw, { styled } from "twin.macro";
 
 import { LoginLayout } from "layouts";
 import { getCustomPath } from "common";
 import { TOKEN_HEADER, TOKEN_KEY } from "common/constants";
 
-const SignInForm = styled.div`
-  ${tw`flex flex-col gap-y-6 mt-6`}
+const SignInForm = styled(Form)`
+  ${tw`flex flex-col gap-y-6 mt-6 w-88`}
   & > * {
-    ${tw`h-10 w-88`}
+    ${tw`h-10`}
   }
 `;
 
 export const LoginPage = () => {
   const [error, setError] = useState<string | null>(null);
-  const [nameValue, setNameValue] = useState("");
-  const [passwordValue, setPasswordValue] = useState("");
   const { push } = useHistory();
 
-  async function handleLogin(name = "guest", password = "") {
+  async function handleLogin(values?: { name: string, password: string }) {
     try {
-      const response = await axios.post("/login", {
-        name,
-        password,
-      });
+      const response = await axios.post("/login", values);
       const authToken = response.headers[TOKEN_HEADER.toLowerCase()];
       if (authToken) {
         localStorage.setItem(TOKEN_KEY, authToken);
@@ -53,6 +50,10 @@ export const LoginPage = () => {
           "There was some issue with an authentication. Please try again later.",
       );
     }
+  }
+
+  function submitHandler(values: any) {
+    handleLogin(values);
   }
 
   useLayoutEffect(() => {
@@ -77,35 +78,45 @@ export const LoginPage = () => {
               {`${error}`}
             </ContentAlert>
           )}
-          <SignInForm>
-            <Inputs.Text
-              value={nameValue}
-              placeholder="User ID"
-              onChange={event => setNameValue((event.target as HTMLInputElement).value)}
-            />
-            <Inputs.Text
-              value={passwordValue}
-              placeholder="Password"
-              onChange={event => setPasswordValue((event.target as HTMLInputElement).value)}
-            />
-          </SignInForm>
-          <Button
-            tw="flex justify-center w-88 mt-6"
-            primary
-            size="large"
-            onClick={() => handleLogin(nameValue, passwordValue)}
+          <Formik
+            initialValues={{
+              name: "",
+              password: "",
+            }}
+            onSubmit={values => submitHandler(values)}
           >
-            Sign in
-          </Button>
-          <div tw="mt-6 font-bold text-14 leading-20 text-blue-default opacity-25">
-            Forgot your password?
-          </div>
+            {() => (
+              <SignInForm>
+                <Field
+                  name="name"
+                  component={Fields.Input}
+                  placeholder="User ID"
+                />
+                <Field
+                  name="password"
+                  component={Fields.Input}
+                  placeholder="Password"
+                />
+                <Button
+                  tw="flex justify-center w-full"
+                  primary
+                  size="large"
+                  type="submit"
+                >
+                  Sign in
+                </Button>
+                <div tw="font-bold text-14 leading-20 text-center text-blue-default opacity-25">
+                  Forgot your password?
+                </div>
+              </SignInForm>
+            )}
+          </Formik>
           <Button
             tw="flex justify-center w-88 mt-10 "
             secondary
             size="large"
-            onClick={() => handleLogin()}
             data-test="login-button:continue-as-guest"
+            onClick={() => handleLogin()}
           >
             Continue as a guest (with admin rights)
           </Button>
