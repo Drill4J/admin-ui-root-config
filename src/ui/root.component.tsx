@@ -14,22 +14,17 @@
  * limitations under the License.
  */
 import React from "react";
-import {
-  BrowserRouter, Redirect, Route, Switch,
-} from "react-router-dom";
+import { BrowserRouter, Route, Switch } from "react-router-dom";
+import "twin.macro";
 
-import {
-  LoginPage, AgentsPage, AgentPage,
-  SettingsPage, AgentRegistrationPage, ServiceGroupRegistrationPage, ServiceGroup, Builds,
-} from "pages";
+import { LoginPage, PageSwitcher } from "pages";
 import { TypographyStyles, LayoutStyles, FontsStyles } from "global-styles";
-import { Footer, PrivateRoute } from "components";
+import { PanelProvider, Panels, Navigation } from "components";
 import { configureAxios, routes } from "common";
-import { AppLayout } from "layouts";
+import { SetPluginUrlModal } from "components/set-plugin-url-modal";
+import { AlertManager } from "./alert-manager";
 
 import "./index.css";
-import { SetPluginUrlModal } from "./components/set-plugin-url-modal";
-import { AlertManager } from "./alert-manager";
 
 configureAxios();
 
@@ -39,29 +34,17 @@ const Root = () => (
     <TypographyStyles />
     <LayoutStyles />
     <AlertManager />
-    <Route exact path={routes.login} component={LoginPage} />
-    <AppLayout footer={<Footer />}>
-      <Switch>
-        <Route exact path="/" render={() => <Redirect to={routes.agentsTable} />} />
-        <PrivateRoute path={[routes.agentPlugin, routes.agentDashboard]} component={AgentPage} />
-        <PrivateRoute path={routes.builds} component={Builds} />
-        <PrivateRoute
-          path={[routes.serviceGroupPlugin, routes.serviceGroupDashboard]}
-          component={ServiceGroup}
-        />
-        <Switch>
-          <PrivateRoute exact path={routes.agentsTable} component={AgentsPage} />
-          <PrivateRoute
-            path={[routes.agentGeneralSettings, routes.agentPluginsSettings, routes.agentSystemSettings,
-              routes.serviceGroupGeneralSettings, routes.serviceGroupSystemSettings, routes.serviceGroupPluginsSettings]}
-            component={SettingsPage}
-          />
-          <PrivateRoute exact path={routes.agentRegistration} component={AgentRegistrationPage} />
-          <PrivateRoute exact path={routes.serviceGroupRegistration} component={ServiceGroupRegistrationPage} />
-          <PrivateRoute path={routes.agentPreregistration} component={() => <AgentRegistrationPage isOfflineAgent />} />
-        </Switch>
-      </Switch>
-    </AppLayout>
+    <Switch>
+      <Route exact path={routes.login} component={LoginPage} />
+      <PanelProvider>
+        <Navigation tw="fixed" />
+        {/* Navigation width = 48px */}
+        <div tw="ml-12 w-[calc(100% - 48px)]">
+          <PageSwitcher />
+        </div>
+        <Panels />
+      </PanelProvider>
+    </Switch>
     <SetPluginUrlModal />
   </BrowserRouter>
 );

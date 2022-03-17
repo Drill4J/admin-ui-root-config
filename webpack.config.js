@@ -60,6 +60,7 @@ module.exports = (webpackConfigEnv, argv) => {
         "global-styles": path.resolve(__dirname, "src/ui/global-styles/"),
         modules: path.resolve(__dirname, "src/ui/modules/"),
         forms: path.resolve(__dirname, "src/ui/forms/"),
+        utils: path.resolve(__dirname, "src/ui/utils/"),
         "notification-manager": path.resolve(
           __dirname,
           "src/ui/notification-manager/",

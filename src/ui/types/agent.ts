@@ -20,7 +20,7 @@ import { SystemSettings } from "./system-settings";
 
 export interface Agent extends ServiceGroupEntity {
   id?: string;
-  status?: AgentStatus;
+  agentStatus?: AgentStatus;
   drillAdminUrl?: string;
   address?: string;
   plugins?: Plugin[];

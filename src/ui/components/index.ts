@@ -16,14 +16,22 @@
 export { HUD } from "./hud";
 export { PrivateRoute } from "./private-route";
 export { PageHeader } from "./page-header";
-export { Stub } from "./stub";
+export { PanelStub } from "./panel-stub";
 export {
   TableErrorFallback,
   PageNotFoundErrorFallback,
   ErrorFallback,
 } from "./error-fallback";
-export { Toolbar } from "./toolbar";
 export { Footer } from "./footer";
-export { Sidebar, SidebarLink } from "./sidebar";
-export { PluginListEntry } from "./plugin-list-entry";
-export { Step, Wizard } from "./wizard";
+export { PluginCard } from "./plugin-list-entry";
+export {
+  Navigation,
+} from "./navigation";
+export {
+  Panels, useSetPanelContext, usePanelContext, PanelProvider, PanelContext, SetPanelContext,
+} from "./panels";
+export type { PanelsType, PanelType } from "./panels";
+export { NoAgentsRegisteredStub, NoAgentSelectedStub, NoAgentsSvg } from "./stubs";
+export { Breadcrumbs } from "./breadcrumbs";
+export { AgentStatusBadge } from "./agent-status-badge";
+export { IndicatorInEdge } from "./indicator-in-edge";

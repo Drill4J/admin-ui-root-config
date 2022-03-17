@@ -16,21 +16,15 @@
 import React from "react";
 import "twin.macro";
 
-import { Toolbar } from "components";
+import { Navigation } from "components";
 
 interface Props {
   children?: React.ReactNode;
-  footer?: React.ReactNode;
 }
 
-export const AppLayout = ({ children, footer }: Props) => (
+export const AppLayout = ({ children }: Props) => (
   <div tw="flex flex-row w-full h-full overflow-hidden">
-    <div tw="flex flex-col flex-grow">
-      <div tw="flex-shrink-0 w-full h-12 border-b border-monochrome-medium-tint">
-        <Toolbar />
-      </div>
-      <div tw="flex flex-grow overflow-y-auto">{children}</div>
-      <div tw="w-full">{footer}</div>
-    </div>
+    <Navigation />
+    {children}
   </div>
 );

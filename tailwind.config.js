@@ -1,3 +1,18 @@
+/*
+* Copyright 2020 EPAM Systems
+*
+* Licensed under the Apache License, Version 2.0 (the "License");
+* you may not use this file except in compliance with the License.
+* You may obtain a copy of the License at
+*
+* http://www.apache.org/licenses/LICENSE-2.0
+*
+* Unless required by applicable law or agreed to in writing, software
+* distributed under the License is distributed on an "AS IS" BASIS,
+* WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+* See the License for the specific language governing permissions and
+* limitations under the License.
+*/
 /* eslint-disable max-len */
 /* eslint-disable @typescript-eslint/no-var-requires */
 const plugin = require("tailwindcss/plugin");
@@ -42,6 +57,7 @@ module.exports = {
         "1px": "1px",
         2: "0.5rem",
         13: "3.25rem",
+        18: "4.5rem",
         19: "4.75rem",
         19.5: "4.875rem",
         21: "5.25rem",
@@ -109,7 +125,11 @@ module.exports = {
         "ultralight-tint": "#e5f2ff",
       },
       monochrome: {
+        gray: "#81868B",
+        dark: "#444244",
+        dark100: "#2F2D2F",
         black: "#1b191b",
+        black100: "#2B292B",
         white: "#ffffff",
         default: "#687481",
         shade: "#58626d",
@@ -229,6 +249,28 @@ module.exports = {
           whiteSpace: "nowrap",
           overflow: "hidden",
           textOverflow: "ellipsis",
+        },
+        ".action-icon": {
+          color: "#e3e6e8",
+          cursor: "pointer",
+        },
+        ".action-icon:hover": {
+          color: "#f8f9fb",
+        },
+        ".action-icon:active": {
+          color: "#a4acb3",
+        },
+        ".custom-scroll::-webkit-scrollbar": {
+          maxWidth: "16px",
+          maxHeight: "16px",
+        },
+        ".custom-scroll::-webkit-scrollbar-thumb": {
+          border: "4px solid rgba(27, 27, 27, .94)",
+          borderRadius: "9999px",
+          backgroundColor: "#81868B",
+        },
+        ".custom-scroll::--webkit-scrollbar-track": {
+          backgroundColor: "transparent",
         },
       };
 

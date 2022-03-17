@@ -15,38 +15,41 @@
  */
 import React, { useEffect } from "react";
 import { getAppNames, registerApplication, unregisterApplication } from "single-spa";
-import { useHistory, useParams } from "react-router-dom";
-import { sendAlertEvent } from "@drill4j/ui-kit";
 import "twin.macro";
 
-import { getPagePath } from "common";
-import { usePluginUrls } from "hooks";
+import { usePluginUrls, useRouteParams } from "hooks";
+import { sendAlertEvent } from "@drill4j/ui-kit";
+import { useSetPanelContext } from "components";
 
 export const Plugin = () => {
-  const { pluginId, agentId } = useParams<{ pluginId: string; agentId: string; }>();
-  const { push } = useHistory();
+  const { pluginId } = useRouteParams();
   const paths = usePluginUrls();
-  const switchBuild = (version: string, path: string) => {
-    push(`${getPagePath({ name: "agentPlugin", params: { buildVersion: version, agentId, pluginId } })}${path}`);
+  const setPanel = useSetPanelContext();
+  const customProps = {
+    setPanel,
   };
+
   useEffect(() => {
     if (!paths) return;
     const isPluginAlreadyRegistered = getAppNames().includes(getPluginName(pluginId));
     if (isPluginAlreadyRegistered) return;
     if (!paths[pluginId]) {
-      sendAlertEvent({ type: "ERROR", title: "CRITICAL ERROR: Plugin URL is not exist. Check PLUGINS env variable value" });
+      sendAlertEvent({ type: "ERROR", title: "CRITICAL ERROR: Plugin URL is not exist. Check PLUGINS env variable value." });
       return;
     }
-    registerAgentPlugin(pluginId, paths[pluginId], { switchBuild });
+    registerAgentPlugin(pluginId, paths[pluginId], customProps);
 
     // eslint-disable-next-line consistent-return
     return () => {
-      // it need that switchBuild take new agentId and build version, after redesign it can be delete
       unregisterApplication(getPluginName(pluginId));
     };
   }, [pluginId, paths]);
 
-  return <div tw="w-full h-full px-6" id={pluginId} />;
+  return (
+    <div tw="relative h-full">
+      <div tw="w-full h-full overflow-y-auto" id={pluginId} />
+    </div>
+  );
 };
 
 const registerAgentPlugin = (pluginName: string, pluginPath: string, customProps: any) => {

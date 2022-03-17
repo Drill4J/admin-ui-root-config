@@ -13,12 +13,11 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-import { useParams } from "react-router-dom";
-
-import { Agent } from "types/agent";
+import { AgentInfo } from "types";
 import { useAdminConnection } from "./use-admin-connection";
+import { useRouteParams } from "./use-route-params";
 
-export const useAgent = (id?:string) => {
-  const { agentId = "" } = useParams<{ agentId?: string;}>();
-  return useAdminConnection<Agent>(`/api/agents/${id || agentId}`) || {};
+export const useAgent = (id?:string): AgentInfo => {
+  const { agentId = "" } = useRouteParams();
+  return useAdminConnection<AgentInfo>(`/agents/${id || agentId}`) || {} as AgentInfo;
 };

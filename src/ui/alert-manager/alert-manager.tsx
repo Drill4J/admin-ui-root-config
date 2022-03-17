@@ -13,35 +13,47 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-import React, { useEffect, useState } from "react";
+import React, { useCallback, useEffect, useState } from "react";
 import { useLocation } from "react-router-dom";
-
+import "twin.macro";
 import { defaultAdminSocket } from "common/connection";
+import { AnimatePresence, motion } from "framer-motion";
+import { IAlert, Portal, SystemAlert } from "@drill4j/ui-kit";
 
-import { IAlert, sendAlertEvent } from "@drill4j/ui-kit";
-import { AlertPanel } from "./alert-panel";
+const LOST_CONNECTION_ID = "LOST_CONNECTION_WITH_BACKEND";
+const RESTORED_CONNECTION_ID = "SUCCESSFULLY_RESTORED_CONNECTION";
 
 export const AlertManager = () => {
   const [alerts, setAlerts] = useState<IAlert[]>([]);
-  const [isLastMassageWasConnectionError, setIsLastMassageWasConnectionError] = useState(false);
   const { pathname = "" } = useLocation();
-  function handleShowMessage(e: CustomEvent<IAlert>) {
+  const hasConnectionAlert = alerts.some(({ id }) => id === LOST_CONNECTION_ID || id === RESTORED_CONNECTION_ID);
+
+  const deleteAlert = useCallback((id) => {
+    setAlerts((prevAlertsState) => prevAlertsState.filter(value => value.id !== id));
+  }, []);
+
+  const deleteLostConnectionAlert = useCallback(() => {
+    setAlerts((currAlerts) => currAlerts.filter(({ id }) => id !== LOST_CONNECTION_ID));
+  }, []);
+
+  const deleteRestoredConnectionAlert = useCallback(() => {
+    setAlerts((currAlerts) => currAlerts.filter(({ id }) => id !== RESTORED_CONNECTION_ID));
+  }, []);
+
+  const handleShowMessage = useCallback((e: CustomEvent<IAlert>) => {
     const alert = e.detail;
-    const deleteAlert = () => {
-      setAlerts((prevAlertsState) => prevAlertsState.filter(value => value.id !== alert.id));
-    };
     if (alert.type === "SUCCESS") {
-      const timerId = setTimeout(deleteAlert, 3000);
+      const timerId = setTimeout(() => deleteAlert(alert.id), 3000);
       alert.onClose = () => {
         clearTimeout(timerId);
-        deleteAlert();
+        deleteAlert(alert.id);
       };
     } else {
-      alert.onClose = deleteAlert;
+      alert.onClose = () => deleteAlert(alert.id);
     }
 
-    setAlerts((prevAlertsState) => [...prevAlertsState, alert]);
-  }
+    setAlerts((prevAlertsState) => [...getLatestAlerts(prevAlertsState), alert]);
+  }, []);
 
   useEffect(() => {
     document.addEventListener("system-alert", handleShowMessage as EventListener);
@@ -49,34 +61,70 @@ export const AlertManager = () => {
   }, []);
 
   useEffect(() => {
-    let timerId : NodeJS.Timeout;
     defaultAdminSocket.onCloseEvent = () => {
-      if (isLastMassageWasConnectionError || timerId) return;
-      timerId = setTimeout(() => {
-        setIsLastMassageWasConnectionError(true);
-        sendAlertEvent({
-          type: "ERROR",
-          title: "Backend connection has been lost. Trying to reconnect...",
-        });
-      }, 4000);
+      if (hasConnectionAlert) return;
+      setAlerts((prevAlertsState) => [...prevAlertsState, {
+        id: LOST_CONNECTION_ID,
+        type: "ERROR",
+        title: "Backend connection has been lost. Trying to reconnect...",
+        onClose: deleteLostConnectionAlert,
+      }]);
     };
+
     defaultAdminSocket.onOpenEvent = () => {
-      clearTimeout(timerId);
-      if (isLastMassageWasConnectionError) {
-        sendAlertEvent({
-          type: "SUCCESS",
-          title: "Backend connection has been successfully restored.",
+      if (hasConnectionAlert) {
+        const displaySuccessAlertTimerId = setTimeout(deleteRestoredConnectionAlert, 3000);
+
+        setAlerts((currAlerts) => {
+          const alertsWithoutConnectionError = currAlerts.filter(({ id }) => id !== LOST_CONNECTION_ID);
+          return [...alertsWithoutConnectionError, {
+            id: "SUCCESSFULLY_RESTORED_CONNECTION",
+            type: "SUCCESS",
+            title: "Backend connection has been successfully restored.",
+            onClose: () => {
+              clearTimeout(displaySuccessAlertTimerId);
+              deleteRestoredConnectionAlert();
+            },
+          }];
         });
-        setIsLastMassageWasConnectionError(false);
       }
     };
-  }, [isLastMassageWasConnectionError]);
+  }, [defaultAdminSocket, hasConnectionAlert]);
 
   return (
     <>
       {pathname !== "/login" && (
-        <AlertPanel alerts={alerts.length > 3 ? alerts.slice(-3) : alerts} />
+        <AlertPanel alerts={alerts} />
       )}
     </>
   );
 };
+
+export const AlertPanel = ({ alerts }: { alerts: IAlert[] }) => (
+  <Portal displayContent rootElementId="alerts">
+    <div tw="fixed bottom-10 flex flex-col-reverse items-center justify-center gap-y-2 w-full z-[200]">
+      <AnimatePresence>
+        {alerts.map(alert => {
+          const {
+            id, title, text, onClose = () => {}, type,
+          } = alert;
+          return (
+            <motion.div
+              key={id}
+              initial={{ scale: 0, opacity: 0 }}
+              animate={{ scale: 1, opacity: 1 }}
+              exit={{ scale: 0, opacity: 0 }}
+              transition={{ duration: 0.15 }}
+            >
+              <SystemAlert title={title} type={type} onClose={onClose}>{text}</SystemAlert>
+            </motion.div>
+          );
+        })}
+      </AnimatePresence>
+    </div>
+  </Portal>
+);
+
+function getLatestAlerts(alerts: IAlert[]): IAlert[] {
+  return alerts.length > 2 ? alerts.slice(alerts.length - 2) : alerts;
+}

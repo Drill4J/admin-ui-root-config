@@ -16,16 +16,16 @@
 import React from "react";
 import {
   Field,
-  GeneralAlerts, Tooltip, Icons, Fields,
+  ContentAlert, Tooltip, Icons, Fields,
 } from "@drill4j/ui-kit";
 
 import "twin.macro";
 
 export const DotNetSystemRegistrationForm = () => (
   <div tw="space-y-10">
-    <GeneralAlerts type="INFO">
+    <ContentAlert type="INFO">
       Provide information related to your application / project.
-    </GeneralAlerts>
+    </ContentAlert>
     <div tw="flex justify-center">
       <div tw="w-97 space-y-2">
         <div tw="flex items-center gap-x-2">

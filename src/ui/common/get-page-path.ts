@@ -14,43 +14,26 @@
  * limitations under the License.
  */
 import { createRouter, getPagePath as getPage } from "nanostores";
+import { getRoutePath } from "./get-route-path";
 
 interface Routes {
   login: void
-  agentsTable: void
+  root: void
   builds: "agentId"
-  agentDashboard: "agentId" | "buildVersion"
-  agentPlugin: "agentId" | "buildVersion" | "pluginId"
-  agentSystemSettings: "agentId"
-  agentGeneralSettings: "agentId"
-  agentPluginsSettings: "agentId"
-  agentRegistration: "agentId"
-  agentPreregistration: void
-  serviceGroupGeneralSettings: "groupId"
-  serviceGroupSystemSettings: "groupId"
-  serviceGroupPluginsSettings: "groupId"
+  agentDashboard: "agentId"
+  agentPlugin: "agentId" | "pluginId"
   serviceGroupDashboard: "groupId"
   serviceGroupPlugin: "groupId" | "pluginId"
-  serviceGroupRegistration: "groupId"
 }
 
 export const routes = {
-  agentDashboard: "/agents/:agentId/builds/:buildVersion/dashboard",
-  agentPlugin: "/agents/:agentId/builds/:buildVersion/dashboard/:pluginId",
-  agentGeneralSettings: "/agents/:agentId/general-settings",
-  agentSystemSettings: "/agents/:agentId/system-settings",
-  agentPluginsSettings: "/agents/:agentId/plugins-settings",
-  agentRegistration: "/agents/:agentId/registration",
-  agentPreregistration: "/agents/offline-agent-preregistration",
-  serviceGroupPlugin: "/agents/group/:groupId/dashboard/:pluginId",
-  serviceGroupGeneralSettings: "/agents/group/:groupId/general-settings",
-  serviceGroupSystemSettings: "/agents/group/:groupId/system-settings",
-  serviceGroupPluginsSettings: "/agents/group/:groupId/plugins-settings",
-  serviceGroupDashboard: "/agents/group/:groupId/dashboard",
-  serviceGroupRegistration: "/agents/group/:groupId/registration",
-  login: "/login",
-  agentsTable: "/agents",
-  builds: "/agents/:agentId/builds",
+  agentDashboard: getRoutePath("/agents/:agentId"),
+  agentPlugin: getRoutePath("/agents/:agentId/plugins/:pluginId"),
+  serviceGroupPlugin: getRoutePath("/groups/:groupId/plugins/:pluginId"),
+  serviceGroupDashboard: getRoutePath("/groups/:groupId/dashboard"),
+  login: getRoutePath("/login"),
+  builds: getRoutePath("/agents/:agentId/builds"),
+  root: getRoutePath("/"),
 };
 
 export const router = createRouter<Routes>(routes);

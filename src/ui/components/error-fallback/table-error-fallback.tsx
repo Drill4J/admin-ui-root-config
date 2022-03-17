@@ -17,11 +17,11 @@ import React from "react";
 import { FallbackProps } from "react-error-boundary";
 import { Icons } from "@drill4j/ui-kit";
 import "twin.macro";
-import { Stub } from "../stub";
+import { PanelStub } from "../panel-stub";
 
 export const TableErrorFallback = ({ error }: FallbackProps) => (
   <div role="alert" tw="p-4">
-    <Stub
+    <PanelStub
       icon={<Icons.FAILED height={80} width={80} />}
       title="Table load failed"
       message={error.message}

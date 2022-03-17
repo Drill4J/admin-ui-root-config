@@ -15,60 +15,46 @@
  */
 import React from "react";
 import "twin.macro";
-import { Icons } from "@drill4j/ui-kit";
-import { useParams, Route, Switch } from "react-router-dom";
+import { Route, Switch } from "react-router-dom";
 
-import { PluginsLayout } from "layouts";
-import { Plugin as PluginType } from "types/plugin";
-import { ServiceGroup as ServiceGroupType } from "types/service-group";
-import { useAdminConnection } from "hooks";
-import { Agent } from "types/agent";
-import { getPagePath, routes } from "common";
-import { ServiceGroupHeader } from "./service-group-header";
-import { Sidebar, Link } from "../agent/sidebar";
+import { ServiceGroup as ServiceGroupType } from "types";
+import { useAdminConnection, useRouteParams } from "hooks";
+import { routes } from "common";
+import { useSetPanelContext } from "components";
+import { Icons } from "@drill4j/ui-kit";
 import { Dashboard } from "../dashboard";
 import { Plugin } from "./plugin";
+import { DashboardHeader } from "../agent/dashboard-header";
 
 export const ServiceGroup = () => {
-  const { groupId = "" } = useParams<{ groupId: string, pluginId: string }>();
-  const plugins = useAdminConnection<PluginType[]>(`/groups/${groupId}/plugins`) || [];
-  const { name = "" } = useAdminConnection<ServiceGroupType>(`/groups/${groupId}`) || {};
-  const agentsList = useAdminConnection<Agent[]>("/api/agents") || [];
-  const agentCount = agentsList.filter((agent) => agent.group === groupId).length;
-
-  const pluginsList: Link[] = [
-    {
-      id: "dashboard",
-      name: "Dashboard",
-      path: getPagePath({ name: "serviceGroupDashboard", params: { groupId } }),
-    },
-    ...plugins.map(({ id = "", name: pluginName = "" }) => ({
-      id,
-      name: pluginName as keyof typeof Icons,
-      path: getPagePath({ name: "serviceGroupPlugin", params: { groupId, pluginId: id } }),
-    })),
-  ];
+  const { groupId = "" } = useRouteParams();
+  const group = useAdminConnection<ServiceGroupType>(`/groups/${groupId}`) || {} as ServiceGroupType;
+  const setPanel = useSetPanelContext();
 
   return (
-    <PluginsLayout
-      sidebar={(
-        <Sidebar
-          links={pluginsList}
-          matchParams={{ path: routes.serviceGroupDashboard }}
+    <div tw="flex flex-col w-full h-full">
+      <Switch>
+        <Route
+          exact
+          path={routes.serviceGroupDashboard}
+          render={() => (
+            <>
+              <DashboardHeader
+                data={{ ...group, agentType: "Group" }}
+                icon={(
+                  <Icons.ServiceGroup
+                    width={32}
+                    height={36}
+                  />
+                )}
+                setPanel={setPanel}
+              />
+              <Dashboard data={group} isGroup setPanel={setPanel} />
+            </>
+          )}
         />
-      )}
-      header={<ServiceGroupHeader name={name} agentsCount={agentCount} />}
-    >
-      <div tw="w-full h-full">
-        <Switch>
-          <Route
-            exact
-            path={routes.serviceGroupDashboard}
-            render={() => <Dashboard id={groupId} isGroup />}
-          />
-          <Route path={routes.serviceGroupPlugin} component={Plugin} />
-        </Switch>
-      </div>
-    </PluginsLayout>
+        <Route path={routes.serviceGroupPlugin} component={Plugin} />
+      </Switch>
+    </div>
   );
 };

@@ -13,14 +13,16 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-const NOT_REGISTERED = "NOT_REGISTERED";
-const ONLINE = "ONLINE";
-const OFFLINE = "OFFLINE";
-const BUSY = "BUSY";
+import { AgentStatus } from "types";
+
+const NOT_REGISTERED: AgentStatus = "NOT_REGISTERED";
+const PREREGISTERED: AgentStatus = "PREREGISTERED";
+const REGISTERED: AgentStatus = "REGISTERED";
+const REGISTERING: AgentStatus = "REGISTERING";
 
 export const AGENT_STATUS = {
   NOT_REGISTERED,
-  OFFLINE,
-  ONLINE,
-  BUSY,
+  REGISTERING,
+  REGISTERED,
+  PREREGISTERED,
 };

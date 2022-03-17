@@ -14,48 +14,59 @@
  * limitations under the License.
  */
 import React from "react";
-import { FieldInputProps, Icons, Checkbox } from "@drill4j/ui-kit";
+import { Icons } from "@drill4j/ui-kit";
 
 import tw, { styled } from "twin.macro";
 
 interface Props {
-  field?: FieldInputProps<any>;
-  icon: keyof typeof Icons;
+  name?: string;
+  version?: string;
   description?: string;
-  children?: React.ReactNode;
+  icon: keyof typeof Icons;
+  checkbox?: React.ReactNode;
+  button?: React.ReactNode;
 }
 
-const PluginElements = styled.div`
-  ${tw`flex items-center pr-4 pl-4 text-blue-default`};
-  ${({ selected }: { selected?: boolean }) => selected && tw`bg-blue-light-tint`};
-`;
-
-const PluginsIconWrapper = styled.div`
-  min-width: 80px;
-  ${tw`flex items-center justify-center mt-4 mr-6 mb-4 ml-4 h-20 rounded-2xl bg-monochrome-light-tint text-monochrome-default`};
-  ${({ selected }: { selected?: boolean }) => selected && tw`bg-blue-default text-monochrome-white`};
-`;
-
-export const PluginListEntry = ({
-  field, description, icon, children,
+export const PluginCard = ({
+  name, version, description, icon, checkbox, button,
 }: Props) => {
   const PluginIcon = Icons[icon] || Icons.Plugins;
   return (
-    <div css={[
-      tw`border-b border-monochrome-medium-tint cursor-pointer`,
-      tw`hover:bg-monochrome-light-tint`,
-    ]}
-    >
-      <PluginElements selected={field?.checked}>
-        {field && <Checkbox field={field} />}
-        <PluginsIconWrapper selected={field?.checked}>
-          <PluginIcon viewBox="0 0 24 24" />
-        </PluginsIconWrapper>
-        <div>
-          {children}
-          <span tw="text-14 leading-20 text-monochrome-default">{description}</span>
+    <div tw="py-5 px-6 bg-monochrome-dark100 rounded-lg text-14 leading-20">
+      <div tw="flex gap-x-4">
+        <div tw="flex gap-x-6 items-center">
+          {checkbox}
+          <PluginIconWrapper>
+            <PluginIcon width={24} height={24} viewBox="" />
+          </PluginIconWrapper>
         </div>
-      </PluginElements>
+        <div tw="space-y-2">
+          <div tw="flex gap-x-2">
+            <Label>{name}</Label>
+            <Version>{version}</Version>
+          </div>
+          <Description>{description}</Description>
+        </div>
+        <div tw="flex justify-end items-center w-full">
+          {button}
+        </div>
+      </div>
     </div>
   );
 };
+
+const PluginIconWrapper = styled.div`
+  ${tw`w-[68px] h-[68px] flex items-center justify-center bg-monochrome-dark text-monochrome-default rounded-lg`}
+`;
+
+const Label = styled.div`
+  ${tw`font-bold text-monochrome-light-tint`}
+`;
+
+const Version = styled.div`
+  ${tw`text-monochrome-default`}
+`;
+
+const Description = styled.div`
+  ${tw`w-[716px] text-monochrome-light-tint`}
+`;

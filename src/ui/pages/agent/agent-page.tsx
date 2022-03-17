@@ -14,70 +14,81 @@
  * limitations under the License.
  */
 import React, { useEffect } from "react";
-import { Icons } from "@drill4j/ui-kit";
-import { Route, Switch, useParams } from "react-router-dom";
+import { Route, Switch, useHistory } from "react-router-dom";
 import axios from "axios";
 import "twin.macro";
 
-import { useAdminConnection, useAgent } from "hooks";
-import { PluginsLayout } from "layouts";
-import { getPagePath, routes } from "common";
-import { Notification } from "types";
+import { useActiveBuild, useAdminConnection, useRouteParams } from "hooks";
+import { BUILD_STATUS, getPagePath, routes } from "common";
+import { AgentBuildInfo, AgentInfo, Notification } from "types";
+import { useSetPanelContext } from "components";
+import { Icons, Spinner, Stub } from "@drill4j/ui-kit";
 import { Dashboard } from "../dashboard";
-import { Sidebar, Link } from "./sidebar";
 import { Plugin } from "./plugin";
-import { PluginHeader } from "./plugin-header";
+import { DashboardHeader } from "./dashboard-header";
 
 export const AgentPage = () => {
-  const { agentId = "", buildVersion = "" } = useParams<{ agentId?: string; buildVersion?: string; }>();
-  const agent = useAgent();
-  const plugins = agent.plugins || [];
-  const pluginsLinks: Link[] = [
-    {
-      id: "dashboard",
-      name: "Dashboard",
-      path: getPagePath({ name: "agentDashboard", params: { agentId, buildVersion } }),
-    },
-    ...plugins.map(({ id = "", name }) => ({
-      id,
-      name: name as keyof typeof Icons,
-      path: getPagePath({ name: "agentPlugin", params: { agentId, buildVersion, pluginId: id } }),
-    })),
-  ];
-
-  const notifications = useAdminConnection<Notification[]>("/notifications") || [];
-  const newBuildNotification = notifications.find((notification) => notification.agentId === agentId) || {};
+  const { push } = useHistory();
+  const { agentId = "" } = useRouteParams();
+  const agent = useAdminConnection<AgentInfo>(`/agents/${agentId}`);
+  const { id = "" } = agent || {};
+  const { systemSettings } = useActiveBuild(id) || {};
+  const [activeBuildInfo] = useAdminConnection<AgentBuildInfo[]>(`/api/agent/${id}/builds`) || [];
+  const setPanel = useSetPanelContext();
+  const notifications =
+    useAdminConnection<Notification[]>("/notifications") || [];
+  const newBuildNotification =
+    notifications.find((notification) => notification.agentId === agentId) ||
+    {};
   useEffect(() => {
-    if (
-      !newBuildNotification?.read &&
-      newBuildNotification?.agentId === agentId &&
-      newBuildNotification?.message?.currentId === buildVersion &&
-      newBuildNotification?.id
-    ) {
-      readNotification(newBuildNotification.id);
+    if (!newBuildNotification?.read && newBuildNotification?.agentId === agentId) {
+      readNotification(newBuildNotification.id as string);
     }
-  }, [buildVersion, newBuildNotification?.id]);
+  }, [newBuildNotification?.id]);
+
+  const agentWithSystemSettings = { ...Object(agent), systemSettings };
+
+  useEffect(() => {
+    if (agent !== null && !agent.id) {
+      push(getPagePath({ name: "root" }));
+    }
+  }, [agent]);
 
   return (
-    <PluginsLayout
-      sidebar={<Sidebar links={pluginsLinks} />}
-      header={<PluginHeader agentName={agent.name} agentStatus={agent.status} />}
-    >
+    <div tw="flex flex-col flex-grow w-full h-full">
+      {activeBuildInfo?.buildStatus === BUILD_STATUS.BUSY && (
+        <div tw="absolute inset-0 bg-monochrome-white bg-opacity-[0.95] z-[100]">
+          <Stub icon={<Spinner color="blue" tw="!w-16 !h-16" />} title="Please wait" message="Agent is busy at the moment." />
+        </div>
+      )}
       <Switch>
         <Route
           exact
           path={routes.agentDashboard}
-          render={() => <Dashboard id={agentId} buildVersion={buildVersion} />}
+          render={() => (
+            <>
+              <DashboardHeader
+                data={agentWithSystemSettings}
+                status={activeBuildInfo?.buildStatus}
+                icon={<Icons.Agent width={32} height={36} />}
+                setPanel={setPanel}
+              />
+              <Dashboard data={agentWithSystemSettings} setPanel={setPanel} />
+            </>
+          )}
         />
         <Route path={routes.agentPlugin} component={Plugin} />
       </Switch>
-    </PluginsLayout>
+    </div>
   );
 };
 
 async function readNotification(
   notificationId: string,
-  { onSuccess, onError }: { onSuccess?: () => void; onError?: (message: string) => void } = {},
+  {
+    onSuccess,
+    onError,
+  }: { onSuccess?: () => void; onError?: (message: string) => void } = {},
 ) {
   try {
     await axios.patch(`/notifications/${notificationId}/read`);

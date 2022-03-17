@@ -13,37 +13,33 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-import singleSpaReact from "single-spa-react";
-import React, { useEffect } from "react";
-import ReactDOM from "react-dom";
-import { Icons, Stub } from "@drill4j/ui-kit";
-import { BrowserRouter, Link } from "react-router-dom";
-import {
-  Application, getAppNames, registerApplication, unregisterApplication,
-} from "single-spa";
+import React, { Dispatch, SetStateAction } from "react";
+import { BrowserRouter } from "react-router-dom";
 import { css } from "twin.macro";
+import { Icons, Stub } from "@drill4j/ui-kit";
 
 import { useAdminConnection, usePluginUrls } from "hooks";
-import { Plugin } from "types";
-import { HUD } from "components";
-import { getPagePath, routes } from "common";
+import { AgentInfo, Plugin, ServiceGroup } from "types";
+import { HUD, PanelType } from "components";
+import { getPagePath } from "common";
 
 interface Props {
-  id: string;
-  buildVersion?: string;
+  data?: AgentInfo | ServiceGroup;
   isGroup?: boolean;
+  setPanel: Dispatch<SetStateAction<PanelType | null>>;
 }
 
 const Wrapper = ({ children }: { children: React.ReactNode }) => (
   <BrowserRouter>
     <div tw="flex flex-col pt-5 px-6 h-full">
-      <div tw="pb-7 text-24 leading-32 font-light border-b border-monochrome-medium-tint">Dashboard</div>
+      <div tw="mb-6 text-24 leading-32 text-monochrome-black">Dashboard</div>
       {children}
     </div>
   </BrowserRouter>
 );
 
-const DashboardComponent = ({ id, isGroup, buildVersion = "" }: Props) => {
+export const Dashboard = ({ data, isGroup, setPanel }: Props) => {
+  const { id = "" } = data || {};
   const plugins = useAdminConnection<Plugin[]>(isGroup ? `/groups/${id}/plugins` : `/agents/${id}/plugins`) || [];
   const installedPlugins = plugins.filter((plugin) => !plugin.available);
   const paths = usePluginUrls();
@@ -54,7 +50,7 @@ const DashboardComponent = ({ id, isGroup, buildVersion = "" }: Props) => {
 
   if (!installedPlugins.length) {
     return (
-      <Wrapper>
+      <Wrapper tw="flex-grow">
         <Stub
           icon={<Icons.Plugins width={160} height={160} />}
           title="No data available"
@@ -62,14 +58,12 @@ const DashboardComponent = ({ id, isGroup, buildVersion = "" }: Props) => {
             <div>
               There are no enabled plugins on this {isGroup ? "service Group" : "agent"} to collect the data from.
               <br /> To install a plugin go to
-              <Link
+              <div
+                onClick={() => setPanel({ type: "SETTINGS", payload: data })}
                 tw="link block mt-1 font-bold"
-                to={isGroup
-                  ? getPagePath({ name: "serviceGroupGeneralSettings", params: { groupId: id } })
-                  : getPagePath({ name: "agentGeneralSettings", params: { agentId: id } })}
               >
                 {isGroup ? "Service Group" : "Agent"} settings page
-              </Link>
+              </div>
             </div>
           )}
         />
@@ -89,46 +83,13 @@ const DashboardComponent = ({ id, isGroup, buildVersion = "" }: Props) => {
             customProps={{
               pluginPagePath: isGroup
                 ? getPagePath({ name: "serviceGroupPlugin", params: { groupId: id, pluginId } })
-                : getPagePath({ name: "agentPlugin", params: { agentId: id, buildVersion, pluginId } }),
+                : getPagePath({ name: "agentPlugin", params: { agentId: id, pluginId } }),
             }}
           />
         );
       })}
     </Wrapper>
   );
-};
-
-const DashboardLifecycle = singleSpaReact({
-  React,
-  ReactDOM,
-  rootComponent: DashboardComponent,
-  domElementGetter: () => document.getElementById("dashboard") || document.body,
-  errorBoundary: () => <div>smth went wrong</div>,
-});
-
-export const Dashboard = ({ id = "", buildVersion = "", isGroup = false }: Props) => {
-  useEffect(() => {
-    !getAppNames().includes(isGroup ? "group-dashboard" : "agent-dashboard") && registerApplication({
-      name: isGroup ? "group-dashboard" : "agent-dashboard",
-      app: ({
-        mount: [
-          DashboardLifecycle.mount,
-        ],
-        unmount: [
-          DashboardLifecycle.unmount,
-        ],
-        update: DashboardLifecycle.update,
-        bootstrap: DashboardLifecycle.bootstrap,
-      } as Application),
-      activeWhen: [routes.agentDashboard, routes.serviceGroupDashboard],
-      customProps: { id, isGroup, buildVersion },
-    });
-    return () => {
-      unregisterApplication(isGroup ? "group-dashboard" : "agent-dashboard");
-    };
-  }, []);
-
-  return <div tw="w-full h-full" id="dashboard" />;
 };
 
 const loaderStyles = css`
