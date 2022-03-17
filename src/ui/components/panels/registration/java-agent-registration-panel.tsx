@@ -45,10 +45,13 @@ export const JavaAgentRegistrationPanel = ({ isOpen, onClosePanel, payload }: Pa
         {
           stepLabel: "General Info",
           validationSchema: composeValidators(
-            required("name"),
             unusedAgentName("name", agents),
+            required("id", "Agent ID is required"),
+            required("name", "Agent Name is required"),
+            sizeLimit({
+              name: "name", alias: "Name size should be between 3 and 64 characters", min: 3, max: 64,
+            }),
             sizeLimit({ name: "name" }),
-            sizeLimit({ name: "environment" }),
             sizeLimit({ name: "description", min: 3, max: 256 }),
           ),
           component: <JavaGeneralRegistrationStep />,

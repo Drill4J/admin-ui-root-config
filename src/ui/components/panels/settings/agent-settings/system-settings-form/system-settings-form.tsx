@@ -62,7 +62,7 @@ export const SystemSettingsForm = () => {
       </DarkFormGroup>
       <DarkFormGroup label="Header Mapping" optional>
         <Field
-          name="systemSettings.sessionIdHeaderName"
+          name="sessionIdHeaderName"
           component={Fields.DarkInput}
           placeholder="Enter session header name"
         />
