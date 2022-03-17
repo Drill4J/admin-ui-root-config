@@ -16,17 +16,19 @@
 import React, { useLayoutEffect, useState } from "react";
 import { useHistory } from "react-router-dom";
 import axios from "axios";
-import { Button, ContentAlert, Inputs } from "@drill4j/ui-kit";
+import {
+  Button, ContentAlert, Field, Fields, Form, Formik,
+} from "@drill4j/ui-kit";
 import tw, { styled } from "twin.macro";
 
 import { LoginLayout } from "layouts";
 import { getCustomPath } from "common";
-import { TOKEN_KEY, TOKEN_HEADER } from "common/constants";
+import { TOKEN_HEADER, TOKEN_KEY } from "common/constants";
 
-const SignInForm = styled.div`
-  ${tw`flex flex-col gap-y-6 mt-6`}
+const SignInForm = styled(Form)`
+  ${tw`flex flex-col gap-y-6 mt-6 w-88`}
   & > * {
-    ${tw`h-10 w-88`}
+    ${tw`h-10`}
   }
 `;
 
@@ -34,9 +36,9 @@ export const LoginPage = () => {
   const [error, setError] = useState<string | null>(null);
   const { push } = useHistory();
 
-  async function handleLogin() {
+  async function handleLogin(values?: { name: string, password: string }) {
     try {
-      const response = await axios.post("/login");
+      const response = await axios.post("/login", values);
       const authToken = response.headers[TOKEN_HEADER.toLowerCase()];
       if (authToken) {
         localStorage.setItem(TOKEN_KEY, authToken);
@@ -72,27 +74,43 @@ export const LoginPage = () => {
               {`${error}`}
             </ContentAlert>
           )}
-          <SignInForm>
-            <Inputs.Text placeholder="User ID" disabled />
-            <Inputs.Text placeholder="Password" disabled />
-          </SignInForm>
-          <Button
-            tw="flex justify-center w-88 mt-6"
-            primary
-            size="large"
-            disabled
+          <Formik
+            initialValues={{
+              name: "",
+              password: "",
+            }}
+            onSubmit={handleLogin as any}
           >
-            Sign in
-          </Button>
-          <div tw="mt-6 font-bold text-14 leading-20 text-blue-default opacity-25">
-            Forgot your password?
-          </div>
+            <SignInForm>
+              <Field
+                name="name"
+                component={Fields.Input}
+                placeholder="User ID"
+              />
+              <Field
+                name="password"
+                component={Fields.Input}
+                placeholder="Password"
+              />
+              <Button
+                tw="flex justify-center w-full"
+                primary
+                size="large"
+                type="submit"
+              >
+                Sign in
+              </Button>
+              <div tw="font-bold text-14 leading-20 text-center text-blue-default opacity-25">
+                Forgot your password?
+              </div>
+            </SignInForm>
+          </Formik>
           <Button
             tw="flex justify-center w-88 mt-10 "
             secondary
             size="large"
-            onClick={handleLogin}
             data-test="login-button:continue-as-guest"
+            onClick={() => handleLogin()} // use to call without arguments
           >
             Continue as a guest (with admin rights)
           </Button>
