@@ -52,10 +52,6 @@ export const LoginPage = () => {
     }
   }
 
-  function submitHandler(values: any) {
-    handleLogin(values);
-  }
-
   useLayoutEffect(() => {
     if (localStorage.getItem(TOKEN_KEY)) {
       push(getCustomPath());
@@ -83,40 +79,38 @@ export const LoginPage = () => {
               name: "",
               password: "",
             }}
-            onSubmit={values => submitHandler(values)}
+            onSubmit={handleLogin as any}
           >
-            {() => (
-              <SignInForm>
-                <Field
-                  name="name"
-                  component={Fields.Input}
-                  placeholder="User ID"
-                />
-                <Field
-                  name="password"
-                  component={Fields.Input}
-                  placeholder="Password"
-                />
-                <Button
-                  tw="flex justify-center w-full"
-                  primary
-                  size="large"
-                  type="submit"
-                >
-                  Sign in
-                </Button>
-                <div tw="font-bold text-14 leading-20 text-center text-blue-default opacity-25">
-                  Forgot your password?
-                </div>
-              </SignInForm>
-            )}
+            <SignInForm>
+              <Field
+                name="name"
+                component={Fields.Input}
+                placeholder="User ID"
+              />
+              <Field
+                name="password"
+                component={Fields.Input}
+                placeholder="Password"
+              />
+              <Button
+                tw="flex justify-center w-full"
+                primary
+                size="large"
+                type="submit"
+              >
+                Sign in
+              </Button>
+              <div tw="font-bold text-14 leading-20 text-center text-blue-default opacity-25">
+                Forgot your password?
+              </div>
+            </SignInForm>
           </Formik>
           <Button
             tw="flex justify-center w-88 mt-10 "
             secondary
             size="large"
             data-test="login-button:continue-as-guest"
-            onClick={() => handleLogin()}
+            onClick={() => handleLogin()} // use to call without arguments
           >
             Continue as a guest (with admin rights)
           </Button>
