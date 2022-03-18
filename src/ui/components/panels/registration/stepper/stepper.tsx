@@ -96,7 +96,7 @@ export const Stepper = ({
         setPanel({ type: "SELECT_AGENT" });
       }}
       validate={currentValidationSchema as any}
-      validateOnMount
+      validateOnChange
     >
       {({
         isValid, values, validateForm,
