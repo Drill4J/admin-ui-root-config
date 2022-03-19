@@ -30,8 +30,10 @@ import {
   Tab,
 } from "@drill4j/ui-kit";
 import "twin.macro";
-import { AgentInfoWithSystemSetting } from "types";
+import { Agent, AgentInfoWithSystemSetting, ServiceGroup } from "types";
 import { AGENT_STATUS } from "common";
+import { useAdminConnection } from "hooks";
+import { EVENT_NAMES, sendAgentEvent } from "analityc";
 import { PanelProps } from "../panel-props";
 import { PanelWithCloseIcon } from "../panel-with-close-icon";
 import { GeneralSettingsForm } from "./agent-settings/general-settings-form";
@@ -40,6 +42,11 @@ import { SystemSettingsForm } from "./agent-settings/system-settings-form";
 import { PluginsSettingsTab } from "./agent-settings/plugins-settings-tab";
 import { UnSaveChangesModal } from "./un-save-changes-modal";
 import { saveSettingForPreregisteredAgent } from "./save-settings-api";
+
+interface GroupedInfo {
+  group: ServiceGroup,
+  agents: Agent[],
+}
 
 export const SettingsPanel = ({
   isOpen,
@@ -51,6 +58,17 @@ export const SettingsPanel = ({
   const SystemSettings =
     payload.agentType === "Node.js" ? JsSystemSettingsForm : SystemSettingsForm;
 
+  const { grouped } = useAdminConnection<{grouped: GroupedInfo[]}>("/agents") || { grouped: [] };
+
+  let agentEventLabel: string | undefined;
+
+  if (payload.agentType === "Group") {
+    const groupedInfo = grouped.find(item => item.group.id === payload.id);
+    agentEventLabel = groupedInfo?.agents.map(agent => agent.agentType).join("#");
+  } else {
+    agentEventLabel = payload.agentType;
+  }
+
   const handleSubmit = async (values: AgentInfoWithSystemSetting, { resetForm }: any) => {
     try {
       await saveSettings(activeTab, values);
@@ -58,6 +76,15 @@ export const SettingsPanel = ({
         type: "SUCCESS",
         title: "New settings have been saved.",
       });
+      const initialPackages = payload.systemSettings.packages.join("");
+      const valuesPackages = parsePackages(values.systemSettings.packages).join("");
+      if (activeTab === "system" && initialPackages !== valuesPackages) {
+        sendAgentEvent({
+          name: EVENT_NAMES.EDIT_PROJECT_PACKAGES,
+          dimension2: payload.id,
+          label: agentEventLabel,
+        });
+      }
       resetForm({ values });
     } catch ({ response: { data: { message } = {} } = {} }) {
       sendAlertEvent({
