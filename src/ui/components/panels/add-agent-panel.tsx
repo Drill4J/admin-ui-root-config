@@ -20,12 +20,11 @@ import tw, { styled } from "twin.macro";
 import { useAdminConnection } from "hooks";
 import { AgentBuildInfo, AgentInfo, ServiceGroup } from "types";
 import { AGENT_STATUS } from "common";
+import { EVENT_NAMES, sendAgentEvent } from "analityc";
 import { PanelProps } from "./panel-props";
 import { PanelWithCloseIcon } from "./panel-with-close-icon";
 import { useSetPanelContext } from "./panel-context";
 import { PanelStub } from "../panel-stub";
-import { sendAgentEvent } from "../../analityc";
-import { EVENT_NAMES } from "../../analityc/analityc";
 
 export const AddAgentPanel = ({ isOpen, onClosePanel }: PanelProps) => {
   const agentsList = useAdminConnection<AgentInfo[]>("/api/agents") || [];
