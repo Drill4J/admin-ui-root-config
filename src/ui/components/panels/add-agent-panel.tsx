@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 import React, { useState } from "react";
-import { Button, LinkButton, Icons } from "@drill4j/ui-kit";
+import { Button, Icons, LinkButton } from "@drill4j/ui-kit";
 import tw, { styled } from "twin.macro";
 
 import { useAdminConnection } from "hooks";
@@ -24,6 +24,8 @@ import { PanelProps } from "./panel-props";
 import { PanelWithCloseIcon } from "./panel-with-close-icon";
 import { useSetPanelContext } from "./panel-context";
 import { PanelStub } from "../panel-stub";
+import { sendAgentEvent } from "../../analityc";
+import { EVENT_NAMES } from "../../analityc/analityc";
 
 export const AddAgentPanel = ({ isOpen, onClosePanel }: PanelProps) => {
   const agentsList = useAdminConnection<AgentInfo[]>("/api/agents") || [];
@@ -124,7 +126,14 @@ const GroupRow = ({ group, agents }:GroupRowProps) => {
         <Button
           primary
           size="small"
-          onClick={() => setPanel({ type: "GROUP_REGISTRATION", payload: group })}
+          onClick={() => {
+            setPanel({ type: "GROUP_REGISTRATION", payload: group });
+            sendAgentEvent({
+              name: EVENT_NAMES.CLICK_TO_REGISTER_BUTTON,
+              dimension2: group.id,
+              label: agents.map(agent => agent.agentType).join("#"),
+            });
+          }}
           data-test="add-agent-panel:group-row:register"
         >
           <Icons.Register width={16} height={16} /> Register
@@ -141,21 +150,30 @@ const GroupRow = ({ group, agents }:GroupRowProps) => {
 
 const AgentRow = ({ agent }: { agent: AgentInfo}) => {
   const setPanel = useSetPanelContext();
-  const { name, agentType, group } = agent;
-  const [buildInfo] = useAdminConnection<[AgentBuildInfo]>(`/api/agent/${agent.id}/builds`) || [];
+  const {
+    name, agentType, group, id,
+  } = agent;
+  const [buildInfo] = useAdminConnection<[AgentBuildInfo]>(`/api/agent/${id}/builds`) || [];
 
   return (
     <>
       <Column tw="col-start-2" title={name}>{name}</Column>
       <Column title={agentType}>{agentType}</Column>
       <Button
-        onClick={() => setPanel({
-          type: agentType === "Java" ? "JAVA_AGENT_REGISTRATION" : "JS_AGENT_REGISTRATION",
-          payload: {
-            ...agent,
-            systemSettings: buildInfo?.systemSettings,
-          },
-        })}
+        onClick={() => {
+          setPanel({
+            type: agentType === "Java" ? "JAVA_AGENT_REGISTRATION" : "JS_AGENT_REGISTRATION",
+            payload: {
+              ...agent,
+              systemSettings: buildInfo?.systemSettings,
+            },
+          });
+          sendAgentEvent({
+            name: EVENT_NAMES.CLICK_TO_REGISTER_BUTTON,
+            dimension2: id,
+            label: agentType,
+          });
+        }}
         primary={!group}
         secondary={Boolean(group)}
         size="small"
