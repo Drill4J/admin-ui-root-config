@@ -13,16 +13,13 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-import React, { useEffect } from "react";
-import { Route, Switch, useRouteMatch } from "react-router-dom";
-import axios from "axios";
+import React from "react";
+import { Route, Switch } from "react-router-dom";
 import "twin.macro";
 
-import {
-  useActiveBuild, useAdminConnection, useAgent, useRouteParams,
-} from "hooks";
-import { getRoutePath, routes } from "common";
-import { AgentBuildInfo, Notification } from "types";
+import { useActiveBuild, useAdminConnection, useAgent } from "hooks";
+import { routes } from "common";
+import { AgentBuildInfo } from "types";
 import { useSetPanelContext } from "components";
 import { Icons } from "@drill4j/ui-kit";
 import { Dashboard } from "../dashboard";
@@ -30,23 +27,10 @@ import { Plugin } from "./plugin";
 import { DashboardHeader } from "./dashboard-header";
 
 export const AgentPage = () => {
-  const { agentId = "" } = useRouteParams();
   const agent = useAgent();
   const { systemSettings } = useActiveBuild(agent?.id) || {};
   const [activeBuildInfo] = useAdminConnection<AgentBuildInfo[]>(`/api/agent/${agent.id}/builds`) || [];
   const setPanel = useSetPanelContext();
-  const notifications = useAdminConnection<Notification[]>("/notifications") || [];
-  const newBuildNotifications =
-    notifications.filter((notification) => notification.agentId === agentId && notification.type === "BUILD" && !notification.read) || [];
-
-  const isDashboard = useRouteMatch(routes.agentDashboard)?.isExact;
-  const { params } = useRouteMatch<any>(routes.agentPlugin + getRoutePath("/builds/:buildVersion")) || { params: {} };
-
-  useEffect(() => {
-    const readVersion = isDashboard ? activeBuildInfo?.buildVersion : params.buildVersion;
-    filterNotificationForVersion(newBuildNotifications, readVersion)
-      .forEach(notification => notification.id && readNotification(notification.id));
-  }, [newBuildNotifications, activeBuildInfo, params]);
 
   const agentWithSystemSettings = { ...agent, systemSettings };
 
@@ -73,22 +57,3 @@ export const AgentPage = () => {
     </div>
   );
 };
-
-async function readNotification(
-  notificationId: string,
-  {
-    onSuccess,
-    onError,
-  }: { onSuccess?: () => void; onError?: (message: string) => void } = {},
-) {
-  try {
-    await axios.patch(`/notifications/${notificationId}/read`);
-    onSuccess && onSuccess();
-  } catch ({ response: { data: { message } = {} } = {} }) {
-    onError && onError(message as string);
-  }
-}
-
-function filterNotificationForVersion(notifications: Notification[], version?: string) {
-  return notifications.filter(notification => notification.message?.currentId === version);
-}
