@@ -24,6 +24,7 @@ export enum EVENT_NAMES {
 // eslint-disable-next-line no-shadow
 export enum NAVIGATION_EVENT_NAMES {
   CLICK_ON_DASHBOARD_ICON = "Click on icon \"Dashboard\"",
+  CLICK_ON_PLUGIN_ICON = "Click on plugin icon",
 }
 
 interface EventProps {
