@@ -18,7 +18,6 @@ import ReactGA from "react-ga";
 // eslint-disable-next-line no-shadow
 export enum EVENT_NAMES {
   CLICK_TO_REGISTER_BUTTON = 'Click on button "Register"',
-  CLICK_TO_FINISH_REGISTER_BUTTON = 'Click on button "Finish"',
   EDIT_PROJECT_PACKAGES = 'Click on button "Save changes" to edit project package(s)',
 }
 

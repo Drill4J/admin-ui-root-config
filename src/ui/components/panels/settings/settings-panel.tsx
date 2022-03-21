@@ -34,6 +34,7 @@ import { Agent, AgentInfoWithSystemSetting, ServiceGroup } from "types";
 import { AGENT_STATUS } from "common";
 import { useAdminConnection } from "hooks";
 import { EVENT_NAMES, sendAgentEvent } from "analityc";
+import ReactGA from "react-ga";
 import { PanelProps } from "../panel-props";
 import { PanelWithCloseIcon } from "../panel-with-close-icon";
 import { GeneralSettingsForm } from "./agent-settings/general-settings-form";
@@ -79,6 +80,7 @@ export const SettingsPanel = ({
       const initialPackages = payload.systemSettings.packages.join("");
       const valuesPackages = parsePackages(values.systemSettings.packages).join("");
       if (activeTab === "system" && initialPackages !== valuesPackages) {
+        ReactGA.set({ dimension2: payload.id });
         sendAgentEvent({
           name: EVENT_NAMES.EDIT_PROJECT_PACKAGES,
           label: agentEventLabel,
