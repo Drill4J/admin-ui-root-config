@@ -18,7 +18,9 @@ import { Button, Icons, LinkButton } from "@drill4j/ui-kit";
 import tw, { styled } from "twin.macro";
 
 import { useAdminConnection } from "hooks";
-import { AgentBuildInfo, AgentInfo, ServiceGroup } from "types";
+import {
+  AgentBuildInfo, AgentInfo, AnalyticsInfo, ServiceGroup,
+} from "types";
 import { AGENT_STATUS } from "common";
 import { EVENT_NAMES, sendAgentEvent } from "analityc";
 import ReactGA from "react-ga";
@@ -106,6 +108,8 @@ interface GroupRowProps {
 const GroupRow = ({ group, agents }:GroupRowProps) => {
   const [isOpen, setIsOpen] = useState(false);
   const setPanel = useSetPanelContext();
+  const { isAnalyticsDisabled } = useAdminConnection<AnalyticsInfo>("/api/analytics/info") || {};
+
   return (
     <div tw="rounded-lg border border-monochrome-dark text-monochrome-dark-tint text-14 leading-20">
       <Layout
@@ -129,8 +133,8 @@ const GroupRow = ({ group, agents }:GroupRowProps) => {
           size="small"
           onClick={() => {
             setPanel({ type: "GROUP_REGISTRATION", payload: group });
-            ReactGA.set({ dimension2: group.id });
-            sendAgentEvent({
+            !isAnalyticsDisabled && ReactGA.set({ dimension2: group.id });
+            !isAnalyticsDisabled && sendAgentEvent({
               name: EVENT_NAMES.CLICK_TO_REGISTER_BUTTON,
               label: agents.map(agent => agent.agentType).join("#"),
             });
@@ -155,6 +159,7 @@ const AgentRow = ({ agent }: { agent: AgentInfo}) => {
     name, agentType, group, id,
   } = agent;
   const [buildInfo] = useAdminConnection<[AgentBuildInfo]>(`/api/agent/${id}/builds`) || [];
+  const { isAnalyticsDisabled } = useAdminConnection<AnalyticsInfo>("/api/analytics/info") || {};
 
   return (
     <>
@@ -169,8 +174,8 @@ const AgentRow = ({ agent }: { agent: AgentInfo}) => {
               systemSettings: buildInfo?.systemSettings,
             },
           });
-          ReactGA.set({ dimension2: id });
-          sendAgentEvent({
+          !isAnalyticsDisabled && ReactGA.set({ dimension2: id });
+          !isAnalyticsDisabled && sendAgentEvent({
             name: EVENT_NAMES.CLICK_TO_REGISTER_BUTTON,
             label: agentType,
           });
