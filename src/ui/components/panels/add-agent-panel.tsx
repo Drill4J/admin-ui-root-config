@@ -21,6 +21,7 @@ import { useAdminConnection } from "hooks";
 import { AgentBuildInfo, AgentInfo, ServiceGroup } from "types";
 import { AGENT_STATUS } from "common";
 import { EVENT_NAMES, sendAgentEvent } from "analityc";
+import ReactGA from "react-ga";
 import { PanelProps } from "./panel-props";
 import { PanelWithCloseIcon } from "./panel-with-close-icon";
 import { useSetPanelContext } from "./panel-context";
@@ -128,6 +129,7 @@ const GroupRow = ({ group, agents }:GroupRowProps) => {
           size="small"
           onClick={() => {
             setPanel({ type: "GROUP_REGISTRATION", payload: group });
+            ReactGA.set({ dimension2: group.id });
             sendAgentEvent({
               name: EVENT_NAMES.CLICK_TO_REGISTER_BUTTON,
               label: agents.map(agent => agent.agentType).join("#"),
@@ -167,6 +169,7 @@ const AgentRow = ({ agent }: { agent: AgentInfo}) => {
               systemSettings: buildInfo?.systemSettings,
             },
           });
+          ReactGA.set({ dimension2: id });
           sendAgentEvent({
             name: EVENT_NAMES.CLICK_TO_REGISTER_BUTTON,
             label: agentType,
