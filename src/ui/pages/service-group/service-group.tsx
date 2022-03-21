@@ -13,9 +13,10 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-import React from "react";
+import React, { useEffect } from "react";
 import "twin.macro";
 import { Route, Switch } from "react-router-dom";
+import ReactGA from "react-ga";
 
 import { ServiceGroup as ServiceGroupType } from "types";
 import { useAdminConnection, useRouteParams } from "hooks";
@@ -30,6 +31,10 @@ export const ServiceGroup = () => {
   const { groupId = "" } = useRouteParams();
   const group = useAdminConnection<ServiceGroupType>(`/groups/${groupId}`) || {} as ServiceGroupType;
   const setPanel = useSetPanelContext();
+
+  useEffect(() => {
+    ReactGA.set({ dimension2: groupId });
+  }, [groupId]);
 
   return (
     <div tw="flex flex-col w-full h-full">

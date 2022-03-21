@@ -81,7 +81,6 @@ export const SettingsPanel = ({
       if (activeTab === "system" && initialPackages !== valuesPackages) {
         sendAgentEvent({
           name: EVENT_NAMES.EDIT_PROJECT_PACKAGES,
-          dimension2: payload.id,
           label: agentEventLabel,
         });
       }

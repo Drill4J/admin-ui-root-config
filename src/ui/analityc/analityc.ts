@@ -17,7 +17,6 @@ import ReactGA from "react-ga";
 
 // eslint-disable-next-line no-shadow
 export enum EVENT_NAMES {
-  CHANGE_AGENT_STATUS = "Change agent status",
   CLICK_TO_REGISTER_BUTTON = 'Click on button "Register"',
   CLICK_TO_FINISH_REGISTER_BUTTON = 'Click on button "Finish"',
   EDIT_PROJECT_PACKAGES = 'Click on button "Save changes" to edit project package(s)',
@@ -25,13 +24,11 @@ export enum EVENT_NAMES {
 
 interface EventProps {
   name: EVENT_NAMES,
-  dimension2?: string,
   label?: string,
 }
 
-export const sendAgentEvent = ({ name, dimension2, label }: EventProps) => {
+export const sendAgentEvent = ({ name, label }: EventProps) => {
   ReactGA.set({ dimension3: Date.now() });
-  dimension2 && ReactGA.set({ dimension2 });
   ReactGA.event({
     action: name,
     category: "Plugin",
