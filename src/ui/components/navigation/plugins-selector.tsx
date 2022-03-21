@@ -20,13 +20,15 @@ import "twin.macro";
 
 import { useAdminConnection, useRouteParams } from "hooks";
 import { getPagePath, routes } from "common";
-import { Plugin } from "types";
+import { AnalyticsInfo, Plugin } from "types";
+import { NAVIGATION_EVENT_NAMES, sendNavigationEvent } from "analityc";
 import { CubeWithTooltip } from "../cubes";
 import { usePanelContext } from "../panels";
 
 export const PluginsSelector = () => {
   const { agentId, groupId } = useRouteParams();
   const plugins = useAdminConnection<Plugin[]>(agentId ? `/agents/${agentId}/plugins` : `/groups/${groupId}/plugins`) || [];
+  const { isAnalyticsDisabled } = useAdminConnection<AnalyticsInfo>("/api/analytics/info") || {};
   const { pathname } = useLocation();
   const selectedPanel = usePanelContext();
   const { params: { pluginId: selectedPluginId = "" } = {} } = matchPath<{
@@ -49,6 +51,12 @@ export const PluginsSelector = () => {
             to={pagePath}
             key={pluginId}
             data-test={`navigation:open-${pluginId}-plugin`}
+            onClick={() => {
+              !isAnalyticsDisabled && sendNavigationEvent({
+                name: NAVIGATION_EVENT_NAMES.CLICK_ON_PLUGIN_ICON,
+                label: pluginId,
+              });
+            }}
           >
             <CubeWithTooltip tooltip={name} isActive={selectedPluginId === pluginId && selectedPanel?.type !== "SELECT_AGENT"}>
               <Icon width={24} height={24} viewBox="0 0 24 24" />
