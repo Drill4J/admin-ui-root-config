@@ -18,7 +18,7 @@ import "twin.macro";
 import { Route, Switch } from "react-router-dom";
 import ReactGA from "react-ga";
 
-import { ServiceGroup as ServiceGroupType } from "types";
+import { AnalyticsInfo, ServiceGroup as ServiceGroupType } from "types";
 import { useAdminConnection, useRouteParams } from "hooks";
 import { routes } from "common";
 import { useSetPanelContext } from "components";
@@ -30,11 +30,12 @@ import { DashboardHeader } from "../agent/dashboard-header";
 export const ServiceGroup = () => {
   const { groupId = "" } = useRouteParams();
   const group = useAdminConnection<ServiceGroupType>(`/groups/${groupId}`) || {} as ServiceGroupType;
+  const { isAnalyticsDisabled } = useAdminConnection<AnalyticsInfo>("/api/analytics/info") || {};
   const setPanel = useSetPanelContext();
 
   useEffect(() => {
-    ReactGA.set({ dimension2: groupId });
-  }, [groupId]);
+    !isAnalyticsDisabled && ReactGA.set({ dimension2: groupId });
+  }, [groupId, isAnalyticsDisabled]);
 
   return (
     <div tw="flex flex-col w-full h-full">

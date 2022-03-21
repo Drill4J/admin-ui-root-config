@@ -30,7 +30,9 @@ import {
   Tab,
 } from "@drill4j/ui-kit";
 import "twin.macro";
-import { Agent, AgentInfoWithSystemSetting, ServiceGroup } from "types";
+import {
+  Agent, AgentInfoWithSystemSetting, AnalyticsInfo, ServiceGroup,
+} from "types";
 import { AGENT_STATUS } from "common";
 import { useAdminConnection } from "hooks";
 import { EVENT_NAMES, sendAgentEvent } from "analityc";
@@ -60,6 +62,7 @@ export const SettingsPanel = ({
     payload.agentType === "Node.js" ? JsSystemSettingsForm : SystemSettingsForm;
 
   const { grouped } = useAdminConnection<{grouped: GroupedInfo[]}>("/agents") || { grouped: [] };
+  const { isAnalyticsDisabled } = useAdminConnection<AnalyticsInfo>("/api/analytics/info") || {};
 
   let agentEventLabel: string | undefined;
 
@@ -79,7 +82,7 @@ export const SettingsPanel = ({
       });
       const initialPackages = payload.systemSettings.packages.join("");
       const valuesPackages = parsePackages(values.systemSettings.packages).join("");
-      if (activeTab === "system" && initialPackages !== valuesPackages) {
+      if (activeTab === "system" && initialPackages !== valuesPackages && !isAnalyticsDisabled) {
         ReactGA.set({ dimension2: payload.id });
         sendAgentEvent({
           name: EVENT_NAMES.EDIT_PROJECT_PACKAGES,

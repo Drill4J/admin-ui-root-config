@@ -22,7 +22,7 @@ import {
   useActiveBuild, useAdminConnection, useAgent, useRouteParams,
 } from "hooks";
 import { routes } from "common";
-import { AgentBuildInfo, Notification } from "types";
+import { AgentBuildInfo, AnalyticsInfo, Notification } from "types";
 import { useSetPanelContext } from "components";
 import { Icons } from "@drill4j/ui-kit";
 import ReactGA from "react-ga";
@@ -35,11 +35,12 @@ export const AgentPage = () => {
   const agent = useAgent();
   const { systemSettings } = useActiveBuild(agent?.id) || {};
   const [activeBuildInfo] = useAdminConnection<AgentBuildInfo[]>(`/api/agent/${agent.id}/builds`) || [];
+  const { isAnalyticsDisabled } = useAdminConnection<AnalyticsInfo>("/api/analytics/info") || {};
   const setPanel = useSetPanelContext();
 
   useEffect(() => {
-    ReactGA.set({ dimension2: agentId });
-  }, [agentId]);
+    !isAnalyticsDisabled && ReactGA.set({ dimension2: agentId });
+  }, [agentId, isAnalyticsDisabled]);
 
   const notifications =
     useAdminConnection<Notification[]>("/notifications") || [];
