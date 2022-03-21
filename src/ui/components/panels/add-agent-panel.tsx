@@ -130,7 +130,6 @@ const GroupRow = ({ group, agents }:GroupRowProps) => {
             setPanel({ type: "GROUP_REGISTRATION", payload: group });
             sendAgentEvent({
               name: EVENT_NAMES.CLICK_TO_REGISTER_BUTTON,
-              dimension2: group.id,
               label: agents.map(agent => agent.agentType).join("#"),
             });
           }}
@@ -170,7 +169,6 @@ const AgentRow = ({ agent }: { agent: AgentInfo}) => {
           });
           sendAgentEvent({
             name: EVENT_NAMES.CLICK_TO_REGISTER_BUTTON,
-            dimension2: id,
             label: agentType,
           });
         }}

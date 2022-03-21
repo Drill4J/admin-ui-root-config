@@ -16,6 +16,7 @@
 import React, { useEffect } from "react";
 import "twin.macro";
 import { Route, Switch, useHistory } from "react-router-dom";
+import ReactGA from "react-ga";
 
 import { ServiceGroup as ServiceGroupType, ServiceGroupEntity } from "types";
 import { useAdminConnection, useRouteParams } from "hooks";
@@ -42,6 +43,10 @@ export const ServiceGroup = () => {
       push(getPagePath({ name: "root" }));
     }
   }, [groupsList]);
+
+  useEffect(() => {
+    ReactGA.set({ dimension2: groupId });
+  }, [groupId]);
 
   return (
     <div tw="flex flex-col w-full h-full">
