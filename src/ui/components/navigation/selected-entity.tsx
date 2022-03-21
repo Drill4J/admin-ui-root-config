@@ -23,7 +23,8 @@ import {
 import { getPagePath, routes } from "common";
 import { convertAgentName } from "utils";
 import { IndicatorInEdge } from "components/indicator-in-edge";
-import { AgentBuildInfo } from "types";
+import { AgentBuildInfo, AnalyticsInfo } from "types";
+import { NAVIGATION_EVENT_NAMES, sendNavigationEvent } from "analityc/analityc";
 import { CubeWithTooltip } from "../cubes";
 import { AgentStatusBadge } from "../agent-status-badge";
 import { usePanelContext } from "../panels";
@@ -35,14 +36,36 @@ interface Props {
 export const SelectedEntity = () => {
   const { agentId, groupId } = useRouteParams();
   const selectedPanel = usePanelContext();
+  const { pluginId } = useRouteParams();
+  const { isAnalyticsDisabled } = useAdminConnection<AnalyticsInfo>("/api/analytics/info") || {};
 
   if (!agentId && !groupId) {
     return <div />; // need that layout can display correct
   }
 
   return agentId
-    ? <SelectedAgent isSelectedPanelOpen={selectedPanel?.type === "SELECT_AGENT"} />
-    : <SelectedGroup isSelectedPanelOpen={selectedPanel?.type === "SELECT_AGENT"} />;
+    ? (
+      <SelectedAgent
+        isSelectedPanelOpen={selectedPanel?.type === "SELECT_AGENT"}
+        onClick={() => {
+          !isAnalyticsDisabled && sendNavigationEvent({
+            name: NAVIGATION_EVENT_NAMES.CLICK_ON_DASHBOARD_ICON,
+            label: pluginId,
+          });
+        }}
+      />
+    )
+    : (
+      <SelectedGroup
+        isSelectedPanelOpen={selectedPanel?.type === "SELECT_AGENT"}
+        onClick={() => {
+          !isAnalyticsDisabled && sendNavigationEvent({
+            name: NAVIGATION_EVENT_NAMES.CLICK_ON_DASHBOARD_ICON,
+            label: pluginId,
+          });
+        }}
+      />
+    );
 };
 
 const SelectedAgent = ({ isSelectedPanelOpen }: Props) => {

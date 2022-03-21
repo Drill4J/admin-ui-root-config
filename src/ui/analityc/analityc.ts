@@ -21,8 +21,18 @@ export enum EVENT_NAMES {
   EDIT_PROJECT_PACKAGES = 'Click on button "Save changes" to edit project package(s)',
 }
 
+// eslint-disable-next-line no-shadow
+export enum NAVIGATION_EVENT_NAMES {
+  CLICK_ON_DASHBOARD_ICON = "Click on icon \"Dashboard\"",
+}
+
 interface EventProps {
   name: EVENT_NAMES,
+  label?: string,
+}
+
+interface NavigationEventProps {
+  name: NAVIGATION_EVENT_NAMES,
   label?: string,
 }
 
@@ -31,6 +41,15 @@ export const sendAgentEvent = ({ name, label }: EventProps) => {
   ReactGA.event({
     action: name,
     category: "Plugin",
+    label,
+  });
+};
+
+export const sendNavigationEvent = ({ name, label }: NavigationEventProps) => {
+  ReactGA.set({ dimension3: Date.now() });
+  ReactGA.event({
+    action: name,
+    category: "Navigation",
     label,
   });
 };
