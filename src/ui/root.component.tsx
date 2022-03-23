@@ -50,7 +50,7 @@ const Root = () => {
       <Switch>
         <Route exact path={routes.login} component={LoginPage} />
         <PanelProvider>
-          <Navigation tw="fixed" />
+          <Navigation tw="fixed h-full" />
           {/* Navigation width = 48px */}
           <div tw="ml-12 w-[calc(100% - 48px)]">
             <PageSwitcher />

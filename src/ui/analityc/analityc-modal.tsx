@@ -15,18 +15,19 @@
  */
 import React, { useEffect } from "react";
 import { useLocation } from "react-router-dom";
-import { Formik, Modal } from "@drill4j/ui-kit";
+import { Formik, Modal, useCloseModal } from "@drill4j/ui-kit";
 
 import "twin.macro";
 
 export const AnalitycModal = () => {
   const { search } = useLocation();
+  const closeModal = useCloseModal("analityc");
 
   return (
-    <Modal isOpen={false}>
+    <Modal isOpen={false} onClose={closeModal}>
       {({ setIsOpen }) => {
         useEffect(() => {
-          search && setIsOpen(search.includes("modal=analityc"));
+          search && setIsOpen(search.includes("activeModal=analityc"));
         }, [search]);
 
         return (
@@ -35,18 +36,20 @@ export const AnalitycModal = () => {
               initialValues={{}}
               onSubmit={() => {}}
             >
-              <Modal.Header>
-                Analytics
-              </Modal.Header>
-              <Modal.Body tw="pb-2">
-                You can help us to improve Drill4J.
-                While you are using the app, we will gather analytics that might
-                help us improve performance and usability by tracking the usage
-                frequency of particular features. Usage analytics may include:
-                Device information — such as your hardware model, OS, screen resolution, browser version.
-                Behavior information — such as details of how you use Drill4J;
-                where you click and what actions you do; how long you leave the app open etc.
-              </Modal.Body>
+              <>
+                <Modal.Header>
+                  Analytics
+                </Modal.Header>
+                <Modal.Body tw="pb-2">
+                  You can help us to improve Drill4J.
+                  While you are using the app, we will gather analytics that might
+                  help us improve performance and usability by tracking the usage
+                  frequency of particular features. Usage analytics may include:
+                  Device information — such as your hardware model, OS, screen resolution, browser version.
+                  Behavior information — such as details of how you use Drill4J;
+                  where you click and what actions you do; how long you leave the app open etc.
+                </Modal.Body>
+              </>
             </Formik>
           </Modal.Content>
         );

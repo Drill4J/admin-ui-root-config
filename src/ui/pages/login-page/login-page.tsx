@@ -16,7 +16,7 @@
 import React, { useLayoutEffect, useState } from "react";
 import { useHistory } from "react-router-dom";
 import axios from "axios";
-import { Button, GeneralAlerts, Inputs } from "@drill4j/ui-kit";
+import { Button, Inputs } from "@drill4j/ui-kit";
 import tw, { styled } from "twin.macro";
 
 import { LoginLayout } from "layouts";
@@ -51,7 +51,7 @@ export const LoginPage = () => {
 
   useLayoutEffect(() => {
     if (localStorage.getItem(TOKEN_KEY)) {
-      push("/?modal=analityc");
+      push("/?activeModal=analityc");
     }
   }, []);
 
@@ -66,11 +66,6 @@ export const LoginPage = () => {
             Click &quot;Continue as a guest&quot; to entry Admin Panel with
             admin privilege
           </div>
-          {error && (
-            <GeneralAlerts tw="w-full mt-4" type="ERROR">
-              {`${error}`}
-            </GeneralAlerts>
-          )}
           <SignInForm>
             <Inputs.Text placeholder="User ID" disabled />
             <Inputs.Text placeholder="Password" disabled />

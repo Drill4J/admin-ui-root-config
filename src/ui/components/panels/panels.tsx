@@ -16,13 +16,14 @@
 import React, { useEffect } from "react";
 import { useHistory } from "react-router-dom";
 import {
-  JavaAgentRegistrationPanel, AgentPreregistrationPanel, JsAgentRegistrationPanel, GroupRegistrationPanel,
+  AgentPreregistrationPanel, GroupRegistrationPanel, JavaAgentRegistrationPanel, JsAgentRegistrationPanel,
 } from "./registration";
 import { SelectAgentPanel } from "./select-agent-panel";
 import { SettingsPanel } from "./settings";
 import { AddAgentPanel } from "./add-agent-panel";
 import { NotificationsPanel } from "./notifications-panel";
 import { usePanelContext, useSetPanelContext } from "./panel-context";
+import { InfoMenuPanel } from "./info-menu";
 
 const panels = {
   JAVA_AGENT_REGISTRATION: JavaAgentRegistrationPanel,
@@ -33,6 +34,7 @@ const panels = {
   SELECT_AGENT: SelectAgentPanel,
   SETTINGS: SettingsPanel,
   GROUP_REGISTRATION: GroupRegistrationPanel,
+  INFO_MENU: InfoMenuPanel,
 };
 
 export const Panels = () => {
