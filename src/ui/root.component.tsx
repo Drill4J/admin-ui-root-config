@@ -32,10 +32,14 @@ import { AnalitycModal } from "./analityc";
 ReactGA.initialize("UA-220101809-1");
 ReactGA.pageview(window.location.pathname + window.location.search);
 
+const analitycHandler = (status: boolean) => {
+  console.log(status);
+};
+
 configureAxios();
 
 const Root = () => {
-  const { clientId } = useAdminConnection<AnalyticsInfo>("/api/analytics/info") || {};
+  const { clientId, isAnalyticsDisabled = true } = useAdminConnection<AnalyticsInfo>("/api/analytics/info") || {};
 
   useEffect(() => {
     ReactGA.set({ dimension1: clientId });
@@ -59,7 +63,7 @@ const Root = () => {
         </PanelProvider>
       </Switch>
       <SetPluginUrlModal />
-      <AnalitycModal />
+      <AnalitycModal submit={analitycHandler} status={!isAnalyticsDisabled} />
     </BrowserRouter>
   );
 };
