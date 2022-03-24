@@ -52,7 +52,7 @@ export const SystemSettingsRegistrationStep = () => (
           <Field
             tw="h-20"
             component={Fields.DarkTextarea}
-            name="packages"
+            name="systemSettings.packages"
             placeholder="e.g., package_name/class_name/method_name"
             normalize={(str: string) =>
               dotsAndSlashesToSlash(str).replace(
@@ -80,7 +80,7 @@ export const SystemSettingsRegistrationStep = () => (
         optional
       >
         <Field
-          name="sessionIdHeaderName"
+          name="systemSettings.sessionIdHeaderName"
           component={Fields.DarkInput}
           placeholder="Enter session header name"
           label="Session header name"

@@ -20,7 +20,7 @@ import {
 } from "@drill4j/ui-kit";
 import "twin.macro";
 
-import { ServiceGroup } from "types";
+import { Agent, ServiceGroup } from "types";
 import { useAdminConnection } from "hooks";
 import { unusedGroupName } from "utils";
 import { GroupGeneralRegistrationStep, GroupSystemSettingsRegistrationStep, InstallPluginsStep } from "./steps";
@@ -56,12 +56,12 @@ export const GroupRegistrationPanel = ({ isOpen, onClosePanel, payload }: PanelP
         {
           stepLabel: "System Settings",
           validationSchema: composeValidators(sizeLimit({
-            name: "sessionIdHeaderName",
+            name: "systemSettings.sessionIdHeaderName",
             alias: "Session header name",
             min: 1,
             max: 256,
           }),
-          requiredArray("packages", "Path prefix.")),
+          requiredArray("systemSettings.packages", "Path prefix.")),
           component: <GroupSystemSettingsRegistrationStep />,
         },
         {
@@ -84,16 +84,13 @@ async function registerGroup({
   name = "",
   systemSettings,
   description,
-  packages,
-  sessionIdHeaderName,
-}: any) {
+}: Agent) {
   await axios.patch(`/groups/${id}`, {
     plugins,
     name,
     systemSettings: {
       ...systemSettings,
-      packages: parsePackages(packages as unknown as string).filter(Boolean),
-      sessionIdHeaderName,
+      packages: parsePackages(systemSettings?.packages as unknown as string).filter(Boolean),
     },
     description,
   });

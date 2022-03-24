@@ -56,12 +56,12 @@ export const JavaAgentRegistrationPanel = ({ isOpen, onClosePanel, payload }: Pa
         {
           stepLabel: "System Settings",
           validationSchema: composeValidators(sizeLimit({
-            name: "sessionIdHeaderName",
+            name: "systemSettings.sessionIdHeaderName",
             alias: "Session header name",
             min: 1,
             max: 256,
           }),
-          requiredArray("packages", "Path prefix is required.")),
+          requiredArray("systemSettings.packages", "Path prefix is required.")),
           component: <SystemSettingsRegistrationStep />,
         },
         {
@@ -84,10 +84,8 @@ async function registerAgent({
   environment,
   description,
   plugins,
-  packages,
-  sessionIdHeaderName,
   systemSettings,
-}: any) {
+}: Agent) {
   await axios.post(`/agents/${id}`, {
     name,
     environment,
@@ -95,8 +93,7 @@ async function registerAgent({
     plugins,
     systemSettings: {
       ...systemSettings,
-      packages: parsePackages(packages as unknown as string).filter(Boolean),
-      sessionIdHeaderName,
+      packages: parsePackages(systemSettings?.packages as unknown as string).filter(Boolean),
     },
   });
 }
