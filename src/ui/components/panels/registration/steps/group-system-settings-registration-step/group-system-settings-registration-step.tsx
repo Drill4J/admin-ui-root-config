@@ -18,7 +18,7 @@ import "twin.macro";
 import { SystemSettingsRegistrationStep } from "../system-settings-registration-step";
 
 export const GroupSystemSettingsRegistrationStep = () => (
-  <div tw="space-y-8 w-[400px]">
+  <div tw="space-y-8">
     <SystemSettingsRegistrationStep />
   </div>
 );

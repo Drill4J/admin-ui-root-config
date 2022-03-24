@@ -24,7 +24,7 @@ export const JsGeneralRegistrationStep = () => {
   const { values: { disableFocus } } = useFormikContext();
 
   return (
-    <div tw="space-y-6 w-[400px]">
+    <div tw="space-y-6">
       <DisabledFormGroup fields={[{ name: "id", label: "Agent ID" }, { name: "agentType", label: "Type" }]} />
       <DarkFormGroup label="Agent name">
         <Field name="name" component={Fields.DarkInput} placeholder="Enter agent's name" focus={!disableFocus} select={!disableFocus} />

@@ -23,7 +23,7 @@ export const GroupGeneralRegistrationStep = () => {
   const { values: { disableFocus } } = useFormikContext();
 
   return (
-    <div tw="space-y-8 w-[400px]">
+    <div tw="space-y-8">
       <DisabledFormGroup fields={[{ label: "Service Group ID", name: "id" }]} />
       <DarkFormGroup label="Service Group Name">
         <Field
