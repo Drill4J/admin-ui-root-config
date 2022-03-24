@@ -17,4 +17,4 @@ export {
   sendAgentEvent, sendNavigationEvent, EVENT_NAMES, NAVIGATION_EVENT_NAMES,
 } from "./analityc";
 
-export { AnalitycModal } from "./analityc-modal";
+export { SetStatusColectOfAnalitycModal } from "./analityc-modal";

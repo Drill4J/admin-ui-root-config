@@ -17,6 +17,7 @@ import { createRouter, getPagePath as getPage } from "nanostores";
 
 interface Routes {
   login: void
+  root: void
   builds: "agentId"
   agentDashboard: "agentId"
   agentPlugin: "agentId" | "pluginId"
@@ -31,6 +32,7 @@ export const routes = {
   serviceGroupDashboard: "/groups/:groupId/dashboard",
   login: "/login",
   builds: "/agents/:agentId/builds",
+  root: "/",
 };
 
 export const router = createRouter<Routes>(routes);

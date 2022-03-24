@@ -35,4 +35,4 @@ export { NoAgentsRegisteredStub, NoAgentSelectedStub, NoAgentsSvg } from "./stub
 export { Breadcrumbs } from "./breadcrumbs";
 export { AgentStatusBadge } from "./agent-status-badge";
 export { IndicatorInEdge } from "./indicator-in-edge";
-export { LinksMenu } from "./links-menu";
+export { MenuLinks } from "./menu-links";

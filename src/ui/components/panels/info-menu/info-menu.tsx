@@ -16,14 +16,14 @@
 import React from "react";
 
 import tw, { styled } from "twin.macro";
-import { useHistory, useLocation } from "react-router-dom";
+import { useHistory } from "react-router-dom";
+import { addQueryParamsToPath } from "@drill4j/ui-kit";
 
 export interface Props {
   close: () => void;
 }
 
 export const InfoMenu = ({ close }: Props) => {
-  const { pathname, search } = useLocation();
   const { push } = useHistory();
 
   return (
@@ -43,7 +43,7 @@ export const InfoMenu = ({ close }: Props) => {
             <Button
               onClick={() => {
                 close();
-                push(`${pathname}?activeModal=analityc&${search}`);
+                push(addQueryParamsToPath({ activeModal: "analityc" }));
               }}
             >
               Analitycs
@@ -75,7 +75,8 @@ const Menu = styled.div`
     position: absolute;
     border: 6px solid transparent;
     content: '';
-    ${tw`bottom-6 right-full`}
+    bottom: 24px;
+    left: -6px;
     border-right-color: #000000;
     border-left: none;
 `;

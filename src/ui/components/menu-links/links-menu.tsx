@@ -20,7 +20,7 @@ import tw, { styled } from "twin.macro";
 import { Cube } from "../cubes";
 import { usePanelContext, useSetPanelContext } from "../panels";
 
-export const LinksMenu = () => {
+export const MenuLinks = () => {
   const openModal = useSetPanelContext();
   const activePane = usePanelContext();
 

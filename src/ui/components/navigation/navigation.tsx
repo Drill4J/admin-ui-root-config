@@ -22,7 +22,7 @@ import { PluginsSelector } from "./plugins-selector";
 import { Notifications } from "./notifications";
 import { Logout } from "./logout";
 import { SelectedEntity } from "./selected-entity";
-import { LinksMenu } from "../links-menu";
+import { MenuLinks } from "../menu-links";
 
 export const Navigation = (props: unknown) => (
   <div tw="flex flex-col w-12 h-full px-[6px] bg-monochrome-black" {...props}>
@@ -35,7 +35,7 @@ export const Navigation = (props: unknown) => (
       <PluginsSelector />
       <div tw="mt-2 space-y-2">
         <Notifications />
-        <LinksMenu />
+        <MenuLinks />
         <Logout />
       </div>
     </ActionsWrapper>

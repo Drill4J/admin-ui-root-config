@@ -22,12 +22,12 @@ import { LoginPage, PageSwitcher } from "pages";
 import { FontsStyles, LayoutStyles, TypographyStyles } from "global-styles";
 import { Navigation, PanelProvider, Panels } from "components";
 import { configureAxios, routes } from "common";
+import { SetStatusColectOfAnalitycModal } from "analityc";
 import { SetPluginUrlModal } from "components/set-plugin-url-modal";
 import { AlertManager } from "./alert-manager";
 import "./index.css";
 import { useAdminConnection } from "./hooks";
 import { AnalyticsInfo } from "./types";
-import { AnalitycModal } from "./analityc";
 
 ReactGA.initialize("UA-220101809-1");
 ReactGA.pageview(window.location.pathname + window.location.search);
@@ -63,7 +63,7 @@ const Root = () => {
         </PanelProvider>
       </Switch>
       <SetPluginUrlModal />
-      <AnalitycModal submit={analitycHandler} status={!isAnalyticsDisabled} />
+      <SetStatusColectOfAnalitycModal submit={analitycHandler} statusColectOfAnalityc={!isAnalyticsDisabled} />
     </BrowserRouter>
   );
 };

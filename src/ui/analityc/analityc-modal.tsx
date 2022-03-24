@@ -14,42 +14,45 @@
  * limitations under the License.
  */
 import React, { useEffect } from "react";
-import { useLocation } from "react-router-dom";
 import {
-  Button, Checkbox, Field, Formik, Modal, useCloseModal,
+  Button, Checkbox, Field, Form, Formik, Modal, useCloseModal, useQueryParams,
 } from "@drill4j/ui-kit";
 
 import "twin.macro";
 
 interface Props {
-  submit: (analityc: boolean) => void,
-  status: boolean,
+  submit: (statusColectOfAnalityc: boolean) => void,
+  statusColectOfAnalityc: boolean,
 }
 
-export const AnalitycModal = ({ submit, status }: Props) => {
-  const { search } = useLocation();
+export const SetStatusColectOfAnalitycModal = ({ submit, statusColectOfAnalityc }: Props) => {
+  const search = useQueryParams<any>();
   const closeModal = useCloseModal("analityc");
 
   return (
     <Modal isOpen={false} onClose={closeModal}>
       {({ setIsOpen }) => {
         useEffect(() => {
-          search && setIsOpen(search.includes("activeModal=analityc"));
+          search.activeModal === "analityc" ? setIsOpen(true) : setIsOpen(false);
         }, [search]);
 
         return (
           <Modal.Content type="info" tw="w-[480px] text-14 leading-20">
             <Formik
               initialValues={{
-                analityc: status,
+                statusColectOfAnalityc,
               }}
-              onSubmit={({ analityc }) => {
-                submit(analityc);
+              onSubmit={({ statusColectOfAnalityc }) => {
+                submit(statusColectOfAnalityc);
                 closeModal();
               }}
             >
               {({ submitForm }) => (
-                <>
+                <Form onSubmit={(e) => {
+                  e.preventDefault();
+                  submitForm();
+                }}
+                >
                   <Modal.Header>
                     Analytics
                   </Modal.Header>
@@ -68,13 +71,11 @@ export const AnalitycModal = ({ submit, status }: Props) => {
                     </ul>
                     <label tw="flex items-center gap-2">
                       <Field
+                        tw="text-blue-default"
                         type="checkbox"
-                        name="analityc"
-                      >
-                        {({ field }: any) => (
-                          <Checkbox field={field} tw="text-blue-default" />
-                        )}
-                      </Field>
+                        name="statusColectOfAnalityc"
+                        component={Checkbox}
+                      />
                       Help us improve Drill4J by automatically sending analytics
                     </label>
                   </Modal.Body>
@@ -83,12 +84,11 @@ export const AnalitycModal = ({ submit, status }: Props) => {
                       primary
                       size="large"
                       type="submit"
-                      onClick={submitForm}
                     >
                       Submit
                     </Button>
                   </Modal.Footer>
-                </>
+                </Form>
               )}
             </Formik>
           </Modal.Content>
