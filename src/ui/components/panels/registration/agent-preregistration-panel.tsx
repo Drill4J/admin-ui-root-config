@@ -70,7 +70,7 @@ export const AgentPreregistrationPanel = ({ isOpen, onClosePanel, payload }: Pan
             max: 256,
 
           }),
-          requiredArray("systemSettings.packages", "Path prefix is required")),
+          requiredArray("systemSettings.packages", "Path prefix is required.")),
           component: <SystemSettingsRegistrationStep />,
         },
         {

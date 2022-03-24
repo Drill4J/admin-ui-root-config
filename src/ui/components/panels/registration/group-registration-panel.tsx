@@ -63,7 +63,7 @@ export const GroupRegistrationPanel = ({ isOpen, onClosePanel, payload }: PanelP
             min: 1,
             max: 256,
           }),
-          requiredArray("systemSettings.packages", "Path prefix.")),
+          requiredArray("systemSettings.packages", "Path prefix is required.")),
           component: <GroupSystemSettingsRegistrationStep />,
         },
         {
