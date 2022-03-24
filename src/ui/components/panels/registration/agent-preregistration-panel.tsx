@@ -47,9 +47,9 @@ export const AgentPreregistrationPanel = ({ isOpen, onClosePanel, payload }: Pan
           validationSchema: composeValidators(
             alreadyExist("id", payload as string[], "This name already exists"),
             idValidator("id", "Agent ID"),
-            required("id"),
+            required("id", "Agent ID"),
             sizeLimit({
-              name: "id", alias: "Agent ID", min: 3, max: 32,
+              name: "id", alias: "Agent ID", min: 1, max: 32,
             }),
             required("name"),
             unusedAgentName("name", agents),
@@ -64,13 +64,13 @@ export const AgentPreregistrationPanel = ({ isOpen, onClosePanel, payload }: Pan
         {
           stepLabel: "System Settings",
           validationSchema: composeValidators(sizeLimit({
-            name: "systemSettings.sessionIdHeaderName",
+            name: "sessionIdHeaderName",
             alias: "Session header name",
             min: 1,
             max: 256,
 
           }),
-          requiredArray("systemSettings.packages", "Path prefix is required.")),
+          requiredArray("packages", "Path prefix")),
           component: <SystemSettingsRegistrationStep />,
         },
         {
@@ -94,7 +94,9 @@ async function preregisterOfflineAgent({
   plugins,
   systemSettings,
   agentType = "JAVA",
-}: Agent) {
+  packages,
+  sessionIdHeaderName,
+}: any) {
   await axios.post("/agents", {
     id,
     name,
@@ -103,7 +105,8 @@ async function preregisterOfflineAgent({
     plugins,
     systemSettings: {
       ...systemSettings,
-      packages: parsePackages(systemSettings?.packages as unknown as string).filter(Boolean),
+      packages: parsePackages(packages as unknown as string).filter(Boolean),
+      sessionIdHeaderName,
     },
   });
   sessionStorage.removeItem("preregistered");

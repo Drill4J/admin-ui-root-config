@@ -40,8 +40,8 @@ export const JsAgentRegistrationPanel = ({ isOpen, onClosePanel, payload }: Pane
         {
           stepLabel: "General Info",
           validationSchema: composeValidators(
-            required("id", "Agent ID is required"),
-            required("name", "Agent Name is required"),
+            required("id", "Agent ID"),
+            required("name", "Agent Name"),
             sizeLimit({
               name: "name", alias: "Name size should be between 3 and 64 characters", min: 3, max: 64,
             }),

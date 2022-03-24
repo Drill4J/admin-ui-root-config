@@ -20,7 +20,7 @@ import {
 } from "@drill4j/ui-kit";
 import "twin.macro";
 
-import { Agent, ServiceGroup } from "types";
+import { ServiceGroup } from "types";
 import { useAdminConnection } from "hooks";
 import { unusedGroupName } from "utils";
 import { GroupGeneralRegistrationStep, GroupSystemSettingsRegistrationStep, InstallPluginsStep } from "./steps";
@@ -34,10 +34,8 @@ export const GroupRegistrationPanel = ({ isOpen, onClosePanel, payload }: PanelP
       label="Service Group Registration"
       initialValues={{
         ...payload,
-        systemSettings: {
-          ...payload.systemSettings,
-          packages: formatPackages(payload.systemSettings?.packages),
-        },
+        ...payload.systemSettings,
+        packages: formatPackages(payload.systemSettings?.packages),
       }}
       onSubmit={registerGroup}
       successMessage="Sevice Group has been registered"
@@ -45,7 +43,7 @@ export const GroupRegistrationPanel = ({ isOpen, onClosePanel, payload }: PanelP
         {
           stepLabel: "General Info",
           validationSchema: composeValidators(
-            required("name", "Service Group Name is required"),
+            required("name", "Service Group Name"),
             sizeLimit({
               name: "name", alias: "Service Group Name size should be between 3 and 64 characters", min: 3, max: 64,
             }),
@@ -58,12 +56,12 @@ export const GroupRegistrationPanel = ({ isOpen, onClosePanel, payload }: PanelP
         {
           stepLabel: "System Settings",
           validationSchema: composeValidators(sizeLimit({
-            name: "systemSettings.sessionIdHeaderName",
+            name: "sessionIdHeaderName",
             alias: "Session header name",
             min: 1,
             max: 256,
           }),
-          requiredArray("systemSettings.packages", "Path prefix is required.")),
+          requiredArray("packages", "Path prefix.")),
           component: <GroupSystemSettingsRegistrationStep />,
         },
         {
@@ -86,13 +84,16 @@ async function registerGroup({
   name = "",
   systemSettings,
   description,
-}: Agent) {
+  packages,
+  sessionIdHeaderName,
+}: any) {
   await axios.patch(`/groups/${id}`, {
     plugins,
     name,
     systemSettings: {
       ...systemSettings,
-      packages: parsePackages(systemSettings?.packages as unknown as string).filter(Boolean),
+      packages: parsePackages(packages as unknown as string).filter(Boolean),
+      sessionIdHeaderName,
     },
     description,
   });

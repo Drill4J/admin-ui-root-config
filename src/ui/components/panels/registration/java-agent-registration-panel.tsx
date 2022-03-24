@@ -34,10 +34,8 @@ export const JavaAgentRegistrationPanel = ({ isOpen, onClosePanel, payload }: Pa
       label="Agent Registration"
       initialValues={{
         ...payload,
-        systemSettings: {
-          ...payload.systemSettings,
-          packages: formatPackages(payload.systemSettings?.packages),
-        },
+        ...payload.systemSettings,
+        packages: formatPackages(payload.systemSettings?.packages),
       }}
       onSubmit={registerAgent}
       successMessage="Agent has been registered"
@@ -46,12 +44,11 @@ export const JavaAgentRegistrationPanel = ({ isOpen, onClosePanel, payload }: Pa
           stepLabel: "General Info",
           validationSchema: composeValidators(
             unusedAgentName("name", agents),
-            required("id", "Agent ID is required"),
-            required("name", "Agent Name is required"),
+            required("id", "Agent ID"),
+            required("name", "Agent Name"),
             sizeLimit({
               name: "name", alias: "Name size should be between 3 and 64 characters", min: 3, max: 64,
             }),
-            sizeLimit({ name: "name" }),
             sizeLimit({ name: "description", min: 3, max: 256 }),
           ),
           component: <JavaGeneralRegistrationStep />,
@@ -59,12 +56,12 @@ export const JavaAgentRegistrationPanel = ({ isOpen, onClosePanel, payload }: Pa
         {
           stepLabel: "System Settings",
           validationSchema: composeValidators(sizeLimit({
-            name: "systemSettings.sessionIdHeaderName",
+            name: "sessionIdHeaderName",
             alias: "Session header name",
             min: 1,
             max: 256,
           }),
-          requiredArray("systemSettings.packages", "Path prefix is required.")),
+          requiredArray("packages", "Path prefix is required.")),
           component: <SystemSettingsRegistrationStep />,
         },
         {
@@ -87,8 +84,10 @@ async function registerAgent({
   environment,
   description,
   plugins,
+  packages,
+  sessionIdHeaderName,
   systemSettings,
-}: Agent) {
+}: any) {
   await axios.post(`/agents/${id}`, {
     name,
     environment,
@@ -96,7 +95,8 @@ async function registerAgent({
     plugins,
     systemSettings: {
       ...systemSettings,
-      packages: parsePackages(systemSettings?.packages as unknown as string).filter(Boolean),
+      packages: parsePackages(packages as unknown as string).filter(Boolean),
+      sessionIdHeaderName,
     },
   });
 }
