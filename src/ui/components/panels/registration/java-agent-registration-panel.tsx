@@ -34,8 +34,10 @@ export const JavaAgentRegistrationPanel = ({ isOpen, onClosePanel, payload }: Pa
       label="Agent Registration"
       initialValues={{
         ...payload,
-        ...payload.systemSettings,
-        packages: formatPackages(payload.systemSettings?.packages),
+        systemSettings: {
+          ...payload.systemSettings,
+          packages: formatPackages(payload.systemSettings?.packages),
+        },
       }}
       onSubmit={registerAgent}
       successMessage="Agent has been registered"

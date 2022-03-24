@@ -34,8 +34,10 @@ export const GroupRegistrationPanel = ({ isOpen, onClosePanel, payload }: PanelP
       label="Service Group Registration"
       initialValues={{
         ...payload,
-        ...payload.systemSettings,
-        packages: formatPackages(payload.systemSettings?.packages),
+        systemSettings: {
+          ...payload.systemSettings,
+          packages: formatPackages(payload.systemSettings?.packages),
+        },
       }}
       onSubmit={registerGroup}
       successMessage="Sevice Group has been registered"
