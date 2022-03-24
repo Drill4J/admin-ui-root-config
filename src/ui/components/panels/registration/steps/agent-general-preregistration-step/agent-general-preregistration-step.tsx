@@ -18,7 +18,7 @@ import { DarkFormGroup, Field, Fields } from "@drill4j/ui-kit";
 import "twin.macro";
 
 export const AgentGeneralPreregistrationStep = () => (
-  <div tw="space-y-6">
+  <div tw="space-y-6 w-[400px]">
     <DarkFormGroup label="Agent ID">
       <Field name="id" component={Fields.DarkInput} placeholder="Specify Agent's ID" />
     </DarkFormGroup>

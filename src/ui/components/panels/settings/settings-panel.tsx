@@ -111,9 +111,13 @@ export const SettingsPanel = ({
         >
           <Form tw="flex flex-col items-center py-16">
             <div tw="space-y-8">
-              {activeTab === "general" && <GeneralSettingsForm type={payload.agentType} />}
-              {activeTab === "system" && <SystemSettings />}
-              {activeTab === "plugins" && <PluginsSettingsTab agent={values} />}
+              <div tw="w-[400px] space-y-8">
+                {activeTab === "general" && <GeneralSettingsForm type={payload.agentType} />}
+                {activeTab === "system" && <SystemSettings />}
+              </div>
+              <div tw="w-full space-y-8">
+                {activeTab === "plugins" && <PluginsSettingsTab agent={values} />}
+              </div>
               {activeTab !== "plugins" && (
                 <Button
                   tw="flex justify-center min-w-[130px]"

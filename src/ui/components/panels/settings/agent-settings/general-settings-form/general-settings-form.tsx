@@ -51,9 +51,7 @@ export const GeneralSettingsForm = ({ type }: Props) => {
 
   return (
     <>
-      <div tw="w-[400px]">
-        <DisabledFormGroup fields={[{ name: "id", label: data.idLabel }, { name: "agentType", label: "Type" }]} />
-      </div>
+      <DisabledFormGroup fields={[{ name: "id", label: data.idLabel }, { name: "agentType", label: "Type" }]} />
       <DarkFormGroup label={data.nameLabel}>
         <Field name="name" component={Fields.DarkInput} placeholder={data.namePlaceholder} />
       </DarkFormGroup>
