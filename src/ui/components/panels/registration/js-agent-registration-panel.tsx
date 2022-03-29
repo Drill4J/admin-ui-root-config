@@ -15,7 +15,6 @@
  */
 import React from "react";
 import axios from "axios";
-
 import {
   composeValidators, required, requiredArray, sizeLimit,
 } from "@drill4j/ui-kit";
@@ -29,7 +28,7 @@ import { PanelProps } from "../panel-props";
 import { Stepper } from "./stepper";
 
 export const JsAgentRegistrationPanel = ({ isOpen, onClosePanel, payload }: PanelProps) => {
-  const agents = useAdminConnection<Agent[]>("/agents") || [];
+  const agents = useAdminConnection<Agent[]>("/api/agents") || [];
   return (
     <Stepper
       label="Agent Registration"
