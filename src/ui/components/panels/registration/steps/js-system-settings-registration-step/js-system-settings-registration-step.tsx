@@ -23,7 +23,7 @@ import "twin.macro";
 export const JsSystemSettingsRegistrationStep = () => (
   <DarkFormGroup
     label={(
-      <div tw="flex gap-x-2 items-center">
+      <div tw="flex gap-x-2 items-center w-[400px]">
         Target Host
         <Tooltip message="Specify URL where your application is located">
           <Icons.Info />

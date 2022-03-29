@@ -183,9 +183,7 @@ export const Stepper = ({
               onClosePanel={() => setIsOpen(false)}
             >
               <div tw="flex w-full h-full py-16 justify-center">
-                {stepNumber !== 2 ?
-                  (<div tw="w-[400px]">{currentStep}</div>)
-                  : (currentStep)}
+                {currentStep}
               </div>
             </PanelWithCloseIcon>
           </Form>

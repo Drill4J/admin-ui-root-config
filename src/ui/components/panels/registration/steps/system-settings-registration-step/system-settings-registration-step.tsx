@@ -26,7 +26,7 @@ export const SystemSettingsRegistrationStep = () => (
       <div tw="space-y-2">
         <DarkFormGroup
           label={(
-            <div tw="flex gap-x-2 items-center">
+            <div tw="flex gap-x-2 items-center w-[400px]">
               Application Packages
               <Tooltip
                 message={(
