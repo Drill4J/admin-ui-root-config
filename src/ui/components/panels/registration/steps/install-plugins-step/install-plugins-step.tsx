@@ -26,10 +26,10 @@ import { Plugin } from "types";
 
 export const InstallPluginsStep = () => {
   const availablePlugins = useAdminConnection<Plugin[]>("/plugins") || [];
-  const [formField, , helpers] = useField("plugins");
+  const [, , helpers] = useField("plugins");
 
   useEffect(() => {
-    if (!formField.value && availablePlugins.length === 1) {
+    if (availablePlugins.length === 1) {
       helpers.setValue([availablePlugins[0].id]);
     }
   }, [availablePlugins]);
