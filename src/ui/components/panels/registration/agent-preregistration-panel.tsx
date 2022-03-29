@@ -47,9 +47,9 @@ export const AgentPreregistrationPanel = ({ isOpen, onClosePanel, payload }: Pan
           validationSchema: composeValidators(
             alreadyExist("id", payload as string[], "This name already exists"),
             idValidator("id", "Agent ID"),
-            required("id"),
+            required("id", "Agent ID"),
             sizeLimit({
-              name: "id", alias: "Agent ID", min: 3, max: 32,
+              name: "id", alias: "Agent ID", min: 1, max: 32,
             }),
             required("name"),
             unusedAgentName("name", agents),
