@@ -219,9 +219,9 @@ function getTabValidationSchema(activeTab: string, agentType: string) {
       );
     case "system":
       return composeValidators(
-        requiredArray("packages", "Path prefix is required."),
+        requiredArray("systemSettings.packages", "Path prefix is required."),
         sizeLimit({
-          name: "sessionIdHeaderName",
+          name: "systemSettings.sessionIdHeaderName",
           alias: "Session header name",
           min: 1,
           max: 256,
