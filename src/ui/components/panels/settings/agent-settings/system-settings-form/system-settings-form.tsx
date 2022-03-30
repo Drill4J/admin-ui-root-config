@@ -15,7 +15,7 @@
  */
 import React from "react";
 import {
-  DarkFormGroup, dotsAndSlashesToSlash, Field, Fields, Icons, useFormikContext,
+  DarkFormGroup, dotsAndSlashesToSlash, Field, Fields, Icons, Tooltip, useFormikContext,
 } from "@drill4j/ui-kit";
 
 import "twin.macro";
@@ -37,7 +37,27 @@ export const SystemSettingsForm = () => {
       )}
       <DarkFormGroup label={(
         <div tw="flex justify-between w-[400px]">
-          Application Packages
+          <div tw="flex items-center gap-x-2">
+            Application Packages
+            <Tooltip
+              message={(
+                <div tw="space-y-2 text-[13px] leading-20">
+                  <div>
+                    Specify all necessary parts of your application.{"\n"}
+                    Make sure you add application packages only,{"\n"}
+                    otherwise Agent&apos;s performance will be affected.
+                  </div>
+                  <div>
+                    Please, use:{"\n"}- new line as a separator;{"\n"}-
+                    &quot;!&quot; before package/class for excluding;{"\n"}-
+                    &quot;/&quot; in a package path.
+                  </div>
+                </div>
+              )}
+            >
+              <Icons.Info />
+            </Tooltip>
+          </div>
           {!status.unlockedPackages && (
             <div
               onClick={() => setStatus({
@@ -60,7 +80,23 @@ export const SystemSettingsForm = () => {
           normalize={(str: string) => dotsAndSlashesToSlash(str).replace(/(?:(?:\r\n|\r|\n)\s*){2}/gm, "")}
         />
       </DarkFormGroup>
-      <DarkFormGroup label="Header Mapping" optional>
+      <DarkFormGroup
+        optional
+        label={(
+          <div tw="flex gap-x-2 items-center h-4">
+            Header Mapping
+            <Tooltip
+              message={(
+                <div tw="text-[13px] leading-20">
+                  Session header name to track User actions on your target app.
+                </div>
+              )}
+            >
+              <Icons.Info />
+            </Tooltip>
+          </div>
+        )}
+      >
         <Field
           name="sessionIdHeaderName"
           component={Fields.DarkInput}

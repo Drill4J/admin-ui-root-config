@@ -36,7 +36,7 @@ export const PluginsSettingsTab = ({ agent }: Props) => {
   return (
     <div tw="w-full space-y-1">
       <div tw="flex justify-between text-14 leading-24 text-monochrome-gray">
-        <span>Installed plugins on your agent.</span>
+        <span>{`Installed plugins on your ${agent.agentType === "Group" ? "Service Group" : "agent"}.`}</span>
         <span>{installedPlugins.length} of {plugins.length} installed</span>
       </div>
       {plugins.map(({
