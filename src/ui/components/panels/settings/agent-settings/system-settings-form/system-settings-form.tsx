@@ -98,7 +98,7 @@ export const SystemSettingsForm = () => {
         )}
       >
         <Field
-          name="sessionIdHeaderName"
+          name="systemSettings.sessionIdHeaderName"
           component={Fields.DarkInput}
           placeholder="Enter session header name"
         />

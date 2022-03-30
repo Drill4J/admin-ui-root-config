@@ -68,14 +68,18 @@ export const SettingsPanel = ({
       });
     }
   };
+
   return (
     <Formik
       onSubmit={handleSubmit as any}
       initialValues={{
         ...payload,
-        packages: (Array.isArray(payload.systemSettings?.packages)
-          ? formatPackages(payload.systemSettings?.packages)
-          : payload.systemSettings?.packages) as any,
+        systemSettings: {
+          ...payload.systemSettings,
+          packages: (Array.isArray(payload.systemSettings?.packages)
+            ? formatPackages(payload.systemSettings?.packages)
+            : payload.systemSettings?.packages) as any,
+        },
       }}
       validate={getTabValidationSchema(activeTab, payload.agentType) as any}
       initialStatus={{
@@ -158,9 +162,11 @@ function saveSettings(
     name,
     agentType,
     description,
-    sessionIdHeaderName,
-    packages = "",
-    targetHost,
+    systemSettings: {
+      packages = "",
+      targetHost,
+      sessionIdHeaderName,
+    },
   } = values;
   if (values?.agentStatus === AGENT_STATUS.PREREGISTERED) {
     return saveSettingForPreregisteredAgent({
@@ -213,9 +219,9 @@ function getTabValidationSchema(activeTab: string, agentType: string) {
       );
     case "system":
       return composeValidators(
-        requiredArray("packages", "Path prefix is required."),
+        requiredArray("systemSettings.packages", "Path prefix is required."),
         sizeLimit({
-          name: "sessionIdHeaderName",
+          name: "systemSettings.sessionIdHeaderName",
           alias: "Session header name",
           min: 1,
           max: 256,
