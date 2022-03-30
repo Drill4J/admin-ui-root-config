@@ -15,12 +15,11 @@
  */
 import React, { useEffect } from "react";
 import { Route, Switch, useHistory } from "react-router-dom";
-import axios from "axios";
 import "twin.macro";
 
 import { useActiveBuild, useAdminConnection, useRouteParams } from "hooks";
 import { BUILD_STATUS, getPagePath, routes } from "common";
-import { AgentBuildInfo, AgentInfo, Notification } from "types";
+import { AgentBuildInfo, AgentInfo } from "types";
 import { useSetPanelContext } from "components";
 import { Icons, Spinner, Stub } from "@drill4j/ui-kit";
 import { Dashboard } from "../dashboard";
