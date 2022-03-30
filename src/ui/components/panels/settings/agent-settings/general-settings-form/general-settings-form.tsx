@@ -15,32 +15,53 @@
  */
 import React from "react";
 import {
-  Field, DisabledFormGroup, DarkFormGroup, Fields,
+  DarkFormGroup, DisabledFormGroup, Field, Fields,
 } from "@drill4j/ui-kit";
 
 import "twin.macro";
 
-export const GeneralSettingsForm = () => (
-  <>
-    <div tw="w-[400px]">
-      <DisabledFormGroup fields={[{ name: "id", label: "AGENT ID" }, { name: "agentType", label: "AGENT TYPE" }]} />
-    </div>
-    <DarkFormGroup label="Agent name">
-      <Field name="name" component={Fields.DarkInput} placeholder="Enter agent's name" />
-    </DarkFormGroup>
-    <DarkFormGroup label="Description" optional>
-      <Field
-        name="description"
-        component={Fields.DarkTextarea}
-        placeholder="Add agent's description"
-      />
-    </DarkFormGroup>
-    <DarkFormGroup label="Environment" optional>
-      <Field
-        name="environment"
-        component={Fields.DarkInput}
-        placeholder="Specify an environment"
-      />
-    </DarkFormGroup>
-  </>
-);
+interface Props {
+  type: string;
+}
+
+interface labelsAndPlaceholdersData {
+  idLabel?: string,
+  nameLabel?: string,
+  namePlaceholder?: string,
+  descriptionPlaceholder?: string,
+}
+
+export const GeneralSettingsForm = ({ type }: Props) => {
+  let data: labelsAndPlaceholdersData = {};
+  if (type === "Group") {
+    data = {
+      idLabel: "Service Group ID",
+      nameLabel: "Service Group Name",
+      namePlaceholder: "Enter Service Group's name",
+      descriptionPlaceholder: "Add some details about the Service Group",
+    };
+  } else {
+    data = {
+      idLabel: "Agent ID",
+      nameLabel: "Agent Name",
+      namePlaceholder: "Enter Agent's name",
+      descriptionPlaceholder: "Add some details about the Agent",
+    };
+  }
+
+  return (
+    <>
+      <DisabledFormGroup fields={[{ name: "id", label: data.idLabel }, { name: "agentType", label: "Type" }]} />
+      <DarkFormGroup label={data.nameLabel}>
+        <Field name="name" component={Fields.DarkInput} placeholder={data.namePlaceholder} />
+      </DarkFormGroup>
+      <DarkFormGroup label="Description" optional>
+        <Field
+          name="description"
+          component={Fields.DarkTextarea}
+          placeholder={data.descriptionPlaceholder}
+        />
+      </DarkFormGroup>
+    </>
+  );
+};

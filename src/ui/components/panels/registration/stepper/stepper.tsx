@@ -15,8 +15,7 @@
  */
 import React, { useEffect, useState } from "react";
 import {
-  Formik, Form, Button, Icons, FormValidator,
-  sendAlertEvent,
+  Button, Form, Formik, FormValidator, Icons, sendAlertEvent,
 } from "@drill4j/ui-kit";
 import "twin.macro";
 
@@ -37,6 +36,7 @@ interface Props {
   steps: Step[];
   initialValues?: Agent;
   onSubmit: (val: Record<string, unknown>) => Promise<void>;
+  successMessage: string,
   isOpen?: any;
   setIsOpen?: any;
 }
@@ -46,6 +46,7 @@ export const Stepper = ({
   steps,
   initialValues = {},
   onSubmit,
+  successMessage,
   isOpen,
   setIsOpen,
 }: Props) => {
@@ -74,14 +75,19 @@ export const Stepper = ({
   const [state, setState] = useSessionStorage(initialValues?.id || "preregistered", initialValues);
   const returnToList = async (values: Agent) => {
     await setState(values);
-    setPanel({ type: "ADD_AGENT" });
+    setPanel({ type: "SELECT_AGENT" });
   };
 
   return (
     <Formik
       initialValues={state}
       onSubmit={async (values: any) => {
-        onSubmit(values).catch(() => {
+        onSubmit(values).then(() => {
+          sendAlertEvent({
+            type: "SUCCESS",
+            title: successMessage,
+          });
+        }).catch(() => {
           sendAlertEvent({
             type: "ERROR",
             title: "On-submit error. Server problem or operation could not be processed in real-time.",
@@ -90,7 +96,7 @@ export const Stepper = ({
         setPanel({ type: "SELECT_AGENT" });
       }}
       validate={currentValidationSchema as any}
-      validateOnMount
+      validateOnChange
     >
       {({
         isValid, values, validateForm,
@@ -99,9 +105,14 @@ export const Stepper = ({
           validateForm(values);
         }, [stepNumber]);
 
+        useEffect(() => {
+          setState(values);
+        }, [values]);
+
         return (
           <Form autoComplete="off">
             <PanelWithCloseIcon
+              isDisabledFade
               header={(
                 <div tw="space-y-8 pt-6 pb-4 w-[976px]">
                   <div tw="flex justify-between">
@@ -119,6 +130,7 @@ export const Stepper = ({
                           isCompleted={index < stepNumber}
                           stepNumber={index + 1}
                           stepLabel={stepLabel}
+                          isValid={isValid}
                         />
                       </div>
                     ))}
@@ -134,6 +146,7 @@ export const Stepper = ({
                       type="button"
                       onClick={goToPrevStep}
                       data-test="wizard:previous-step"
+                      disabled={!isValid}
                     >
                       <Icons.Expander width={7} height={12} rotate={180} />
                       Back
@@ -146,6 +159,7 @@ export const Stepper = ({
                       size="large"
                       data-test="wizard:finish"
                       type="submit"
+                      disabled={!isValid}
                     >
                       Finish
                     </Button>

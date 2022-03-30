@@ -13,29 +13,44 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-import React from "react";
-import { Route, Switch } from "react-router-dom";
+import React, { useEffect } from "react";
+import { Route, Switch, useHistory } from "react-router-dom";
+import axios from "axios";
 import "twin.macro";
 
-import { useActiveBuild, useAdminConnection, useAgent } from "hooks";
-import { routes } from "common";
-import { AgentBuildInfo } from "types";
+import { useActiveBuild, useAdminConnection, useRouteParams } from "hooks";
+import { BUILD_STATUS, getPagePath, routes } from "common";
+import { AgentBuildInfo, AgentInfo, Notification } from "types";
 import { useSetPanelContext } from "components";
-import { Icons } from "@drill4j/ui-kit";
+import { Icons, Spinner, Stub } from "@drill4j/ui-kit";
 import { Dashboard } from "../dashboard";
 import { Plugin } from "./plugin";
 import { DashboardHeader } from "./dashboard-header";
 
 export const AgentPage = () => {
-  const agent = useAgent();
-  const { systemSettings } = useActiveBuild(agent?.id) || {};
-  const [activeBuildInfo] = useAdminConnection<AgentBuildInfo[]>(`/api/agent/${agent.id}/builds`) || [];
+  const { push } = useHistory();
+  const { agentId = "" } = useRouteParams();
+  const agent = useAdminConnection<AgentInfo>(`/agents/${agentId}`);
+  const { id = "" } = agent || {};
+  const { systemSettings } = useActiveBuild(id) || {};
+  const [activeBuildInfo] = useAdminConnection<AgentBuildInfo[]>(`/api/agent/${id}/builds`) || [];
   const setPanel = useSetPanelContext();
 
-  const agentWithSystemSettings = { ...agent, systemSettings };
+  const agentWithSystemSettings = { ...Object(agent), systemSettings };
+
+  useEffect(() => {
+    if (agent !== null && !agent.id) {
+      push(getPagePath({ name: "root" }));
+    }
+  }, [agent]);
 
   return (
     <div tw="flex flex-col flex-grow w-full h-full">
+      {activeBuildInfo?.buildStatus === BUILD_STATUS.BUSY && (
+        <div tw="absolute inset-0 bg-monochrome-white bg-opacity-[0.95] z-[100]">
+          <Stub icon={<Spinner color="blue" tw="!w-16 !h-16" />} title="Please wait" message="Agent is busy at the moment." />
+        </div>
+      )}
       <Switch>
         <Route
           exact

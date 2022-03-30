@@ -47,6 +47,11 @@ export const usePluginUrls = () => {
   const [paths, setPaths] = useState<Record<string, string> | null>(null);
 
   const getPluginUrls = async () => {
+    const localUrls = sessionStorage.getItem("plugins-urls");
+    if (localUrls) {
+      setPaths(JSON.parse(localUrls));
+      return;
+    }
     if (process.env.NODE_ENV === "production") {
       try {
         const response = await errorHandler(async () => {
@@ -71,10 +76,6 @@ export const usePluginUrls = () => {
       }
     } else {
       setPaths(devModePaths);
-    }
-    const localUrls = sessionStorage.getItem("plugins-urls");
-    if (localUrls) {
-      setPaths(JSON.parse(localUrls));
     }
   };
 

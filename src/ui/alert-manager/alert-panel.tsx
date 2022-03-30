@@ -13,6 +13,21 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-export { convertAgentName } from "./covert-agent-name";
-export { unusedAgentName } from "./unusedAgentName";
-export { unusedGroupName } from "./unusedGroupName";
+import React from "react";
+import "twin.macro";
+import { IAlert, SystemAlert } from "@drill4j/ui-kit";
+
+interface Props {
+  alerts: IAlert[];
+}
+
+export const AlertPanel = ({ alerts }: Props) => (
+  <div tw="absolute h-fit w-min left-0 right-0 bottom-10 m-auto flex flex-col-reverse items-center gap-y-2 z-[200]">
+    {alerts.map(alert => {
+      const {
+        id, title, text, onClose = () => {}, type,
+      } = alert;
+      return <SystemAlert key={id} title={title} type={type} onClose={onClose}>{text}</SystemAlert>;
+    })}
+  </div>
+);

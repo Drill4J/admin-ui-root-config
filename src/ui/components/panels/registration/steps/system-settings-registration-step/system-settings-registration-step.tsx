@@ -15,12 +15,7 @@
  */
 import React from "react";
 import {
-  Field,
-  DarkFormGroup,
-  Fields,
-  dotsAndSlashesToSlash,
-  Icons,
-  Tooltip,
+  DarkFormGroup, dotsAndSlashesToSlash, Field, Fields, Icons, Tooltip,
 } from "@drill4j/ui-kit";
 
 import "twin.macro";
@@ -31,11 +26,11 @@ export const SystemSettingsRegistrationStep = () => (
       <div tw="space-y-2">
         <DarkFormGroup
           label={(
-            <div tw="flex gap-x-2 items-center">
+            <div tw="flex gap-x-2 items-center w-[400px]">
               Application Packages
               <Tooltip
                 message={(
-                  <div tw="space-y-2">
+                  <div tw="space-y-2 text-[13px] leading-20">
                     <div>
                       Specify all necessary parts of your application.{"\n"}
                       Make sure you add application packages only,{"\n"}
@@ -71,8 +66,14 @@ export const SystemSettingsRegistrationStep = () => (
         label={(
           <div tw="flex gap-x-2 items-center h-4">
             Header Mapping
-            <Tooltip message="Session header name to track User actions on your target app.">
-              <Icons.Info height={16} />
+            <Tooltip
+              message={(
+                <div tw="text-[13px] leading-20">
+                  Session header name to track User actions on your target app.
+                </div>
+              )}
+            >
+              <Icons.Info />
             </Tooltip>
           </div>
         )}

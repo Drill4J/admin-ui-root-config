@@ -14,15 +14,13 @@
  * limitations under the License.
  */
 import React from "react";
-import {
-  Field, DarkFormGroup, Fields,
-} from "@drill4j/ui-kit";
+import { DarkFormGroup, Field, Fields } from "@drill4j/ui-kit";
 import "twin.macro";
 
 export const AgentGeneralPreregistrationStep = () => (
-  <div tw="space-y-6">
+  <div tw="space-y-6 w-[400px]">
     <DarkFormGroup label="Agent ID">
-      <Field name="id" component={Fields.DarkInput} placeholder="Enter agent's name" />
+      <Field name="id" component={Fields.DarkInput} placeholder="Specify Agent's ID" />
     </DarkFormGroup>
     <DarkFormGroup label="Agent name">
       <Field name="name" component={Fields.DarkInput} placeholder="Enter agent's name" />
@@ -31,7 +29,7 @@ export const AgentGeneralPreregistrationStep = () => (
       <Field
         name="description"
         component={Fields.DarkTextarea}
-        placeholder="Add agent's description"
+        placeholder="Add some details about the Agent"
       />
     </DarkFormGroup>
   </div>

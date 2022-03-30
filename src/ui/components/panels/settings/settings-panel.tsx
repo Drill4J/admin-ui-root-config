@@ -17,17 +17,17 @@ import React, { useState } from "react";
 import axios from "axios";
 import {
   Button,
-  Formik,
+  composeValidators,
   Form,
   formatPackages,
+  Formik,
   parsePackages,
-  composeValidators,
-  requiredArray,
-  sizeLimit,
   required,
+  requiredArray,
+  sendAlertEvent,
+  sizeLimit,
   Spinner,
   Tab,
-  sendAlertEvent,
 } from "@drill4j/ui-kit";
 import "twin.macro";
 import { AgentInfoWithSystemSetting } from "types";
@@ -46,7 +46,7 @@ export const SettingsPanel = ({
   onClosePanel,
   payload,
 }: PanelProps) => {
-  const [activeTab, setActiveTab] = useState("general");
+  const [activeTab, setActiveTab] = useState(payload.tab || "general");
   const [nextTab, setNextTab] = useState("");
   const SystemSettings =
     payload.agentType === "Node.js" ? JsSystemSettingsForm : SystemSettingsForm;
@@ -56,7 +56,7 @@ export const SettingsPanel = ({
       await saveSettings(activeTab, values);
       sendAlertEvent({
         type: "SUCCESS",
-        title: "New settings have been saved",
+        title: "New settings have been saved.",
       });
       resetForm({ values });
     } catch ({ response: { data: { message } = {} } = {} }) {
@@ -64,10 +64,11 @@ export const SettingsPanel = ({
         type: "ERROR",
         title:
           message ||
-          "On-submit error. Server problem or operation could not be processed in real-time",
+          "On-submit error. Server problem or operation could not be processed in real-time.",
       });
     }
   };
+
   return (
     <Formik
       onSubmit={handleSubmit as any}
@@ -80,8 +81,10 @@ export const SettingsPanel = ({
             : payload.systemSettings?.packages) as any,
         },
       }}
-      validate={getTabValidationSchema(activeTab) as any}
-      enableReinitialize
+      validate={getTabValidationSchema(activeTab, payload.agentType) as any}
+      initialStatus={{
+        unlockedPackages: false,
+      }}
     >
       {({
         isSubmitting, isValid, dirty, resetForm, values,
@@ -112,9 +115,13 @@ export const SettingsPanel = ({
         >
           <Form tw="flex flex-col items-center py-16">
             <div tw="space-y-8">
-              {activeTab === "general" && <GeneralSettingsForm />}
-              {activeTab === "system" && <SystemSettings />}
-              {activeTab === "plugins" && <PluginsSettingsTab agent={values} />}
+              <div tw="w-[400px] space-y-8">
+                {activeTab === "general" && <GeneralSettingsForm type={payload.agentType} />}
+                {activeTab === "system" && <SystemSettings />}
+              </div>
+              <div tw="w-full space-y-8">
+                {activeTab === "plugins" && <PluginsSettingsTab agent={values} />}
+              </div>
               {activeTab !== "plugins" && (
                 <Button
                   tw="flex justify-center min-w-[130px]"
@@ -148,18 +155,28 @@ export const SettingsPanel = ({
 
 function saveSettings(
   activeTab: string,
-  values: AgentInfoWithSystemSetting,
+  values: any,
 ): undefined | Promise<any> {
   const {
     id,
     name,
     agentType,
     description,
-    environment,
-    systemSettings: { sessionIdHeaderName, packages = "", targetHost } = {},
+    systemSettings: {
+      packages = "",
+      targetHost,
+      sessionIdHeaderName,
+    },
   } = values;
   if (values?.agentStatus === AGENT_STATUS.PREREGISTERED) {
-    return saveSettingForPreregisteredAgent(values);
+    return saveSettingForPreregisteredAgent({
+      ...values,
+      systemSettings: {
+        sessionIdHeaderName,
+        packages,
+        targetHost,
+      },
+    });
   }
 
   const systemSettings =
@@ -176,8 +193,8 @@ function saveSettings(
   switch (activeTab) {
     case "general":
       return agentType === "Group"
-        ? axios.put(`/groups/${id}`, { name, description, environment })
-        : axios.patch(`/agents/${id}/info`, { name, description, environment });
+        ? axios.put(`/groups/${id}`, { name, description })
+        : axios.patch(`/agents/${id}/info`, { name, description });
     case "system":
       return axios.put(
         `/${agentType === "Group" ? "groups" : "agents"}/${id}/system-settings`,
@@ -188,13 +205,16 @@ function saveSettings(
   }
 }
 
-function getTabValidationSchema(activeTab: string) {
+function getTabValidationSchema(activeTab: string, agentType: string) {
+  const sizeLimitNameMessage = `${agentType === "Group" ? "Service Group" : ""} Name size should be between 3 and 64 characters`;
+  const requiredNameMessage = `${agentType === "Group" ? "Service Group" : "Agent"} Name`;
   switch (activeTab) {
     case "general":
       return composeValidators(
-        required("name"),
-        sizeLimit({ name: "name" }),
-        sizeLimit({ name: "environment" }),
+        required("name", requiredNameMessage),
+        sizeLimit({
+          name: "name", alias: sizeLimitNameMessage, min: 3, max: 64,
+        }),
         sizeLimit({ name: "description", min: 3, max: 256 }),
       );
     case "system":

@@ -77,6 +77,7 @@ export const Breadcrumbs = ({ pathname }: Props) => {
             <Link
               title={crumb}
               to={link}
+              data-test={`crumb:${crumb}`}
             >
               {crumb}
             </Link>

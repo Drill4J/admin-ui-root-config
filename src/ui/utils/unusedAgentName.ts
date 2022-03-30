@@ -13,18 +13,14 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
+import { FormValidator, getPropertyByPath } from "@drill4j/ui-kit";
+import { Agent } from "types";
 
-interface Message {
-  type: "SUCCESS" | "ERROR" | "WARNING" | "INFO";
-  text: string;
+export function unusedAgentName(field: string, agents: Agent[]): FormValidator {
+  return (valitationItem) => {
+    const value = getPropertyByPath<string>(valitationItem, field);
+    const registredAgents = agents.filter(agent => agent.agentStatus !== "NOT_REGISTERED");
+    const isSomeAgent = registredAgents.some(agent => agent.name === value);
+    return isSomeAgent ? { [field]: "Agent with such name already exists. Please choose a different name." } : {};
+  };
 }
-
-export const sendNotificationEvent = (message: Message) => {
-  const event = new CustomEvent<Message>("notification", {
-    detail: {
-      text: message.text,
-      type: message.type,
-    },
-  });
-  document.dispatchEvent(event);
-};

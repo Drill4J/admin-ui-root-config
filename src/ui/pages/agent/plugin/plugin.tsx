@@ -17,26 +17,27 @@ import React, { useEffect } from "react";
 import { getAppNames, registerApplication, unregisterApplication } from "single-spa";
 import "twin.macro";
 
-import { useAdminConnection, usePluginUrls, useRouteParams } from "hooks";
-import { Spinner, Stub, sendAlertEvent } from "@drill4j/ui-kit";
-import { ActiveAgentsBuild } from "types";
-import { BUILD_STATUS } from "common";
+import { usePluginUrls, useRouteParams } from "hooks";
+import { sendAlertEvent } from "@drill4j/ui-kit";
+import { useSetPanelContext } from "components";
 
 export const Plugin = () => {
-  const { agentId, pluginId } = useRouteParams();
+  const { pluginId } = useRouteParams();
   const paths = usePluginUrls();
-  const registeredAgentsBuilds = useAdminConnection<ActiveAgentsBuild[]>("/api/agents/build") || [];
-  const { build: agentActiveBuild } = registeredAgentsBuilds.find(({ agentId: id }) => id === agentId) || {};
+  const setPanel = useSetPanelContext();
+  const customProps = {
+    setPanel,
+  };
 
   useEffect(() => {
     if (!paths) return;
     const isPluginAlreadyRegistered = getAppNames().includes(getPluginName(pluginId));
     if (isPluginAlreadyRegistered) return;
     if (!paths[pluginId]) {
-      sendAlertEvent({ type: "ERROR", title: "CRITICAL ERROR: Plugin URL is not exist. Check PLUGINS env variable value" });
+      sendAlertEvent({ type: "ERROR", title: "CRITICAL ERROR: Plugin URL is not exist. Check PLUGINS env variable value." });
       return;
     }
-    registerAgentPlugin(pluginId, paths[pluginId]);
+    registerAgentPlugin(pluginId, paths[pluginId], customProps);
 
     // eslint-disable-next-line consistent-return
     return () => {
@@ -46,17 +47,12 @@ export const Plugin = () => {
 
   return (
     <div tw="relative h-full">
-      {agentActiveBuild?.buildStatus === BUILD_STATUS.BUSY && (
-        <div tw="absolute inset-0 bg-monochrome-white bg-opacity-[0.95] z-[100]">
-          <Stub icon={<Spinner color="blue" tw="!w-16 !h-16" />} title="Please wait" message="Agent is busy at the moment." />
-        </div>
-      )}
       <div tw="w-full h-full overflow-y-auto" id={pluginId} />
     </div>
   );
 };
 
-const registerAgentPlugin = (pluginName: string, pluginPath: string) => {
+const registerAgentPlugin = (pluginName: string, pluginPath: string, customProps: any) => {
   registerApplication({
     name: getPluginName(pluginName),
     app: async () => {
@@ -65,6 +61,7 @@ const registerAgentPlugin = (pluginName: string, pluginPath: string) => {
     },
     activeWhen: (location) =>
       !location.pathname.includes("group") && location.pathname.includes(pluginName),
+    customProps,
   });
 };
 

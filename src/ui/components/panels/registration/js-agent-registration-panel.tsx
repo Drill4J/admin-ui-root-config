@@ -16,67 +16,70 @@
 import React from "react";
 import axios from "axios";
 import {
-  sizeLimit, required, composeValidators,
+  composeValidators, required, requiredArray, sizeLimit,
 } from "@drill4j/ui-kit";
 import "twin.macro";
 
 import { Agent } from "types";
-import {
-  JsSystemSettingsRegistrationStep, InstallPluginsStep, JsGeneralRegistrationStep,
-} from "./steps";
+import { unusedAgentName } from "utils";
+import { useAdminConnection } from "hooks";
+import { InstallPluginsStep, JsGeneralRegistrationStep, JsSystemSettingsRegistrationStep } from "./steps";
 import { PanelProps } from "../panel-props";
 import { Stepper } from "./stepper";
 
-export const JsAgentRegistrationPanel = ({ isOpen, onClosePanel, payload }: PanelProps) => (
-  <Stepper
-    label="Agent Registration"
-    initialValues={payload}
-    onSubmit={registerAgent}
-    steps={[
-      {
-        stepLabel: "General Info",
-        validationSchema: composeValidators(
-          required("name"),
-          sizeLimit({ name: "name" }),
-          sizeLimit({ name: "environment" }),
-          sizeLimit({ name: "description", min: 3, max: 256 }),
-        ),
-        component: <JsGeneralRegistrationStep />,
-      },
-      {
-        stepLabel: "System Settings",
-        validationSchema: composeValidators(
-          required("systemSettings.targetHost", "Target Host"),
-        ),
-        component: <JsSystemSettingsRegistrationStep />,
-      },
-      {
-        stepLabel: "Plugins",
-        validationSchema: composeValidators(
-          required("name"),
-          sizeLimit({ name: "name" }),
-          sizeLimit({ name: "environment" }),
-          sizeLimit({ name: "description", min: 3, max: 256 }),
-        ),
-        component: <InstallPluginsStep />,
-      },
-    ]}
-    isOpen={isOpen}
-    setIsOpen={onClosePanel}
-  />
-);
+export const JsAgentRegistrationPanel = ({ isOpen, onClosePanel, payload }: PanelProps) => {
+  const agents = useAdminConnection<Agent[]>("/api/agents") || [];
+  return (
+    <Stepper
+      label="Agent Registration"
+      initialValues={payload}
+      onSubmit={registerAgent}
+      successMessage="Agent has been registered"
+      steps={[
+        {
+          stepLabel: "General Info",
+          validationSchema: composeValidators(
+            required("id", "Agent ID"),
+            required("name", "Agent Name"),
+            sizeLimit({
+              name: "name", alias: "Name size should be between 3 and 64 characters", min: 3, max: 64,
+            }),
+            unusedAgentName("name", agents),
+            sizeLimit({ name: "environment" }),
+            sizeLimit({ name: "description", min: 3, max: 256 }),
+          ),
+          component: <JsGeneralRegistrationStep />,
+        },
+        {
+          stepLabel: "System Settings",
+          validationSchema: composeValidators(
+            required("systemSettings.targetHost", "Target Host"),
+          ),
+          component: <JsSystemSettingsRegistrationStep />,
+        },
+        {
+          stepLabel: "Plugins",
+          validationSchema: composeValidators(
+            requiredArray("plugins"),
+          ),
+          component: <InstallPluginsStep />,
+        },
+      ]}
+      isOpen={isOpen}
+      setIsOpen={onClosePanel}
+    />
+  );
+};
 
 async function registerAgent({
   id,
   name,
-  environment,
   description,
   plugins,
   systemSettings,
 }: Agent) {
   await axios.post(`/agents/${id}`, {
     name,
-    environment,
     description,
     plugins,
     systemSettings,

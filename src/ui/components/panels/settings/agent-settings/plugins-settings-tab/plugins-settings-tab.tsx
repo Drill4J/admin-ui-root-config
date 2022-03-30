@@ -15,12 +15,10 @@
  */
 import React from "react";
 import { Link } from "react-router-dom";
-import { Icons, Button, sendAlertEvent } from "@drill4j/ui-kit";
+import { Button, Icons, sendAlertEvent } from "@drill4j/ui-kit";
 import "twin.macro";
 
-import {
-  AgentInfoWithSystemSetting, Plugin,
-} from "types";
+import { AgentInfoWithSystemSetting, Plugin } from "types";
 import { useAdminConnection } from "hooks";
 import { PluginCard } from "components";
 import { AGENT_STATUS, getPagePath } from "common";
@@ -38,7 +36,7 @@ export const PluginsSettingsTab = ({ agent }: Props) => {
   return (
     <div tw="w-full space-y-1">
       <div tw="flex justify-between text-14 leading-24 text-monochrome-gray">
-        <span>Installed plugins on your agent.</span>
+        <span>{`Installed plugins on your ${agent.agentType === "Group" ? "Service Group" : "agent"}.`}</span>
         <span>{installedPlugins.length} of {plugins.length} installed</span>
       </div>
       {plugins.map(({
@@ -56,11 +54,11 @@ export const PluginsSettingsTab = ({ agent }: Props) => {
                 onClick={async () => {
                   try {
                     await addPlugin(agent, id);
-                    sendAlertEvent({ type: "SUCCESS", title: "Plugin has been added" });
+                    sendAlertEvent({ type: "SUCCESS", title: "Plugin has been added." });
                   } catch ({ response: { data: { message } = {} } = {} }) {
                     sendAlertEvent({
                       type: "ERROR",
-                      title: "On-submit error. Server problem or operation could not be processed in real-time",
+                      title: "On-submit error. Server problem or operation could not be processed in real-time.",
                     });
                   }
                 }}

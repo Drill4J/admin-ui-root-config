@@ -18,6 +18,7 @@ import { getRoutePath } from "./get-route-path";
 
 interface Routes {
   login: void
+  root: void
   builds: "agentId"
   agentDashboard: "agentId"
   agentPlugin: "agentId" | "pluginId"
@@ -32,6 +33,7 @@ export const routes = {
   serviceGroupDashboard: getRoutePath("/groups/:groupId/dashboard"),
   login: getRoutePath("/login"),
   builds: getRoutePath("/agents/:agentId/builds"),
+  root: getRoutePath("/"),
 };
 
 export const router = createRouter<Routes>(routes);

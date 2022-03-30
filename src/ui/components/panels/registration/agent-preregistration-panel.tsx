@@ -16,76 +16,80 @@
 import React from "react";
 import axios from "axios";
 import {
-  requiredArray, sizeLimit, required, composeValidators, parsePackages, idValidator, alreadyExist,
+  alreadyExist, composeValidators, idValidator, parsePackages, required, requiredArray, sizeLimit,
 } from "@drill4j/ui-kit";
 import "twin.macro";
 
+import { useAdminConnection } from "hooks";
+import { unusedAgentName } from "utils";
 import { Agent } from "types";
-import {
-  SystemSettingsRegistrationStep, InstallPluginsStep, AgentGeneralPreregistrationStep,
-} from "./steps";
+import { AgentGeneralPreregistrationStep, InstallPluginsStep, SystemSettingsRegistrationStep } from "./steps";
 import { Stepper } from "./stepper";
 import { PanelProps } from "../panel-props";
 
-export const AgentPreregistrationPanel = ({ isOpen, onClosePanel, payload }: PanelProps) => (
-  <Stepper
-    label={(
-      <div tw="space-y-2">
-        <div>Java Agent Preregistration</div>
-        <div tw="text-14 leading-24 text-monochrome-dark-tint">
-          Preconfiguration for background instrumentation until the Agent syncs with the Drill4j Admin.
+export const AgentPreregistrationPanel = ({ isOpen, onClosePanel, payload }: PanelProps) => {
+  const agents = useAdminConnection<Agent[]>("/api/agents") || [];
+  return (
+    <Stepper
+      label={(
+        <div tw="space-y-2">
+          <div>Java Agent Preregistration</div>
+          <div tw="text-14 leading-24 text-monochrome-dark-tint">
+            Preconfiguration for background instrumentation until the Agent syncs with the Drill4j Admin.
+          </div>
         </div>
-      </div>
-    )}
-    onSubmit={preregisterOfflineAgent}
-    steps={[
-      {
-        stepLabel: "General Info",
-        validationSchema: composeValidators(
-          alreadyExist("id", payload as string[], "This name already exists"),
-          idValidator("id", "Agent ID"),
-          required("id"),
-          sizeLimit({
-            name: "id", alias: "Agent ID", min: 3, max: 32,
+      )}
+      onSubmit={preregisterOfflineAgent}
+      successMessage="Agent has been preregistered"
+      steps={[
+        {
+          stepLabel: "General Info",
+          validationSchema: composeValidators(
+            alreadyExist("id", payload as string[], "This name already exists"),
+            idValidator("id", "Agent ID"),
+            required("id", "Agent ID"),
+            sizeLimit({
+              name: "id", alias: "Agent ID", min: 1, max: 32,
+            }),
+            required("name"),
+            unusedAgentName("name", agents),
+            sizeLimit({
+              name: "name", alias: "Name size should be between 3 and 64 characters", min: 3, max: 64,
+            }),
+            sizeLimit({ name: "environment" }),
+            sizeLimit({ name: "description", min: 3, max: 256 }),
+          ),
+          component: <AgentGeneralPreregistrationStep />,
+        },
+        {
+          stepLabel: "System Settings",
+          validationSchema: composeValidators(sizeLimit({
+            name: "systemSettings.sessionIdHeaderName",
+            alias: "Session header name",
+            min: 1,
+            max: 256,
+
           }),
-          required("name"),
-          sizeLimit({ name: "name" }),
-          sizeLimit({ name: "environment" }),
-          sizeLimit({ name: "description", min: 3, max: 256 }),
-        ),
-        component: <AgentGeneralPreregistrationStep />,
-      },
-      {
-        stepLabel: "System Settings",
-        validationSchema: composeValidators(sizeLimit({
-          name: "systemSettings.sessionIdHeaderName",
-          alias: "Session header name",
-          min: 1,
-          max: 256,
-        }),
-        requiredArray("systemSettings.packages", "Path prefix is required.")),
-        component: <SystemSettingsRegistrationStep />,
-      },
-      {
-        stepLabel: "Plugins",
-        validationSchema: composeValidators(
-          required("name"),
-          sizeLimit({ name: "name" }),
-          sizeLimit({ name: "environment" }),
-          sizeLimit({ name: "description", min: 3, max: 256 }),
-        ),
-        component: <InstallPluginsStep />,
-      },
-    ]}
-    isOpen={isOpen}
-    setIsOpen={onClosePanel}
-  />
-);
+          requiredArray("systemSettings.packages", "Path prefix is required.")),
+          component: <SystemSettingsRegistrationStep />,
+        },
+        {
+          stepLabel: "Plugins",
+          validationSchema: composeValidators(
+            requiredArray("plugins"),
+          ),
+          component: <InstallPluginsStep />,
+        },
+      ]}
+      isOpen={isOpen}
+      setIsOpen={onClosePanel}
+    />
+  );
+};
 
 async function preregisterOfflineAgent({
   id,
   name,
-  environment,
   description,
   plugins,
   systemSettings,
@@ -95,7 +99,6 @@ async function preregisterOfflineAgent({
     id,
     name,
     agentType,
-    environment,
     description,
     plugins,
     systemSettings: {

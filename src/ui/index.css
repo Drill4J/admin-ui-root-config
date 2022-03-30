@@ -837,12 +837,16 @@ button:focus {
   bottom: 2.5rem;
 }
 
-.top-0 {
-  top: 0px;
+.left-0 {
+  left: 0px;
 }
 
 .right-0 {
   right: 0px;
+}
+
+.top-0 {
+  top: 0px;
 }
 
 .bottom-0 {
@@ -859,10 +863,6 @@ button:focus {
 
 .right-\[3px\] {
   right: 3px;
-}
-
-.left-0 {
-  left: 0px;
 }
 
 .left-12 {
@@ -899,6 +899,10 @@ button:focus {
 
 .col-start-5 {
   grid-column-start: 5;
+}
+
+.m-auto {
+  margin: auto;
 }
 
 .m-0 {
@@ -1053,6 +1057,12 @@ button:focus {
   display: none;
 }
 
+.h-fit {
+  height: -webkit-fit-content;
+  height: -moz-fit-content;
+  height: fit-content;
+}
+
 .h-full {
   height: 100%;
 }
@@ -1101,6 +1111,10 @@ button:focus {
   height: 7rem;
 }
 
+.\!h-16 {
+  height: 4rem !important;
+}
+
 .h-10 {
   height: 2.5rem;
 }
@@ -1117,12 +1131,14 @@ button:focus {
   height: 6rem;
 }
 
-.\!h-16 {
-  height: 4rem !important;
-}
-
 .w-full {
   width: 100%;
+}
+
+.w-min {
+  width: -webkit-min-content;
+  width: -moz-min-content;
+  width: min-content;
 }
 
 .w-9 {
@@ -1161,6 +1177,10 @@ button:focus {
   width: 30rem;
 }
 
+.\!w-16 {
+  width: 4rem !important;
+}
+
 .w-88 {
   width: 22rem;
 }
@@ -1173,16 +1193,12 @@ button:focus {
   width: 1.5rem;
 }
 
-.\!w-16 {
-  width: 4rem !important;
+.w-97 {
+  width: 25rem;
 }
 
 .w-\[976px\] {
   width: 976px;
-}
-
-.w-97 {
-  width: 25rem;
 }
 
 .min-w-\[16px\] {
@@ -1368,6 +1384,12 @@ button:focus {
   --tw-space-y-reverse: 0;
   margin-top: calc(2rem * calc(1 - var(--tw-space-y-reverse)));
   margin-bottom: calc(2rem * var(--tw-space-y-reverse));
+}
+
+.space-y-10 > :not([hidden]) ~ :not([hidden]) {
+  --tw-space-y-reverse: 0;
+  margin-top: calc(2.5rem * calc(1 - var(--tw-space-y-reverse)));
+  margin-bottom: calc(2.5rem * var(--tw-space-y-reverse));
 }
 
 .space-y-1 > :not([hidden]) ~ :not([hidden]) {
@@ -1556,12 +1578,12 @@ button:focus {
   --tw-bg-opacity: 0.97;
 }
 
-.bg-opacity-5 {
-  --tw-bg-opacity: 0.05;
-}
-
 .bg-opacity-\[0\.95\] {
   --tw-bg-opacity: 0.95;
+}
+
+.bg-opacity-5 {
+  --tw-bg-opacity: 0.05;
 }
 
 .p-0 {
@@ -1714,6 +1736,10 @@ button:focus {
 
 .text-64 {
   font-size: 64px;
+}
+
+.text-\[13px\] {
+  font-size: 13px;
 }
 
 .uppercase {

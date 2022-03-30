@@ -15,7 +15,7 @@
  */
 import React from "react";
 import {
-  Field, DarkFormGroup, Fields, DisabledFormGroup, useFormikContext,
+  DarkFormGroup, DisabledFormGroup, Field, Fields, useFormikContext,
 } from "@drill4j/ui-kit";
 import "twin.macro";
 
@@ -23,8 +23,8 @@ export const JavaGeneralRegistrationStep = () => {
   const { values: { disableFocus } } = useFormikContext();
 
   return (
-    <div tw="space-y-6">
-      <DisabledFormGroup fields={[{ name: "id", label: "AGENT ID" }, { name: "agentType", label: "AGENT TYPE" }]} />
+    <div tw="space-y-6 w-[400px]">
+      <DisabledFormGroup fields={[{ name: "id", label: "Agent ID" }, { name: "agentType", label: "Type" }]} />
       <DarkFormGroup label="Agent name">
         <Field name="name" component={Fields.DarkInput} placeholder="Enter agent's name" focus={!disableFocus} select={!disableFocus} />
       </DarkFormGroup>
@@ -32,7 +32,7 @@ export const JavaGeneralRegistrationStep = () => {
         <Field
           name="description"
           component={Fields.DarkTextarea}
-          placeholder="Add agent's description"
+          placeholder="Add some details about the Agent"
         />
       </DarkFormGroup>
     </div>

@@ -13,6 +13,4 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-export { convertAgentName } from "./covert-agent-name";
-export { unusedAgentName } from "./unusedAgentName";
-export { unusedGroupName } from "./unusedGroupName";
+export { DotNetSystemRegistrationForm } from "./dotnet-system-registration-form";
