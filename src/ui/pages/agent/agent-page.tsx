@@ -15,12 +15,11 @@
  */
 import React, { useEffect } from "react";
 import { Route, Switch, useHistory } from "react-router-dom";
-import axios from "axios";
 import "twin.macro";
 
 import { useActiveBuild, useAdminConnection, useRouteParams } from "hooks";
 import { BUILD_STATUS, getPagePath, routes } from "common";
-import { AgentBuildInfo, AgentInfo, Notification } from "types";
+import { AgentBuildInfo, AgentInfo } from "types";
 import { useSetPanelContext } from "components";
 import { Icons, Spinner, Stub } from "@drill4j/ui-kit";
 import { Dashboard } from "../dashboard";
@@ -35,16 +34,6 @@ export const AgentPage = () => {
   const { systemSettings } = useActiveBuild(id) || {};
   const [activeBuildInfo] = useAdminConnection<AgentBuildInfo[]>(`/api/agent/${id}/builds`) || [];
   const setPanel = useSetPanelContext();
-  const notifications =
-    useAdminConnection<Notification[]>("/notifications") || [];
-  const newBuildNotification =
-    notifications.find((notification) => notification.agentId === agentId) ||
-    {};
-  useEffect(() => {
-    if (!newBuildNotification?.read && newBuildNotification?.agentId === agentId) {
-      readNotification(newBuildNotification.id as string);
-    }
-  }, [newBuildNotification?.id]);
 
   const agentWithSystemSettings = { ...Object(agent), systemSettings };
 
@@ -82,18 +71,3 @@ export const AgentPage = () => {
     </div>
   );
 };
-
-async function readNotification(
-  notificationId: string,
-  {
-    onSuccess,
-    onError,
-  }: { onSuccess?: () => void; onError?: (message: string) => void } = {},
-) {
-  try {
-    await axios.patch(`/notifications/${notificationId}/read`);
-    onSuccess && onSuccess();
-  } catch ({ response: { data: { message } = {} } = {} }) {
-    onError && onError(message as string);
-  }
-}
