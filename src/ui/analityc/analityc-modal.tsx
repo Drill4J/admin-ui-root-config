@@ -21,12 +21,12 @@ import {
 import "twin.macro";
 
 interface Props {
-  submit: (statusColectOfAnalityc: boolean) => void,
-  statusColectOfAnalityc: boolean,
+  submit: (isCollectOfAnalityc: boolean) => void,
+  isCollectOfAnalityc: boolean,
 }
 
-export const SetStatusColectOfAnalitycModal = ({ submit, statusColectOfAnalityc }: Props) => {
-  const search = useQueryParams<any>();
+export const SetStatusColectOfAnalitycModal = ({ submit, isCollectOfAnalityc }: Props) => {
+  const search = useQueryParams<{activeModal: string}>();
   const closeModal = useCloseModal("analityc");
 
   return (
@@ -40,10 +40,10 @@ export const SetStatusColectOfAnalitycModal = ({ submit, statusColectOfAnalityc 
           <Modal.Content type="info" tw="w-[480px] text-14 leading-20">
             <Formik
               initialValues={{
-                statusColectOfAnalityc,
+                status: isCollectOfAnalityc,
               }}
-              onSubmit={({ statusColectOfAnalityc }) => {
-                submit(statusColectOfAnalityc);
+              onSubmit={({ status }) => {
+                submit(status);
                 closeModal();
               }}
             >
@@ -73,7 +73,7 @@ export const SetStatusColectOfAnalitycModal = ({ submit, statusColectOfAnalityc 
                       <Field
                         tw="text-blue-default"
                         type="checkbox"
-                        name="statusColectOfAnalityc"
+                        name="status"
                         component={Checkbox}
                       />
                       Help us improve Drill4J by automatically sending analytics
