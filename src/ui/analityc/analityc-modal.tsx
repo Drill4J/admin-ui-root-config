@@ -21,11 +21,11 @@ import {
 import "twin.macro";
 
 interface Props {
-  submit: (isCollectOfAnalityc: boolean) => void,
-  isCollectOfAnalityc: boolean,
+  submit: (isCollectOfAnalitycsData: boolean) => void,
+  isCollectOfAnalitycsData: boolean,
 }
 
-export const SetStatusColectOfAnalitycModal = ({ submit, isCollectOfAnalityc }: Props) => {
+export const SetStatusColectOfAnalitycModal = ({ submit, isCollectOfAnalitycsData }: Props) => {
   const search = useQueryParams<{activeModal: string}>();
   const closeModal = useCloseModal("analityc");
 
@@ -40,7 +40,7 @@ export const SetStatusColectOfAnalitycModal = ({ submit, isCollectOfAnalityc }: 
           <Modal.Content type="info" tw="w-[480px] text-14 leading-20">
             <Formik
               initialValues={{
-                status: isCollectOfAnalityc,
+                status: isCollectOfAnalitycsData,
               }}
               onSubmit={({ status }) => {
                 submit(status);
