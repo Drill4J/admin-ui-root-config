@@ -43,6 +43,7 @@ export const Dashboard = ({ data, isGroup, setPanel }: Props) => {
   const plugins = useAdminConnection<Plugin[]>(isGroup ? `/groups/${id}/plugins` : `/agents/${id}/plugins`) || [];
   const installedPlugins = plugins.filter((plugin) => !plugin.available);
   const paths = usePluginUrls();
+
   if (!paths) {
     return <Wrapper><div tw="w-full h-full "><Loader /></div></Wrapper>;
   }
