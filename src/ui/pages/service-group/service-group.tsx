@@ -13,13 +13,13 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-import React from "react";
+import React, { useEffect } from "react";
 import "twin.macro";
-import { Route, Switch } from "react-router-dom";
+import { Route, Switch, useHistory } from "react-router-dom";
 
-import { ServiceGroup as ServiceGroupType } from "types";
+import { ServiceGroup as ServiceGroupType, ServiceGroupEntity } from "types";
 import { useAdminConnection, useRouteParams } from "hooks";
-import { routes } from "common";
+import { getPagePath, routes } from "common";
 import { useSetPanelContext } from "components";
 import { Icons } from "@drill4j/ui-kit";
 import { Dashboard } from "../dashboard";
@@ -28,8 +28,20 @@ import { DashboardHeader } from "../agent/dashboard-header";
 
 export const ServiceGroup = () => {
   const { groupId = "" } = useRouteParams();
+  const { push } = useHistory();
   const group = useAdminConnection<ServiceGroupType>(`/groups/${groupId}`) || {} as ServiceGroupType;
+  const groupsList = useAdminConnection<ServiceGroupEntity[]>("/api/groups");
   const setPanel = useSetPanelContext();
+
+  useEffect(() => {
+    if (groupsList && !groupsList.length) {
+      push(getPagePath({ name: "root" }));
+    }
+
+    if (groupsList?.length && !groupsList.find(groupItem => groupItem.id === groupId)) {
+      push(getPagePath({ name: "root" }));
+    }
+  }, [groupsList]);
 
   return (
     <div tw="flex flex-col w-full h-full">
