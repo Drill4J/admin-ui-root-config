@@ -13,9 +13,9 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-import React, { useEffect } from "react";
-import { Switch, useHistory } from "react-router-dom";
-import { AGENT_STATUS, getPagePath, routes } from "common";
+import React from "react";
+import { Switch } from "react-router-dom";
+import { AGENT_STATUS, routes } from "common";
 import { NoAgentSelectedStub, NoAgentsRegisteredStub, PrivateRoute } from "components";
 import { useAdminConnection, useRouteParams } from "hooks";
 import { AgentInfo } from "types";
@@ -23,20 +23,11 @@ import { AgentPage } from "../agent";
 import { ServiceGroup } from "../service-group";
 
 export const PageSwitcher = () => {
-  const { push } = useHistory();
   const { agentId, groupId } = useRouteParams();
-  const agentsList = useAdminConnection<AgentInfo[]>("/api/agents");
-  const isAllAgentsUnregistered = agentsList?.every((agentItem) => agentItem.agentStatus === AGENT_STATUS.NOT_REGISTERED);
+  const agentsList = useAdminConnection<AgentInfo[]>("/api/agents") || [];
+  const isAllAgentsUnregistered = agentsList.every((agentItem) => agentItem.agentStatus === AGENT_STATUS.NOT_REGISTERED);
 
-  useEffect(() => {
-    if (!agentId) return;
-    if (!agentsList?.length) push(getPagePath({ name: "root" }));
-    if (agentsList?.length && !agentsList.find(agentItem => agentItem.id === agentId)) {
-      push(getPagePath({ name: "root" }));
-    }
-  }, [agentsList]);
-
-  if (isAllAgentsUnregistered) {
+  if (isAllAgentsUnregistered && !agentId && !groupId) {
     return <NoAgentsRegisteredStub />;
   }
 
