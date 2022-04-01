@@ -17,6 +17,7 @@ import React, { useEffect } from "react";
 import ReactGA from "react-ga";
 import { BrowserRouter, Route, Switch } from "react-router-dom";
 import "twin.macro";
+import axios from "axios";
 
 import { LoginPage, PageSwitcher } from "pages";
 import { FontsStyles, LayoutStyles, TypographyStyles } from "global-styles";
@@ -29,11 +30,18 @@ import "./index.css";
 import { useAdminConnection } from "./hooks";
 import { AnalyticsInfo } from "./types";
 
-ReactGA.initialize("UA-220101809-1");
+ReactGA.initialize("UA-214931987-2");
+ReactGA.set({ anonymizeIp: true });
 ReactGA.pageview(window.location.pathname + window.location.search);
 
-const analitycHandler = (status: boolean) => {
-  console.log(status);
+const analitycHandler = async (status: boolean) => {
+  try {
+    await axios.patch("/analytic/toggle", {
+      disable: !status,
+    });
+  } catch (e) {
+    console.log(e);
+  }
 };
 
 configureAxios();
@@ -63,7 +71,7 @@ const Root = () => {
         </PanelProvider>
       </Switch>
       <SetPluginUrlModal />
-      <SetStatusColectOfAnalitycModal submit={analitycHandler} statusColectOfAnalityc={!isAnalyticsDisabled} />
+      <SetStatusColectOfAnalitycModal submit={analitycHandler} isCollectOfAnalitycsData={!isAnalyticsDisabled} />
     </BrowserRouter>
   );
 };

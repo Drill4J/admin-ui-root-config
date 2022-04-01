@@ -42,10 +42,11 @@ export const SetStatusColectOfAnalitycModal = ({ submit, isCollectOfAnalitycsDat
               initialValues={{
                 status: isCollectOfAnalitycsData,
               }}
-              onSubmit={({ status }) => {
-                submit(status);
+              onSubmit={(values: any) => {
+                submit(values.status);
                 closeModal();
               }}
+              enableReinitialize
             >
               {({ submitForm }) => (
                 <Form onSubmit={(e) => {
