@@ -16,7 +16,7 @@
 import React, { useLayoutEffect, useState } from "react";
 import { useHistory } from "react-router-dom";
 import axios from "axios";
-import { Button, Inputs } from "@drill4j/ui-kit";
+import { addQueryParamsToPath, Button, Inputs } from "@drill4j/ui-kit";
 import tw, { styled } from "twin.macro";
 
 import { LoginLayout } from "layouts";
@@ -52,7 +52,7 @@ export const LoginPage = () => {
 
   useLayoutEffect(() => {
     if (localStorage.getItem(TOKEN_KEY)) {
-      push(`${getPagePath({ name: "root" })}?activeModal=analityc`);
+      push(addQueryParamsToPath({ activeModal: "analityc" }, getPagePath({ name: "root" })));
     }
   }, []);
 

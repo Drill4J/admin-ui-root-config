@@ -30,10 +30,6 @@ import "./index.css";
 import { useAdminConnection } from "./hooks";
 import { AnalyticsInfo } from "./types";
 
-ReactGA.initialize("UA-214931987-2");
-ReactGA.set({ anonymizeIp: true });
-ReactGA.pageview(window.location.pathname + window.location.search);
-
 const analitycHandler = async (status: boolean) => {
   try {
     await axios.patch("/analytic/toggle", {
@@ -50,8 +46,16 @@ const Root = () => {
   const { clientId, isAnalyticsDisabled = true } = useAdminConnection<AnalyticsInfo>("/api/analytics/info") || {};
 
   useEffect(() => {
-    ReactGA.set({ dimension1: clientId });
-  }, [clientId]);
+    if (!isAnalyticsDisabled) {
+      ReactGA.initialize("UA-214931987-2");
+      ReactGA.set({ anonymizeIp: true });
+      ReactGA.pageview(window.location.pathname + window.location.search);
+    }
+  }, [isAnalyticsDisabled]);
+
+  useEffect(() => {
+    !isAnalyticsDisabled && ReactGA.set({ dimension1: clientId });
+  }, [clientId, isAnalyticsDisabled]);
 
   return (
     <BrowserRouter>
