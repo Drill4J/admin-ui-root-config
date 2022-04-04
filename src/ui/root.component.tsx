@@ -16,6 +16,7 @@
 import React, { useEffect } from "react";
 import ReactGA from "react-ga";
 import { BrowserRouter, Route, Switch } from "react-router-dom";
+import { sendAlertEvent } from "@drill4j/ui-kit";
 import "twin.macro";
 import axios from "axios";
 
@@ -36,7 +37,10 @@ const analitycHandler = async (status: boolean) => {
       disable: !status,
     });
   } catch (e) {
-    console.log(e);
+    sendAlertEvent({
+      type: "ERROR",
+      title: e.message,
+    });
   }
 };
 
