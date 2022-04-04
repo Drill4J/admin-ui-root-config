@@ -16,7 +16,7 @@
 /* eslint-disable max-len */
 import React, { useEffect } from "react";
 import {
-  Checkbox, Field, Icons, useField,
+  Checkbox, Field, Icons, useFormikContext,
 } from "@drill4j/ui-kit";
 import tw, { styled } from "twin.macro";
 
@@ -26,13 +26,17 @@ import { Plugin } from "types";
 
 export const InstallPluginsStep = () => {
   const availablePlugins = useAdminConnection<Plugin[]>("/plugins") || [];
-  const [, , helpers] = useField("plugins");
+  const { values, setValues } = useFormikContext<any>();
+  const { plugins } = values;
 
   useEffect(() => {
-    if (availablePlugins.length === 1) {
-      helpers.setValue([availablePlugins[0].id]);
+    if (availablePlugins.length === 1 && !plugins?.length) {
+      setValues({
+        ...values,
+        plugins: [availablePlugins[0].id],
+      });
     }
-  }, [availablePlugins]);
+  }, [availablePlugins, plugins]);
 
   if (!availablePlugins) return null;
   return (
