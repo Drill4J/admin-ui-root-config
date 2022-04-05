@@ -13,8 +13,4 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-export {
-  sendAgentEvent, sendNavigationEvent, EVENT_NAMES, NAVIGATION_EVENT_NAMES,
-} from "./analityc";
-
-export { SetStatusColectOfAnalitycModal } from "./analityc-modal";
+export { MenuLinks } from "./links-menu";
