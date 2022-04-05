@@ -24,6 +24,7 @@ import { PanelProps } from "../panel-props";
 import { deleteAllNotifications, readAllNotifications } from "./api";
 import { Notification } from "./notification";
 import { PanelStub } from "../../panel-stub";
+import { getBuildNotification } from "./get-build-notification";
 
 export const NotificationsPanel = ({ isOpen, onClosePanel }: PanelProps) => {
   const [errorMessage, setErrorMessage] = useState("");
@@ -64,9 +65,16 @@ export const NotificationsPanel = ({ isOpen, onClosePanel }: PanelProps) => {
             <ContentAlert type="ERROR">{errorMessage}</ContentAlert>
           )}
           <div className="custom-scroll" tw="overflow-hidden overflow-y-auto">
-            {notifications.map((notification) => (
-              <Notification notification={notification} key={notification.createdAt} />
-            ))}
+            {notifications.map((notification) => {
+              switch (notification.type) {
+                case "BUILD":
+                  return getBuildNotification(notification);
+                  break;
+                default:
+                  return null;
+                  break;
+              }
+            })}
           </div>
         </div>
       ) : (
