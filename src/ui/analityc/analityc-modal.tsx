@@ -27,7 +27,7 @@ interface Props {
 
 export const SetStatusColectOfAnalitycModal = ({ submit, isCollectOfAnalitycsData }: Props) => {
   const search = useQueryParams<{activeModal: string}>();
-  const closeModal = useCloseModal("analityc");
+  const closeModal = useCloseModal(["analityc"]);
 
   return (
     <Modal isOpen={false} onClose={closeModal}>
