@@ -68,7 +68,7 @@
     "postcss": "^8.3.6",
     "prettier": "^2.2.1",
     "pretty-quick": "^3.1.0",
-    "serve": "^11.3.2",
+    "serve": "^13.0.2",
     "single-spa": "^5.8.2",
     "single-spa-layout": "1.5.3",
     "single-spa-react": "^4.0.0",
