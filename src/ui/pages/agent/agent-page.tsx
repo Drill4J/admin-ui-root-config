@@ -33,15 +33,20 @@ export const AgentPage = () => {
   const { id = "" } = agent || {};
   const { systemSettings } = useActiveBuild(id) || {};
   const [activeBuildInfo] = useAdminConnection<AgentBuildInfo[]>(`/api/agent/${id}/builds`) || [];
+  const agentsList = useAdminConnection<AgentInfo[]>("/api/agents");
   const setPanel = useSetPanelContext();
 
   const agentWithSystemSettings = { ...Object(agent), systemSettings };
 
   useEffect(() => {
-    if (agent !== null && !agent.id) {
+    if (agentsList && !agentsList.length) {
       push(getPagePath({ name: "root" }));
     }
-  }, [agent]);
+
+    if (agentsList?.length && !agentsList.find(agentItem => agentItem.id === agentId)) {
+      push(getPagePath({ name: "root" }));
+    }
+  }, [agentsList]);
 
   return (
     <div tw="flex flex-col flex-grow w-full h-full">

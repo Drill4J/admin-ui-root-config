@@ -25,9 +25,9 @@ import { ServiceGroup } from "../service-group";
 export const PageSwitcher = () => {
   const { agentId, groupId } = useRouteParams();
   const agentsList = useAdminConnection<AgentInfo[]>("/api/agents") || [];
-  const isAllAgentsUnregistered = agentsList.every((agent) => agent.agentStatus === AGENT_STATUS.NOT_REGISTERED);
+  const isAllAgentsUnregistered = agentsList.every((agentItem) => agentItem.agentStatus === AGENT_STATUS.NOT_REGISTERED);
 
-  if (isAllAgentsUnregistered) {
+  if (isAllAgentsUnregistered && !agentId && !groupId) {
     return <NoAgentsRegisteredStub />;
   }
 
