@@ -13,16 +13,16 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import { ContentAlert, Icons } from "@drill4j/ui-kit";
 import tw, { styled } from "twin.macro";
 
+import { DarkDropdown } from "components";
 import { useAdminConnection } from "hooks";
 import { Notification as NotificationType } from "types";
 import { PanelWithCloseIcon } from "../panel-with-close-icon";
 import { PanelProps } from "../panel-props";
 import { deleteAllNotifications, readAllNotifications } from "./api";
-import { Notification } from "./notification";
 import { PanelStub } from "../../panel-stub";
 import { getBuildNotification } from "./get-build-notification";
 
@@ -30,6 +30,31 @@ export const NotificationsPanel = ({ isOpen, onClosePanel }: PanelProps) => {
   const [errorMessage, setErrorMessage] = useState("");
   const notifications = useAdminConnection<NotificationType[]>("/notifications") || [];
   const unreadNotifications = notifications.filter(({ read }) => !read).length;
+  const [filter, setFilter] = useState<any>("all");
+  const [filteredNotifications, setFilteredNotifications] = useState<NotificationType[]>([]);
+
+  const notificationTypes = [
+    {
+      value: "all",
+      label: "All Notifications",
+    },
+    {
+      value: "BUILD",
+      label: "Build",
+    },
+    {
+      value: "BUILD1",
+      label: "Build1",
+    },
+  ];
+
+  useEffect(() => {
+    if (filter === "all") {
+      setFilteredNotifications(notifications);
+    } else {
+      setFilteredNotifications(notifications.filter(notification => notification.type === filter));
+    }
+  }, [filter, notifications]);
 
   return (
     <PanelWithCloseIcon
@@ -45,27 +70,34 @@ export const NotificationsPanel = ({ isOpen, onClosePanel }: PanelProps) => {
       {notifications.length > 0 ? (
         <div tw="absolute inset-0 flex flex-col flex-grow overflow-y-hidden">
           <ActionsPanel>
-            <span
-              tw="mr-4"
-              onClick={() =>
-                readAllNotifications({ onError: setErrorMessage })}
-              data-test="notification-sidebar:mark-all-as-read"
-            >
-              Mark all as read
-            </span>
-            <span
-              onClick={() =>
-                deleteAllNotifications({ onError: setErrorMessage })}
-              data-test="notification-sidebar:clear-all"
-            >
-              Clear all
-            </span>
+            <DarkDropdown
+              items={notificationTypes}
+              onChange={(value => setFilter(value))}
+              value={filter}
+            />
+            <div>
+              <span
+                tw="mr-4"
+                onClick={() =>
+                  readAllNotifications({ onError: setErrorMessage })}
+                data-test="notification-sidebar:mark-all-as-read"
+              >
+                Mark all as read
+              </span>
+              <span
+                onClick={() =>
+                  deleteAllNotifications({ onError: setErrorMessage })}
+                data-test="notification-sidebar:clear-all"
+              >
+                Clear all
+              </span>
+            </div>
           </ActionsPanel>
           {errorMessage && (
             <ContentAlert type="ERROR">{errorMessage}</ContentAlert>
           )}
           <div className="custom-scroll" tw="overflow-hidden overflow-y-auto">
-            {notifications.map((notification) => {
+            {filteredNotifications.map((notification) => {
               switch (notification.type) {
                 case "BUILD":
                   return getBuildNotification(notification);
@@ -89,7 +121,7 @@ export const NotificationsPanel = ({ isOpen, onClosePanel }: PanelProps) => {
 };
 
 const ActionsPanel = styled.div`
-  ${tw`flex justify-end items-center w-full px-6 py-4 font-bold text-12 text-blue-default`}
+  ${tw`flex justify-between items-center w-full px-6 py-4 font-bold text-12 text-blue-default`}
   & > * {
     ${tw`cursor-pointer hover:text-blue-medium-tint active:text-blue-shade`}
   }
