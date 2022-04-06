@@ -22,7 +22,7 @@ import { useAdminConnection } from "hooks";
 import { Notification as NotificationType } from "types";
 import { PanelWithCloseIcon } from "../panel-with-close-icon";
 import { PanelProps } from "../panel-props";
-import { deleteAllNotifications, readAllNotifications } from "./api";
+import { readAllNotifications } from "./api";
 import { PanelStub } from "../../panel-stub";
 import { getBuildNotification } from "./get-build-notification";
 
@@ -43,8 +43,8 @@ export const NotificationsPanel = ({ isOpen, onClosePanel }: PanelProps) => {
       label: "Build",
     },
     {
-      value: "BUILD1",
-      label: "Build1",
+      value: "AGENTS",
+      label: "Agents",
     },
   ];
 
@@ -75,23 +75,13 @@ export const NotificationsPanel = ({ isOpen, onClosePanel }: PanelProps) => {
               onChange={(value => setFilter(value))}
               value={filter}
             />
-            <div>
-              <span
-                tw="mr-4"
-                onClick={() =>
-                  readAllNotifications({ onError: setErrorMessage })}
-                data-test="notification-sidebar:mark-all-as-read"
-              >
-                Mark all as read
-              </span>
-              <span
-                onClick={() =>
-                  deleteAllNotifications({ onError: setErrorMessage })}
-                data-test="notification-sidebar:clear-all"
-              >
-                Clear all
-              </span>
-            </div>
+            <span
+              onClick={() =>
+                readAllNotifications({ onError: setErrorMessage })}
+              data-test="notification-sidebar:mark-all-as-read"
+            >
+              Mark all as read
+            </span>
           </ActionsPanel>
           {errorMessage && (
             <ContentAlert type="ERROR">{errorMessage}</ContentAlert>
@@ -121,7 +111,7 @@ export const NotificationsPanel = ({ isOpen, onClosePanel }: PanelProps) => {
 };
 
 const ActionsPanel = styled.div`
-  ${tw`flex justify-between items-center w-full px-6 py-4 font-bold text-12 text-blue-default`}
+  ${tw`flex justify-between items-center w-full px-6 pt-4 pb-2 font-bold text-14 leading-32 text-blue-default`}
   & > * {
     ${tw`cursor-pointer hover:text-blue-medium-tint active:text-blue-shade`}
   }

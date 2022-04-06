@@ -18,6 +18,7 @@ import tw, { styled } from "twin.macro";
 import { Notification as NotificationType } from "types";
 import { getRoutePath } from "common";
 import { Notification } from "./notification";
+import { toggleNotification } from "./api";
 
 export function getBuildNotification({
   id = "", read = true, agentId, agentName, createdAt, message: { currentId: buildVersion = "" } = {},
@@ -30,6 +31,7 @@ export function getBuildNotification({
       target="_blank"
       rel="noopener noreferrer"
       data-test="notification:notification-button-dashboard"
+      onClick={() => toggleNotification(id, true)}
     >
       Go to Build
     </Link>

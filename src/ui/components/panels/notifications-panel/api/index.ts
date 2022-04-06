@@ -13,8 +13,7 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-export { readNotification } from "./read-notification";
+export { toggleNotification } from "./toggle-notification";
 export { deleteNotification } from "./delete-notification";
 export { readAllNotifications } from "./read-all-notifications";
 export { deleteAllNotifications } from "./delete-all-notifications";
-export { unreadNotification } from "./unread-notification";

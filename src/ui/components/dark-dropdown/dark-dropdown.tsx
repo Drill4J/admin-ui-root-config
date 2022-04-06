@@ -30,7 +30,7 @@ interface Props {
   onChange: (value: Value) => void;
   value: Value;
 }
-// TODo remove this component
+
 export const DarkDropdown = ({
   items, onChange, value, ...rest
 }: Props) => {
@@ -42,7 +42,7 @@ export const DarkDropdown = ({
 
   return (
     <Popover>
-      {({ setIsOpen, isOpen }) => {
+      {({ setIsOpen, isOpen }: {isOpen:boolean, setIsOpen: (status: boolean) => void}) => {
         const { ref, intersectionSide } = useIntersectionSide({ dependency: [isOpen] });
         const { height: dropdownLabelHeight = 0 } = labelNode?.current?.getBoundingClientRect() || {};
 
@@ -63,13 +63,15 @@ export const DarkDropdown = ({
                 >
                   {items.map(({ label, value: itemValue }) => (
                     <div
-                      tw="flex items-center px-4 py-2 text-monochrome-medium-tint text-14 leading-20 hover:bg-monochrome-dark100"
+                      tw="flex items-center px-4 py-2 text-monochrome-medium-tint
+                      text-14 leading-20 hover:(bg-monochrome-default bg-opacity-10)"
                       data-test="dropdown:item"
                       onClick={(() => onChange(itemValue))}
                       key={value}
                     >
-                      {itemValue === value && <Icons.Check width={14} height={10} viewBox="0 0 14 10" tw="absolute text-blue-default" />}
-                      <span tw="ml-6 whitespace-nowrap font-regular">{label}</span>
+                      {itemValue === value ?
+                        (<span tw="ml-6 whitespace-nowrap font-regular text-blue-default">{label}</span>)
+                        : (<span tw="ml-6 whitespace-nowrap font-regular">{label}</span>)}
                     </div>
                   ))}
                 </ScrollContainer>

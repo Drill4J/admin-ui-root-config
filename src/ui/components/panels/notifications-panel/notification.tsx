@@ -19,7 +19,7 @@ import tw, { styled } from "twin.macro";
 import {
   Icons, Popover, Typography, useHover, useIntersectionSide,
 } from "@drill4j/ui-kit";
-import { deleteNotification, readNotification, unreadNotification } from "./api";
+import { deleteNotification, toggleNotification } from "./api";
 
 interface Props {
   id: string,
@@ -37,7 +37,7 @@ export const Notification = ({
   return (
     <Body unread={!read} ref={ref}>
       <div
-        onClick={() => (read ? unreadNotification(id) : readNotification(id))}
+        onClick={() => toggleNotification(id, !read)}
         tw="h-full w-9 flex justify-center items-center cursor-pointer"
       >
         <NotificationStatusIndicator active={!read || isVisible} />
@@ -102,7 +102,7 @@ interface MenuProps {
 const Menu = ({ id, read }: MenuProps) => (
   <div>
     <Popover>
-      {({ isOpen, setIsOpen }) => {
+      {({ isOpen, setIsOpen }: {isOpen:boolean, setIsOpen: (status: boolean) => void}) => {
         const { ref, intersectionSide } = useIntersectionSide({ dependency: [isOpen] });
         const position = intersectionSide === "bottom" ? "top" : "bottom";
 
@@ -117,12 +117,12 @@ const Menu = ({ id, read }: MenuProps) => (
                 position={position}
               >
                 {read ? (
-                  <Item onClick={() => unreadNotification(id)}>
+                  <Item onClick={() => toggleNotification(id, !read)}>
                     <Icons.EyeCrossed width={16} height={16} />
                     Mark as unread
                   </Item>
                 ) : (
-                  <Item onClick={() => readNotification(id)}>
+                  <Item onClick={() => toggleNotification(id, !read)}>
                     <Icons.Eye width={16} height={16} />
                     Mark as read
                   </Item>
@@ -157,5 +157,5 @@ const ItemListWrapper = styled.div<{ position: Position }>(({ position }) => [
 
 const Item = styled.div`
   ${tw`flex items-center gap-x-2 h-7 px-4 text-monochrome-medium-tint text-14 leading-20`}
-  ${tw`hover:bg-monochrome-dark100`}
+  ${tw`hover:(bg-monochrome-default bg-opacity-10)`}
 `;

@@ -15,20 +15,23 @@
  */
 import axios from "axios";
 
-export async function unreadNotification(
+export async function toggleNotification(
   notificationId: string,
+  read: boolean,
   {
     onSuccess,
     onError,
   }: { onSuccess?: () => void; onError?: (message: string) => void } = {},
 ) {
   try {
-    await axios.patch(`/notifications/${notificationId}/unread`);
+    await axios.patch(`/notifications/${notificationId}/toggle`, {
+      isRead: read,
+    });
     onSuccess && onSuccess();
   } catch ({ response: { data: { message } = {} } = {} }) {
     onError &&
-    onError(
-      message as string || "There is some issue with your action. Please try again.",
-    );
+      onError(
+        message as string || "There is some issue with your action. Please try again.",
+      );
   }
 }
