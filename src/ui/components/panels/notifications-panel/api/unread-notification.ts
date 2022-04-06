@@ -13,8 +13,22 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-export { readNotification } from "./read-notification";
-export { deleteNotification } from "./delete-notification";
-export { readAllNotifications } from "./read-all-notifications";
-export { deleteAllNotifications } from "./delete-all-notifications";
-export { unreadNotification } from "./unread-notification";
+import axios from "axios";
+
+export async function unreadNotification(
+  notificationId: string,
+  {
+    onSuccess,
+    onError,
+  }: { onSuccess?: () => void; onError?: (message: string) => void } = {},
+) {
+  try {
+    await axios.patch(`/notifications/${notificationId}/unread`);
+    onSuccess && onSuccess();
+  } catch ({ response: { data: { message } = {} } = {} }) {
+    onError &&
+    onError(
+      message as string || "There is some issue with your action. Please try again.",
+    );
+  }
+}

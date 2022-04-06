@@ -96,7 +96,7 @@ export const NotificationsPanel = ({ isOpen, onClosePanel }: PanelProps) => {
           {errorMessage && (
             <ContentAlert type="ERROR">{errorMessage}</ContentAlert>
           )}
-          <div className="custom-scroll" tw="overflow-hidden overflow-y-auto">
+          <div className="custom-scroll" tw="overflow-hidden overflow-y-auto h-full">
             {filteredNotifications.map((notification) => {
               switch (notification.type) {
                 case "BUILD":

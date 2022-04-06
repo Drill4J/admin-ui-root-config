@@ -19,6 +19,7 @@ import tw, { styled } from "twin.macro";
 import {
   Icons, Popover, Typography, useHover, useIntersectionSide,
 } from "@drill4j/ui-kit";
+import { deleteNotification, readNotification, unreadNotification } from "./api";
 
 interface Props {
   id: string,
@@ -35,7 +36,10 @@ export const Notification = ({
   const { ref, isVisible } = useHover();
   return (
     <Body unread={!read} ref={ref}>
-      <div tw="h-full w-9 flex justify-center items-center cursor-pointer">
+      <div
+        onClick={() => (read ? unreadNotification(id) : readNotification(id))}
+        tw="h-full w-9 flex justify-center items-center cursor-pointer"
+      >
         <NotificationStatusIndicator active={!read || isVisible} />
       </div>
       <div tw="py-2 pr-4 min-w-[1px]">
@@ -112,8 +116,20 @@ const Menu = ({ id, read }: MenuProps) => (
                 ref={ref}
                 position={position}
               >
-                <Item>
-                  asdas
+                {read ? (
+                  <Item onClick={() => unreadNotification(id)}>
+                    <Icons.EyeCrossed width={16} height={16} />
+                    Mark as unread
+                  </Item>
+                ) : (
+                  <Item onClick={() => readNotification(id)}>
+                    <Icons.Eye width={16} height={16} />
+                    Mark as read
+                  </Item>
+                )}
+                <Item onClick={() => deleteNotification(id)}>
+                  <Icons.Delete width={16} height={16} />
+                  Delete
                 </Item>
               </ItemListWrapper>
             )}
@@ -140,6 +156,6 @@ const ItemListWrapper = styled.div<{ position: Position }>(({ position }) => [
 ]);
 
 const Item = styled.div`
-  ${tw`flex items-center h-7 px-4 text-monochrome-medium-tint text-14 leading-20`}
+  ${tw`flex items-center gap-x-2 h-7 px-4 text-monochrome-medium-tint text-14 leading-20`}
   ${tw`hover:bg-monochrome-dark100`}
 `;
