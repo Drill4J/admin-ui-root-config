@@ -41,5 +41,6 @@ export function getBuildNotification({
 }
 
 const Link = styled.a`
-  ${tw`text-12 leading-24 text-blue-default`}
+  ${tw`text-12 leading-24 font-bold text-blue-default`}
+  ${tw`hover:text-blue-medium-tint`}
 `;

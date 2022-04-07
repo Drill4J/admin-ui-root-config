@@ -35,12 +35,13 @@ export const Notification = ({
 }: Props) => {
   const { ref, isVisible } = useHover();
   return (
-    <Body unread={!read} ref={ref}>
+    <Body unread={!read}>
       <div
+        ref={ref}
         onClick={() => toggleNotification(id, !read)}
         tw="h-full w-9 flex justify-center items-center cursor-pointer"
       >
-        <NotificationStatusIndicator active={!read || isVisible} />
+        <NotificationStatusIndicator active={!read} hover={isVisible} />
       </div>
       <div tw="py-2 pr-4 min-w-[1px]">
         <LineContainer>
@@ -80,9 +81,10 @@ const Title = styled.div(({ unread }: { unread?: boolean }) => [
 ]);
 
 const NotificationStatusIndicator = styled.div(
-  ({ active }: { active?: boolean }) => [
+  ({ active, hover }: { active?: boolean, hover: boolean }) => [
     tw`w-1 h-16 rounded bg-monochrome-gray`,
     active && tw`bg-blue-default`,
+    hover && tw`bg-blue-medium-tint`,
   ],
 );
 
@@ -118,12 +120,12 @@ const Menu = ({ id, read }: MenuProps) => (
               >
                 {read ? (
                   <Item onClick={() => toggleNotification(id, !read)}>
-                    <Icons.EyeCrossed width={16} height={16} />
+                    <Icons.Eye width={16} height={16} />
                     Mark as unread
                   </Item>
                 ) : (
                   <Item onClick={() => toggleNotification(id, !read)}>
-                    <Icons.Eye width={16} height={16} />
+                    <Icons.EyeCrossed width={16} height={16} />
                     Mark as read
                   </Item>
                 )}

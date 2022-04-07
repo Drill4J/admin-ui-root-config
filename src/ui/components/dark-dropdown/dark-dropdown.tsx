@@ -70,8 +70,8 @@ export const DarkDropdown = ({
                       key={value}
                     >
                       {itemValue === value ?
-                        (<span tw="ml-6 whitespace-nowrap font-regular text-blue-default">{label}</span>)
-                        : (<span tw="ml-6 whitespace-nowrap font-regular">{label}</span>)}
+                        (<span tw="whitespace-nowrap font-regular text-blue-default">{label}</span>)
+                        : (<span tw="whitespace-nowrap font-regular">{label}</span>)}
                     </div>
                   ))}
                 </ScrollContainer>
