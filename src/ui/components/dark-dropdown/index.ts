@@ -13,22 +13,4 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-import axios from "axios";
-
-export async function readNotification(
-  notificationId: string,
-  {
-    onSuccess,
-    onError,
-  }: { onSuccess?: () => void; onError?: (message: string) => void } = {},
-) {
-  try {
-    await axios.patch(`/notifications/${notificationId}/read`);
-    onSuccess && onSuccess();
-  } catch ({ response: { data: { message } = {} } = {} }) {
-    onError &&
-      onError(
-        message as string || "There is some issue with your action. Please try again.",
-      );
-  }
-}
+export { DarkDropdown } from "./dark-dropdown";

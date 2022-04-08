@@ -15,125 +15,149 @@
  */
 import React from "react";
 import { format } from "timeago.js";
-import { Icons, Typography, useHover } from "@drill4j/ui-kit";
 import tw, { styled } from "twin.macro";
-
-import { Notification as NotificationType } from "types";
-import { getPagePath } from "common";
-import { readNotification, deleteNotification } from "./api";
+import {
+  Icons, Popover, Typography, useHover, useIntersectionSide,
+} from "@drill4j/ui-kit";
+import { deleteNotification, toggleNotification } from "./api";
 
 interface Props {
-  notification: NotificationType;
-  onError?: (message: string) => void;
+  id: string,
+  read: boolean,
+  title: string,
+  info: string,
+  date?: number,
+  link: React.ReactNode,
 }
 
 export const Notification = ({
-  notification: {
-    agentId = "",
-    createdAt,
-    read,
-    id = "",
-    message: { currentId: buildVersion = "" } = {},
-  },
-  onError,
+  title, read, info, date, link, id,
 }: Props) => {
   const { ref, isVisible } = useHover();
   return (
-    <Content ref={ref}>
-      <div tw="flex justify-between items-center w-full leading-16 text-monochrome-gray">
-        <span tw="truncate" title={agentId}>{agentId}</span>
-        <SinceNotificationArrived isHover={isVisible}>
-          {format(createdAt || Date.now())}
-        </SinceNotificationArrived>
+    <Body unread={!read}>
+      <div
+        ref={ref}
+        onClick={() => toggleNotification(id, !read)}
+        tw="h-full w-9 flex justify-center items-center cursor-pointer"
+      >
+        <NotificationStatusIndicator active={!read} hover={isVisible} />
       </div>
-      <BuildVersion unread={!read}>
-        <span tw="flex items-center w-full" title={`Build ${buildVersion}`}>
-          <NotificationStatusIndicator tw="mr-2" unread={!read} />
-          <Typography.MiddleEllipsis tw="inline">
-            <span tw="whitespace-nowrap">Build {buildVersion} arrived</span>
-          </Typography.MiddleEllipsis>
-        </span>
-        <div
-          css={[
-            tw`hidden justify-end gap-x-4 items-center`,
-            isVisible && tw`flex`,
-          ]}
-        >
-          <MarkAsReadButton
-            className="link"
-            onClick={() => readNotification(id, { onError })}
-            read={read}
-            data-test="notification:mark-as-read-button"
-          >
-            <Icons.Success />
-          </MarkAsReadButton>
-          <DeleteNotificationButton
-            onClick={() => deleteNotification(id, { onError })}
-            data-test="notification:delete-notification-button"
-          >
-            <Icons.Cancel />
-          </DeleteNotificationButton>
-        </div>
-      </BuildVersion>
-      <div className="flex gap-x-4 font-bold h-4">
-        <a
-          className="link"
-          href={getPagePath({ name: "agentDashboard", params: { agentId } })}
-          target="_blank"
-          rel="noopener noreferrer"
-          data-test="notification:notification-button-dashboard"
-        >
-          Dashboard
-        </a>
-        <div
-          tw="text-blue-default opacity-50 cursor-not-allowed"
-          data-test="notification:notification-button-whats-new"
-        >
-          What’s new
-        </div>
+      <div tw="py-2 pr-4 min-w-[1px]">
+        <LineContainer>
+          <div tw="w-[calc(100% - 24px)]">
+            <Typography.MiddleEllipsis tw="inline">
+              <Title unread={!read}>
+                <span className="ellipseMe">
+                  {title}
+                </span>
+              </Title>
+            </Typography.MiddleEllipsis>
+          </div>
+          <Menu id={id} read={read} />
+        </LineContainer>
+        <LineContainer>
+          <AgentInfo>
+            {info}
+          </AgentInfo>
+        </LineContainer>
+        <LineContainer>
+          {link}
+          <span tw="text-12 leading-16 text-monochrome-dark-tint">{format(date || Date.now())}</span>
+        </LineContainer>
       </div>
-    </Content>
+    </Body>
   );
 };
 
-const Content = styled.div`
-  ${tw`flex flex-col justify-center gap-y-2 pt-1 px-6 pb-2 h-20`}
-  ${tw`text-12 text-monochrome-default border-b border-monochrome-dark first:border-t`}
-  ${tw`hover:(bg-monochrome-default bg-opacity-5)`}
-`;
+const Body = styled.div(({ unread }: { unread?: boolean }) => [
+  tw`grid grid-cols-[36px 1fr] mx-2 my-1 h-22 rounded-lg`,
+  unread && tw`bg-monochrome-dark100`,
+]);
 
-const BuildVersion = styled.div(({ unread }: { unread?: boolean }) => [
-  tw`grid grid-cols-[336px 48px] gap-4 leading-20 text-monochrome-light-tint text-14`,
+const Title = styled.div(({ unread }: { unread?: boolean }) => [
+  tw`leading-20 text-14 whitespace-nowrap`,
   unread && tw`font-bold`,
 ]);
 
 const NotificationStatusIndicator = styled.div(
-  ({ unread }: { unread?: boolean }) => [
-    tw`min-w-8px h-2 rounded bg-monochrome-gray`,
-    unread && tw`bg-blue-default`,
+  ({ active, hover }: { active?: boolean, hover: boolean }) => [
+    tw`w-1 h-16 rounded bg-monochrome-gray`,
+    active && tw`bg-blue-default`,
+    hover && tw`bg-blue-medium-tint`,
   ],
 );
 
-const SinceNotificationArrived = styled.div`
-  ${tw`h-4 min-w-[100px] text-right`}
-  ${({ isHover }: { isHover: boolean }) =>
-    isHover &&
-    `
-      overflow: hidden;
-      white-space: nowrap;
-      position: relative;
-      background: linear-gradient(90deg,currentColor 40%,transparent 80%);
-      -webkit-background-clip: text;
-      background-clip: text;
-      -webkit-text-fill-color: transparent;
+const AgentInfo = styled.div`
+  ${tw`text-monochrome-dark-tint text-12 leading-16 truncate`}
+`;
+
+const LineContainer = styled.div`
+  ${tw`h-6 w-full flex items-center justify-between`}
+`;
+
+interface MenuProps {
+  id: string,
+  read: boolean,
+}
+
+const Menu = ({ id, read }: MenuProps) => (
+  <div>
+    <Popover>
+      {({ isOpen, setIsOpen }: {isOpen:boolean, setIsOpen: (status: boolean) => void}) => {
+        const { ref, intersectionSide } = useIntersectionSide({ dependency: [isOpen] });
+        const position = intersectionSide === "bottom" ? "top" : "bottom";
+
+        return (
+          <MenuIcon
+            onClick={() => setIsOpen(!isOpen)}
+          >
+            <Icons.MoreOptions height={16} width={16} rotate={90} />
+            {isOpen && (
+              <ItemListWrapper
+                ref={ref}
+                position={position}
+              >
+                {read ? (
+                  <Item onClick={() => toggleNotification(id, !read)}>
+                    <Icons.Eye width={16} height={16} />
+                    Mark as unread
+                  </Item>
+                ) : (
+                  <Item onClick={() => toggleNotification(id, !read)}>
+                    <Icons.EyeCrossed width={16} height={16} />
+                    Mark as read
+                  </Item>
+                )}
+                <Item onClick={() => deleteNotification(id)}>
+                  <Icons.Delete width={16} height={16} />
+                  Delete
+                </Item>
+              </ItemListWrapper>
+            )}
+          </MenuIcon>
+        );
+      }}
+    </Popover>
+  </div>
+);
+
+const MenuIcon = styled.div`
+  ${tw`relative flex items-center text-blue-default cursor-pointer max-h-[32px] max-w-[32px]
+    hover:text-blue-medium-tint
+    active:text-blue-shade
   `}
 `;
 
-const MarkAsReadButton = styled.div(({ read }: { read?: boolean }) => [
-  tw`h-4 cursor-pointer`,
-  read && tw`hidden`,
+type Position = "bottom" | "top"
+
+const ItemListWrapper = styled.div<{ position: Position }>(({ position }) => [
+  tw`absolute z-50 w-[200px] py-2 right-[calc(50% - 22px)] bg-monochrome-black rounded border border-solid border-monochrome-dark100`,
+  position === "bottom" && tw`top-[calc(100% + 12px)]`,
+  position === "top" && tw`bottom-[calc(100% + 12px)]`,
 ]);
 
-const DeleteNotificationButton = styled.div`
-  ${tw`h-4 cursor-pointer text-red-default hover:text-red-medium-tint active:text-red-shade`}
+const Item = styled.div`
+  ${tw`flex items-center gap-x-2 h-7 px-4 text-monochrome-medium-tint text-14 leading-20`}
+  ${tw`hover:(bg-monochrome-default bg-opacity-10)`}
 `;

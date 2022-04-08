@@ -13,7 +13,25 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-export { toggleNotification } from "./toggle-notification";
-export { deleteNotification } from "./delete-notification";
-export { readAllNotifications } from "./read-all-notifications";
-export { deleteAllNotifications } from "./delete-all-notifications";
+import axios from "axios";
+
+export async function toggleNotification(
+  notificationId: string,
+  read: boolean,
+  {
+    onSuccess,
+    onError,
+  }: { onSuccess?: () => void; onError?: (message: string) => void } = {},
+) {
+  try {
+    await axios.patch(`/notifications/${notificationId}/toggle`, {
+      isRead: read,
+    });
+    onSuccess && onSuccess();
+  } catch ({ response: { data: { message } = {} } = {} }) {
+    onError &&
+      onError(
+        message as string || "There is some issue with your action. Please try again.",
+      );
+  }
+}
