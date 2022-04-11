@@ -49,7 +49,7 @@ export const JavaAgentRegistrationPanel = ({ isOpen, onClosePanel, payload }: Pa
             required("id", "Agent ID"),
             required("name", "Agent Name"),
             sizeLimit({
-              name: "name", alias: "Name size should be between 3 and 64 characters", min: 3, max: 64,
+              name: "name", alias: "Name", min: 3, max: 64,
             }),
             sizeLimit({ name: "description", min: 3, max: 256 }),
           ),

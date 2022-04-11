@@ -206,7 +206,7 @@ function saveSettings(
 }
 
 function getTabValidationSchema(activeTab: string, agentType: string) {
-  const sizeLimitNameMessage = `${agentType === "Group" ? "Service Group" : ""} Name size should be between 3 and 64 characters`;
+  const sizeLimitNameMessage = `${agentType === "Group" ? "Service Group" : ""} Name`;
   const requiredNameMessage = `${agentType === "Group" ? "Service Group" : "Agent"} Name`;
   switch (activeTab) {
     case "general":
