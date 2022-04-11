@@ -69,7 +69,7 @@ export const SystemSettingsRegistrationStep = () => (
             <Tooltip
               message={(
                 <div tw="text-[13px] leading-20">
-                  Session header name to track User actions on your target app.
+                  Session header name to track User actions on your target app
                 </div>
               )}
             >
