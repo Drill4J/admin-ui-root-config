@@ -42,7 +42,7 @@ export const JsAgentRegistrationPanel = ({ isOpen, onClosePanel, payload }: Pane
             required("id", "Agent ID"),
             required("name", "Agent Name"),
             sizeLimit({
-              name: "name", alias: "Name size should be between 3 and 64 characters", min: 3, max: 64,
+              name: "name", alias: "Name", min: 3, max: 64,
             }),
             unusedAgentName("name", agents),
             sizeLimit({ name: "environment" }),
