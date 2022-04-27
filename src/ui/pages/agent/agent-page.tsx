@@ -43,7 +43,7 @@ export const AgentPage = () => {
       push(getPagePath({ name: "root" }));
     }
 
-    if (agentsList?.length && !agentsList.find(agentItem => agentItem.id === agentId)) {
+    if (agentsList?.length && !agentsList.find(agentItem => agentItem.id === agentId && agentItem.agentStatus !== "NOT_REGISTERED")) {
       push(getPagePath({ name: "root" }));
     }
   }, [agentsList]);
