@@ -146,7 +146,6 @@ export const Stepper = ({
                       type="button"
                       onClick={goToPrevStep}
                       data-test="wizard:previous-step"
-                      disabled={!isValid}
                     >
                       <Icons.Expander width={7} height={12} rotate={180} />
                       Back
