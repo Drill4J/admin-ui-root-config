@@ -22,6 +22,7 @@ import { PluginsSelector } from "./plugins-selector";
 import { Notifications } from "./notifications";
 import { Logout } from "./logout";
 import { SelectedEntity } from "./selected-entity";
+import { MenuLinks } from "../menu-links";
 
 export const Navigation = (props: unknown) => (
   <div tw="flex flex-col w-12 h-full px-[6px] bg-monochrome-black" {...props}>
@@ -34,6 +35,7 @@ export const Navigation = (props: unknown) => (
       <PluginsSelector />
       <div tw="mt-2 space-y-2">
         <Notifications />
+        <MenuLinks />
         <Logout />
       </div>
     </ActionsWrapper>
@@ -41,6 +43,6 @@ export const Navigation = (props: unknown) => (
 );
 
 const ActionsWrapper = styled.div`
-  ${tw`grid gap-y-4 py-4 flex-grow`}
-  grid-template-rows: repeat(2, 36px) 1fr 80px;
+  ${tw`grid gap-y-4 py-4 flex-grow min-h-[1px]`}
+  grid-template-rows: repeat(2, 36px) 1fr auto;
 `;

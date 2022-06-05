@@ -19,9 +19,10 @@ import "twin.macro";
 
 import { useActiveBuild, useAdminConnection, useRouteParams } from "hooks";
 import { BUILD_STATUS, getPagePath, routes } from "common";
-import { AgentBuildInfo, AgentInfo } from "types";
+import { AgentBuildInfo, AgentInfo, AnalyticsInfo } from "types";
 import { useSetPanelContext } from "components";
 import { Icons, Spinner, Stub } from "@drill4j/ui-kit";
+import ReactGA from "react-ga";
 import { Dashboard } from "../dashboard";
 import { Plugin } from "./plugin";
 import { DashboardHeader } from "./dashboard-header";
@@ -34,7 +35,12 @@ export const AgentPage = () => {
   const { systemSettings } = useActiveBuild(id) || {};
   const [activeBuildInfo] = useAdminConnection<AgentBuildInfo[]>(`/api/agent/${id}/builds`) || [];
   const agentsList = useAdminConnection<AgentInfo[]>("/api/agents");
+  const { isAnalyticsDisabled } = useAdminConnection<AnalyticsInfo>("/api/analytics/info") || {};
   const setPanel = useSetPanelContext();
+
+  useEffect(() => {
+    !isAnalyticsDisabled && ReactGA.set({ dimension2: agentId });
+  }, [agentId, isAnalyticsDisabled]);
 
   const agentWithSystemSettings = { ...Object(agent), systemSettings };
 

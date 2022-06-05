@@ -17,13 +17,13 @@ import React, { useLayoutEffect, useState } from "react";
 import { useHistory } from "react-router-dom";
 import axios from "axios";
 import {
-  Button, ContentAlert, Field, Fields, Form, Formik,
+  addQueryParamsToPath, Button, ContentAlert, Field, Fields, Form, Formik,
 } from "@drill4j/ui-kit";
 import tw, { styled } from "twin.macro";
 
 import { LoginLayout } from "layouts";
-import { getCustomPath } from "common";
 import { TOKEN_HEADER, TOKEN_KEY } from "common/constants";
+import { getCustomPath } from "common";
 
 const SignInForm = styled(Form)`
   ${tw`flex flex-col gap-y-6 mt-6 w-88`}
@@ -54,7 +54,7 @@ export const LoginPage = () => {
 
   useLayoutEffect(() => {
     if (localStorage.getItem(TOKEN_KEY)) {
-      push(getCustomPath());
+      push(addQueryParamsToPath({ activeModal: "analityc" }, `${getCustomPath()}/`));
     }
   }, []);
 

@@ -16,8 +16,8 @@
 import React, { useEffect } from "react";
 import "twin.macro";
 import { Route, Switch, useHistory } from "react-router-dom";
-
-import { ServiceGroup as ServiceGroupType, ServiceGroupEntity } from "types";
+import ReactGA from "react-ga";
+import { AnalyticsInfo, ServiceGroup as ServiceGroupType, ServiceGroupEntity } from "types";
 import { useAdminConnection, useRouteParams } from "hooks";
 import { getPagePath, routes } from "common";
 import { useSetPanelContext } from "components";
@@ -31,6 +31,7 @@ export const ServiceGroup = () => {
   const { push } = useHistory();
   const group = useAdminConnection<ServiceGroupType>(`/groups/${groupId}`) || {} as ServiceGroupType;
   const groupsList = useAdminConnection<ServiceGroupEntity[]>("/api/groups");
+  const { isAnalyticsDisabled } = useAdminConnection<AnalyticsInfo>("/api/analytics/info") || {};
   const setPanel = useSetPanelContext();
 
   useEffect(() => {
@@ -42,6 +43,10 @@ export const ServiceGroup = () => {
       push(getPagePath({ name: "root" }));
     }
   }, [groupsList]);
+
+  useEffect(() => {
+    !isAnalyticsDisabled && ReactGA.set({ dimension2: groupId });
+  }, [groupId, isAnalyticsDisabled]);
 
   return (
     <div tw="flex flex-col w-full h-full">

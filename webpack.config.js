@@ -61,6 +61,8 @@ module.exports = (webpackConfigEnv, argv) => {
         modules: path.resolve(__dirname, "src/ui/modules/"),
         forms: path.resolve(__dirname, "src/ui/forms/"),
         utils: path.resolve(__dirname, "src/ui/utils/"),
+        analityc: path.resolve(__dirname, "src/ui/analityc"),
+        "analytic-context": path.resolve(__dirname, "src/ui/analytic-context/"),
         "notification-manager": path.resolve(
           __dirname,
           "src/ui/notification-manager/",

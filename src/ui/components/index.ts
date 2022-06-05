@@ -36,3 +36,4 @@ export { Breadcrumbs } from "./breadcrumbs";
 export { AgentStatusBadge } from "./agent-status-badge";
 export { IndicatorInEdge } from "./indicator-in-edge";
 export { DarkDropdown } from "./dark-dropdown";
+export { MenuLinks } from "./menu-links";

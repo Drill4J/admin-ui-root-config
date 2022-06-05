@@ -18,8 +18,12 @@ import { Button, Icons, LinkButton } from "@drill4j/ui-kit";
 import tw, { styled } from "twin.macro";
 
 import { useAdminConnection } from "hooks";
-import { AgentBuildInfo, AgentInfo, ServiceGroup } from "types";
+import {
+  AgentBuildInfo, AgentInfo, AnalyticsInfo, ServiceGroup,
+} from "types";
 import { AGENT_STATUS } from "common";
+import { EVENT_NAMES, sendAgentEvent } from "analityc";
+import ReactGA from "react-ga";
 import { PanelProps } from "./panel-props";
 import { PanelWithCloseIcon } from "./panel-with-close-icon";
 import { useSetPanelContext } from "./panel-context";
@@ -104,6 +108,8 @@ interface GroupRowProps {
 const GroupRow = ({ group, agents }:GroupRowProps) => {
   const [isOpen, setIsOpen] = useState(false);
   const setPanel = useSetPanelContext();
+  const { isAnalyticsDisabled } = useAdminConnection<AnalyticsInfo>("/api/analytics/info") || {};
+
   return (
     <div tw="rounded-lg border border-monochrome-dark text-monochrome-dark-tint text-14 leading-20">
       <Layout
@@ -125,7 +131,14 @@ const GroupRow = ({ group, agents }:GroupRowProps) => {
         <Button
           primary
           size="small"
-          onClick={() => setPanel({ type: "GROUP_REGISTRATION", payload: group })}
+          onClick={() => {
+            setPanel({ type: "GROUP_REGISTRATION", payload: group });
+            !isAnalyticsDisabled && ReactGA.set({ dimension2: group.id });
+            !isAnalyticsDisabled && sendAgentEvent({
+              name: EVENT_NAMES.CLICK_TO_REGISTER_BUTTON,
+              label: agents.map(agent => agent.agentType).join("#"),
+            });
+          }}
           data-test="add-agent-panel:group-row:register"
         >
           <Icons.Register width={16} height={16} /> Register
@@ -142,21 +155,31 @@ const GroupRow = ({ group, agents }:GroupRowProps) => {
 
 const AgentRow = ({ agent }: { agent: AgentInfo}) => {
   const setPanel = useSetPanelContext();
-  const { name, agentType, group } = agent;
-  const [buildInfo] = useAdminConnection<[AgentBuildInfo]>(`/api/agent/${agent.id}/builds`) || [];
+  const {
+    name, agentType, group, id,
+  } = agent;
+  const [buildInfo] = useAdminConnection<[AgentBuildInfo]>(`/api/agent/${id}/builds`) || [];
+  const { isAnalyticsDisabled } = useAdminConnection<AnalyticsInfo>("/api/analytics/info") || {};
 
   return (
     <>
       <Column tw="col-start-2" title={name}>{name}</Column>
       <Column title={agentType}>{agentType}</Column>
       <Button
-        onClick={() => setPanel({
-          type: agentType === "Java" ? "JAVA_AGENT_REGISTRATION" : "JS_AGENT_REGISTRATION",
-          payload: {
-            ...agent,
-            systemSettings: buildInfo?.systemSettings,
-          },
-        })}
+        onClick={() => {
+          setPanel({
+            type: agentType === "Java" ? "JAVA_AGENT_REGISTRATION" : "JS_AGENT_REGISTRATION",
+            payload: {
+              ...agent,
+              systemSettings: buildInfo?.systemSettings,
+            },
+          });
+          !isAnalyticsDisabled && ReactGA.set({ dimension2: id });
+          !isAnalyticsDisabled && sendAgentEvent({
+            name: EVENT_NAMES.CLICK_TO_REGISTER_BUTTON,
+            label: agentType,
+          });
+        }}
         primary={!group}
         secondary={Boolean(group)}
         size="small"

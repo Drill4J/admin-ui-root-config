@@ -34,3 +34,4 @@ export type { BuildStatus } from "./build-status";
 export type { AgentInfo, AgentInfoWithSystemSetting } from "./agent-info";
 export type { AgentBuildInfo } from "./agent-build-info";
 export type { ActiveAgentsBuild } from "./active-agents-build";
+export type { AnalyticsInfo } from "./analytics-info";
