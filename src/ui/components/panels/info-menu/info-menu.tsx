@@ -34,7 +34,7 @@ export const InfoMenu = ({ close }: Props) => {
             <CategoryHeader>Useful links</CategoryHeader>
             <Link href="https://drill4j.github.io/docs/faq" target="_blank">Documentation</Link>
             <Link href="https://github.com/Drill4J" target="_blank">GitHub</Link>
-            <Link href="https://t.me/drill4j" target="_blank">Telegram Channe</Link>
+            <Link href="https://t.me/drill4j" target="_blank">Telegram Channel</Link>
             <Link href="https://www.epam.com/" target="_blank">EPAM Sytems</Link>
             <Link href="mailto:drill4j@gmail.com" target="_blank">Contact us</Link>
           </div>
@@ -46,7 +46,7 @@ export const InfoMenu = ({ close }: Props) => {
                 push(addQueryParamsToPath({ activeModal: "analityc" }));
               }}
             >
-              Analitycs
+              Analytics
             </Button>
           </div>
         </div>
