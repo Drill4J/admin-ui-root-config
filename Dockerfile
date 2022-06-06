@@ -8,7 +8,7 @@ ENV REACT_APP_VERSION "$VERSION"
 ENV REACT_APP_API_HOST "$API_HOST"
 WORKDIR /app
 COPY . /app
-RUN npm install --silent
+RUN npm install --force
 RUN npm run build
 
 # production environment
