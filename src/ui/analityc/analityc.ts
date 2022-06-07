@@ -41,7 +41,7 @@ export const sendAgentEvent = ({ name, label }: EventProps) => {
   ReactGA.set({ dimension3: Date.now() });
   ReactGA.event({
     action: name,
-    category: "Plugin",
+    category: "Agents",
     label,
   });
 };
