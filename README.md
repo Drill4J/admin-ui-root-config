@@ -2,6 +2,15 @@
 
 For development you need a [node.js](https://nodejs.org).
 
+Current versions
+```
+$ node --version
+v16.17.0
+
+$ npm --version
+8.15.0
+```
+
 To launch the development environment, follow these steps:
 
 1. open console from the project root
