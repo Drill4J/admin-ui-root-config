@@ -38,7 +38,7 @@ export const LoginPage = () => {
 
   async function handleLogin(values?: { name: string, password: string }) {
     try {
-      const response = await axios.post("/login", values);
+      const response = await axios.post("/sign-in", values);
       const authToken = response.headers[TOKEN_HEADER.toLowerCase()];
       if (authToken) {
         localStorage.setItem(TOKEN_KEY, authToken);
@@ -66,8 +66,6 @@ export const LoginPage = () => {
             Welcome to Drill4J
           </div>
           <div tw="mt-2 px-16 text-16 leading-24 text-monochrome-default text-center">
-            Click &quot;Continue as a guest&quot; to entry Admin Panel with
-            admin privilege
           </div>
           {error && (
             <ContentAlert tw="mt-4 mx-1" type="ERROR">
@@ -76,14 +74,14 @@ export const LoginPage = () => {
           )}
           <Formik
             initialValues={{
-              name: "",
+              username: "",
               password: "",
             }}
             onSubmit={handleLogin as any}
           >
             <SignInForm>
               <Field
-                name="name"
+                name="username"
                 component={Fields.Input}
                 placeholder="User ID"
               />
@@ -105,15 +103,6 @@ export const LoginPage = () => {
               </div>
             </SignInForm>
           </Formik>
-          <Button
-            tw="flex justify-center w-88 mt-10 "
-            secondary
-            size="large"
-            data-test="login-button:continue-as-guest"
-            onClick={() => handleLogin()} // use to call without arguments
-          >
-            Continue as a guest (with admin rights)
-          </Button>
         </div>
         <div tw="mb-6 font-regular text-12 leading-24 text-monochrome-default text-center">
           {`© ${new Date().getFullYear()} Drill4J. All rights reserved.`}
