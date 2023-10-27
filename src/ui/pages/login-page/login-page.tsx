@@ -65,8 +65,6 @@ export const LoginPage = () => {
           <div tw="text-32 leading-40 text-monochrome-black">
             Welcome to Drill4J
           </div>
-          <div tw="mt-2 px-16 text-16 leading-24 text-monochrome-default text-center">
-          </div>
           {error && (
             <ContentAlert tw="mt-4 mx-1" type="ERROR">
               {`${error}`}
