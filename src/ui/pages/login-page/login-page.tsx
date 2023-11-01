@@ -15,17 +15,30 @@
  */
 import React, { useLayoutEffect, useState } from "react";
 import { useHistory } from "react-router-dom";
-import axios from "axios";
 import {
-  addQueryParamsToPath, Button, ContentAlert, Field, Fields, Form, Formik,
+  addQueryParamsToPath,
+  Button,
+  ContentAlert,
+  Field,
+  Fields,
+  Form,
+  Formik,
+  Tooltip,
 } from "@drill4j/ui-kit";
 import tw, { styled } from "twin.macro";
+import {
+  API,
+  LoginPayload,
+  RegistrationPayload,
+  ChangePasswordPayload,
+} from "../../modules/auth/user-authentication";
 
 import { LoginLayout } from "layouts";
-import { TOKEN_HEADER, TOKEN_KEY } from "common/constants";
+import { TOKEN_KEY } from "common/constants";
 import { getCustomPath } from "common";
+import { Tab, Tabs } from "components/tabs";
 
-const SignInForm = styled(Form)`
+const AuthFormStyle = styled(Form)`
   ${tw`flex flex-col gap-y-6 mt-6 w-88`}
   & > * {
     ${tw`h-10`}
@@ -34,27 +47,14 @@ const SignInForm = styled(Form)`
 
 export const LoginPage = () => {
   const [error, setError] = useState<string | null>(null);
+  const onError = (e: any) => setError(e?.message);
   const { push } = useHistory();
-
-  async function handleLogin(values?: { name: string, password: string }) {
-    try {
-      const response = await axios.post("/login", values);
-      const authToken = response.headers[TOKEN_HEADER.toLowerCase()];
-      if (authToken) {
-        localStorage.setItem(TOKEN_KEY, authToken);
-      }
-      window.location.reload();
-    } catch ({ response: { data: { message = "" } = {} } = {} }) {
-      setError(
-        message as string ||
-          "There was some issue with an authentication. Please try again later.",
-      );
-    }
-  }
 
   useLayoutEffect(() => {
     if (localStorage.getItem(TOKEN_KEY)) {
-      push(addQueryParamsToPath({ activeModal: "analityc" }, `${getCustomPath()}/`));
+      push(
+        addQueryParamsToPath({ activeModal: "analityc" }, `${getCustomPath()}/`)
+      );
     }
   }, []);
 
@@ -65,55 +65,17 @@ export const LoginPage = () => {
           <div tw="text-32 leading-40 text-monochrome-black">
             Welcome to Drill4J
           </div>
-          <div tw="mt-2 px-16 text-16 leading-24 text-monochrome-default text-center">
-            Click &quot;Continue as a guest&quot; to entry Admin Panel with
-            admin privilege
-          </div>
-          {error && (
-            <ContentAlert tw="mt-4 mx-1" type="ERROR">
-              {`${error}`}
-            </ContentAlert>
-          )}
-          <Formik
-            initialValues={{
-              name: "",
-              password: "",
-            }}
-            onSubmit={handleLogin as any}
-          >
-            <SignInForm>
-              <Field
-                name="name"
-                component={Fields.Input}
-                placeholder="User ID"
-              />
-              <Field
-                name="password"
-                component={Fields.Input}
-                placeholder="Password"
-              />
-              <Button
-                tw="flex justify-center w-full"
-                primary
-                size="large"
-                type="submit"
-              >
-                Sign in
-              </Button>
-              <div tw="font-bold text-14 leading-20 text-center text-blue-default opacity-25">
-                Forgot your password?
+          <Tabs onChange={() => setError(null)}>
+            <Tab title="Sign in">{signInForm(onError)}</Tab>
+            <Tab title="Sign up">{signUpForm(onError)}</Tab>
+            <Tab title="Forgot password">
+              <div tw="mt-2 px-16 text-16 leading-24 text-monochrome-default text-center">
+                Please contact Drill4J instance administrator to request
+                password reset
               </div>
-            </SignInForm>
-          </Formik>
-          <Button
-            tw="flex justify-center w-88 mt-10 "
-            secondary
-            size="large"
-            data-test="login-button:continue-as-guest"
-            onClick={() => handleLogin()} // use to call without arguments
-          >
-            Continue as a guest (with admin rights)
-          </Button>
+            </Tab>
+          </Tabs>
+          {error && <ContentAlert type="ERROR">{`${error}`}</ContentAlert>}
         </div>
         <div tw="mb-6 font-regular text-12 leading-24 text-monochrome-default text-center">
           {`© ${new Date().getFullYear()} Drill4J. All rights reserved.`}
@@ -122,3 +84,143 @@ export const LoginPage = () => {
     </LoginLayout>
   );
 };
+
+function updatePasswordForm(onError: (error: any) => any) {
+  async function handleUpdatePassword(payload: ChangePasswordPayload) {
+    try {
+      await API.updatePassword(payload);
+    } catch (e) {
+      onError(e);
+    }
+  }
+
+  return (
+    <div>
+      <div tw="mt-2 px-16 text-16 leading-24 text-monochrome-default text-center">
+        Update password
+      </div>
+      <Formik
+        initialValues={{
+          oldPassword: "",
+          newPassword: "",
+        }}
+        onSubmit={handleUpdatePassword as any}
+      >
+        <AuthFormStyle>
+          <Field
+            name="oldPassword"
+            component={Fields.Input}
+            placeholder="Old password"
+          />
+          <Field
+            name="newPassword"
+            component={Fields.Input}
+            placeholder="New password"
+          />
+          <Button
+            tw="flex justify-center w-full"
+            primary
+            size="large"
+            type="submit"
+          >
+            Update password
+          </Button>
+        </AuthFormStyle>
+      </Formik>
+    </div>
+  );
+}
+
+function signUpForm(onError: (error: any) => any) {
+  async function handleSignUp(payload: RegistrationPayload) {
+    try {
+      await API.signUp(payload);
+    } catch (e) {
+      onError(e);
+    }
+  }
+
+  return (
+    <div>
+      <div tw="mt-2 px-16 text-16 leading-24 text-monochrome-default text-center">
+        Create new user
+      </div>
+      <Formik
+        initialValues={{
+          username: "",
+          password: "",
+        }}
+        onSubmit={handleSignUp as any}
+      >
+        <AuthFormStyle>
+          <Field
+            name="username"
+            component={Fields.Input}
+            placeholder="Username"
+          />
+          <Field
+            name="password"
+            component={Fields.Input}
+            placeholder="Password"
+          />
+          <Button
+            tw="flex justify-center w-full"
+            primary
+            size="large"
+            type="submit"
+          >
+            Sign up
+          </Button>
+        </AuthFormStyle>
+      </Formik>
+    </div>
+  );
+}
+
+function signInForm(onError: (error: any) => any) {
+  async function handleLogin(payload: LoginPayload) {
+    try {
+      const token = await API.signIn(payload);
+      localStorage.setItem(TOKEN_KEY, token);
+      window.location.reload();
+    } catch (e) {
+      onError(e);
+    }
+  }
+
+  return (
+    <div>
+      <div tw="mt-2 px-16 text-16 leading-24 text-monochrome-default text-center">
+        Provide your credentials
+      </div>
+      <Formik
+        initialValues={{
+          username: "",
+          password: "",
+        }}
+        onSubmit={handleLogin as any}
+      >
+        <AuthFormStyle>
+          <Field
+            name="username"
+            component={Fields.Input}
+            placeholder="Username"
+          />
+          <Field
+            name="password"
+            component={Fields.Input}
+            placeholder="Password"
+          />
+          <Button
+            tw="flex justify-center w-full"
+            primary
+            size="large"
+            type="submit"
+          >
+            Sign in
+          </Button>
+        </AuthFormStyle>
+      </Formik>
+    </div>
+  );
+}
