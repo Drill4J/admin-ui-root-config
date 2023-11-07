@@ -32,7 +32,7 @@ export const InfoMenu = ({ close }: Props) => {
         <div tw="flex flex-col gap-4 bg-monochrome-black py-6">
           <div>
             <CategoryHeader>Useful links</CategoryHeader>
-            <Link href="https://drill4j.github.io/docs/faq" target="_blank">Documentation</Link>
+            <Link href="https://drill4j.github.io/docs/overview/why-drill4j" target="_blank">Documentation</Link>
             <Link href="https://github.com/Drill4J" target="_blank">GitHub</Link>
             <Link href="https://t.me/drill4j" target="_blank">Telegram Channel</Link>
             <Link href="https://www.epam.com/" target="_blank">EPAM Sytems</Link>
