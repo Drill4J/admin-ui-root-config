@@ -1,18 +1,22 @@
 import axios from 'axios';
 import { runCatching } from '../util';
 import { LoginPayload, RegistrationPayload, ChangePasswordPayload } from './models';
+import { TOKEN_KEY } from "common/constants";
 
-async function signIn(loginPayload: LoginPayload): Promise<string> {
+async function signIn(loginPayload: LoginPayload): Promise<any> {
   const response = await runCatching(axios.post('/sign-in', loginPayload));
-  return response.headers.authorization;
+  localStorage.setItem(TOKEN_KEY, response.headers.authorization);
+  return response.data.message;
 }
 
 async function signUp(registrationPayload: RegistrationPayload) {
-  return await runCatching(axios.post('/sign-up', registrationPayload));
+  const response = await runCatching(axios.post('/sign-up', registrationPayload));
+  return response.data.message
 }
 
 async function updatePassword(changePasswordPayload: ChangePasswordPayload) {
-  return await await runCatching(axios.post('/update-password', changePasswordPayload));
+  const response = await await runCatching(axios.post('/update-password', changePasswordPayload));
+  return response.data.message
 }
 
 export { signIn, signUp, updatePassword };

@@ -24,7 +24,7 @@ Use a more readable tab size (opinionated).
 html {
   -moz-tab-size: 4;
   -o-tab-size: 4;
-  tab-size: 4;
+     tab-size: 4;
 }
 
 /**
@@ -58,15 +58,15 @@ Improve consistency of default fonts in all browsers. (https://github.com/sindre
 
 body {
   font-family:
-          system-ui,
-          -apple-system, /* Firefox supports this but not yet `system-ui` */
-          'Segoe UI',
-          Roboto,
-          Helvetica,
-          Arial,
-          sans-serif,
-          'Apple Color Emoji',
-          'Segoe UI Emoji';
+		system-ui,
+		-apple-system, /* Firefox supports this but not yet `system-ui` */
+		'Segoe UI',
+		Roboto,
+		Helvetica,
+		Arial,
+		sans-serif,
+		'Apple Color Emoji',
+		'Segoe UI Emoji';
 }
 
 /*
@@ -97,7 +97,7 @@ Add the correct text decoration in Chrome, Edge, and Safari.
 
 abbr[title] {
   -webkit-text-decoration: underline dotted;
-  text-decoration: underline dotted;
+          text-decoration: underline dotted;
 }
 
 /**
@@ -119,12 +119,12 @@ kbd,
 samp,
 pre {
   font-family:
-          ui-monospace,
-          SFMono-Regular,
-          Consolas,
-          'Liberation Mono',
-          Menlo,
-          monospace;
+		ui-monospace,
+		SFMono-Regular,
+		Consolas,
+		'Liberation Mono',
+		Menlo,
+		monospace;
   /* 1 */
   font-size: 1em;
   /* 2 */
@@ -549,14 +549,14 @@ samp {
  *    CSS Remedy, with `svg` added as well.
  *
  *    https://github.com/mozdevs/cssremedy/issues/14
- *
+ * 
  * 2. Add `vertical-align: middle` to align replaced elements more
  *    sensibly by default when overriding `display` by adding a
  *    utility like `inline`.
  *
  *    This can trigger a poorly considered linting error in some
  *    tools but is included by design.
- *
+ * 
  *    https://github.com/jensimmons/cssremedy/issues/14#issuecomment-634934210
  */
 
@@ -711,13 +711,13 @@ button:focus {
   0%, 100% {
     transform: translateY(-25%);
     -webkit-animation-timing-function: cubic-bezier(0.8, 0, 1, 1);
-    animation-timing-function: cubic-bezier(0.8, 0, 1, 1);
+            animation-timing-function: cubic-bezier(0.8, 0, 1, 1);
   }
 
   50% {
     transform: translateY(0);
     -webkit-animation-timing-function: cubic-bezier(0, 0, 0.2, 1);
-    animation-timing-function: cubic-bezier(0, 0, 0.2, 1);
+            animation-timing-function: cubic-bezier(0, 0, 0.2, 1);
   }
 }
 
@@ -725,13 +725,13 @@ button:focus {
   0%, 100% {
     transform: translateY(-25%);
     -webkit-animation-timing-function: cubic-bezier(0.8, 0, 1, 1);
-    animation-timing-function: cubic-bezier(0.8, 0, 1, 1);
+            animation-timing-function: cubic-bezier(0.8, 0, 1, 1);
   }
 
   50% {
     transform: translateY(0);
     -webkit-animation-timing-function: cubic-bezier(0, 0, 0.2, 1);
-    animation-timing-function: cubic-bezier(0, 0, 0.2, 1);
+            animation-timing-function: cubic-bezier(0, 0, 0.2, 1);
   }
 }
 
@@ -794,6 +794,14 @@ button:focus {
   left: 3rem;
 }
 
+.left-2 {
+  left: 0.5rem;
+}
+
+.bottom-12 {
+  bottom: 3rem;
+}
+
 .z-\[200\] {
   z-index: 200;
 }
@@ -808,6 +816,10 @@ button:focus {
 
 .z-\[100\] {
   z-index: 100;
+}
+
+.z-\[130px\] {
+  z-index: 130px;
 }
 
 .\!z-\[200\] {
@@ -838,6 +850,10 @@ button:focus {
   margin: 0px;
 }
 
+.m-2 {
+  margin: 0.5rem;
+}
+
 .mx-2 {
   margin-left: 0.5rem;
   margin-right: 0.5rem;
@@ -851,11 +867,6 @@ button:focus {
 .mx-auto {
   margin-left: auto;
   margin-right: auto;
-}
-
-.mx-1 {
-  margin-left: 0.25rem;
-  margin-right: 0.25rem;
 }
 
 .my-1 {
@@ -903,16 +914,16 @@ button:focus {
   margin-top: 3rem;
 }
 
+.mt-5 {
+  margin-top: 1.25rem;
+}
+
 .mt-1 {
   margin-top: 0.25rem;
 }
 
 .mt-6 {
   margin-top: 1.5rem;
-}
-
-.mt-10 {
-  margin-top: 2.5rem;
 }
 
 .mt-22 {
@@ -967,14 +978,14 @@ button:focus {
   display: none;
 }
 
+.h-full {
+  height: 100%;
+}
+
 .h-fit {
   height: -webkit-fit-content;
   height: -moz-fit-content;
   height: fit-content;
-}
-
-.h-full {
-  height: 100%;
 }
 
 .h-9 {
@@ -1029,6 +1040,10 @@ button:focus {
   height: 2.5rem;
 }
 
+.h-\[1px\] {
+  height: 1px;
+}
+
 .h-16 {
   height: 4rem;
 }
@@ -1053,6 +1068,10 @@ button:focus {
   max-height: 32px;
 }
 
+.min-h-\[1px\] {
+  min-height: 1px;
+}
+
 .w-full {
   width: 100%;
 }
@@ -1061,6 +1080,10 @@ button:focus {
   width: -webkit-min-content;
   width: -moz-min-content;
   width: min-content;
+}
+
+.w-\[480px\] {
+  width: 480px;
 }
 
 .w-9 {
@@ -1206,6 +1229,14 @@ button:focus {
   cursor: default;
 }
 
+.list-disc {
+  list-style-type: disc;
+}
+
+.grid-cols-\[1fr\] {
+  grid-template-columns: 1fr;
+}
+
 .flex-row {
   flex-direction: row;
 }
@@ -1242,16 +1273,24 @@ button:focus {
   justify-content: space-between;
 }
 
+.gap-6 {
+  gap: 1.5rem;
+}
+
 .gap-2 {
   gap: 0.5rem;
 }
 
-.gap-8 {
-  gap: 2rem;
-}
-
 .gap-4 {
   gap: 1rem;
+}
+
+.gap-1 {
+  gap: 0.25rem;
+}
+
+.gap-8 {
+  gap: 2rem;
 }
 
 .gap-y-2 {
@@ -1260,7 +1299,7 @@ button:focus {
 
 .gap-x-1 {
   -moz-column-gap: 0.25rem;
-  column-gap: 0.25rem;
+       column-gap: 0.25rem;
 }
 
 .gap-y-4 {
@@ -1273,17 +1312,17 @@ button:focus {
 
 .gap-x-4 {
   -moz-column-gap: 1rem;
-  column-gap: 1rem;
+       column-gap: 1rem;
 }
 
 .gap-x-6 {
   -moz-column-gap: 1.5rem;
-  column-gap: 1.5rem;
+       column-gap: 1.5rem;
 }
 
 .gap-x-2 {
   -moz-column-gap: 0.5rem;
-  column-gap: 0.5rem;
+       column-gap: 0.5rem;
 }
 
 .gap-y-6 {
@@ -1340,6 +1379,12 @@ button:focus {
   overflow-y: hidden;
 }
 
+.truncate {
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
 .whitespace-nowrap {
   white-space: nowrap;
 }
@@ -1354,6 +1399,10 @@ button:focus {
 
 .rounded-full {
   border-radius: 9999px;
+}
+
+.rounded-2xl {
+  border-radius: 1rem;
 }
 
 .rounded-br-none {
@@ -1490,6 +1539,11 @@ button:focus {
   background-color: rgba(68, 66, 68, var(--tw-bg-opacity));
 }
 
+.bg-\[\#000000\] {
+  --tw-bg-opacity: 1;
+  background-color: rgba(0, 0, 0, var(--tw-bg-opacity));
+}
+
 .bg-monochrome-gray {
   --tw-bg-opacity: 1;
   background-color: rgba(129, 134, 139, var(--tw-bg-opacity));
@@ -1589,9 +1643,27 @@ button:focus {
   padding-right: 4rem;
 }
 
+.py-6 {
+  padding-top: 1.5rem;
+  padding-bottom: 1.5rem;
+}
+
+.py-1 {
+  padding-top: 0.25rem;
+  padding-bottom: 0.25rem;
+}
+
 .py-16 {
   padding-top: 4rem;
   padding-bottom: 4rem;
+}
+
+.pb-2 {
+  padding-bottom: 0.5rem;
+}
+
+.pl-5 {
+  padding-left: 1.25rem;
 }
 
 .pt-8 {
@@ -1602,16 +1674,16 @@ button:focus {
   padding-top: 1.25rem;
 }
 
-.pr-4 {
-  padding-right: 1rem;
-}
-
 .pt-4 {
   padding-top: 1rem;
 }
 
-.pb-2 {
-  padding-bottom: 0.5rem;
+.pb-6 {
+  padding-bottom: 1.5rem;
+}
+
+.pr-4 {
+  padding-right: 1rem;
 }
 
 .pt-6 {
@@ -1634,6 +1706,10 @@ button:focus {
   vertical-align: middle;
 }
 
+.font-bold {
+  font-family: OpenSans-Semibold, sans-serif;
+}
+
 .font-regular {
   font-family: OpenSans, sans-serif;
 }
@@ -1642,8 +1718,8 @@ button:focus {
   font-family: OpenSans-Light, sans-serif;
 }
 
-.font-bold {
-  font-family: OpenSans-Semibold, sans-serif;
+.text-14 {
+  font-size: 14px;
 }
 
 .text-18 {
@@ -1652,10 +1728,6 @@ button:focus {
 
 .text-12 {
   font-size: 12px;
-}
-
-.text-14 {
-  font-size: 14px;
 }
 
 .text-24 {
@@ -1686,12 +1758,12 @@ button:focus {
   text-transform: uppercase;
 }
 
-.leading-24 {
-  line-height: 24px;
-}
-
 .leading-20 {
   line-height: 20px;
+}
+
+.leading-24 {
+  line-height: 24px;
 }
 
 .leading-32 {
@@ -1718,6 +1790,11 @@ button:focus {
   line-height: 16px;
 }
 
+.text-blue-default {
+  --tw-text-opacity: 1;
+  color: rgba(0, 127, 255, var(--tw-text-opacity));
+}
+
 .text-monochrome-black {
   --tw-text-opacity: 1;
   color: rgba(27, 25, 27, var(--tw-text-opacity));
@@ -1736,11 +1813,6 @@ button:focus {
 .text-blue-shade {
   --tw-text-opacity: 1;
   color: rgba(0, 108, 216, var(--tw-text-opacity));
-}
-
-.text-blue-default {
-  --tw-text-opacity: 1;
-  color: rgba(0, 127, 255, var(--tw-text-opacity));
 }
 
 .text-monochrome-white {
@@ -1801,10 +1873,6 @@ button:focus {
 
 .opacity-75 {
   opacity: 0.75;
-}
-
-.opacity-25 {
-  opacity: 0.25;
 }
 
 .shadow {
@@ -1883,6 +1951,10 @@ button:focus {
 .hover\:bg-blue-default:hover {
   --tw-bg-opacity: 1;
   background-color: rgba(0, 127, 255, var(--tw-bg-opacity));
+}
+
+.hover\:bg-monochrome-default\/\[0\.1\]:hover {
+  background-color: rgba(104, 116, 129, 0.1);
 }
 
 .hover\:bg-monochrome-dark:hover {

@@ -3,33 +3,41 @@ import { EditUserPayload } from "./models";
 import { runCatching } from "../util";
 
 async function getUsers() {
-  return await runCatching(axios.get("/users"));
+  const response = await runCatching(axios.get("/users"));
+  return response.data.message;
 }
+
 async function editUser(
   id: number,
   editUserPayload: EditUserPayload
 ) {
-  return await runCatching(axios.put(`/users/${id}`, editUserPayload));
+  const response = await runCatching(axios.put(`/users/${id}`, editUserPayload));
+  return response.data.message;
 }
 
 async function getUserById(id: number) {
-  return await runCatching(axios.get(`/users/${id}`));
+  const response =  await runCatching(axios.get(`/users/${id}`));
+  return response.data.message;
 }
 
 async function deleteUser(id: number) {
-  return await runCatching(axios.delete(`/users/${id}`));
+  const response =  await runCatching(axios.delete(`/users/${id}`));
+  return response.data.message;
 }
 
 async function blockUser(id: number) {
-  return await runCatching(axios.patch(`/users/${id}/block`));
+  const response =  await runCatching(axios.patch(`/users/${id}/block`));
+  return response.data.message;
 }
 
 async function unblockUser(id: number) {
-  return await runCatching(axios.patch(`/users/${id}/unblock`));
+  const response =  await runCatching(axios.patch(`/users/${id}/unblock`));
+  return response.data.message;
 }
 
 async function resetPassword(id: number) {
-  return await runCatching(axios.patch(`/users/${id}/resetpassword`));
+  const response =  await runCatching(axios.patch(`/users/${id}/resetpassword`));
+  return response.data.message;
 }
 
 export {

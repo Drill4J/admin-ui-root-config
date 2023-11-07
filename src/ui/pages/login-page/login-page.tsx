@@ -47,9 +47,12 @@ const AuthFormStyle = styled(Form)`
 
 export const LoginPage = () => {
   const [error, setError] = useState<string | null>(null);
-  const onError = (e: any) => setError(e?.message);
+  const [success, setSuccess] = useState<string | null>(null);
+  const resetState = () => {
+    setError("");
+    setSuccess("");
+  };
   const { push } = useHistory();
-
   useLayoutEffect(() => {
     if (localStorage.getItem(TOKEN_KEY)) {
       push(
@@ -65,9 +68,13 @@ export const LoginPage = () => {
           <div tw="text-32 leading-40 text-monochrome-black">
             Welcome to Drill4J
           </div>
-          <Tabs onChange={() => setError(null)}>
-            <Tab title="Sign in">{signInForm(onError)}</Tab>
-            <Tab title="Sign up">{signUpForm(onError)}</Tab>
+          <Tabs onChange={resetState}>
+            <Tab title="Sign in">
+              {signInForm(setSuccess, setError, resetState)}
+            </Tab>
+            <Tab title="Sign up">
+              {signUpForm(setSuccess, setError, resetState)}
+            </Tab>
             <Tab title="Forgot password">
               <div tw="mt-2 px-16 text-16 leading-24 text-monochrome-default text-center">
                 Please contact Drill4J instance administrator to request
@@ -76,6 +83,9 @@ export const LoginPage = () => {
             </Tab>
           </Tabs>
           {error && <ContentAlert type="ERROR">{`${error}`}</ContentAlert>}
+          {success && (
+            <ContentAlert type="SUCCESS">{`${success}`}</ContentAlert>
+          )}
         </div>
         <div tw="mb-6 font-regular text-12 leading-24 text-monochrome-default text-center">
           {`© ${new Date().getFullYear()} Drill4J. All rights reserved.`}
@@ -109,11 +119,13 @@ function updatePasswordForm(onError: (error: any) => any) {
         <AuthFormStyle>
           <Field
             name="oldPassword"
+            type="password"
             component={Fields.Input}
             placeholder="Old password"
           />
           <Field
             name="newPassword"
+            type="password"
             component={Fields.Input}
             placeholder="New password"
           />
@@ -131,26 +143,34 @@ function updatePasswordForm(onError: (error: any) => any) {
   );
 }
 
-function signUpForm(onError: (error: any) => any) {
+function signUpForm(
+  setSuccess: Function,
+  setError: Function,
+  resetState: Function
+) {
   async function handleSignUp(payload: RegistrationPayload) {
     try {
-      await API.signUp(payload);
+      const result = await API.signUp(payload);
+      setSuccess(result);
     } catch (e) {
-      onError(e);
+      setError(e);
     }
   }
 
   return (
     <div>
       <div tw="mt-2 px-16 text-16 leading-24 text-monochrome-default text-center">
-        Create new user
+        Register new user
       </div>
       <Formik
         initialValues={{
           username: "",
           password: "",
         }}
-        onSubmit={handleSignUp as any}
+        onSubmit={(data: any) => {
+          resetState();
+          handleSignUp(data);
+        }}
       >
         <AuthFormStyle>
           <Field
@@ -160,6 +180,7 @@ function signUpForm(onError: (error: any) => any) {
           />
           <Field
             name="password"
+            type="password"
             component={Fields.Input}
             placeholder="Password"
           />
@@ -177,14 +198,18 @@ function signUpForm(onError: (error: any) => any) {
   );
 }
 
-function signInForm(onError: (error: any) => any) {
+function signInForm(
+  setSuccess: Function,
+  setError: Function,
+  resetState: Function
+) {
   async function handleLogin(payload: LoginPayload) {
     try {
-      const token = await API.signIn(payload);
-      localStorage.setItem(TOKEN_KEY, token);
+      const result = await API.signIn(payload);
+      setSuccess(result);
       window.location.reload();
     } catch (e) {
-      onError(e);
+      setError(e);
     }
   }
 
@@ -198,7 +223,10 @@ function signInForm(onError: (error: any) => any) {
           username: "",
           password: "",
         }}
-        onSubmit={handleLogin as any}
+        onSubmit={(data: any) => {
+          resetState();
+          handleLogin(data);
+        }}
       >
         <AuthFormStyle>
           <Field
@@ -208,6 +236,7 @@ function signInForm(onError: (error: any) => any) {
           />
           <Field
             name="password"
+            type="password"
             component={Fields.Input}
             placeholder="Password"
           />
