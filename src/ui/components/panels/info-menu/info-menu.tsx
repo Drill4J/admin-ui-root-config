@@ -53,9 +53,8 @@ export const InfoMenu = ({ close }: Props) => {
         <Line />
         <div tw="bg-[#000000]">
           <div tw="flex flex-col gap-1 pt-4 pb-6">
-            <CategoryHeader>Drill4j versions</CategoryHeader>
-            <Text>UI: 0.8.0-beta</Text>
-            <Text>BE: 0.8.0-alfa</Text>
+            <CategoryHeader>Versions</CategoryHeader>
+            <Text> Please contact Drill4J instance administrator to find out exact components versions </Text>
           </div>
         </div>
         <Line />
