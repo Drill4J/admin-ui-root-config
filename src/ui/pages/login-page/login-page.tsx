@@ -17,33 +17,18 @@ import React, { useLayoutEffect, useState } from "react";
 import { useHistory } from "react-router-dom";
 import {
   addQueryParamsToPath,
-  Button,
   ContentAlert,
-  Field,
-  Fields,
   Form,
-  Formik,
   Tooltip,
 } from "@drill4j/ui-kit";
 import tw, { styled } from "twin.macro";
-import {
-  API,
-  LoginPayload,
-  RegistrationPayload,
-  ChangePasswordPayload,
-} from "../../modules/auth/user-authentication";
 
 import { LoginLayout } from "layouts";
 import { TOKEN_KEY } from "common/constants";
 import { getCustomPath } from "common";
 import { Tab, Tabs } from "components/tabs";
-
-const AuthFormStyle = styled(Form)`
-  ${tw`flex flex-col gap-y-6 mt-6 w-88`}
-  & > * {
-    ${tw`h-10`}
-  }
-`;
+import { signUpForm } from "../../modules/auth/user-authentication/forms/sign-up";
+import { signInForm } from "../../modules/auth/user-authentication/forms/sign-in";
 
 export const LoginPage = () => {
   const [error, setError] = useState<string | null>(null);
@@ -95,161 +80,4 @@ export const LoginPage = () => {
   );
 };
 
-function updatePasswordForm(onError: (error: any) => any) {
-  async function handleUpdatePassword(payload: ChangePasswordPayload) {
-    try {
-      await API.updatePassword(payload);
-    } catch (e) {
-      onError(e);
-    }
-  }
 
-  return (
-    <div>
-      <div tw="mt-2 px-16 text-16 leading-24 text-monochrome-default text-center">
-        Update password
-      </div>
-      <Formik
-        initialValues={{
-          oldPassword: "",
-          newPassword: "",
-        }}
-        onSubmit={handleUpdatePassword as any}
-      >
-        <AuthFormStyle>
-          <Field
-            name="oldPassword"
-            type="password"
-            component={Fields.Input}
-            placeholder="Old password"
-          />
-          <Field
-            name="newPassword"
-            type="password"
-            component={Fields.Input}
-            placeholder="New password"
-          />
-          <Button
-            tw="flex justify-center w-full"
-            primary
-            size="large"
-            type="submit"
-          >
-            Update password
-          </Button>
-        </AuthFormStyle>
-      </Formik>
-    </div>
-  );
-}
-
-function signUpForm(
-  setSuccess: Function,
-  setError: Function,
-  resetState: Function
-) {
-  async function handleSignUp(payload: RegistrationPayload) {
-    try {
-      const result = await API.signUp(payload);
-      setSuccess(result);
-    } catch (e) {
-      setError(e);
-    }
-  }
-
-  return (
-    <div>
-      <div tw="mt-2 px-16 text-16 leading-24 text-monochrome-default text-center">
-        Register new user
-      </div>
-      <Formik
-        initialValues={{
-          username: "",
-          password: "",
-        }}
-        onSubmit={(data: any) => {
-          resetState();
-          handleSignUp(data);
-        }}
-      >
-        <AuthFormStyle>
-          <Field
-            name="username"
-            component={Fields.Input}
-            placeholder="Username"
-          />
-          <Field
-            name="password"
-            type="password"
-            component={Fields.Input}
-            placeholder="Password"
-          />
-          <Button
-            tw="flex justify-center w-full"
-            primary
-            size="large"
-            type="submit"
-          >
-            Sign up
-          </Button>
-        </AuthFormStyle>
-      </Formik>
-    </div>
-  );
-}
-
-function signInForm(
-  setSuccess: Function,
-  setError: Function,
-  resetState: Function
-) {
-  async function handleLogin(payload: LoginPayload) {
-    try {
-      const result = await API.signIn(payload);
-      setSuccess(result);
-      window.location.reload();
-    } catch (e) {
-      setError(e);
-    }
-  }
-
-  return (
-    <div>
-      <div tw="mt-2 px-16 text-16 leading-24 text-monochrome-default text-center">
-        Provide your credentials
-      </div>
-      <Formik
-        initialValues={{
-          username: "",
-          password: "",
-        }}
-        onSubmit={(data: any) => {
-          resetState();
-          handleLogin(data);
-        }}
-      >
-        <AuthFormStyle>
-          <Field
-            name="username"
-            component={Fields.Input}
-            placeholder="Username"
-          />
-          <Field
-            name="password"
-            type="password"
-            component={Fields.Input}
-            placeholder="Password"
-          />
-          <Button
-            tw="flex justify-center w-full"
-            primary
-            size="large"
-            type="submit"
-          >
-            Sign in
-          </Button>
-        </AuthFormStyle>
-      </Formik>
-    </div>
-  );
-}

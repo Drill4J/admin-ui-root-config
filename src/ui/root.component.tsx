@@ -30,6 +30,7 @@ import { AlertManager } from "./alert-manager";
 import "./index.css";
 import { useAdminConnection } from "./hooks";
 import { AnalyticsInfo } from "./types";
+import { UpdatePasswordModal } from "modules/auth/user-authentication/modal/update-password";
 
 const analitycHandler = async (status: boolean) => {
   try {
@@ -80,6 +81,7 @@ const Root = () => {
       </Switch>
       <SetPluginUrlModal />
       <SetStatusColectOfAnalitycModal submit={analitycHandler} isCollectOfAnalitycsData={!isAnalyticsDisabled} />
+      <UpdatePasswordModal/>
     </BrowserRouter>
   );
 };

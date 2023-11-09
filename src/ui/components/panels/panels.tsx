@@ -24,6 +24,7 @@ import { AddAgentPanel } from "./add-agent-panel";
 import { NotificationsPanel } from "./notifications-panel";
 import { usePanelContext, useSetPanelContext } from "./panel-context";
 import { InfoMenuPanel } from "./info-menu";
+import { AuthMenuPanel } from "./auth-menu";
 
 const panels = {
   JAVA_AGENT_REGISTRATION: JavaAgentRegistrationPanel,
@@ -35,6 +36,7 @@ const panels = {
   SETTINGS: SettingsPanel,
   GROUP_REGISTRATION: GroupRegistrationPanel,
   INFO_MENU: InfoMenuPanel,
+  AUTH_MENU: AuthMenuPanel,
 };
 
 export const Panels = () => {
