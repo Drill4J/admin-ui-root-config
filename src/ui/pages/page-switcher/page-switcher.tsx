@@ -21,8 +21,8 @@ import { useAdminConnection, useRouteParams } from "hooks";
 import { AgentInfo } from "types";
 import { AgentPage } from "../agent";
 import { ServiceGroup } from "../service-group";
-import { UserManagementTable } from "modules/auth/user-management/tables/users";
 import userHasAdminRole from "modules/auth/hooks/user-has-admin-role";
+import { UserManagement } from "modules/auth/user-management/user-management";
 
 
 export const PageSwitcher = () => {
@@ -32,7 +32,7 @@ export const PageSwitcher = () => {
 
   const { isRole: isAdmin, isError: isAdminRequestErrored, errorMessage: isAdminErrorMessage } = userHasAdminRole()
   if (isAdmin) {
-    return <UserManagementTable/>
+    return <UserManagement/>
   }
   if (isAdminRequestErrored) {
     return <div>{isAdminErrorMessage}</div>

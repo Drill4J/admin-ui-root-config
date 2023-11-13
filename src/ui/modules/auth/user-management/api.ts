@@ -17,7 +17,7 @@ async function editUser(
 
 async function getUserById(id: number) {
   const response =  await runCatching(axios.get(`/users/${id}`));
-  return response.data.message;
+  return response.data;
 }
 
 async function deleteUser(id: number) {
@@ -35,9 +35,16 @@ async function unblockUser(id: number) {
   return response.data.message;
 }
 
-async function resetPassword(id: number) {
-  const response =  await runCatching(axios.patch(`/users/${id}/resetpassword`));
-  return response.data.message;
+async function resetPassword(id: number): Promise<PasswordResetResponse> {
+  const response = await runCatching(axios.patch(`/users/${id}/reset-password`));
+  return response.data;
+}
+
+type PasswordResetResponse = {
+  data: {
+    password: string
+  };
+  message: string;
 }
 
 export {

@@ -15,14 +15,24 @@
  */
 import React, { useEffect, useState } from "react";
 import {
-  capitalize, Cells, Icons, Table, Tooltip, Stub, CopyButton, LinkButton, Button
+  capitalize,
+  Cells,
+  Icons,
+  Table,
+  Tooltip,
+  Stub,
+  CopyButton,
+  LinkButton,
+  Button,
+  ContentAlert,
 } from "@drill4j/ui-kit";
-import "twin.macro";
 import * as API from "../api";
+import tw, { styled } from "twin.macro";
+import { Role, UserData } from "../../models";
 
 export const UserManagementTable = () => {
   const [users, setUsers] = useState([]);
-    
+
   const [error, setError] = useState<string | null>(null);
   const [success, setSuccess] = useState<string | null>(null);
   const resetState = () => {
@@ -33,15 +43,15 @@ export const UserManagementTable = () => {
   useEffect(() => {
     const fetchData = async () => {
       try {
-        const data = await API.getUsers()
+        const data = await API.getUsers();
         setUsers(data);
       } catch (error) {
-        console.error('Error fetching data:', error);
+        console.error("Error fetching data:", error);
       }
     };
 
     fetchData();
-  }, []);
+  }, [success, error]);
 
   if (!users.length) return <UsersStub />;
 
@@ -65,39 +75,137 @@ export const UserManagementTable = () => {
       textAlign: "left",
     },
     {
-      Header: "Is blocked",
+      Header: "Blocked",
       accessor: "blocked",
-      Cell: ({ value }: any) => <>{value ? <div>"unblock"</div> : <div>"block"</div>}</>,
+      Cell: ({ value }: any) => (
+        <>{value ? <div>blocked</div> : <div>-</div>}</>
+      ),
       textAlign: "left",
     },
     {
       Header: "Actions",
       isCustomCell: true,
-      Cell: ({ value = '', state }: any) => (<div>
-        <Button>reset password</Button>
-        <Button>block</Button>
-        <Button>delete</Button>
-        <Button>full info</Button>
-      </div>),
-    }
-  ];
+      Cell: ({ row: { values: userData } }: { row: { values: UserData } }) => (
+        <div tw="flex gap-5">
+          {!userData.blocked && (
+            <>
+              <Button
+                secondary
+                size="small"
+                onClick={async () => {
+                  try {
+                    resetState();
+                    const data = await API.blockUser(userData.id);
+                    setSuccess(data);
+                  } catch (error) {
+                    setError(error.message);
+                  }
+                }}
+              >
+                Block
+              </Button>
 
+              <Button
+                secondary
+                size="small"
+                onClick={async () => {
+                  try {
+                    resetState();
+                    const response = await API.resetPassword(userData.id);
+                    navigator.clipboard.writeText(response.data.password);
+                    setSuccess(`${response.message} New password is copied to clipboard`);
+                  } catch (error) {
+                    setError(error.message);
+                  }
+                }}
+              >
+                Reset Password
+              </Button>
+            </>
+          )}
+
+          {userData.blocked && (
+            <Button
+              secondary
+              size="small"
+              onClick={async () => {
+                try {
+                  resetState();
+                  const data = await API.unblockUser(userData.id);
+                  setSuccess(data);
+                } catch (error) {
+                  setError(error.message);
+                }
+              }}
+            >
+              Unblock
+            </Button>
+          )}
+
+          <Button
+            secondary
+            size="small"
+            onClick={async () => {
+              try {
+                resetState();
+                const data = await API.getUserById(userData.id);
+                setSuccess(JSON.stringify(data.data));
+              } catch (error) {
+                setError(error.message);
+              }
+            }}
+          >
+            Info
+          </Button>
+          
+          <Button
+            secondary
+            disabled={userData.role != Role.UNDEFINED}
+            size="small"
+            onClick={async () => {
+              try {
+                resetState();
+                // const data = await API.getUserById(userData.id);
+                const data = (await new Promise((resolve, reject) =>
+                  resolve("not implemented yet")
+                )) as any;
+                setSuccess(data);
+              } catch (error) {
+                setError(error.message);
+              }
+            }}
+          >
+            Approve
+          </Button>
+
+        </div>
+      ),
+    },
+  ];
   return (
-    <Table
-      data={users}
-      columns={columns}
-      stub={(
-        <Stub
-          icon={<Icons.Package height={104} width={107} />}
-          title="No results found"
-          message="Try adjusting your search or filter to find what you are looking for."
-        />
+    <> 
+      <Table
+        data={users}
+        columns={columns}
+        stub={
+          <Stub
+            icon={<Icons.Package height={104} width={107} />}
+            title="No results found"
+            message="Try adjusting your search or filter to find what you are looking for."
+          />
+        }
+        defaultSortBy={[
+          {
+            id: "username",
+            desc: false,
+          },
+        ]}
+      />
+      {error && <ContentAlert type="ERROR">{`${error}`}</ContentAlert>}
+      {success && (
+        <ContentAlert type="SUCCESS">{`${success}`}</ContentAlert>
       )}
-      defaultSortBy={[{
-        id: "username",
-        desc: false,
-      }]}
-    />
+    </>
   );
 };
 

@@ -3,3 +3,10 @@ export enum Role {
   ADMIN = 'ADMIN',
   UNDEFINED = 'UNDEFINED',
 }
+
+export type UserData = {
+  blocked: boolean;
+  id: number;
+  role: Role;
+  username: string;
+}
