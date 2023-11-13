@@ -4,7 +4,7 @@ import { runCatching } from "../util";
 
 async function getUsers() {
   const response = await runCatching(axios.get("/users"));
-  return response.data.message;
+  return response.data.data;
 }
 
 async function editUser(

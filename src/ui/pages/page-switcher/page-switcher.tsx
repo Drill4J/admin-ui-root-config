@@ -21,11 +21,22 @@ import { useAdminConnection, useRouteParams } from "hooks";
 import { AgentInfo } from "types";
 import { AgentPage } from "../agent";
 import { ServiceGroup } from "../service-group";
+import { UserManagementTable } from "modules/auth/user-management/tables/users";
+import userHasAdminRole from "modules/auth/hooks/user-has-admin-role";
+
 
 export const PageSwitcher = () => {
   const { agentId, groupId } = useRouteParams();
   const agentsList = useAdminConnection<AgentInfo[]>("/api/agents") || [];
   const isAllAgentsUnregistered = agentsList.every((agentItem) => agentItem.agentStatus === AGENT_STATUS.NOT_REGISTERED);
+
+  const { isRole: isAdmin, isError: isAdminRequestErrored, errorMessage: isAdminErrorMessage } = userHasAdminRole()
+  if (isAdmin) {
+    return <UserManagementTable/>
+  }
+  if (isAdminRequestErrored) {
+    return <div>{isAdminErrorMessage}</div>
+  }
 
   if (isAllAgentsUnregistered && !agentId && !groupId) {
     return <NoAgentsRegisteredStub />;

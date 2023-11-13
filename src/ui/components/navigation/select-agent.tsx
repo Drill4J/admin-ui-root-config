@@ -18,8 +18,12 @@ import { Icons } from "@drill4j/ui-kit";
 import { useRouteParams } from "hooks";
 import { CubeWithTooltip } from "../cubes";
 import { usePanelContext, useSetPanelContext } from "../panels";
+import userHasUserRole from "modules/auth/hooks/user-has-user-role";
 
 export const SelectAgent = () => {
+  const { isRole: isUserRole } = userHasUserRole()
+  if (!isUserRole) return <div></div>
+
   const setPanel = useSetPanelContext();
   const activePanel = usePanelContext();
   const { groupId } = useRouteParams();
