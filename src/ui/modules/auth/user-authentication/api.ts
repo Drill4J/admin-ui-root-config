@@ -15,8 +15,13 @@ async function signUp(registrationPayload: RegistrationPayload) {
 }
 
 async function updatePassword(changePasswordPayload: ChangePasswordPayload) {
-  const response = await await runCatching(axios.post('/update-password', changePasswordPayload));
+  const response = await runCatching(axios.post('/update-password', changePasswordPayload));
   return response.data.message
 }
 
-export { signIn, signUp, updatePassword };
+async function getUserInfo() {
+  const response = await runCatching(axios.get('/user-info'));
+  return response.data.data
+}
+
+export { signIn, signUp, updatePassword, getUserInfo };

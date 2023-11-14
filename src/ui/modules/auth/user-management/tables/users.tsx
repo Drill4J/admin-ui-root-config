@@ -15,16 +15,11 @@
  */
 import React, { useEffect, useState } from "react";
 import {
-  capitalize,
-  Cells,
   Icons,
   Table,
-  Tooltip,
   Stub,
-  CopyButton,
-  LinkButton,
   Button,
-  ContentAlert,
+  sendAlertEvent,
 } from "@drill4j/ui-kit";
 import * as API from "../api";
 import tw, { styled } from "twin.macro";
@@ -32,12 +27,16 @@ import { Role, UserData } from "../../models";
 
 export const UserManagementTable = () => {
   const [users, setUsers] = useState([]);
+  const [refreshFlag, refreshData] = useState<string>("");
 
-  const [error, setError] = useState<string | null>(null);
-  const [success, setSuccess] = useState<string | null>(null);
-  const resetState = () => {
-    setError("");
-    setSuccess("");
+  const setSuccess =  (data: string) => {
+    refreshData(Date.now().toString());
+    sendAlertEvent({ type: "SUCCESS", title: data  });
+  };
+  
+  const setError = (data: string) => {
+    refreshData(Date.now().toString());
+    sendAlertEvent({ type: "ERROR", title: data  });
   };
 
   useEffect(() => {
@@ -51,7 +50,7 @@ export const UserManagementTable = () => {
     };
 
     fetchData();
-  }, [success, error]);
+  }, [refreshFlag]);
 
   if (!users.length) return <UsersStub />;
 
@@ -85,105 +84,11 @@ export const UserManagementTable = () => {
     {
       Header: "Actions",
       isCustomCell: true,
-      Cell: ({ row: { values: userData } }: { row: { values: UserData } }) => (
-        <div tw="flex gap-5">
-          {!userData.blocked && (
-            <>
-              <Button
-                secondary
-                size="small"
-                onClick={async () => {
-                  try {
-                    resetState();
-                    const data = await API.blockUser(userData.id);
-                    setSuccess(data);
-                  } catch (error) {
-                    setError(error.message);
-                  }
-                }}
-              >
-                Block
-              </Button>
-
-              <Button
-                secondary
-                size="small"
-                onClick={async () => {
-                  try {
-                    resetState();
-                    const response = await API.resetPassword(userData.id);
-                    navigator.clipboard.writeText(response.data.password);
-                    setSuccess(`${response.message} New password is copied to clipboard`);
-                  } catch (error) {
-                    setError(error.message);
-                  }
-                }}
-              >
-                Reset Password
-              </Button>
-            </>
-          )}
-
-          {userData.blocked && (
-            <Button
-              secondary
-              size="small"
-              onClick={async () => {
-                try {
-                  resetState();
-                  const data = await API.unblockUser(userData.id);
-                  setSuccess(data);
-                } catch (error) {
-                  setError(error.message);
-                }
-              }}
-            >
-              Unblock
-            </Button>
-          )}
-
-          <Button
-            secondary
-            size="small"
-            onClick={async () => {
-              try {
-                resetState();
-                const data = await API.getUserById(userData.id);
-                setSuccess(JSON.stringify(data.data));
-              } catch (error) {
-                setError(error.message);
-              }
-            }}
-          >
-            Info
-          </Button>
-          
-          <Button
-            secondary
-            disabled={userData.role != Role.UNDEFINED}
-            size="small"
-            onClick={async () => {
-              try {
-                resetState();
-                // const data = await API.getUserById(userData.id);
-                const data = (await new Promise((resolve, reject) =>
-                  resolve("not implemented yet")
-                )) as any;
-                setSuccess(data);
-              } catch (error) {
-                setError(error.message);
-              }
-            }}
-          >
-            Approve
-          </Button>
-
-        </div>
-      ),
+      Cell: renderUserManagementActions(setSuccess, setError),
     },
   ];
   return (
-    <> 
+    <>
       <Table
         data={users}
         columns={columns}
@@ -201,10 +106,6 @@ export const UserManagementTable = () => {
           },
         ]}
       />
-      {error && <ContentAlert type="ERROR">{`${error}`}</ContentAlert>}
-      {success && (
-        <ContentAlert type="SUCCESS">{`${success}`}</ContentAlert>
-      )}
     </>
   );
 };
@@ -216,3 +117,98 @@ export const UsersStub = () => (
     message=""
   />
 );
+
+function renderUserManagementActions(
+  setSuccess: (data: string) => void,
+  setError:   (data: string) => void
+) {
+  return ({ row: { values: userData } }: { row: { values: UserData } }) => {
+    if (userData.role === Role.UNDEFINED) {
+      return (
+        <div tw="flex gap-5">
+          <Button
+            primary
+            size="small"
+            onClick={async () => {
+              try {
+                const isConfirmed = window.confirm(`Are you sure you want to approve user "${userData.username}" registration?`);
+                if (!isConfirmed) return
+                const data = await API.editUser(userData.id, {
+                  role: Role.USER,
+                });
+                setSuccess(data);
+              } catch (error) {
+                setError(error.message);
+              }
+            }}
+          >
+            Approve registration
+          </Button>
+        </div>
+      );
+    }
+
+    if (userData.blocked === true) {
+      return (
+        <div tw="flex gap-5">
+          <Button
+            secondary
+            size="small"
+            onClick={async () => {
+              try {
+                const isConfirmed = window.confirm(`Are you sure you want to unblock the user "${userData.username}"?`);
+                if (!isConfirmed) return
+                const data = await API.unblockUser(userData.id);
+                setSuccess(data);
+              } catch (error) {
+                setError(error.message);
+              }
+            }}
+          >
+            Unblock
+          </Button>
+        </div>
+      );
+    }
+
+    return (
+      <div tw="flex gap-5">
+        <Button
+          secondary
+          size="small"
+          onClick={async () => {
+            try {
+              const isConfirmed = window.confirm(`Are you sure you want to block the user "${userData.username}"?`);
+              if (!isConfirmed) return
+              const data = await API.blockUser(userData.id);
+              setSuccess(data);
+            } catch (error) {
+              setError(error.message);
+            }
+          }}
+        >
+          Block
+        </Button>
+        <Button
+          secondary
+          size="small"
+          onClick={async () => {
+            const isConfirmed = window.confirm(`Are you sure you want to reset the password for user "${userData.username}"?`);
+            if (!isConfirmed) return
+            try {
+              const response = await API.resetPassword(userData.id);
+              navigator.clipboard.writeText(response.data.password);
+              setSuccess(
+                `${response.message} New password is copied to clipboard`
+              );
+            } catch (error) {
+              setError(error.message);
+            }
+          }}
+        >
+          Reset Password
+        </Button>
+      </div>
+    );
+  };
+}
