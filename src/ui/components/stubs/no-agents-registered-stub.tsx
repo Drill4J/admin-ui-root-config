@@ -29,16 +29,16 @@ export const NoAgentsRegisteredStub = () => {
       message={(
         <>
           <span>
-            Run your application with Drill4J Agent using&nbsp;
+           Refer to&nbsp;
             <a
               tw="inline-flex items-center gap-x-1 text-blue-default font-semibold"
-              href="https://drill4j.github.io/how-to-start/"
+              href="https://drill4j.github.io/docs/installation/setup"
               rel="noopener noreferrer"
               target="_blank"
             >
-              this guide <Icons.OpenInNewTab tw="inline" />
+              Drill4J documentation  <Icons.OpenInNewTab tw="inline" />
             </a>
-            &nbsp;and add it.
+            &nbsp;to configure test metrics collection
           </span>
           <Button
             primary
