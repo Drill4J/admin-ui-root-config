@@ -46,7 +46,7 @@ export const AddAgentPanel = ({ isOpen, onClosePanel }: PanelProps) => {
       header={(
         <div tw="flex justify-between items-center h-20">
           Add Agent
-          <LinkButton
+          {/* <LinkButton
             tw="text-14 leading-24"
             onClick={() => setPanel({
               type: "AGENT_PREREGISTRATION",
@@ -55,7 +55,7 @@ export const AddAgentPanel = ({ isOpen, onClosePanel }: PanelProps) => {
             data-test="add-agent-panel:open-preregister-agent-panel"
           >
             <Icons.Register /> Preregister Java Agent
-          </LinkButton>
+          </LinkButton> */}
         </div>
       )}
       isOpen={isOpen}
