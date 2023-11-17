@@ -48,12 +48,12 @@ export const UpdatePasswordModal = () => {
             </Modal.Header>
             <Modal.Body tw="flex justify-center">
               {updatePasswordForm(setSuccess, setError, resetState)}
-              {error && <ContentAlert type="ERROR">{`${error}`}</ContentAlert>}
+            </Modal.Body>
+            <Modal.Footer>
+            {error && <ContentAlert type="ERROR">{`${error}`}</ContentAlert>}
               {success && (
                 <ContentAlert type="SUCCESS">{`${success}`}</ContentAlert>
               )}
-            </Modal.Body>
-            <Modal.Footer>
             </Modal.Footer>
           </Modal.Content>
         );
