@@ -31,7 +31,7 @@ export async function toggleNotification(
   } catch ({ response: { data: { message } = {} } = {} }) {
     onError &&
       onError(
-        message as string || "There is some issue with your action. Please try again.",
+        message as string || "Unexpected error. Please contact Drill4J instance administrator",
       );
   }
 }
