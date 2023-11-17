@@ -16,23 +16,25 @@
 
 import { useState, useEffect } from 'react'
 import axios from 'axios'
+import { Role } from '../models'
+import { getUserInfo } from '../user-authentication/api'
 
-type AdminStatus = {
+type RoleStatus = {
   isRole: boolean | null
   isError: boolean
   errorMessage: string | null
 }
 
-const userHasRole = (path: string) => (): AdminStatus => {
+const userHasRole = (role: Role) => (): RoleStatus => {
   const [isError, setIsError] = useState<boolean>(false)
   const [isRole, setIsRole] = useState<boolean | null>(null)
   const [errorMessage, setErrorMessage] = useState<string | null>(null)
-
+  
   useEffect(() => {
     const fetchData = async () => {
       try {
-        await axios.get(path)
-        setIsRole(true)
+        const userInfo = await getUserInfo()
+        setIsRole(userInfo.role == role)
       } catch (error) {
         switch (error?.response?.status) {
           case 401:

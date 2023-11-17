@@ -14,6 +14,7 @@
  * limitations under the License.
  */
 
+import { Role } from "../models";
 import userHasRole from "./user-has-role";
 
-export default userHasRole("/users")
+export default userHasRole(Role.ADMIN)
