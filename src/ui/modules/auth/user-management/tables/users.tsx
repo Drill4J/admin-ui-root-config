@@ -56,26 +56,31 @@ export const UserManagementTable = () => {
 
   const columns = [
     {
-      Header: "Username",
-      accessor: "username",
-      filterable: true,
+      Header: "Id",
+      accessor: "id",
+      width: "10%",
       textAlign: "left",
     },
     {
-      Header: "Id",
-      accessor: "id",
-      width: "120px",
+      Header: "Username",
+      accessor: "username",
+      filterable: true,
+      width: "30%",
+      Cell: ({ value }: any) => <div>{value}</div>,
       textAlign: "left",
     },
     {
       Header: "Role",
       accessor: "role",
+      width: "20%",
+      filterable: true,
       Cell: ({ value }: any) => <>{value.toUpperCase()}</>,
       textAlign: "left",
     },
     {
       Header: "Blocked",
       accessor: "blocked",
+      width: "10%",
       Cell: ({ value }: any) => (
         <>{value ? <div>blocked</div> : <div>-</div>}</>
       ),
@@ -83,6 +88,9 @@ export const UserManagementTable = () => {
     },
     {
       Header: "Actions",
+      textAlign: "left",
+      width: "30%",
+      notSortable: true,
       isCustomCell: true,
       Cell: renderUserManagementActions(setSuccess, setError),
     },
@@ -120,12 +128,12 @@ export const UsersStub = () => (
 
 function renderUserManagementActions(
   setSuccess: (data: string) => void,
-  setError:   (data: string) => void
+  setError: (data: string) => void
 ) {
   return ({ row: { values: userData } }: { row: { values: UserData } }) => {
     if (userData.role === Role.UNDEFINED) {
       return (
-        <div tw="flex gap-5">
+        <div tw="flex flex-wrap gap-5">
           <Button
             primary
             size="small"
@@ -150,7 +158,7 @@ function renderUserManagementActions(
 
     if (userData.blocked === true) {
       return (
-        <div tw="flex gap-5">
+        <div tw="flex flex-wrap gap-5">
           <Button
             secondary
             size="small"
@@ -172,7 +180,7 @@ function renderUserManagementActions(
     }
 
     return (
-      <div tw="flex gap-5">
+      <div tw="flex flex-wrap gap-5">
         <Button
           secondary
           size="small"

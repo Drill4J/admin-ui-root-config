@@ -1293,6 +1293,10 @@ button:focus {
   gap: 2rem;
 }
 
+.gap-5 {
+  gap: 1.25rem;
+}
+
 .gap-y-2 {
   row-gap: 0.5rem;
 }
@@ -1577,6 +1581,10 @@ button:focus {
 
 .p-4 {
   padding: 1rem;
+}
+
+.p-5 {
+  padding: 1.25rem;
 }
 
 .p-6 {
