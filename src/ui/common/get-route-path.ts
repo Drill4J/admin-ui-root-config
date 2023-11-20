@@ -30,6 +30,9 @@ export const getCustomPath = () => {
   if (path.includes("login")) {
     return removeSlashFromTheEnd(removeMultipleSlashes(path.split("login")[0]));
   }
+  if (path.includes("administrate")) {
+    return removeSlashFromTheEnd(removeMultipleSlashes(path.split("administrate")[0]));
+  }
 
   return removeSlashFromTheEnd(removeMultipleSlashes(path));
 };

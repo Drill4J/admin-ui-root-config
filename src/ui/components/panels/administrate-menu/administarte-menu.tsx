@@ -13,7 +13,7 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-import React from "react";
+import React, { useEffect, useState } from "react";
 
 import tw, { styled } from "twin.macro";
 import { useHistory } from "react-router-dom";
@@ -22,45 +22,32 @@ import {
   Button,
   addQueryParamsToPath
 } from "@drill4j/ui-kit";
-import useUserInfo from "modules/auth/hooks/use-user-info";
+import { userHasAdminRole } from "modules/auth/hooks/use-has-role";
+
 
 export interface Props {
   close: () => void;
 }
 
-export const AuthMenu = ({ close }: Props) => {
+export const AdministrateMenu = ({ close }: Props) => {
   const { push } = useHistory();
-
-  const { data: userInfo } = useUserInfo()
-
+  const { hasRole: hasAdminRole } = userHasAdminRole()
+  
   return (
     <Menu>
       <div tw="overflow-hidden rounded-2xl">
-        <div tw="flex flex-col gap-2 bg-monochrome-black py-6">
-          <>
-          { userInfo &&
-            <CategoryHeader>
-            Current user: {userInfo.username}
-            </CategoryHeader>    
+        <div tw="flex flex-col gap-4 bg-monochrome-black py-6">
+          <CategoryHeader>Administrate</CategoryHeader>
+          { hasAdminRole !== null && !hasAdminRole && 
+            <Text> You don't have necessary permissions to access administrative functions.</Text>
           }
-          </>    
           <ButtonLink
+              disabled={!hasAdminRole}
               onClick={() => {
-                close();
-                push(addQueryParamsToPath({ activeModal: "update-password" }));
+                push(getPagePath({ name: "administrate" }));
               }}
           >
-            Update Password
-          </ButtonLink>
-
-          <ButtonLink
-            onClick={() => {
-              localStorage.removeItem(TOKEN_KEY);
-              push(getPagePath({ name: "login" }));
-              close();
-            }}
-          >
-            Sign out
+            Manage Users
           </ButtonLink>
         </div>
       </div>
@@ -83,9 +70,13 @@ const Menu = styled.div`
 `;
 
 const CategoryHeader = styled.h2`
-  ${tw`flex px-6 py-2 leading-24 text-14 text-monochrome-gray font-bold`}
+  ${tw`flex px-6 py-2 leading-24 text-14 uppercase text-monochrome-gray font-bold`}
 `;
 
 const ButtonLink = styled(Button)`
   ${tw`flex w-full px-6 py-1 leading-20 text-14 text-monochrome-white hover:bg-monochrome-default/[0.1]`}
+`;
+
+const Text = styled.span`
+  ${tw`flex px-6 leading-24 text-14 text-monochrome-gray`}
 `;

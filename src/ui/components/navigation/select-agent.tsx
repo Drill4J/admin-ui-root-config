@@ -18,15 +18,17 @@ import { Icons } from "@drill4j/ui-kit";
 import { useRouteParams } from "hooks";
 import { CubeWithTooltip } from "../cubes";
 import { usePanelContext, useSetPanelContext } from "../panels";
-import userHasUserRole from "modules/auth/hooks/user-has-user-role";
+import { userHasUserRole } from "modules/auth/hooks/use-has-role";
 
 export const SelectAgent = () => {
-  const { isRole: isUserRole } = userHasUserRole()
-  if (!isUserRole) return <div></div>
-
+  const { hasRole } = userHasUserRole()
   const setPanel = useSetPanelContext();
   const activePanel = usePanelContext();
   const { groupId } = useRouteParams();
+  
+  // empty div is required for parent flex container to space out elements with space-between
+  if (!hasRole) return <div></div>
+  
   return (
     <CubeWithTooltip
       tooltip="Select Agent"

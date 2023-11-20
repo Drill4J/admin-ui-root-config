@@ -12,3 +12,7 @@ export type ChangePasswordPayload = {
   oldPassword: string;
   newPassword: string;
 };
+export type UserInfo = {
+  role: string
+  username: string
+}

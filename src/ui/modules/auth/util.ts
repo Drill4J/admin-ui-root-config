@@ -1,6 +1,7 @@
 import { AxiosResponse } from "axios";
+import { ApiResponseData } from "./hooks/types";
 
-export async function runCatching(promise: Promise<AxiosResponse<any>>) {
+export async function runCatching<ReturnType>(promise: Promise<AxiosResponse<ApiResponseData<ReturnType>>>) {
   try {
     return await promise
   } catch (e) {

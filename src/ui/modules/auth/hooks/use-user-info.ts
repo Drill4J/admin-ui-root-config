@@ -14,7 +14,9 @@
  * limitations under the License.
  */
 
-import { Role } from "../models";
-import userHasRole from "./user-has-role";
+import { getUserInfo } from '../user-authentication/api'
+import { useApiData } from './use-api-data'
 
-export default userHasRole(Role.ADMIN)
+export default () => {
+  return useApiData(() => getUserInfo())
+}

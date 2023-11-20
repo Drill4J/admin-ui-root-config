@@ -23,8 +23,9 @@ import { Notifications } from "./notifications";
 import { Logout } from "./logout";
 import { SelectedEntity } from "./selected-entity";
 import { MenuLinks } from "../menu-links";
+import { Administrate } from "./administrate";
 
-export const Navigation = (props: unknown) => (
+export const Navigation = (props: any) => (
   <div tw="flex flex-col w-12 h-full px-[6px] bg-monochrome-black" {...props}>
     <div tw="flex justify-center items-center w-full h-22 flex-grow-0 text-monochrome-white">
       <Icons.TransparentLogo width={24} height={24} viewBox="0 0 24 24" />
@@ -36,6 +37,7 @@ export const Navigation = (props: unknown) => (
       <div tw="mt-2 space-y-2">
         <Notifications />
         <MenuLinks />
+        <Administrate />
         <Logout />
       </div>
     </ActionsWrapper>

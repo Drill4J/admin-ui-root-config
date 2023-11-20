@@ -31,6 +31,7 @@ import "./index.css";
 import { useAdminConnection } from "./hooks";
 import { AnalyticsInfo } from "./types";
 import { UpdatePasswordModal } from "modules/auth/user-authentication/modal/update-password";
+import { AdministratePage } from "pages/administrate-page";
 
 const analitycHandler = async (status: boolean) => {
   try {
@@ -70,6 +71,7 @@ const Root = () => {
       <AlertManager />
       <Switch>
         <Route exact path={routes.login} component={LoginPage} />
+        <Route exact path={routes.administrate} component={AdministratePage} />
         <PanelProvider>
           <Navigation tw="fixed h-full" />
           {/* Navigation width = 48px */}

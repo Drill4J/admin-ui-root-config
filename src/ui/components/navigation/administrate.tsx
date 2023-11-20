@@ -1,5 +1,3 @@
-
-
 /*
  * Copyright 2020 EPAM Systems
  *
@@ -15,27 +13,28 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-import React, { useState } from "react";
-import { UserManagementTable } from "./tables/users";
-
-import {
-  addQueryParamsToPath,
-  ContentAlert,
-  Form,
-  Tooltip,
-} from "@drill4j/ui-kit";
+import React from "react";
+import { Icons } from "@drill4j/ui-kit";
 import tw, { styled } from "twin.macro";
 
+import { usePanelContext, useSetPanelContext } from "../panels";
+import { Cube } from "../cubes";
 
-export const UserManagement = () => {
+export const Administrate = () => {
+  const openModal = useSetPanelContext();
+  const activePane = usePanelContext();
+
   return (
-    <div tw="p-5 pt-6">
-      <div tw="text-32 leading-40 text-monochrome-black">
-        User management
+    <Cube onClick={() => openModal({ type: "ADMINISTRATE" })}>
+      <div tw="text-monochrome-white">
+        <Wrapper active={activePane?.type === "ADMINISTRATE"}>
+          <Icons.Settings />
+        </Wrapper>
       </div>
-      <div tw="mt-5">
-        <UserManagementTable/>
-      </div>
-    </div>
+    </Cube>
   );
 };
+
+const Wrapper = styled.div`
+  ${({ active }: { active: boolean }) => active && tw`text-blue-default`}
+`;
