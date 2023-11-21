@@ -19,6 +19,7 @@ import { routes } from "common";
 import { PrivateRoute, useSetPanelContext } from "components";
 import { AgentPage } from "../agent";
 import { ServiceGroup } from "../service-group";
+import { AdministratePage } from "pages/administrate-page";
 import { Button, Icons, Stub } from "@drill4j/ui-kit";
 import "twin.macro";
 
@@ -49,6 +50,7 @@ export const PageSwitcher = () => {
           />
         </div>
       } />
+      <PrivateRoute exact path={routes.administrate} component={AdministratePage} />
       <PrivateRoute path={[routes.agentPlugin, routes.agentDashboard]} component={AgentPage} />
       <PrivateRoute
         path={[routes.serviceGroupPlugin, routes.serviceGroupDashboard]}

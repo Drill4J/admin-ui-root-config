@@ -23,8 +23,7 @@ interface Props {
 }
 
 export const AppLayout = ({ children }: Props) => (
-  <div tw="flex flex-row w-full h-full overflow-hidden">
-    <Navigation />
+  <div tw="flex flex-row w-full">
     {children}
   </div>
 );
