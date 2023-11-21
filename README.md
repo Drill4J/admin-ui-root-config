@@ -33,6 +33,12 @@ To launch the development environment, follow these steps:
 3. run the command `npm run start`
 4. enjoy the development.
 
+### Important notes
+
+1. Make sure to include `import "twin.macro";` in each `.tsx` file to enable tailwind styles via `tw=` attribute
+
+    - if you see the `tw=` attribute in html on the page - missing import is the cause of it
+
 ## Ui-kit
 
 ### For development
