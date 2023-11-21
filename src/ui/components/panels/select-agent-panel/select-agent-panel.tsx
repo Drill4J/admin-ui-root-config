@@ -38,16 +38,28 @@ export const SelectAgentPanel = ({ isOpen, onClosePanel }: PanelProps) => {
   const registeredAgentsBuilds = useAdminConnection<ActiveAgentsBuild[]>("/api/agents/build") || [];
   const setPanel = useSetPanelContext();
 
-  const agents = useMemo(() => agentsList
-    .filter((agent) => !agent.group && agent.agentStatus !== AGENT_STATUS.NOT_REGISTERED), [agentsList]);
-  const groupsAgents = useMemo(() => agentsList
-    .filter((agent) => agent.group && agent.agentStatus !== AGENT_STATUS.NOT_REGISTERED), [agentsList]);
-  const registeredAgentsBuildsStatuses: Record<string, BuildStatus> = useMemo(() => registeredAgentsBuilds
-    .reduce((acc, { agentId, build }) => ({ ...acc, [agentId]: build.buildStatus }), {}), [registeredAgentsBuilds]);
-  const groups = useMemo(() => groupsList.map((group) => ({
-    group,
-    agents: groupsAgents.filter((agent) => group.id === agent.group),
-  })), [groupsList, groupsAgents]);
+  const agents = useMemo(
+    () => agentsList.filter((agent) => !agent.group && agent.agentStatus !== AGENT_STATUS.NOT_REGISTERED),
+    [agentsList]
+  );
+  
+  const groupsAgents = useMemo(
+    () => agentsList.filter((agent) => agent.group && agent.agentStatus !== AGENT_STATUS.NOT_REGISTERED),
+    [agentsList]
+  );
+
+  const registeredAgentsBuildsStatuses: Record<string, BuildStatus> = useMemo(
+    () => registeredAgentsBuilds.reduce((acc, { agentId, build }) => ({ ...acc, [agentId]: build.buildStatus }), {}),
+    [registeredAgentsBuilds]
+  );
+  
+  const groups = useMemo(
+    () => groupsList.map((group) => ({
+      group,
+      agents: groupsAgents.filter((agent) => group.id === agent.group),
+    })),
+    [groupsList, groupsAgents]
+  );
 
   return (
     <Panel
