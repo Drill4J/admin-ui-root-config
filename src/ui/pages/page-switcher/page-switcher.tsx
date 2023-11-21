@@ -15,28 +15,40 @@
  */
 import React from "react";
 import { Switch } from "react-router-dom";
-import { AGENT_STATUS, routes } from "common";
-import { NoAgentSelectedStub, NoAgentsRegisteredStub, PrivateRoute } from "components";
-import { useAdminConnection, useRouteParams } from "hooks";
-import { AgentInfo } from "types";
+import { routes } from "common";
+import { PrivateRoute, useSetPanelContext } from "components";
 import { AgentPage } from "../agent";
 import { ServiceGroup } from "../service-group";
+import { Button, Icons, Stub } from "@drill4j/ui-kit";
+import "twin.macro";
 
 export const PageSwitcher = () => {
-  const { agentId, groupId } = useRouteParams();
-  const agentsList = useAdminConnection<AgentInfo[]>("/api/agents") || [];
-  const isAllAgentsUnregistered = agentsList.every((agentItem) => agentItem.agentStatus === AGENT_STATUS.NOT_REGISTERED);
-
-  if (isAllAgentsUnregistered && !agentId && !groupId) {
-    return <NoAgentsRegisteredStub />;
-  }
-
-  if (!agentId && !groupId) {
-    return <NoAgentSelectedStub />;
-  }
+  const setPanel = useSetPanelContext();
 
   return (
     <Switch>
+      <PrivateRoute exact path={routes.root} component={() =>
+        <div tw="flex justify-center items-center h-full">
+          <Stub
+            icon={<Icons.NoAgentsPlaceholder/>}
+            title="Nothing to show yet"
+            message={
+              <div>
+                To view application metrics open corresponding agent's page 
+                <Button
+                  primary
+                  size="large"
+                  tw="mt-5 mx-auto"
+                  onClick={() => setPanel({ type: "SELECT_AGENT" })}
+                  data-test="no-agent-selected-stub:open-select-agent-panel"
+                >
+                  View agents
+                </Button>
+              </div>
+            }
+          />
+        </div>
+      } />
       <PrivateRoute path={[routes.agentPlugin, routes.agentDashboard]} component={AgentPage} />
       <PrivateRoute
         path={[routes.serviceGroupPlugin, routes.serviceGroupDashboard]}
