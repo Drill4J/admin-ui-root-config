@@ -36,15 +36,14 @@ export const SelectAgentPanel = ({ isOpen, onClosePanel }: PanelProps) => {
   const agentsList = useAdminConnection<AgentInfo[]>("/api/agents") || [];
   const groupsList = useAdminConnection<ServiceGroup[]>("/api/groups") || [];
   const registeredAgentsBuilds = useAdminConnection<ActiveAgentsBuild[]>("/api/agents/build") || [];
-  const setPanel = useSetPanelContext();
 
-  const agents = useMemo(
-    () => agentsList.filter((agent) => !agent.group && agent.agentStatus !== AGENT_STATUS.NOT_REGISTERED),
+  const agentsNotInGroups = useMemo(
+    () => agentsList.filter((agent) => !agent.group),
     [agentsList]
   );
   
-  const groupsAgents = useMemo(
-    () => agentsList.filter((agent) => agent.group && agent.agentStatus !== AGENT_STATUS.NOT_REGISTERED),
+  const agentsInGroups = useMemo(
+    () => agentsList.filter((agent) => agent.group),
     [agentsList]
   );
 
@@ -56,9 +55,9 @@ export const SelectAgentPanel = ({ isOpen, onClosePanel }: PanelProps) => {
   const groups = useMemo(
     () => groupsList.map((group) => ({
       group,
-      agents: groupsAgents.filter((agent) => group.id === agent.group),
+      agents: agentsInGroups.filter((agent) => group.id === agent.group),
     })),
-    [groupsList, groupsAgents]
+    [groupsList, agentsInGroups]
   );
 
   return (
@@ -80,7 +79,7 @@ export const SelectAgentPanel = ({ isOpen, onClosePanel }: PanelProps) => {
       isOpen={isOpen}
       onClosePanel={onClosePanel}
     >
-      {agents.length || groupsAgents.length ? (
+      {agentsList.length ? (
         <div tw="text-monochrome-medium-tint text-14 leading-20">
           <Layout tw="text-monochrome-dark font-bold leading-24">
             <Column tw="col-start-3">Name</Column>
@@ -90,7 +89,7 @@ export const SelectAgentPanel = ({ isOpen, onClosePanel }: PanelProps) => {
           <div tw="flex flex-col gap-y-[6px] overflow-y-auto">
             {groups.map(({ group, agents: groupAgents }) => groupAgents.length > 0
             && <GroupRow key={group?.id} group={group} agents={groupAgents} agentBuildStatuses={registeredAgentsBuildsStatuses} />)}
-            {agents.map((agent) => <AgentRow key={agent.id} agent={agent} buildStatus={registeredAgentsBuildsStatuses[agent.id]} />)}
+            {agentsNotInGroups.map((agent) => <AgentRow key={agent.id} agent={agent} buildStatus={registeredAgentsBuildsStatuses[agent.id]} />)}
           </div>
         </div>
       ) : (
