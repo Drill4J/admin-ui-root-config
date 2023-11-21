@@ -96,7 +96,7 @@ export const SelectAgentPanel = ({ isOpen, onClosePanel }: PanelProps) => {
       ) : (
         <PanelStub
           icon={<NoAgentsSvg className="text-monochrome-dark-tint text-opacity-40" />}
-          title="No registered agents at the moment"
+          title="No agents found"
           message={(
             <span>
              Refer to&nbsp;
@@ -108,7 +108,7 @@ export const SelectAgentPanel = ({ isOpen, onClosePanel }: PanelProps) => {
               >
                 Drill4J documentation  <Icons.OpenInNewTab tw="inline" />
               </a>
-              &nbsp;for setup and configuration instructions
+              &nbsp; for setup and configuration instructions
             </span>
           )}
         />

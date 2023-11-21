@@ -92,7 +92,7 @@ export const AddAgentPanel = ({ isOpen, onClosePanel }: PanelProps) => {
               >
                 Drill4J documentation  <Icons.OpenInNewTab tw="inline" />
               </a>
-              &nbsp;for setup and configuration instructions
+              &nbsp; for setup and configuration instructions
             </span>
           )}
         />

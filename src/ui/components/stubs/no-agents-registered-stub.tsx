@@ -25,7 +25,7 @@ export const NoAgentsRegisteredStub = () => {
   return (
     <Stub
       icon={<NoAgentsSvg />}
-      title="No registered agents at the moment"
+      title="No agents found"
       message={(
         <>
           <span>
@@ -38,7 +38,7 @@ export const NoAgentsRegisteredStub = () => {
             >
               Drill4J documentation  <Icons.OpenInNewTab tw="inline" />
             </a>
-            &nbsp;for setup and configuration instructions
+            &nbsp; for setup and configuration instructions
           </span>
           <Button
             primary
