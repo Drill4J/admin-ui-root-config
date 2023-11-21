@@ -108,7 +108,7 @@ export const SelectAgentPanel = ({ isOpen, onClosePanel }: PanelProps) => {
               >
                 Drill4J documentation  <Icons.OpenInNewTab tw="inline" />
               </a>
-              &nbsp;to for setup and configuration instructions
+              &nbsp;for setup and configuration instructions
             </span>
           )}
         />
