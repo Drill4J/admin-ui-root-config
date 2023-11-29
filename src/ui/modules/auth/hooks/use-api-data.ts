@@ -46,7 +46,7 @@ export const useApiData = <T extends () => Promise<any>>(request: T): ApiRespons
       }
     };
     fetchData();
-  }, [request]);
+  }, []);
 
   return { data, isError, errorMessage };
 };
