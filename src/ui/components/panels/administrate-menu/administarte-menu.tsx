@@ -73,7 +73,7 @@ const CategoryHeader = styled.h2`
   ${tw`flex px-6 py-2 leading-24 text-14 uppercase text-monochrome-gray font-bold`}
 `;
 
-const ButtonLink = styled(Button)`
+const ButtonLink = styled.button`
   ${tw`flex w-full px-6 py-1 leading-20 text-14 text-monochrome-white hover:bg-monochrome-default/[0.1]`}
 `;
 

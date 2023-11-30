@@ -25,10 +25,6 @@ export function signInForm(
   }
 
   return (
-    <div>
-      <div tw="mt-2 px-16 text-16 leading-24 text-monochrome-default text-center">
-        Provide your credentials
-      </div>
       <Formik
         initialValues={{
           username: "",
@@ -50,7 +46,7 @@ export function signInForm(
             component={Fields.Input}
             placeholder="Password" />
           <Button
-            tw="flex justify-center w-full"
+            tw="w-full justify-center"
             primary
             size="large"
             type="submit"
@@ -59,6 +55,5 @@ export function signInForm(
           </Button>
         </AuthFormStyle>
       </Formik>
-    </div>
   );
 }

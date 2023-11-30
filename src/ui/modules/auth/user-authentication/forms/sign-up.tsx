@@ -22,9 +22,6 @@ export function signUpForm(
 
   return (
     <div>
-      <div tw="mt-2 px-16 text-16 leading-24 text-monochrome-default text-center">
-        Register new user
-      </div>
       <Formik
         initialValues={{
           username: "",
@@ -39,14 +36,13 @@ export function signUpForm(
           <Field
             name="username"
             component={Fields.Input}
-            placeholder="Username" />
+            placeholder="Enter new username" />
           <Field
             name="password"
             type="password"
             component={Fields.Input}
-            placeholder="Password" />
+            placeholder="Enter password" />
           <Button
-            tw="flex justify-center w-full"
             primary
             size="large"
             type="submit"
