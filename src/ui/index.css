@@ -794,12 +794,20 @@ button:focus {
   left: 3rem;
 }
 
-.left-2 {
-  left: 0.5rem;
+.left-\[55px\] {
+  left: 55px;
 }
 
-.bottom-12 {
-  bottom: 3rem;
+.bottom-\[50px\] {
+  bottom: 50px;
+}
+
+.bottom-\[5px\] {
+  bottom: 5px;
+}
+
+.bottom-\[92px\] {
+  bottom: 92px;
 }
 
 .z-\[200\] {
@@ -818,8 +826,8 @@ button:focus {
   z-index: 100;
 }
 
-.z-\[130px\] {
-  z-index: 130px;
+.z-\[130\] {
+  z-index: 130;
 }
 
 .\!z-\[200\] {
