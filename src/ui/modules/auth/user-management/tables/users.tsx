@@ -19,7 +19,7 @@ import {
   Table,
   Stub,
   Button,
-  sendAlertEvent,
+  sendAlertEvent
 } from "@drill4j/ui-kit";
 import * as API from "../api";
 import tw, { styled } from "twin.macro";
@@ -216,6 +216,25 @@ function renderUserManagementActions(
         >
           Reset Password
         </Button>
+        <Button
+            primary
+            size="small"
+            onClick={async () => {
+              try {
+                const targetRole = userData.role === Role.USER ? Role.ADMIN : Role.USER;
+                const isConfirmed = window.confirm(`Are you sure you want to change role for user "${userData.username}" to ${targetRole}?`);
+                if (!isConfirmed) return
+                const data = await API.editUser(userData.id, {
+                  role: targetRole,
+                });
+                setSuccess(data);
+              } catch (error) {
+                setError(error.message);
+              }
+            }}
+          >
+           Make { userData.role === Role.USER ? Role.ADMIN : Role.USER }
+          </Button>
       </div>
     );
   };
