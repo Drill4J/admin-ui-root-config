@@ -1,9 +1,8 @@
 name: Bump version
 
 on:
-  push:
-    branches:
-      - develop
+  workflow_dispatch:
+  
 jobs:
   bump:
     runs-on: ubuntu-latest
