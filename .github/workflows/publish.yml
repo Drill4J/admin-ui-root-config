@@ -1,9 +1,6 @@
 name: Publish docker image
 
 on:
-  push:
-    tags:
-      - 'v*'
   workflow_dispatch:
 jobs:
   publish:
@@ -37,17 +34,17 @@ jobs:
           token: ${{ secrets.VEE_TABLE_TOKEN }}
           event-type: run_test
           client-payload: '{ "${{ github.event.repository.name }}": "${{ steps.get_version.outputs.VERSION }}" }'
-      # place this action LAST
-      - uses: Drill4J/vee-table@0.0.0
-        with:
-          # leave everything "as-is"
-          github-access-token: ${{ secrets.VEE_TABLE_TOKEN }}
-          action-type: 'add-version'
-          ledger-repo-url: 'https://github.com/Drill4J/vee-ledger'
-          ledger-repo-owner: 'Drill4J'
-          ledger-repo-name: 'vee-ledger'
-          version-component-id: ${{ github.event.repository.name }}
-          # leave everything "as-is"
+      # # place this action LAST
+      # - uses: Drill4J/vee-table@0.0.0
+      #   with:
+      #     # leave everything "as-is"
+      #     github-access-token: ${{ secrets.VEE_TABLE_TOKEN }}
+      #     action-type: 'add-version'
+      #     ledger-repo-url: 'https://github.com/Drill4J/vee-ledger'
+      #     ledger-repo-owner: 'Drill4J'
+      #     ledger-repo-name: 'vee-ledger'
+      #     version-component-id: ${{ github.event.repository.name }}
+      #     # leave everything "as-is"
 
-          # steps.build_artifact is your step, where new version tag is created
-          version-tag: ${{ steps.get_version.outputs.VERSION }} # Pass new version tag
+      #     # steps.build_artifact is your step, where new version tag is created
+      #     version-tag: ${{ steps.get_version.outputs.VERSION }} # Pass new version tag
