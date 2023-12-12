@@ -16,15 +16,12 @@
 import React from "react";
 import "twin.macro";
 
-import { Navigation } from "components";
-
 interface Props {
   children?: React.ReactNode;
 }
 
 export const AppLayout = ({ children }: Props) => (
-  <div tw="flex flex-row w-full h-full overflow-hidden">
-    <Navigation />
+  <div tw="flex flex-row w-full">
     {children}
   </div>
 );

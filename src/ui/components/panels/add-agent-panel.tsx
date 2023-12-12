@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 import React, { useState } from "react";
-import { Button, Icons, LinkButton } from "@drill4j/ui-kit";
+import { Button, Icons } from "@drill4j/ui-kit";
 import tw, { styled } from "twin.macro";
 
 import { useAdminConnection } from "hooks";
@@ -32,7 +32,6 @@ import { PanelStub } from "../panel-stub";
 export const AddAgentPanel = ({ isOpen, onClosePanel }: PanelProps) => {
   const agentsList = useAdminConnection<AgentInfo[]>("/api/agents") || [];
   const groupsList = useAdminConnection<ServiceGroup[]>("/api/groups") || [];
-  const setPanel = useSetPanelContext();
   const notRegisteredAgents = agentsList.filter((agent) => !agent.group && agent.agentStatus === AGENT_STATUS.NOT_REGISTERED);
   const notRegisteredGroupsAgents = agentsList.filter((agent) => agent.group && agent.agentStatus === AGENT_STATUS.NOT_REGISTERED);
   const groups = groupsList.map((group) => ({
@@ -46,7 +45,7 @@ export const AddAgentPanel = ({ isOpen, onClosePanel }: PanelProps) => {
       header={(
         <div tw="flex justify-between items-center h-20">
           Add Agent
-          <LinkButton
+          {/* <LinkButton
             tw="text-14 leading-24"
             onClick={() => setPanel({
               type: "AGENT_PREREGISTRATION",
@@ -55,7 +54,7 @@ export const AddAgentPanel = ({ isOpen, onClosePanel }: PanelProps) => {
             data-test="add-agent-panel:open-preregister-agent-panel"
           >
             <Icons.Register /> Preregister Java Agent
-          </LinkButton>
+          </LinkButton> */}
         </div>
       )}
       isOpen={isOpen}
@@ -83,15 +82,16 @@ export const AddAgentPanel = ({ isOpen, onClosePanel }: PanelProps) => {
           title="There are no agents to register"
           message={(
             <span>
-              Run your application with Drill4J Agent using&nbsp;
+              Refer to&nbsp;
               <a
                 tw="inline-flex items-center gap-x-1 text-blue-default font-semibold"
-                href="https://drill4j.github.io/how-to-start/"
+                href="https://drill4j.github.io/docs/installation/setup"
                 rel="noopener noreferrer"
                 target="_blank"
               >
-                this guide <Icons.OpenInNewTab tw="inline" />
+                Drill4J documentation  <Icons.OpenInNewTab tw="inline" />
               </a>
+              &nbsp; for setup and configuration instructions
             </span>
           )}
         />

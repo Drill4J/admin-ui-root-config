@@ -15,93 +15,177 @@
  */
 import React, { useMemo, useState } from "react";
 import { useHistory } from "react-router-dom";
-import { Icons, Spinner, Button } from "@drill4j/ui-kit";
+import {
+  Icons, Spinner, Stub,
+} from "@drill4j/ui-kit";
 import "twin.macro";
 
 import { convertAgentName } from "utils";
 import { AgentStatusBadge, NoAgentsSvg, PanelStub } from "components";
 import { useAdminConnection, useRouteParams } from "hooks";
 import {
-  AgentInfo, BuildStatus, ServiceGroup, ActiveAgentsBuild, AgentBuildInfo,
+  AgentInfo,
+  BuildStatus,
+  ServiceGroup,
+  ActiveAgentsBuild,
+  AgentBuildInfo,
 } from "types";
 import { AGENT_STATUS, getPagePath } from "common";
 import { Panel } from "../panel";
 import { PanelProps } from "../panel-props";
 import {
-  Column, CubeWrapper, GroupRow as StyledGroupRow, Layout, NameColumn, Row, AgentRow as StyledAgentRow, GroupAgentRow,
+  Column,
+  CubeWrapper,
+  GroupRow as StyledGroupRow,
+  Layout,
+  NameColumn,
+  Row,
+  AgentRow as StyledAgentRow,
+  GroupAgentRow,
 } from "./elements";
 import { useSetPanelContext } from "../panel-context";
 
-export const SelectAgentPanel = ({ isOpen, onClosePanel }: PanelProps) => {
-  const agentsList = useAdminConnection<AgentInfo[]>("/api/agents") || [];
-  const groupsList = useAdminConnection<ServiceGroup[]>("/api/groups") || [];
-  const registeredAgentsBuilds = useAdminConnection<ActiveAgentsBuild[]>("/api/agents/build") || [];
-  const setPanel = useSetPanelContext();
-
-  const agents = useMemo(() => agentsList
-    .filter((agent) => !agent.group && agent.agentStatus !== AGENT_STATUS.NOT_REGISTERED), [agentsList]);
-  const groupsAgents = useMemo(() => agentsList
-    .filter((agent) => agent.group && agent.agentStatus !== AGENT_STATUS.NOT_REGISTERED), [agentsList]);
-  const registeredAgentsBuildsStatuses: Record<string, BuildStatus> = useMemo(() => registeredAgentsBuilds
-    .reduce((acc, { agentId, build }) => ({ ...acc, [agentId]: build.buildStatus }), {}), [registeredAgentsBuilds]);
-  const groups = useMemo(() => groupsList.map((group) => ({
-    group,
-    agents: groupsAgents.filter((agent) => group.id === agent.group),
-  })), [groupsList, groupsAgents]);
-
-  return (
-    <Panel
-      tw="w-[1024px]"
-      header={(
-        <div tw="flex justify-between items-center h-21">
-          Select Agent
-          <Button
+export const SelectAgentPanel = ({ isOpen, onClosePanel }: PanelProps) => (
+  <Panel
+    tw="w-[1024px]"
+    header={(
+      <div tw="flex justify-between items-center h-21">
+        Select Agent
+        {/* <Button
             onClick={() => setPanel({ type: "ADD_AGENT" })}
             secondary
             size="large"
             data-test="select-agent-panel:open-add-agent-panel"
           >
             <Icons.Plus /> Add Agent
-          </Button>
-        </div>
-      )}
-      isOpen={isOpen}
-      onClosePanel={onClosePanel}
-    >
-      {agents.length || groupsAgents.length ? (
-        <div tw="text-monochrome-medium-tint text-14 leading-20">
-          <Layout tw="text-monochrome-dark font-bold leading-24">
-            <Column tw="col-start-3">Name</Column>
-            <Column tw="col-start-4">Description</Column>
-            <Column tw="col-start-5">Type</Column>
-          </Layout>
-          <div tw="flex flex-col gap-y-[6px] overflow-y-auto">
-            {groups.map(({ group, agents: groupAgents }) => groupAgents.length > 0
-            && <GroupRow key={group?.id} group={group} agents={groupAgents} agentBuildStatuses={registeredAgentsBuildsStatuses} />)}
-            {agents.map((agent) => <AgentRow key={agent.id} agent={agent} buildStatus={registeredAgentsBuildsStatuses[agent.id]} />)}
-          </div>
-        </div>
-      ) : (
-        <PanelStub
-          icon={<NoAgentsSvg className="text-monochrome-dark-tint text-opacity-40" />}
-          title="No registered agents at the moment"
-          message={(
-            <span>
-              Run your application with Drill4J Agent using&nbsp;
-              <a
-                tw="inline-flex items-center gap-x-1 text-blue-default font-semibold"
-                href="https://drill4j.github.io/how-to-start/"
-                rel="noopener noreferrer"
-                target="_blank"
-              >
-                this guide <Icons.OpenInNewTab tw="inline" />
-              </a>
-              &nbsp;and add it.
-            </span>
-          )}
-        />
-      )}
-    </Panel>
+          </Button> */}
+      </div>
+    )}
+    isOpen={isOpen}
+    onClosePanel={onClosePanel}
+  >
+    <AgentsTable />
+  </Panel>
+);
+
+const AgentsTable = () => {
+  const agentsList = useAdminConnection<AgentInfo[]>("/api/agents");
+  const groupsList = useAdminConnection<ServiceGroup[]>("/api/groups");
+  const registeredAgentsBuilds =
+    useAdminConnection<ActiveAgentsBuild[]>("/api/agents/build");
+
+  const agentsNotInGroups = useMemo(
+    () => agentsList && agentsList.filter((agent) => !agent.group),
+    [agentsList],
+  );
+
+  const agentsInGroups = useMemo(
+    () => agentsList && agentsList.filter((agent) => agent.group),
+    [agentsList],
+  );
+
+  const registeredAgentsBuildsStatuses: Record<string, BuildStatus> | null =
+    useMemo(
+      () =>
+        registeredAgentsBuilds &&
+        registeredAgentsBuilds.reduce(
+          (acc, { agentId, build }) => ({
+            ...acc,
+            [agentId]: build.buildStatus,
+          }),
+          {},
+        ),
+      [registeredAgentsBuilds],
+    );
+
+  const groups = useMemo(
+    () =>
+      groupsList &&
+      groupsList.map((group) => ({
+        group,
+        agents:
+          agentsInGroups &&
+          agentsInGroups.filter((agent) => group.id === agent.group),
+      })),
+    [groupsList, agentsInGroups],
+  );
+
+  const isLoading =
+    agentsList === null ||
+    groupsList === null ||
+    registeredAgentsBuilds === null ||
+    agentsNotInGroups === null ||
+    agentsInGroups === null ||
+    registeredAgentsBuildsStatuses === null ||
+    groups === null;
+
+  if (isLoading) {
+    return (
+      <Stub
+        tw="text-monochrome-dark-tint text-opacity-40"
+        icon={
+          <NoAgentsSvg className="text-monochrome-dark-tint text-opacity-40" />
+        }
+        title="Loading..."
+        message="Wait for the agents list to load"
+      />
+    );
+  }
+
+  if (agentsList.length === 0) {
+    return (
+      <PanelStub
+        icon={
+          <NoAgentsSvg className="text-monochrome-dark-tint text-opacity-40" />
+        }
+        title="No agents found"
+        message={(
+          <span>
+            Refer to&nbsp;
+            <a
+              tw="inline-flex items-center gap-x-1 text-blue-default font-semibold"
+              href="https://drill4j.github.io/docs/installation/setup"
+              rel="noopener noreferrer"
+              target="_blank"
+            >
+              Drill4J documentation <Icons.OpenInNewTab tw="inline" />
+            </a>
+            &nbsp; for setup and configuration instructions
+          </span>
+        )}
+      />
+    );
+  }
+
+  return (
+    <div tw="text-monochrome-medium-tint text-14 leading-20">
+      <Layout tw="text-monochrome-dark font-bold leading-24">
+        <Column tw="col-start-3">Name</Column>
+        <Column tw="col-start-4">Description</Column>
+        <Column tw="col-start-5">Type</Column>
+      </Layout>
+      <div tw="flex flex-col gap-y-[6px] overflow-y-auto">
+        {groups.map(
+          ({ group, agents: groupAgents }) =>
+            groupAgents &&
+            groupAgents.length > 0 && (
+              <GroupRow
+                key={group?.id}
+                group={group}
+                agents={groupAgents}
+                agentBuildStatuses={registeredAgentsBuildsStatuses}
+              />
+            ),
+        )}
+        {agentsNotInGroups.map((agent) => (
+          <AgentRow
+            key={agent.id}
+            agent={agent}
+            buildStatus={registeredAgentsBuildsStatuses[agent.id]}
+          />
+        ))}
+      </div>
+    </div>
   );
 };
 

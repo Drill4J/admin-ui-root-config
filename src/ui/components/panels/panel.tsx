@@ -29,7 +29,7 @@ export const Panel = ({
   children, header, isOpen, onClosePanel, footer, isDisabledFade = false, ...rest
 }: Props) => (isOpen
   ? (
-    <div data-test="panel" tw="absolute inset-0 left-12 z-[120] grid w-auto h-auto grid-cols-[auto 1fr]">
+    <div data-test="panel" tw="fixed inset-0 left-12 z-[120] grid w-auto h-auto grid-cols-[auto 1fr]">
       <div tw="h-full flex flex-col text-monochrome-light-tint text-24" {...rest}>
         <div tw="px-6 leading-32 bg-monochrome-black">{header}</div>
         {/* fixed height need that browser can apply scroll styles */}

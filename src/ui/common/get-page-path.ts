@@ -18,6 +18,7 @@ import { getRoutePath } from "./get-route-path";
 
 interface Routes {
   login: void
+  administrate: void
   root: void
   builds: "agentId"
   agentDashboard: "agentId"
@@ -32,6 +33,7 @@ export const routes = {
   serviceGroupPlugin: getRoutePath("/groups/:groupId/plugins/:pluginId"),
   serviceGroupDashboard: getRoutePath("/groups/:groupId/dashboard"),
   login: getRoutePath("/login"),
+  administrate: getRoutePath("/administrate"),
   builds: getRoutePath("/agents/:agentId/builds"),
   root: getRoutePath("/"),
 };

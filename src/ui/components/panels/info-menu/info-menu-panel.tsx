@@ -25,7 +25,7 @@ export interface Props {
 export const InfoMenuPanel = ({ onClosePanel }: Props) => (
   <div data-test="panel" tw="absolute inset-0 left-12 z-[120] grid w-auto h-auto grid-cols-[1fr]">
     <div onClick={onClosePanel} />
-    <div tw="absolute z-[130px] left-2 bottom-12">
+    <div tw="fixed z-[130] left-[55px] bottom-[92px]">
       <InfoMenu close={onClosePanel} />
     </div>
   </div>

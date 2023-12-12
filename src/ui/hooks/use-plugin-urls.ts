@@ -25,6 +25,7 @@ const errorHandler = async (func: () => any, message: string): Promise<any> => {
   try {
     return await func();
   } catch (e) {
+    // eslint-disable-next-line
     console.error(e);
     throw new Error(message);
   }

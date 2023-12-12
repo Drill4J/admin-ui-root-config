@@ -26,6 +26,8 @@ export type PanelsType = "NOTIFICATIONS"
 | "GROUP_REGISTRATION"
 | "SETTINGS"
 | "INFO_MENU"
+| "AUTH_MENU"
+| "ADMINISTRATE"
 
 export interface PanelType {
   type: PanelsType;

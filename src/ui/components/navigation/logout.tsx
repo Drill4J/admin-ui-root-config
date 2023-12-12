@@ -15,21 +15,26 @@
  */
 import React from "react";
 import { Icons } from "@drill4j/ui-kit";
-import { getPagePath, TOKEN_KEY } from "common";
-import { useHistory } from "react-router-dom";
+import tw, { styled } from "twin.macro";
+
+import { usePanelContext, useSetPanelContext } from "../panels";
 import { Cube } from "../cubes";
 
 export const Logout = () => {
-  const { push } = useHistory();
+  const openModal = useSetPanelContext();
+  const activePane = usePanelContext();
 
   return (
-    <Cube
-      onClick={() => {
-        localStorage.removeItem(TOKEN_KEY);
-        push(getPagePath({ name: "login" }));
-      }}
-    >
-      <Icons.Logout />
+    <Cube onClick={() => openModal({ type: "AUTH_MENU" })}>
+      <div tw="text-monochrome-white">
+        <Wrapper active={activePane?.type === "AUTH_MENU"}>
+          <Icons.Account />
+        </Wrapper>
+      </div>
     </Cube>
   );
 };
+
+const Wrapper = styled.div`
+  ${({ active }: { active: boolean }) => active && tw`text-blue-default`}
+`;

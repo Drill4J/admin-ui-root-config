@@ -1,5 +1,5 @@
 # build environment
-FROM node:14.15.4-alpine as build
+FROM node:16.17.0-alpine as build
 ARG ENV
 ARG VERSION
 ARG API_HOST

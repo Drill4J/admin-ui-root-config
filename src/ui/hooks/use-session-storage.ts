@@ -37,6 +37,7 @@ export const useSessionStorage = <T>(
       const serializedState = JSON.stringify(state);
       sessionStorage.setItem(key, serializedState);
     } catch (e) {
+      // eslint-disable-next-line
       console.log(e);
     }
   });
