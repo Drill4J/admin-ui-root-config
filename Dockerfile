@@ -14,7 +14,7 @@ RUN npm install --force
 RUN npm run build
 
 # production environment
-FROM nginx:1.17.6-alpine-perl
+FROM nginx:1.25.3-alpine-perl
 ENV UPSTREAM "drill-admin:8090"
 ENV NGINX_PORT="8080"
 
