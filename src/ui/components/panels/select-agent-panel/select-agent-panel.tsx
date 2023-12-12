@@ -15,7 +15,9 @@
  */
 import React, { useMemo, useState } from "react";
 import { useHistory } from "react-router-dom";
-import { Icons, Spinner, Button, Stub } from "@drill4j/ui-kit";
+import {
+  Icons, Spinner, Stub,
+} from "@drill4j/ui-kit";
 import "twin.macro";
 
 import { convertAgentName } from "utils";
@@ -43,14 +45,13 @@ import {
 } from "./elements";
 import { useSetPanelContext } from "../panel-context";
 
-export const SelectAgentPanel = ({ isOpen, onClosePanel }: PanelProps) => {
-  return (
-    <Panel
-      tw="w-[1024px]"
-      header={
-        <div tw="flex justify-between items-center h-21">
-          Select Agent
-          {/* <Button
+export const SelectAgentPanel = ({ isOpen, onClosePanel }: PanelProps) => (
+  <Panel
+    tw="w-[1024px]"
+    header={(
+      <div tw="flex justify-between items-center h-21">
+        Select Agent
+        {/* <Button
             onClick={() => setPanel({ type: "ADD_AGENT" })}
             secondary
             size="large"
@@ -58,15 +59,14 @@ export const SelectAgentPanel = ({ isOpen, onClosePanel }: PanelProps) => {
           >
             <Icons.Plus /> Add Agent
           </Button> */}
-        </div>
-      }
-      isOpen={isOpen}
-      onClosePanel={onClosePanel}
-    >
-      <AgentsTable/>
-    </Panel>
-  );
-};
+      </div>
+    )}
+    isOpen={isOpen}
+    onClosePanel={onClosePanel}
+  >
+    <AgentsTable />
+  </Panel>
+);
 
 const AgentsTable = () => {
   const agentsList = useAdminConnection<AgentInfo[]>("/api/agents");
@@ -76,12 +76,12 @@ const AgentsTable = () => {
 
   const agentsNotInGroups = useMemo(
     () => agentsList && agentsList.filter((agent) => !agent.group),
-    [agentsList]
+    [agentsList],
   );
 
   const agentsInGroups = useMemo(
     () => agentsList && agentsList.filter((agent) => agent.group),
-    [agentsList]
+    [agentsList],
   );
 
   const registeredAgentsBuildsStatuses: Record<string, BuildStatus> | null =
@@ -93,9 +93,9 @@ const AgentsTable = () => {
             ...acc,
             [agentId]: build.buildStatus,
           }),
-          {}
+          {},
         ),
-      [registeredAgentsBuilds]
+      [registeredAgentsBuilds],
     );
 
   const groups = useMemo(
@@ -107,7 +107,7 @@ const AgentsTable = () => {
           agentsInGroups &&
           agentsInGroups.filter((agent) => group.id === agent.group),
       })),
-    [groupsList, agentsInGroups]
+    [groupsList, agentsInGroups],
   );
 
   const isLoading =
@@ -120,14 +120,16 @@ const AgentsTable = () => {
     groups === null;
 
   if (isLoading) {
-    return <Stub
-      tw="text-monochrome-dark-tint text-opacity-40"
-      icon={
-        <NoAgentsSvg className="text-monochrome-dark-tint text-opacity-40" />
-      }
-      title="Loading..."
-      message="Wait for the agents list to load"
-    />
+    return (
+      <Stub
+        tw="text-monochrome-dark-tint text-opacity-40"
+        icon={
+          <NoAgentsSvg className="text-monochrome-dark-tint text-opacity-40" />
+        }
+        title="Loading..."
+        message="Wait for the agents list to load"
+      />
+    );
   }
 
   if (agentsList.length === 0) {
@@ -137,7 +139,7 @@ const AgentsTable = () => {
           <NoAgentsSvg className="text-monochrome-dark-tint text-opacity-40" />
         }
         title="No agents found"
-        message={
+        message={(
           <span>
             Refer to&nbsp;
             <a
@@ -150,11 +152,11 @@ const AgentsTable = () => {
             </a>
             &nbsp; for setup and configuration instructions
           </span>
-          }
+        )}
       />
-    )
+    );
   }
-  
+
   return (
     <div tw="text-monochrome-medium-tint text-14 leading-20">
       <Layout tw="text-monochrome-dark font-bold leading-24">
@@ -173,7 +175,7 @@ const AgentsTable = () => {
                 agents={groupAgents}
                 agentBuildStatuses={registeredAgentsBuildsStatuses}
               />
-            )
+            ),
         )}
         {agentsNotInGroups.map((agent) => (
           <AgentRow
@@ -184,8 +186,8 @@ const AgentsTable = () => {
         ))}
       </div>
     </div>
-  )
-}
+  );
+};
 
 interface AgentRowProps {
   agent: AgentInfo;

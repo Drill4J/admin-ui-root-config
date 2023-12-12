@@ -16,8 +16,6 @@
 import React from "react";
 import "twin.macro";
 
-import { Navigation } from "components";
-
 interface Props {
   children?: React.ReactNode;
 }

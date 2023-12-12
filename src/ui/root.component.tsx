@@ -26,11 +26,11 @@ import { Navigation, PanelProvider, Panels } from "components";
 import { configureAxios, routes } from "common";
 import { SetStatusColectOfAnalitycModal } from "analityc";
 import { SetPluginUrlModal } from "components/set-plugin-url-modal";
+import { UpdatePasswordModal } from "modules/auth/user-authentication/modal/update-password";
 import { AlertManager } from "./alert-manager";
 import "./index.css";
 import { useAdminConnection } from "./hooks";
 import { AnalyticsInfo } from "./types";
-import { UpdatePasswordModal } from "modules/auth/user-authentication/modal/update-password";
 
 const analitycHandler = async (status: boolean) => {
   try {
@@ -81,7 +81,7 @@ const Root = () => {
       </Switch>
       <SetPluginUrlModal />
       <SetStatusColectOfAnalitycModal submit={analitycHandler} isCollectOfAnalitycsData={!isAnalyticsDisabled} />
-      <UpdatePasswordModal/>
+      <UpdatePasswordModal />
     </BrowserRouter>
   );
 };

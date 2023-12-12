@@ -38,7 +38,7 @@ const panels = {
   GROUP_REGISTRATION: GroupRegistrationPanel,
   INFO_MENU: InfoMenuPanel,
   AUTH_MENU: AuthMenuPanel,
-  ADMINISTRATE: AdministrateMenuPanel
+  ADMINISTRATE: AdministrateMenuPanel,
 };
 
 export const Panels = () => {

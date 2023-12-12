@@ -39,7 +39,7 @@ export const UpdatePasswordModal = () => {
     <Modal isOpen={false} onClose={closeModal}>
       {({ setIsOpen }) => {
         useEffect(() => {
-          setIsOpen(queryParams.activeModal === "update-password")
+          setIsOpen(queryParams.activeModal === "update-password");
         }, [queryParams]);
         return (
           <Modal.Content type="info" tw="text-14 leading-20">
@@ -50,7 +50,7 @@ export const UpdatePasswordModal = () => {
               {updatePasswordForm(setSuccess, setError, resetState)}
             </Modal.Body>
             <Modal.Footer>
-            {error && <ContentAlert type="ERROR">{`${error}`}</ContentAlert>}
+              {error && <ContentAlert type="ERROR">{`${error}`}</ContentAlert>}
               {success && (
                 <ContentAlert type="SUCCESS">{`${success}`}</ContentAlert>
               )}

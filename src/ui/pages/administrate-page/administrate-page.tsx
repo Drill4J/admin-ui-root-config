@@ -14,26 +14,19 @@
  * limitations under the License.
  */
 import React from "react";
-import { useHistory } from "react-router-dom";
-// import {
-//   addQueryParamsToPath,
-//   Tooltip,
-// } from "@drill4j/ui-kit";
-// import tw, { styled } from "twin.macro";
+import "twin.macro";
 
 import { AppLayout } from "layouts";
-// import { getCustomPath } from "common";
 
 import { UserManagement } from "modules/auth/user-management/user-management";
 import { userHasAdminRole } from "modules/auth/hooks/use-has-role";
 
 export const AdministratePage = () => {
-  const { push } = useHistory();
-  const { hasRole, isError, errorMessage } = userHasAdminRole()
+  const { hasRole, isError, errorMessage } = userHasAdminRole();
 
   return (
     <AppLayout>
-      {hasRole && (<UserManagement/>)}
+      {hasRole && (<UserManagement />)}
       {isError && (<div>{errorMessage}</div>)}
     </AppLayout>
   );

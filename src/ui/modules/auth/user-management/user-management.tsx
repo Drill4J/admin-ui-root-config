@@ -1,5 +1,3 @@
-
-
 /*
  * Copyright 2020 EPAM Systems
  *
@@ -15,27 +13,17 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-import React, { useState } from "react";
+import React from "react";
+import "twin.macro";
 import { UserManagementTable } from "./tables/users";
 
-import {
-  addQueryParamsToPath,
-  ContentAlert,
-  Form,
-  Tooltip,
-} from "@drill4j/ui-kit";
-import tw, { styled } from "twin.macro";
-
-
-export const UserManagement = () => {
-  return (
-    <div tw="p-5 pt-6">
-      <div tw="text-32 leading-40 text-monochrome-black">
-        User management
-      </div>
-      <div tw="mt-5">
-        <UserManagementTable/>
-      </div>
+export const UserManagement = () => (
+  <div tw="p-5 pt-6">
+    <div tw="text-32 leading-40 text-monochrome-black">
+      User management
     </div>
-  );
-};
+    <div tw="mt-5">
+      <UserManagementTable />
+    </div>
+  </div>
+);

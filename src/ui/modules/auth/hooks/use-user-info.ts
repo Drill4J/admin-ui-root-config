@@ -14,9 +14,7 @@
  * limitations under the License.
  */
 
-import { getUserInfo } from '../user-authentication/api'
-import { useApiData } from './use-api-data'
+import { getUserInfo } from "../user-authentication/api";
+import { useApiData } from "./use-api-data";
 
-export default () => {
-  return useApiData(() => getUserInfo())
-}
+export default () => useApiData(() => getUserInfo());

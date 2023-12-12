@@ -14,6 +14,7 @@
  * limitations under the License.
  */
 import React from "react";
+import "twin.macro";
 import { Icons } from "@drill4j/ui-kit";
 import { useRouteParams } from "hooks";
 import { CubeWithTooltip } from "../cubes";
@@ -23,7 +24,7 @@ export const SelectAgent = () => {
   const setPanel = useSetPanelContext();
   const activePanel = usePanelContext();
   const { groupId } = useRouteParams();
-  
+
   return (
     <CubeWithTooltip
       tooltip="Select Agent"

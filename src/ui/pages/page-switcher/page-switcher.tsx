@@ -14,42 +14,46 @@
  * limitations under the License.
  */
 import React from "react";
+import "twin.macro";
 import { Switch } from "react-router-dom";
 import { routes } from "common";
 import { PrivateRoute, useSetPanelContext } from "components";
-import { AgentPage } from "../agent";
-import { ServiceGroup } from "../service-group";
 import { AdministratePage } from "pages/administrate-page";
 import { Button, Icons, Stub } from "@drill4j/ui-kit";
-import "twin.macro";
+import { AgentPage } from "../agent";
+import { ServiceGroup } from "../service-group";
 
 export const PageSwitcher = () => {
   const setPanel = useSetPanelContext();
 
   return (
     <Switch>
-      <PrivateRoute exact path={routes.root} component={() =>
-        <div tw="flex justify-center items-center h-full">
-          <Stub
-            icon={<Icons.NoAgentsPlaceholder/>}
-            title="Nothing to show yet"
-            message={
-              <div>
-                To view application metrics open corresponding agent's page 
-                <Button
-                  primary
-                  size="large"
-                  tw="mt-5 mx-auto"
-                  onClick={() => setPanel({ type: "SELECT_AGENT" })}
-                  data-test="no-agent-selected-stub:open-select-agent-panel"
-                >
-                  View agents
-                </Button>
-              </div>
-            }
-          />
-        </div>
-      } />
+      <PrivateRoute
+        exact
+        path={routes.root}
+        component={() => (
+          <div tw="flex justify-center items-center h-full">
+            <Stub
+              icon={<Icons.NoAgentsPlaceholder />}
+              title="Nothing to show yet"
+              message={(
+                <div>
+                  To view application metrics open corresponding agent&apos;s page
+                  <Button
+                    primary
+                    size="large"
+                    tw="mt-5 mx-auto"
+                    onClick={() => setPanel({ type: "SELECT_AGENT" })}
+                    data-test="no-agent-selected-stub:open-select-agent-panel"
+                  >
+                    View agents
+                  </Button>
+                </div>
+              )}
+            />
+          </div>
+        )}
+      />
       <PrivateRoute exact path={routes.administrate} component={AdministratePage} />
       <PrivateRoute path={[routes.agentPlugin, routes.agentDashboard]} component={AgentPage} />
       <PrivateRoute

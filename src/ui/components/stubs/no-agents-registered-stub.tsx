@@ -29,7 +29,7 @@ export const NoAgentsRegisteredStub = () => {
       message={(
         <>
           <span>
-           Refer to&nbsp;
+            Refer to&nbsp;
             <a
               tw="inline-flex items-center gap-x-1 text-blue-default font-semibold"
               href="https://drill4j.github.io/docs/installation/setup"

@@ -14,32 +14,32 @@
  * limitations under the License.
  */
 
-import { useState, useEffect } from 'react'
-import { Role } from '../models'
-import useUserInfo from './use-user-info'
+import { useState, useEffect } from "react";
+import { Role } from "../models";
+import useUserInfo from "./use-user-info";
 
 function hasRole(role: Role) {
-  const [hasRole, setHasRole] = useState<boolean | null>(null)
-  const userInfoResponse = useUserInfo()
-  useEffect(()=> {
+  const [hasRoleFlag, setHasRoleFlag] = useState<boolean | null>(null);
+  const userInfoResponse = useUserInfo();
+  useEffect(() => {
     if (userInfoResponse.data == null) return;
-    setHasRole(userInfoResponse.data.role === role)
-  },[userInfoResponse.data])
-  return { ...userInfoResponse, hasRole }
+    setHasRoleFlag(userInfoResponse.data.role === role);
+  }, [userInfoResponse.data]);
+  return { ...userInfoResponse, hasRole: hasRoleFlag };
 }
 
-function userHasAdminRole () {
-  return hasRole(Role.ADMIN)
+function userHasAdminRole() {
+  return hasRole(Role.ADMIN);
 }
-function userHasUserRole () {
-  return hasRole(Role.USER)
+function userHasUserRole() {
+  return hasRole(Role.USER);
 }
-function userHasUndefinedRole () {
-  return hasRole(Role.UNDEFINED)
+function userHasUndefinedRole() {
+  return hasRole(Role.UNDEFINED);
 }
 
 export {
   userHasAdminRole,
   userHasUserRole,
   userHasUndefinedRole,
-} 
+};

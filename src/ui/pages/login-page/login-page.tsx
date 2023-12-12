@@ -15,13 +15,12 @@
  */
 import React, { useLayoutEffect, useState } from "react";
 import { useHistory } from "react-router-dom";
+import "twin.macro";
 import {
   addQueryParamsToPath,
   ContentAlert,
-  Form,
-  Tooltip,
 } from "@drill4j/ui-kit";
-import tw, { styled } from "twin.macro";
+
 
 import { LoginLayout } from "layouts";
 import { TOKEN_KEY } from "common/constants";
@@ -41,7 +40,7 @@ export const LoginPage = () => {
   useLayoutEffect(() => {
     if (localStorage.getItem(TOKEN_KEY)) {
       push(
-        addQueryParamsToPath({ activeModal: "analityc" }, `${getCustomPath()}/`)
+        addQueryParamsToPath({ activeModal: "analityc" }, `${getCustomPath()}/`),
       );
     }
   }, []);
@@ -79,5 +78,3 @@ export const LoginPage = () => {
     </LoginLayout>
   );
 };
-
-

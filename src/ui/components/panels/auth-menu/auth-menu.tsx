@@ -19,8 +19,7 @@ import tw, { styled } from "twin.macro";
 import { useHistory } from "react-router-dom";
 import { getPagePath, TOKEN_KEY } from "common";
 import {
-  Button,
-  addQueryParamsToPath
+  addQueryParamsToPath,
 } from "@drill4j/ui-kit";
 import useUserInfo from "modules/auth/hooks/use-user-info";
 
@@ -31,24 +30,24 @@ export interface Props {
 export const AuthMenu = ({ close }: Props) => {
   const { push } = useHistory();
 
-  const { data: userInfo } = useUserInfo()
+  const { data: userInfo } = useUserInfo();
 
   return (
     <Menu>
       <div tw="overflow-hidden rounded-2xl">
         <div tw="flex flex-col gap-2 bg-monochrome-black py-6">
           <>
-          { userInfo &&
-            <CategoryHeader>
-            Current user: {userInfo.username}
-            </CategoryHeader>    
-          }
-          </>    
+            { userInfo && (
+              <CategoryHeader>
+                Current user: {userInfo.username}
+              </CategoryHeader>
+            )}
+          </>
           <ButtonLink
-              onClick={() => {
-                close();
-                push(addQueryParamsToPath({ activeModal: "update-password" }));
-              }}
+            onClick={() => {
+              close();
+              push(addQueryParamsToPath({ activeModal: "update-password" }));
+            }}
           >
             Update Password
           </ButtonLink>

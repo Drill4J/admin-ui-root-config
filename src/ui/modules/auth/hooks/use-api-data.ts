@@ -14,8 +14,8 @@
  * limitations under the License.
  */
 
-import { useState, useEffect } from 'react'
-import { ApiResponse } from './types'
+import { useState, useEffect } from "react";
+import { ApiResponse } from "./types";
 
 // utility to extract return type of async function that is executing API request (specifically, it can be any async function)
 // "never" implies that this utility is only applicable for async requests
@@ -25,7 +25,7 @@ export const useApiData = <T extends () => Promise<any>>(request: T): ApiRespons
   const [isError, setIsError] = useState<boolean>(false);
   const [data, setData] = useState<UnwrapPromise<ReturnType<T>> | null>(null);
   const [errorMessage, setErrorMessage] = useState<string | null>(null);
-  
+
   useEffect(() => {
     const fetchData = async () => {
       try {

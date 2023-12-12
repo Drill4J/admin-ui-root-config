@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 import React, { useState } from "react";
-import { Button, Icons, LinkButton } from "@drill4j/ui-kit";
+import { Button, Icons } from "@drill4j/ui-kit";
 import tw, { styled } from "twin.macro";
 
 import { useAdminConnection } from "hooks";
@@ -32,7 +32,6 @@ import { PanelStub } from "../panel-stub";
 export const AddAgentPanel = ({ isOpen, onClosePanel }: PanelProps) => {
   const agentsList = useAdminConnection<AgentInfo[]>("/api/agents") || [];
   const groupsList = useAdminConnection<ServiceGroup[]>("/api/groups") || [];
-  const setPanel = useSetPanelContext();
   const notRegisteredAgents = agentsList.filter((agent) => !agent.group && agent.agentStatus === AGENT_STATUS.NOT_REGISTERED);
   const notRegisteredGroupsAgents = agentsList.filter((agent) => agent.group && agent.agentStatus === AGENT_STATUS.NOT_REGISTERED);
   const groups = groupsList.map((group) => ({
@@ -83,7 +82,7 @@ export const AddAgentPanel = ({ isOpen, onClosePanel }: PanelProps) => {
           title="There are no agents to register"
           message={(
             <span>
-             Refer to&nbsp;
+              Refer to&nbsp;
               <a
                 tw="inline-flex items-center gap-x-1 text-blue-default font-semibold"
                 href="https://drill4j.github.io/docs/installation/setup"

@@ -13,39 +13,33 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-import React, { useEffect, useState } from "react";
+import React from "react";
 
 import tw, { styled } from "twin.macro";
 import { useHistory } from "react-router-dom";
-import { getPagePath, TOKEN_KEY } from "common";
-import {
-  Button,
-  addQueryParamsToPath
-} from "@drill4j/ui-kit";
+import { getPagePath } from "common";
 import { userHasAdminRole } from "modules/auth/hooks/use-has-role";
-
 
 export interface Props {
   close: () => void;
 }
 
-export const AdministrateMenu = ({ close }: Props) => {
+export const AdministrateMenu = () => {
   const { push } = useHistory();
-  const { hasRole: hasAdminRole } = userHasAdminRole()
-  
+  const { hasRole: hasAdminRole } = userHasAdminRole();
+
   return (
     <Menu>
       <div tw="overflow-hidden rounded-2xl">
         <div tw="flex flex-col gap-4 bg-monochrome-black py-6">
           <CategoryHeader>Administrate</CategoryHeader>
-          { hasAdminRole !== null && !hasAdminRole && 
-            <Text> You don't have necessary permissions to access administrative functions.</Text>
-          }
+          { hasAdminRole !== null && !hasAdminRole &&
+            <Text> You don&apos;t have necessary permissions to access administrative functions.</Text>}
           <ButtonLink
-              disabled={!hasAdminRole}
-              onClick={() => {
-                push(getPagePath({ name: "administrate" }));
-              }}
+            disabled={!hasAdminRole}
+            onClick={() => {
+              push(getPagePath({ name: "administrate" }));
+            }}
           >
             Manage Users
           </ButtonLink>
