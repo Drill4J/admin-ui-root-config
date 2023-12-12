@@ -21,7 +21,6 @@ import {
   ContentAlert,
 } from "@drill4j/ui-kit";
 
-
 import { LoginLayout } from "layouts";
 import { TOKEN_KEY } from "common/constants";
 import { getCustomPath } from "common";
