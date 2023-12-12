@@ -14,29 +14,29 @@
  * limitations under the License.
  */
 import React, { useEffect, useState } from "react";
+import "twin.macro";
 import {
   Icons,
   Table,
   Stub,
   Button,
-  sendAlertEvent
+  sendAlertEvent,
 } from "@drill4j/ui-kit";
 import * as API from "../api";
-import tw, { styled } from "twin.macro";
 import { Role, UserData } from "../../models";
 
 export const UserManagementTable = () => {
   const [users, setUsers] = useState([]);
   const [refreshFlag, refreshData] = useState<string>("");
 
-  const setSuccess =  (data: string) => {
+  const setSuccess = (data: string) => {
     refreshData(Date.now().toString());
-    sendAlertEvent({ type: "SUCCESS", title: data  });
+    sendAlertEvent({ type: "SUCCESS", title: data });
   };
-  
+
   const setError = (data: string) => {
     refreshData(Date.now().toString());
-    sendAlertEvent({ type: "ERROR", title: data  });
+    sendAlertEvent({ type: "ERROR", title: data });
   };
 
   useEffect(() => {
@@ -45,7 +45,12 @@ export const UserManagementTable = () => {
         const data = await API.getUsers();
         setUsers(data);
       } catch (error) {
-        console.error("Error fetching data:", error);
+        sendAlertEvent({
+          type: "ERROR",
+          title: "Failed to fetch users list. Make sure Drill4J Admin API service is running and available.",
+        });
+        // eslint-disable-next-line
+        console.error("Failed to fetch users list:", error);
       }
     };
 
@@ -100,13 +105,13 @@ export const UserManagementTable = () => {
       <Table
         data={users}
         columns={columns}
-        stub={
+        stub={(
           <Stub
             icon={<Icons.Package height={104} width={107} />}
             title="No results found"
             message="Try adjusting your search or filter to find what you are looking for."
           />
-        }
+        )}
         defaultSortBy={[
           {
             id: "username",
@@ -128,7 +133,7 @@ export const UsersStub = () => (
 
 function renderUserManagementActions(
   setSuccess: (data: string) => void,
-  setError: (data: string) => void
+  setError: (data: string) => void,
 ) {
   return ({ row: { values: userData } }: { row: { values: UserData } }) => {
     if (userData.role === Role.UNDEFINED) {
@@ -139,8 +144,9 @@ function renderUserManagementActions(
             size="small"
             onClick={async () => {
               try {
+                // eslint-disable-next-line
                 const isConfirmed = window.confirm(`Are you sure you want to approve user "${userData.username}" registration?`);
-                if (!isConfirmed) return
+                if (!isConfirmed) return;
                 const data = await API.editUser(userData.id, {
                   role: Role.USER,
                 });
@@ -164,8 +170,9 @@ function renderUserManagementActions(
             size="small"
             onClick={async () => {
               try {
+                // eslint-disable-next-line
                 const isConfirmed = window.confirm(`Are you sure you want to unblock the user "${userData.username}"?`);
-                if (!isConfirmed) return
+                if (!isConfirmed) return;
                 const data = await API.unblockUser(userData.id);
                 setSuccess(data);
               } catch (error) {
@@ -186,8 +193,9 @@ function renderUserManagementActions(
           size="small"
           onClick={async () => {
             try {
+              // eslint-disable-next-line
               const isConfirmed = window.confirm(`Are you sure you want to block the user "${userData.username}"?`);
-              if (!isConfirmed) return
+              if (!isConfirmed) return;
               const data = await API.blockUser(userData.id);
               setSuccess(data);
             } catch (error) {
@@ -201,13 +209,14 @@ function renderUserManagementActions(
           secondary
           size="small"
           onClick={async () => {
+            // eslint-disable-next-line
             const isConfirmed = window.confirm(`Are you sure you want to reset the password for user "${userData.username}"?`);
-            if (!isConfirmed) return
+            if (!isConfirmed) return;
             try {
               const response = await API.resetPassword(userData.id);
               navigator.clipboard.writeText(response.data.password);
               setSuccess(
-                `${response.message} New password is copied to clipboard`
+                `${response.message} New password is copied to clipboard`,
               );
             } catch (error) {
               setError(error.message);
@@ -217,24 +226,25 @@ function renderUserManagementActions(
           Reset Password
         </Button>
         <Button
-            primary
-            size="small"
-            onClick={async () => {
-              try {
-                const targetRole = userData.role === Role.USER ? Role.ADMIN : Role.USER;
-                const isConfirmed = window.confirm(`Are you sure you want to change role for user "${userData.username}" to ${targetRole}?`);
-                if (!isConfirmed) return
-                const data = await API.editUser(userData.id, {
-                  role: targetRole,
-                });
-                setSuccess(data);
-              } catch (error) {
-                setError(error.message);
-              }
-            }}
-          >
-           Make { userData.role === Role.USER ? Role.ADMIN : Role.USER }
-          </Button>
+          primary
+          size="small"
+          onClick={async () => {
+            try {
+              const targetRole = userData.role === Role.USER ? Role.ADMIN : Role.USER;
+              // eslint-disable-next-line
+              const isConfirmed = window.confirm(`Are you sure you want to change role for user "${userData.username}" to ${targetRole}?`);
+              if (!isConfirmed) return;
+              const data = await API.editUser(userData.id, {
+                role: targetRole,
+              });
+              setSuccess(data);
+            } catch (error) {
+              setError(error.message);
+            }
+          }}
+        >
+          Make { userData.role === Role.USER ? Role.ADMIN : Role.USER }
+        </Button>
       </div>
     );
   };
