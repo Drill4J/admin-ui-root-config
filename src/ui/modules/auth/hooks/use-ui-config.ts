@@ -13,12 +13,8 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-import { Form } from "@drill4j/ui-kit";
-import tw, { styled } from "twin.macro";
 
-export const AuthFormStyle = styled(Form)`
-  ${tw`flex flex-col gap-y-6 mt-4 w-full`}
-  & > * {
-    ${tw`h-10`}
-  }
-`;
+import { getUiConfig } from "../user-authentication/api";
+import { useApiData } from "./use-api-data";
+
+export default () => useApiData(() => getUiConfig());

@@ -25,6 +25,7 @@ export const useApiData = <T extends () => Promise<any>>(request: T): ApiRespons
   const [isError, setIsError] = useState<boolean>(false);
   const [data, setData] = useState<UnwrapPromise<ReturnType<T>> | null>(null);
   const [errorMessage, setErrorMessage] = useState<string | null>(null);
+  const [isLoading, setIsLoading] = useState<boolean>(true);
 
   useEffect(() => {
     const fetchData = async () => {
@@ -40,13 +41,15 @@ export const useApiData = <T extends () => Promise<any>>(request: T): ApiRespons
           case 403:
             setErrorMessage("Forbidden - you don't have necessary permissions");
             break;
-          default:
-            setErrorMessage(error?.response?.data?.message || "Unexpected server error occurred");
+          default: {
+            setErrorMessage(error?.response?.data?.message || "Unexpected server error occurred or Drill4J backend service is unreachable");
+          }
         }
       }
+      setIsLoading(false)
     };
     fetchData();
   }, []);
 
-  return { data, isError, errorMessage };
+  return { data, isError, errorMessage, isLoading: isLoading };
 };

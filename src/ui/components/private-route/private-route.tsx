@@ -18,6 +18,8 @@ import { RouteProps, Route, Redirect } from "react-router-dom";
 
 import { TOKEN_KEY } from "common/constants";
 import { getPagePath } from "common";
+import useUserInfo from "modules/auth/hooks/use-user-info";
+import { Spinner } from "@drill4j/ui-kit";
 
 interface PrivateRouteProps extends RouteProps {
   component: React.ComponentType<any>;
@@ -31,14 +33,20 @@ export function PrivateRoute(props: PrivateRouteProps) {
   const { component, ...rest } = props;
   const Component = component;
 
+  const { data, errorMessage, isError, isLoading } = useUserInfo()
+
+  if (isLoading) {
+    return <Spinner color="blue"/>
+  }
+
+  // WRONG - will redirect even on 5xx, not just on 4xx
+  if (isError) {
+    return <Redirect to={{ pathname: getPagePath({ name: "login" }) }} />
+  }
+
   return (
     <Route
-      render={() =>
-        (isAuth() ? (
-          <Component {...props} />
-        ) : (
-          <Redirect to={{ pathname: getPagePath({ name: "login" }) }} />
-        ))}
+      render={() => <Component {...props} />}
       {...rest}
     />
   );

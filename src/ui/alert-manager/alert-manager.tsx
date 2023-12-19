@@ -15,10 +15,10 @@
  */
 import React, { useCallback, useEffect, useState } from "react";
 import { useLocation } from "react-router-dom";
-import "twin.macro";
 import { defaultAdminSocket } from "common/connection";
 import { AnimatePresence, motion } from "framer-motion";
 import { IAlert, Portal, SystemAlert } from "@drill4j/ui-kit";
+import tw, { styled } from "twin.macro";
 
 const LOST_CONNECTION_ID = "LOST_CONNECTION_WITH_BACKEND";
 const RESTORED_CONNECTION_ID = "SUCCESSFULLY_RESTORED_CONNECTION";
@@ -102,7 +102,7 @@ export const AlertManager = () => {
 
 export const AlertPanel = ({ alerts }: { alerts: IAlert[] }) => (
   <Portal displayContent rootElementId="alerts">
-    <div tw="fixed bottom-10 flex flex-col-reverse items-center justify-center gap-y-2 w-full z-[200]">
+    <Overlay>
       <AnimatePresence>
         {alerts.map(alert => {
           const {
@@ -121,9 +121,14 @@ export const AlertPanel = ({ alerts }: { alerts: IAlert[] }) => (
           );
         })}
       </AnimatePresence>
-    </div>
+    </Overlay>
   </Portal>
 );
+
+const Overlay = styled.div`
+  ${tw`fixed bottom-10 flex flex-col-reverse items-center justify-center gap-y-2 w-full z-[200]`}
+  background: rgba(0,0,0,0.1)
+`
 
 function getLatestAlerts(alerts: IAlert[]): IAlert[] {
   return alerts.length > 2 ? alerts.slice(alerts.length - 2) : alerts;

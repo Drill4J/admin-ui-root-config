@@ -37,38 +37,36 @@ export function signUpForm(
   }
 
   return (
-    <div>
-      <Formik
-        initialValues={{
-          username: "",
-          password: "",
-        }}
-        onSubmit={(data: any) => {
-          resetState();
-          handleSignUp(data);
-        }}
-      >
-        <AuthFormStyle>
-          <Field
-            name="username"
-            component={Fields.Input}
-            placeholder="Enter new username"
-          />
-          <Field
-            name="password"
-            type="password"
-            component={Fields.Input}
-            placeholder="Enter password"
-          />
-          <Button
-            primary
-            size="large"
-            type="submit"
-          >
-            Sign up
-          </Button>
-        </AuthFormStyle>
-      </Formik>
-    </div>
+    <Formik
+      initialValues={{
+        username: "",
+        password: "",
+      }}
+      onSubmit={(data: any) => {
+        resetState();
+        handleSignUp(data);
+      }}
+    >
+      <AuthFormStyle>
+        <Field
+          name="username"
+          component={Fields.Input}
+          placeholder="Enter new username"
+        />
+        <Field
+          name="password"
+          type="password"
+          component={Fields.Input}
+          placeholder="Enter password"
+        />
+        <Button
+          primary
+          size="large"
+          type="submit"
+        >
+          Sign up
+        </Button>
+      </AuthFormStyle>
+    </Formik>
   );
 }

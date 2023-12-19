@@ -33,8 +33,8 @@ const Tabs = ({ children, onChange = () => {} }: TabsProps) => {
   };
 
   return (
-    <div>
-      <div>{Children.toArray(children)[activeTab]}</div>
+    <>
+      <>{Children.toArray(children)[activeTab]}</>
       <div tw="inline-flex justify-center mt-5 w-full">
         {Children.map(children, (child: any, index) => (
           <div
@@ -46,7 +46,7 @@ const Tabs = ({ children, onChange = () => {} }: TabsProps) => {
           </div>
         )).toSpliced(activeTab, 1)}
       </div>
-    </div>
+    </>
   );
 };
 

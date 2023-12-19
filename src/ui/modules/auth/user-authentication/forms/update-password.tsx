@@ -104,7 +104,7 @@ const Label = styled.label`
 `;
 
 export const AuthFormStyle = styled(Form)`
-  ${tw`flex flex-col gap-y-6 w-88`}
+  ${tw`flex flex-col gap-y-6`}
   row-gap: 3rem;
   & > * {
     height: 2rem;

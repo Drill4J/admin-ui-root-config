@@ -16,7 +16,8 @@
 export type ApiResponse<T> = {
   data: T | null
   isError: boolean
-  errorMessage: string | null
+  errorMessage: string | null,
+  isLoading: boolean
 }
 
 export type ApiResponseData<T> = {
