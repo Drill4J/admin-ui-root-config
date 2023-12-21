@@ -40,13 +40,12 @@ export const LoginPage = () => {
     setSuccess("");
   };
 
-  const foo = useUiConfig();
   const {
     data: uiConfig,
     isError: isUiConfigError,
     errorMessage: uiConfigErrorMessage,
     isLoading: isUiConfigLoading,
-  } = foo
+  } = useUiConfig();
   const { push } = useHistory();
   useLayoutEffect(() => {
     if (localStorage.getItem(TOKEN_KEY)) {
@@ -109,7 +108,7 @@ export const LoginPage = () => {
               }
               {uiConfig?.oauth2?.enabled && (
                 <Button
-                  tw="mt-5 w-full"
+                  tw="mt-5 w-full mb-5"
                   secondary
                   size="large"
                   type="submit"
