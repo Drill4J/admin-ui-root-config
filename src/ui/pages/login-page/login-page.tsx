@@ -56,7 +56,7 @@ export const LoginPage = () => {
     }
   }, []);
 
-  if (!uiConfig?.simpleAuth.enabled && uiConfig?.oauth2.automaticSignIn) {
+  if (!uiConfig?.simpleAuth?.enabled && uiConfig?.oauth2?.automaticSignIn) {
     navigateToOAuthLoginPage();
   }
 
@@ -74,21 +74,21 @@ export const LoginPage = () => {
             </>
           ) : (
             <>
-              {uiConfig?.simpleAuth.enabled && (
+              {uiConfig?.simpleAuth?.enabled && (
                 <Tabs onChange={resetState}>
                   <Tab title="Sign in">
                     {signInForm(setSuccess, setError, resetState)}
                   </Tab>
                   <Tab title="Sign up">
-                    {uiConfig?.simpleAuth.signUpEnabled ? (
+                    {uiConfig?.simpleAuth?.signUpEnabled ? (
                       signUpForm(setSuccess, setError, resetState)
                     ) : (
                       <Text>
                         Sign up is disabled. Please
-                        {uiConfig?.oauth2.enabled && (
+                        {uiConfig?.oauth2?.enabled && (
                           <>
                             {" "}
-                            use "{uiConfig?.oauth2.buttonTitle}" authentication
+                            use "{uiConfig?.oauth2?.buttonTitle}" authentication
                             method or{" "}
                           </>
                         )}
@@ -104,10 +104,10 @@ export const LoginPage = () => {
                   </Tab>
                 </Tabs>
               )}
-              { uiConfig?.oauth2.enabled && uiConfig?.simpleAuth.enabled && 
+              { uiConfig?.oauth2?.enabled && uiConfig?.simpleAuth?.enabled && 
                 <div tw="w-full mt-2 text-monochrome-gray text-center">or</div>
               }
-              {uiConfig?.oauth2.enabled && (
+              {uiConfig?.oauth2?.enabled && (
                 <Button
                   tw="mt-5 w-full"
                   secondary
@@ -115,7 +115,7 @@ export const LoginPage = () => {
                   type="submit"
                   onClick={() => navigateToOAuthLoginPage()}
                 >
-                  {uiConfig?.oauth2.buttonTitle}
+                  {uiConfig?.oauth2?.buttonTitle}
                 </Button>
               )}
             </>
