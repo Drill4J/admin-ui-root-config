@@ -31,6 +31,11 @@ async function signUp(registrationPayload: RegistrationPayload) {
   return response.data.message;
 }
 
+async function signOut() {
+  const response = await runCatching<any>(axios.post("/sign-out"));
+  return response.data.message;
+}
+
 async function updatePassword(changePasswordPayload: ChangePasswordPayload) {
   const response = await runCatching<any>(axios.post("/update-password", changePasswordPayload));
   return response.data.message;
@@ -47,5 +52,5 @@ async function getUiConfig() {
 }
 
 export {
-  signIn, signUp, updatePassword, getUserInfo, getUiConfig,
+  signIn, signUp, signOut, updatePassword, getUserInfo, getUiConfig,
 };

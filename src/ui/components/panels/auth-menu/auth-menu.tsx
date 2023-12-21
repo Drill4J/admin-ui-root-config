@@ -19,9 +19,10 @@ import tw, { styled } from "twin.macro";
 import { useHistory } from "react-router-dom";
 import { getPagePath, TOKEN_KEY } from "common";
 import {
-  addQueryParamsToPath,
+  addQueryParamsToPath, sendAlertEvent,
 } from "@drill4j/ui-kit";
 import useUserInfo from "modules/auth/hooks/use-user-info";
+import * as API from "modules/auth/user-authentication/api";
 
 export interface Props {
   close: () => void;
@@ -53,10 +54,18 @@ export const AuthMenu = ({ close }: Props) => {
           </ButtonLink>
 
           <ButtonLink
-            onClick={() => {
-              localStorage.removeItem(TOKEN_KEY);
-              push(getPagePath({ name: "login" }));
-              close();
+            onClick={async () => {
+              try {
+                localStorage.removeItem(TOKEN_KEY);
+                await API.signOut();
+                push(getPagePath({ name: "login" }));
+                close();
+              } catch (e) {
+                sendAlertEvent({
+                  type: "ERROR",
+                  title: `Failed to sign out: ${e?.message}.`,
+                });
+              }
             }}
           >
             Sign out
