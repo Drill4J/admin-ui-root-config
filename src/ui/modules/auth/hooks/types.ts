@@ -17,10 +17,21 @@ export type ApiResponse<T> = {
   data: T | null
   isError: boolean
   errorMessage: string | null,
-  isLoading: boolean
+  isLoading: boolean,
+  httpStatusError: HttpStatusError | null
 }
 
 export type ApiResponseData<T> = {
   data: T | null
   message: string
+}
+
+export enum HttpStatusError {
+  BadRequest = 400,
+  Unauthorized = 401,
+  Forbidden = 403,
+  NotFound = 404,
+  InternalServerError = 500,
+  BadGateway = 502,
+  ServiceUnavailable = 503,
 }

@@ -40,6 +40,7 @@ export function configureAxios() {
     (response) => response,
     (error) => {
       if (error.response && error.response.status === 401) {
+        // TODO navigate to dedicated 401/403 page?
         localStorage.setItem(TOKEN_KEY, "");
         if (window.location.pathname !== "/login") {
           window.location.href = "/login";

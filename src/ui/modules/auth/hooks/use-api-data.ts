@@ -15,7 +15,7 @@
  */
 
 import { useState, useEffect } from "react";
-import { ApiResponse } from "./types";
+import { ApiResponse, HttpStatusError } from "./types";
 
 // utility to extract return type of async function that is executing API request (specifically, it can be any async function)
 // "never" implies that this utility is only applicable for async requests
@@ -25,6 +25,7 @@ export const useApiData = <T extends () => Promise<any>>(request: T): ApiRespons
   const [isError, setIsError] = useState<boolean>(false);
   const [data, setData] = useState<UnwrapPromise<ReturnType<T>> | null>(null);
   const [errorMessage, setErrorMessage] = useState<string | null>(null);
+  const [httpStatusError, setHttpStatusError] = useState<HttpStatusError | null>(null);
   const [isLoading, setIsLoading] = useState<boolean>(true);
 
   useEffect(() => {
@@ -34,6 +35,7 @@ export const useApiData = <T extends () => Promise<any>>(request: T): ApiRespons
         setData(result);
       } catch (error) {
         setIsError(true);
+        setHttpStatusError(error?.response?.status);
         switch (error?.response?.status) {
           case 401:
             setErrorMessage("Unauthorized - you are not logged in");
@@ -51,5 +53,5 @@ export const useApiData = <T extends () => Promise<any>>(request: T): ApiRespons
     fetchData();
   }, []);
 
-  return { data, isError, errorMessage, isLoading: isLoading };
+  return { data, isError, errorMessage, isLoading: isLoading, httpStatusError };
 };
