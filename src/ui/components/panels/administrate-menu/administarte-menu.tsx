@@ -49,7 +49,7 @@ export const AdministrateMenu = () => {
               push(getPagePath({ name: "keys" }));
             }}
           >
-            API-Keys
+            Manage API keys
           </ButtonLink>
         </div>
       </div>

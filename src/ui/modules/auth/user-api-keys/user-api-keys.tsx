@@ -13,33 +13,17 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-// eslint-disable-next-line
-export enum Role {
-  USER = "USER",
-  ADMIN = "ADMIN",
-  UNDEFINED = "UNDEFINED",
-}
+import React from "react";
+import "twin.macro";
+import {UserApiKeysTable} from "./tables/keys";
 
-export type UserData = {
-  blocked: boolean;
-  id: number;
-  role: Role;
-  username: string;
-}
-
-export type KeyData = {
-  id: number;
-  userId: number;
-  description: string;
-  expiresAt: string;
-  createdAt: string;
-  username: string;
-  role: Role;
-}
-
-export type UserKeyData = {
-  id: number;
-  description: string;
-  expiresAt: string;
-  createdAt: string;
-}
+export const UserApiKeys = () => (
+  <div tw="p-5 pt-6">
+    <div tw="text-32 leading-40 text-monochrome-black">
+      API keys
+    </div>
+    <div tw="mt-5">
+      <UserApiKeysTable/>
+    </div>
+  </div>
+);
