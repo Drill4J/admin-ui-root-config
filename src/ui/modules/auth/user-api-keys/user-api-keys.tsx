@@ -16,14 +16,31 @@
 import React from "react";
 import "twin.macro";
 import {UserApiKeysTable} from "./tables/keys";
+import {useHistory} from "react-router-dom";
+import {addQueryParamsToPath, Button} from "@drill4j/ui-kit";
 
-export const UserApiKeys = () => (
-  <div tw="p-5 pt-6">
-    <div tw="text-32 leading-40 text-monochrome-black">
-      API keys
+export const UserApiKeys = () => {
+  const {push} = useHistory();
+
+  return (<div tw="p-5 pt-6">
+      <div tw="text-32 leading-40 text-monochrome-black">
+        API keys
+      </div>
+      <Button
+        primary
+        size="large"
+        tw="w-min"
+        onClick={() => {
+          push(addQueryParamsToPath({activeModal: "generate-key"}));
+        }}
+      >
+        Generate
+      </Button>
+      <div tw="mt-5">
+        <UserApiKeysTable/>
+      </div>
     </div>
-    <div tw="mt-5">
-      <UserApiKeysTable/>
-    </div>
-  </div>
-);
+  );
+}
+
+

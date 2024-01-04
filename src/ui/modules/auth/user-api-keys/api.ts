@@ -15,6 +15,7 @@
  */
 import axios from "axios";
 import {runCatching} from "../util";
+import {GenerateApiKeyPayload} from "./models";
 
 async function getKeys() {
   const response = await runCatching<any>(axios.get("/user-keys"));
@@ -26,7 +27,13 @@ async function deleteKey(id: number) {
   return response.data.message;
 }
 
+async function generateKey(payload: GenerateApiKeyPayload) {
+  const response = await runCatching<any>(axios.post(`/user-keys`, payload));
+  return response.data;
+}
+
 export {
   getKeys,
-  deleteKey
+  deleteKey,
+  generateKey
 };

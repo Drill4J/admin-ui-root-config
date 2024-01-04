@@ -24,6 +24,10 @@ import {
 } from "@drill4j/ui-kit";
 import * as API from "../api";
 import {UserKeyData} from "../../models";
+import {GenerateApiKeyModal} from "../modal/generate-api-key";
+
+export const RefreshContext = React.createContext((a1: string) => {
+});
 
 export const UserApiKeysTable = () => {
   const [keys, setKeys] = useState([]);
@@ -57,7 +61,12 @@ export const UserApiKeysTable = () => {
     fetchData();
   }, [refreshFlag]);
 
-  if (!keys.length) return <KeysStub/>;
+  if (!keys.length) return <>
+    <RefreshContext.Provider value={refreshData}>
+      <GenerateApiKeyModal/>
+      <KeysStub/>
+    </RefreshContext.Provider>
+  </>;
 
   const columns = [
     {
@@ -99,23 +108,26 @@ export const UserApiKeysTable = () => {
   ];
   return (
     <>
-      <Table
-        data={keys}
-        columns={columns}
-        stub={(
-          <Stub
-            icon={<Icons.Package height={104} width={107}/>}
-            title="No results found"
-            message="Try adjusting your search or filter to find what you are looking for."
-          />
-        )}
-        defaultSortBy={[
-          {
-            id: "createdAt",
-            desc: false,
-          },
-        ]}
-      />
+      <RefreshContext.Provider value={refreshData}>
+        <GenerateApiKeyModal/>
+        <Table
+          data={keys}
+          columns={columns}
+          stub={(
+            <Stub
+              icon={<Icons.Package height={104} width={107}/>}
+              title="No results found"
+              message="Try adjusting your search or filter to find what you are looking for."
+            />
+          )}
+          defaultSortBy={[
+            {
+              id: "createdAt",
+              desc: false,
+            },
+          ]}
+        />
+      </RefreshContext.Provider>
     </>
   );
 };
