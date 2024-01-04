@@ -37,7 +37,7 @@ export const routes = {
   login: getRoutePath("/login"),
   administrate: getRoutePath("/administrate"),
   keys: getRoutePath("/keys"),
-  userKeys: getRoutePath("/user-keys"),
+  userKeys: getRoutePath("/userKeys"),
   builds: getRoutePath("/agents/:agentId/builds"),
   root: getRoutePath("/"),
 };
