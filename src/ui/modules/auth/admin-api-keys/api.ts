@@ -13,26 +13,20 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-// eslint-disable-next-line
-export enum Role {
-  USER = "USER",
-  ADMIN = "ADMIN",
-  UNDEFINED = "UNDEFINED",
+import axios from "axios";
+import {runCatching} from "../util";
+
+async function getKeys() {
+  const response = await runCatching<any>(axios.get("/keys"));
+  return response.data.data;
 }
 
-export type UserData = {
-  blocked: boolean;
-  id: number;
-  role: Role;
-  username: string;
+async function deleteKey(id: number) {
+  const response = await runCatching<any>(axios.delete(`/keys/${id}`));
+  return response.data.message;
 }
 
-export type KeyData = {
-  id: number;
-  userId: number;
-  description: string;
-  expiresAt: string;
-  createdAt: string;
-  username: string;
-  role: Role;
-}
+export {
+  getKeys,
+  deleteKey
+};

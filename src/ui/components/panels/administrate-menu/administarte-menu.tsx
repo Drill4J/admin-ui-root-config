@@ -43,6 +43,14 @@ export const AdministrateMenu = () => {
           >
             Manage Users
           </ButtonLink>
+          <ButtonLink
+            disabled={!hasAdminRole}
+            onClick={() => {
+              push(getPagePath({ name: "keys" }));
+            }}
+          >
+            API-Keys
+          </ButtonLink>
         </div>
       </div>
     </Menu>

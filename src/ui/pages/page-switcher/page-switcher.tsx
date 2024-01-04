@@ -22,6 +22,7 @@ import { AdministratePage } from "pages/administrate-page";
 import { Button, Icons, Stub } from "@drill4j/ui-kit";
 import { AgentPage } from "../agent";
 import { ServiceGroup } from "../service-group";
+import { AdminApiKeysPage } from "pages/admin-api-keys-page";
 
 export const PageSwitcher = () => {
   const setPanel = useSetPanelContext();
@@ -55,6 +56,7 @@ export const PageSwitcher = () => {
         )}
       />
       <PrivateRoute exact path={routes.administrate} component={AdministratePage} />
+      <PrivateRoute exact path={routes.keys} component={AdminApiKeysPage} />
       <PrivateRoute path={[routes.agentPlugin, routes.agentDashboard]} component={AgentPage} />
       <PrivateRoute
         path={[routes.serviceGroupPlugin, routes.serviceGroupDashboard]}

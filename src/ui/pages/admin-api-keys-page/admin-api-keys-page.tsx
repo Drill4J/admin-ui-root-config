@@ -13,26 +13,21 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-// eslint-disable-next-line
-export enum Role {
-  USER = "USER",
-  ADMIN = "ADMIN",
-  UNDEFINED = "UNDEFINED",
-}
+import React from "react";
+import "twin.macro";
 
-export type UserData = {
-  blocked: boolean;
-  id: number;
-  role: Role;
-  username: string;
-}
+import {AppLayout} from "layouts";
 
-export type KeyData = {
-  id: number;
-  userId: number;
-  description: string;
-  expiresAt: string;
-  createdAt: string;
-  username: string;
-  role: Role;
-}
+import {userHasAdminRole} from "modules/auth/hooks/use-has-role";
+import {ApiKeysManagement} from "../../modules/auth/admin-api-keys/user-management";
+
+export const AdminApiKeysPage = () => {
+  const {hasRole, isError, errorMessage} = userHasAdminRole();
+
+  return (
+    <AppLayout>
+      {hasRole && (<ApiKeysManagement/>)}
+      {isError && (<div>{errorMessage}</div>)}
+    </AppLayout>
+  );
+};

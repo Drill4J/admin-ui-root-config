@@ -13,26 +13,4 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-// eslint-disable-next-line
-export enum Role {
-  USER = "USER",
-  ADMIN = "ADMIN",
-  UNDEFINED = "UNDEFINED",
-}
-
-export type UserData = {
-  blocked: boolean;
-  id: number;
-  role: Role;
-  username: string;
-}
-
-export type KeyData = {
-  id: number;
-  userId: number;
-  description: string;
-  expiresAt: string;
-  createdAt: string;
-  username: string;
-  role: Role;
-}
+export {AdminApiKeysPage} from "./admin-api-keys-page";

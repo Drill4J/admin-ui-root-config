@@ -20,6 +20,7 @@ interface Routes {
   login: void
   administrate: void
   root: void
+  keys: void
   builds: "agentId"
   agentDashboard: "agentId"
   agentPlugin: "agentId" | "pluginId"
@@ -34,6 +35,7 @@ export const routes = {
   serviceGroupDashboard: getRoutePath("/groups/:groupId/dashboard"),
   login: getRoutePath("/login"),
   administrate: getRoutePath("/administrate"),
+  keys: getRoutePath("/keys"),
   builds: getRoutePath("/agents/:agentId/builds"),
   root: getRoutePath("/"),
 };
