@@ -47,10 +47,10 @@ export const ApiKeysManagementTable = () => {
       } catch (error) {
         sendAlertEvent({
           type: "ERROR",
-          title: "Failed to fetch users list. Make sure Drill4J Admin API service is running and available.",
+          title: "Failed to fetch keys list. Make sure Drill4J Admin API service is running and available.",
         });
         // eslint-disable-next-line
-        console.error("Failed to fetch users list:", error);
+        console.error("Failed to fetch keys list:", error);
       }
     };
 
