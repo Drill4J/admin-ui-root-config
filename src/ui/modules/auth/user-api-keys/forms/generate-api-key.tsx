@@ -41,7 +41,7 @@ export function generateApiKeyForm(
       });
       refreshData(Date.now().toString());
       await navigator.clipboard.writeText(result.data.apiKey)
-      setSuccess(result.message);
+      setSuccess("Success. API keys is copied to clipboard.");
     } catch (e) {
       setError(e);
     }
