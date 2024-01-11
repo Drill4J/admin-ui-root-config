@@ -25,6 +25,7 @@ import {
 import * as API from "../api";
 import {UserKeyData} from "../../models";
 import {GenerateApiKeyModal} from "../modal/generate-api-key";
+import {formatHumanReadableDate} from "../../util";
 
 export const RefreshContext = React.createContext((a1: string) => {
 });
@@ -87,14 +88,14 @@ export const UserApiKeysTable = () => {
       Header: "Expires At",
       accessor: "expiresAt",
       width: "30%",
-      Cell: ({value}: any) => <div>{value}</div>,
+      Cell: ({value}: any) => <div>{formatHumanReadableDate(value)}</div>,
       textAlign: "left",
     },
     {
       Header: "Created At",
       accessor: "createdAt",
       width: "30%",
-      Cell: ({value}: any) => <div>{value}</div>,
+      Cell: ({value}: any) => <div>{formatHumanReadableDate(value)}</div>,
       textAlign: "left",
     },
     {

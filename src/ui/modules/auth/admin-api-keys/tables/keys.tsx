@@ -24,6 +24,7 @@ import {
 } from "@drill4j/ui-kit";
 import * as API from "../api";
 import {KeyData} from "../../models";
+import {formatHumanReadableDate} from "../../util";
 
 export const ApiKeysManagementTable = () => {
   const [keys, setKeys] = useState([]);
@@ -84,14 +85,14 @@ export const ApiKeysManagementTable = () => {
       Header: "Expires At",
       accessor: "expiresAt",
       width: "30%",
-      Cell: ({value}: any) => <div>{value}</div>,
+      Cell: ({value}: any) => <div>{formatHumanReadableDate(value)}</div>,
       textAlign: "left",
     },
     {
       Header: "Created At",
       accessor: "createdAt",
       width: "30%",
-      Cell: ({value}: any) => <div>{value}</div>,
+      Cell: ({value}: any) => <div>{formatHumanReadableDate(value)}</div>,
       textAlign: "left",
     },
     {

@@ -15,6 +15,7 @@
  */
 import { AxiosResponse } from "axios";
 import { ApiResponseData } from "./hooks/types";
+import dayjs from "dayjs";
 
 export async function runCatching<ReturnType>(promise: Promise<AxiosResponse<ApiResponseData<ReturnType>>>) {
   try {
@@ -23,4 +24,8 @@ export async function runCatching<ReturnType>(promise: Promise<AxiosResponse<Api
     const message = e?.response?.data?.message || e?.message || "unknown error";
     throw new Error(message);
   }
+}
+
+export function formatHumanReadableDate(date: string) {
+  return dayjs(date).format('YYYY-MM-DD HH:mm:ss');
 }
