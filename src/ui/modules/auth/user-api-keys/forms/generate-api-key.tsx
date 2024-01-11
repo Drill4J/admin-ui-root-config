@@ -16,7 +16,7 @@
 import React, {useContext, useState} from "react";
 import tw, {styled} from "twin.macro";
 import {
-  Button, Field, Fields, Formik, Form,
+  Button, Field, Fields, Formik, Form, LightDropdown
 } from "@drill4j/ui-kit";
 import {API, ExpiryPeriodEnum, GenerateApiKeyPayload} from "..";
 import {RefreshContext} from "../tables/keys";
@@ -72,11 +72,10 @@ export function generateApiKeyForm(
         </Label>
         <Label>
           Choose Expiry Period:
-          <DarkDropdown
-            items={expiryPeriodType}
+          <LightDropdown
             onChange={(value => setExpiryPeriod(value))}
-            value={expiryPeriod}
-          />
+            placeholder="Expiry period"
+           options={expiryPeriodType}/>
         </Label>
         <Button
           tw="flex justify-center w-full"
