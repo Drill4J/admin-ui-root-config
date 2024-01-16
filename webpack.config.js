@@ -28,6 +28,14 @@ module.exports = (webpackConfigEnv, argv) => {
     webpackConfigEnv,
     argv,
     disableHtmlGeneration: true,
+    devServer: {
+      proxy: {
+        '/api': {
+          target: 'http://localhost:9000',
+          router: () => 'http://0.0.0.0:8090',
+        }
+      }
+    },
   });
 
   return merge(defaultConfig, {
