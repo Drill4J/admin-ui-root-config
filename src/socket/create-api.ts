@@ -13,5 +13,14 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-export const TOKEN_HEADER = "Authorization";
-export const TOKEN_KEY = "auth_token";
+
+import {DrillSocket} from "./drill-socket";
+
+export const getSocketUrl = (socket: string) => {
+  return `${window.location.href.startsWith('https') ? 'wss' : 'ws'}://${
+    process.env.REACT_APP_API_HOST || window.location.host
+  }/ws/${socket}`;
+};
+
+export const createApi = (apiPath: string, handleUnauthorized?: () => void) =>
+  new DrillSocket(getSocketUrl(apiPath), handleUnauthorized);
