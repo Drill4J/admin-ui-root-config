@@ -17,7 +17,7 @@ import React from "react";
 
 import tw, { styled } from "twin.macro";
 import { useHistory } from "react-router-dom";
-import { getPagePath, TOKEN_KEY } from "common";
+import { getPagePath } from "common";
 import {
   addQueryParamsToPath, sendAlertEvent,
 } from "@drill4j/ui-kit";
@@ -56,7 +56,6 @@ export const AuthMenu = ({ close }: Props) => {
           <ButtonLink
             onClick={async () => {
               try {
-                localStorage.removeItem(TOKEN_KEY);
                 await API.signOut();
                 push(getPagePath({ name: "login" }));
                 close();

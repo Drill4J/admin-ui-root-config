@@ -14,7 +14,6 @@
  * limitations under the License.
  */
 import axios from "axios";
-import { TOKEN_KEY } from "common/constants";
 import { runCatching } from "../util";
 import {
   LoginPayload, RegistrationPayload, ChangePasswordPayload, UserInfo, UiConfig,
@@ -22,7 +21,6 @@ import {
 
 async function signIn(loginPayload: LoginPayload): Promise<any> {
   const response = await runCatching<any>(axios.post("/sign-in", loginPayload));
-  localStorage.setItem(TOKEN_KEY, response.headers.authorization);
   return response.data.message;
 }
 

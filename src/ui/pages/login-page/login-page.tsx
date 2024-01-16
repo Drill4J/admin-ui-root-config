@@ -13,19 +13,15 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-import React, { useEffect, useLayoutEffect, useState } from "react";
-import { useHistory } from "react-router-dom";
+import React, { useState } from "react";
 import tw, { styled } from "twin.macro";
 import {
-  addQueryParamsToPath,
   Button,
   ContentAlert,
   Spinner,
 } from "@drill4j/ui-kit";
 
 import { LoginLayout } from "layouts";
-import { TOKEN_KEY } from "common/constants";
-import { getCustomPath } from "common";
 import { Tab, Tabs } from "components/tabs";
 import { signUpForm } from "../../modules/auth/user-authentication/forms/sign-up";
 import { signInForm } from "../../modules/auth/user-authentication/forms/sign-in";
@@ -46,14 +42,6 @@ export const LoginPage = () => {
     errorMessage: uiConfigErrorMessage,
     isLoading: isUiConfigLoading,
   } = useUiConfig();
-  const { push } = useHistory();
-  useLayoutEffect(() => {
-    if (localStorage.getItem(TOKEN_KEY)) {
-      push(
-        addQueryParamsToPath({ activeModal: "analityc" }, `${getCustomPath()}/`)
-      );
-    }
-  }, []);
 
   if (!uiConfig?.simpleAuth?.enabled && uiConfig?.oauth2?.automaticSignIn) {
     navigateToOAuthLoginPage();

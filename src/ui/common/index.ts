@@ -15,7 +15,7 @@
  */
 export { configureAxios, defaultAdminSocket } from "./connection";
 export {
-  TOKEN_HEADER, TOKEN_KEY, AGENT_STATUS, BUILD_STATUS,
+  AGENT_STATUS, BUILD_STATUS,
 } from "./constants";
 export { getPagePath, routes } from "./get-page-path";
 export { getRoutePath, getCustomPath } from "./get-route-path";
