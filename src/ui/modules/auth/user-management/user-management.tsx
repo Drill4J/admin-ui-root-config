@@ -16,12 +16,14 @@
 import React from "react";
 import "twin.macro";
 import { UserManagementTable } from "./tables/users";
+import ApiTable from "./universal-table";
 
 export const UserManagement = () => (
   <div tw="p-5 pt-6">
     <div tw="text-32 leading-40 text-monochrome-black">
       User management
     </div>
+      <ApiTable/>
     <div tw="mt-5">
       <UserManagementTable />
     </div>

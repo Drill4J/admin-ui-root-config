@@ -930,6 +930,10 @@ button:focus {
   margin-top: 0.25rem;
 }
 
+.mb-5 {
+  margin-bottom: 1.25rem;
+}
+
 .mt-22 {
   margin-top: 5.5rem;
 }
@@ -948,10 +952,6 @@ button:focus {
 
 .ml-auto {
   margin-left: auto;
-}
-
-.mt-6 {
-  margin-top: 1.5rem;
 }
 
 .box-border {

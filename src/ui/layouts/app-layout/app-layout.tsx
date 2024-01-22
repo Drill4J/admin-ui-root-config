@@ -21,7 +21,7 @@ interface Props {
 }
 
 export const AppLayout = ({ children }: Props) => (
-  <div tw="flex flex-row w-full">
+  <div tw="">
     {children}
   </div>
 );
