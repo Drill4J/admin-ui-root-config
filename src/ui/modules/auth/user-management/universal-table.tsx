@@ -42,6 +42,7 @@ const ApiTable: React.FC = () => {
       dataIndex: key,
       key: key,
       className: 'whitespace-nowrap',
+      sorter: (a: any, b: any) => (a[key] || '').localeCompare(b[key] || ''),
       filterDropdown: ({ setSelectedKeys, selectedKeys, confirm, clearFilters }: any) => (
         <div style={{ padding: 8 }}>
           <Input
