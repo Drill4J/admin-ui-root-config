@@ -42,7 +42,18 @@ const ApiTable: React.FC = () => {
       dataIndex: key,
       key: key,
       className: 'whitespace-nowrap',
-      sorter: (a: any, b: any) => (a[key] || '').localeCompare(b[key] || ''),
+      sorter: {
+        compare: (a: any, b: any) => {
+          if (!isNaN(a[key]) && !isNaN(b[key])) {
+            // Numeric comparison
+            return a[key] - b[key];
+          } else {
+            // Locale comparison for strings
+            return (a[key] || '').localeCompare(b[key] || '');
+          }
+        },
+        multiple: 0
+      },
       filterDropdown: ({ setSelectedKeys, selectedKeys, confirm, clearFilters }: any) => (
         <div style={{ padding: 8 }}>
           <Input
