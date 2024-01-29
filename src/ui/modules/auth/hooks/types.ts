@@ -26,6 +26,9 @@ export type ApiResponseData<T> = {
   message: string
 }
 
+// Disabled due to known bug; see https://github.com/typescript-eslint/typescript-eslint/issues/2471#issuecomment-685828962
+// TODO - replace with typescript rule
+// eslint-disable-next-line no-shadow
 export enum HttpStatusError {
   BadRequest = 400,
   Unauthorized = 401,

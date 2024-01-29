@@ -14,13 +14,11 @@
  * limitations under the License.
  */
 
-import {DrillSocket} from "./drill-socket";
+import { DrillSocket } from "./drill-socket";
 
-export const getSocketUrl = (socket: string) => {
-  return `${window.location.href.startsWith('https') ? 'wss' : 'ws'}://${
-    process.env.REACT_APP_API_HOST || window.location.host
-  }/ws/${socket}`;
-};
+export const getSocketUrl = (socket: string) => `${window.location.href.startsWith("https") ? "wss" : "ws"}://${
+  process.env.REACT_APP_API_HOST || window.location.host
+}/ws/${socket}`;
 
 export const createApi = (apiPath: string, handleUnauthorized?: () => void) =>
   new DrillSocket(getSocketUrl(apiPath), handleUnauthorized);

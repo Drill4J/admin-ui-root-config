@@ -13,11 +13,15 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-import { Observable, Subject, Subscription, timer } from 'rxjs';
-import { webSocket, WebSocketSubject } from 'rxjs/webSocket';
-import { mergeMap, pairwise, retryWhen, distinctUntilChanged } from 'rxjs/operators';
+import {
+  Observable, Subject, Subscription, timer,
+} from "rxjs";
+import { webSocket, WebSocketSubject } from "rxjs/webSocket";
+import {
+  mergeMap, pairwise, retryWhen, distinctUntilChanged,
+} from "rxjs/operators";
 
-import { SubscribersCollection } from './subscribers-collection';
+import { SubscribersCollection } from "./subscribers-collection";
 
 export interface DrillResponse {
   message: string;
@@ -45,7 +49,7 @@ export class DrillSocket {
 
   public connection$: Observable<DrillResponse>;
 
-  public reconnection$: Subject<'CLOSE' | 'OPEN'>;
+  public reconnection$: Subject<"CLOSE" | "OPEN">;
 
   private subscribers: SubscribersCollection;
 
@@ -54,19 +58,19 @@ export class DrillSocket {
       url,
       closeObserver: {
         next: () => {
-          this.reconnection$.next('CLOSE');
+          this.reconnection$.next("CLOSE");
         },
       },
       openObserver: {
         next: () => {
-          this.reconnection$.next('OPEN');
+          this.reconnection$.next("OPEN");
         },
       },
     });
     this.connection$ = this.ws$.pipe(retryWhen(genericRetryStrategy()));
 
     this.subscription = this.connection$.subscribe(({ type }: DrillResponse) => {
-      if (type === 'UNAUTHORIZED') {
+      if (type === "UNAUTHORIZED") {
         handleUnauthorized && handleUnauthorized();
       }
     });
@@ -74,10 +78,10 @@ export class DrillSocket {
     this.subscribers = new SubscribersCollection();
     this.reconnection$.pipe(distinctUntilChanged(), pairwise()).subscribe((value) => {
       const [prev, current] = value;
-      if (current === 'CLOSE') {
+      if (current === "CLOSE") {
         this.onCloseEvent();
       }
-      if (prev === 'CLOSE' && current === 'OPEN') {
+      if (prev === "CLOSE" && current === "OPEN") {
         this.onOpenEvent();
       }
     });
@@ -88,17 +92,17 @@ export class DrillSocket {
     callback: (arg: any) => void,
     message?: SubscriptionMessage | Record<string, unknown>,
   ) {
-    const encodedTopic = encodeURIComponent(topic).replace(/%2F/g, '/');
+    const encodedTopic = encodeURIComponent(topic).replace(/%2F/g, "/");
     const key = createSubscriberKey(encodedTopic, message);
     let subscription = this.createSubscription(key, encodedTopic, callback, message);
 
     const autoSubscription = this.reconnection$.subscribe((type) => {
-      if (type === 'CLOSE') {
+      if (type === "CLOSE") {
         subscription.unsubscribe();
         this.subscribers.removeSubscriber(key);
       }
-      if (type === 'OPEN' && subscription.closed) {
-        this.send(encodedTopic, 'SUBSCRIBE', message);
+      if (type === "OPEN" && subscription.closed) {
+        this.send(encodedTopic, "SUBSCRIBE", message);
         subscription = this.createSubscription(key, encodedTopic, callback, message);
       }
     });
@@ -110,7 +114,7 @@ export class DrillSocket {
         this.subscribers.setDelay(key, true);
         setTimeout(() => {
           if (this.subscribers.get(key).quantity === 0) {
-            this.send(encodedTopic, 'UNSUBSCRIBE', message);
+            this.send(encodedTopic, "UNSUBSCRIBE", message);
           }
           this.subscribers.setDelay(key, false);
         }, 1000);
@@ -138,7 +142,7 @@ export class DrillSocket {
     message?: SubscriptionMessage | Record<string, unknown>,
   ) {
     if (!this.subscribers.has(key)) {
-      this.send(topic, 'SUBSCRIBE', message);
+      this.send(topic, "SUBSCRIBE", message);
     } else {
       callback(this.subscribers.get(key).lastValue);
     }

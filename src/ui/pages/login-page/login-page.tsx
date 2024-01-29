@@ -23,10 +23,10 @@ import {
 
 import { LoginLayout } from "layouts";
 import { Tab, Tabs } from "components/tabs";
-import { signUpForm } from "../../modules/auth/user-authentication/forms/sign-up";
-import { signInForm } from "../../modules/auth/user-authentication/forms/sign-in";
 import useUiConfig from "modules/auth/hooks/use-ui-config";
 import { navigateToOAuthLoginPage } from "modules/auth/user-authentication/utils";
+import { signUpForm } from "../../modules/auth/user-authentication/forms/sign-up";
+import { signInForm } from "../../modules/auth/user-authentication/forms/sign-in";
 
 export const LoginPage = () => {
   const [error, setError] = useState<string | null>(null);
@@ -38,7 +38,6 @@ export const LoginPage = () => {
 
   const {
     data: uiConfig,
-    isError: isUiConfigError,
     errorMessage: uiConfigErrorMessage,
     isLoading: isUiConfigLoading,
   } = useUiConfig();
@@ -57,7 +56,7 @@ export const LoginPage = () => {
           {isUiConfigLoading ? (
             <>
               <Text>Loading authentication information...</Text>
-              <Spinner tw="mt-5" color="blue"/>
+              <Spinner tw="mt-5" color="blue" />
             </>
           ) : (
             <>
@@ -75,7 +74,7 @@ export const LoginPage = () => {
                         {uiConfig?.oauth2?.enabled && (
                           <>
                             {" "}
-                            use "{uiConfig?.oauth2?.buttonTitle}" authentication
+                            use `&quot;`{uiConfig?.oauth2?.buttonTitle}`&quot;` authentication
                             method or{" "}
                           </>
                         )}
@@ -91,9 +90,8 @@ export const LoginPage = () => {
                   </Tab>
                 </Tabs>
               )}
-              { uiConfig?.oauth2?.enabled && uiConfig?.simpleAuth?.enabled && 
-                <div tw="w-full mt-2 text-monochrome-gray text-center">or</div>
-              }
+              { uiConfig?.oauth2?.enabled && uiConfig?.simpleAuth?.enabled &&
+                <div tw="w-full mt-2 text-monochrome-gray text-center">or</div>}
               {uiConfig?.oauth2?.enabled && (
                 <Button
                   tw="mt-5 w-full mb-5"

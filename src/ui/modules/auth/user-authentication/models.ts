@@ -37,8 +37,8 @@ export type UiConfig = {
 }
 
 type AuthConfigView = {
- simpleAuth: SimpleAuthConfigView
- oauth2: OAuth2ConfigView
+  simpleAuth: SimpleAuthConfigView
+  oauth2: OAuth2ConfigView
 }
 
 type SimpleAuthConfigView = {

@@ -13,6 +13,6 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-export {DrillSocket} from './drill-socket';
-export type { DrillResponse } from './drill-socket';
-export { createApi } from './create-api';
+export { DrillSocket } from "./drill-socket";
+export type { DrillResponse } from "./drill-socket";
+export { createApi } from "./create-api";

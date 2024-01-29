@@ -39,7 +39,7 @@ export const useApiData = <T extends () => Promise<any>>(request: T): ApiRespons
         switch (error?.response?.status) {
           case 401:
             setErrorMessage("Unauthorized - you are not logged in");
-            window.location.href="/login"
+            window.location.href = "/login";
             break;
           case 403:
             setErrorMessage("Forbidden - you don't have necessary permissions");
@@ -49,10 +49,12 @@ export const useApiData = <T extends () => Promise<any>>(request: T): ApiRespons
           }
         }
       }
-      setIsLoading(false)
+      setIsLoading(false);
     };
     fetchData();
   }, []);
 
-  return { data, isError, errorMessage, isLoading: isLoading, httpStatusError };
+  return {
+    data, isError, errorMessage, isLoading, httpStatusError,
+  };
 };

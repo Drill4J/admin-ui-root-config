@@ -35,7 +35,7 @@ export function signInForm(
       const result = await API.signIn(payload);
       setSuccess(result);
       window.location.reload();
-      window.location.href="/"
+      window.location.href = "/";
     } catch (e) {
       setError(e);
     }

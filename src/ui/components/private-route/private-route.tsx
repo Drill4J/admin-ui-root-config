@@ -30,19 +30,19 @@ export function PrivateRoute(props: PrivateRouteProps) {
   const { component, ...rest } = props;
   const Component = component;
 
-  const { data, httpStatusError, isLoading } = useUserInfo()
+  const { data, httpStatusError, isLoading } = useUserInfo();
   if (isLoading) {
-    return <Spinner color="blue"/>
+    return <Spinner color="blue" />;
   }
 
   // handle edgecase when user role has been changed to UNDEFINED after page loaded
   // TODO doesn't work as intended since Admin Backend does not reflect role changes in /user-info
-  //   unless user sings out - signs in 
+  //   unless user sings out - signs in
   if (data?.role === Role.UNDEFINED
-    // 401 / 403 are already handled by interceptor in configureAxios but we might change that 
+    // 401 / 403 are already handled by interceptor in configureAxios but we might change that
     || httpStatusError === HttpStatusError.Unauthorized
     || httpStatusError === HttpStatusError.Forbidden) {
-      return <Redirect to={{ pathname: getPagePath({ name: "login" }) }} />
+    return <Redirect to={{ pathname: getPagePath({ name: "login" }) }} />;
   }
 
   return (

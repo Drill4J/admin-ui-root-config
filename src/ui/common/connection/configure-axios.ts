@@ -20,7 +20,7 @@ export function configureAxios() {
     ? `http://${process.env.REACT_APP_API_HOST}/api`
     : "/api";
 
-  axios.defaults.withCredentials = true
+  axios.defaults.withCredentials = true;
 
   axios.interceptors.response.use(
     (response) => response,

@@ -128,7 +128,7 @@ export const AlertPanel = ({ alerts }: { alerts: IAlert[] }) => (
 const Overlay = styled.div`
   ${tw`fixed bottom-10 flex flex-col-reverse items-center justify-center gap-y-2 w-full z-[200]`}
   background: rgba(0,0,0,0.1)
-`
+`;
 
 function getLatestAlerts(alerts: IAlert[]): IAlert[] {
   return alerts.length > 2 ? alerts.slice(alerts.length - 2) : alerts;
