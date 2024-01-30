@@ -13,15 +13,9 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
+
 import React from "react";
-import "twin.macro";
 
-import { AppLayout } from "layouts";
-
-import { UserApiKeys } from "../../modules/auth/user-api-keys/user-api-keys";
-
-export const UserApiKeysPage = () => (
-  <AppLayout>
-    <UserApiKeys />
-  </AppLayout>
-);
+// eslint-disable-next-line @typescript-eslint/no-unused-vars
+export const UserApiKeysContext = React.createContext((_: string) => {
+});

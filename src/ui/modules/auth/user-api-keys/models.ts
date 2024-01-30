@@ -19,6 +19,8 @@ export type GenerateApiKeyPayload = {
   expiryPeriod: ExpiryPeriodEnum
 };
 
+// https://github.com/typescript-eslint/typescript-eslint/issues/2471
+// eslint-disable-next-line
 export enum ExpiryPeriodEnum {
   ONE_MONTH = "ONE_MONTH",
   THREE_MONTHS = "THREE_MONTHS",

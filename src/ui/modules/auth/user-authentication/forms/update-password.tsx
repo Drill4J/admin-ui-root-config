@@ -39,7 +39,7 @@ export function updatePasswordForm(
         newPassword: payload.newPassword,
         oldPassword: payload.oldPassword,
       });
-      await navigator.clipboard.writeText(payload.newPassword)
+      await navigator.clipboard.writeText(payload.newPassword);
       setSuccess(result);
     } catch (e) {
       setError(e);

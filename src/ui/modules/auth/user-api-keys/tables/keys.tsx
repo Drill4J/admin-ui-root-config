@@ -13,7 +13,7 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-import React, {useEffect, useState} from "react";
+import React, { useEffect, useState } from "react";
 import "twin.macro";
 import {
   Icons,
@@ -23,12 +23,10 @@ import {
   sendAlertEvent,
 } from "@drill4j/ui-kit";
 import * as API from "../api";
-import {UserKeyData} from "../../models";
-import {GenerateApiKeyModal} from "../modal/generate-api-key";
-import {formatHumanReadableDate} from "../../util";
-
-export const RefreshContext = React.createContext((a1: string) => {
-});
+import { UserKeyData } from "../../models";
+import { GenerateApiKeyModal } from "../modal/generate-api-key";
+import { formatHumanReadableDate } from "../../util";
+import { UserApiKeysContext } from "./user-api-keys-context";
 
 export const UserApiKeysTable = () => {
   const [keys, setKeys] = useState([]);
@@ -36,12 +34,12 @@ export const UserApiKeysTable = () => {
 
   const setSuccess = (data: string) => {
     refreshData(Date.now().toString());
-    sendAlertEvent({type: "SUCCESS", title: data});
+    sendAlertEvent({ type: "SUCCESS", title: data });
   };
 
   const setError = (data: string) => {
     refreshData(Date.now().toString());
-    sendAlertEvent({type: "ERROR", title: data});
+    sendAlertEvent({ type: "ERROR", title: data });
   };
 
   useEffect(() => {
@@ -62,12 +60,16 @@ export const UserApiKeysTable = () => {
     fetchData();
   }, [refreshFlag]);
 
-  if (!keys.length) return <>
-    <RefreshContext.Provider value={refreshData}>
-      <GenerateApiKeyModal/>
-      <KeysStub/>
-    </RefreshContext.Provider>
-  </>;
+  if (!keys.length) {
+    return (
+      <>
+        <UserApiKeysContext.Provider value={refreshData}>
+          <GenerateApiKeyModal />
+          <KeysStub />
+        </UserApiKeysContext.Provider>
+      </>
+    );
+  }
 
   const columns = [
     {
@@ -81,21 +83,21 @@ export const UserApiKeysTable = () => {
       accessor: "description",
       filterable: true,
       width: "30%",
-      Cell: ({value}: any) => <div>{value}</div>,
+      Cell: ({ value }: any) => <div>{value}</div>,
       textAlign: "left",
     },
     {
       Header: "Expires At",
       accessor: "expiresAt",
       width: "30%",
-      Cell: ({value}: any) => <div>{formatHumanReadableDate(value)}</div>,
+      Cell: ({ value }: any) => <div>{formatHumanReadableDate(value)}</div>,
       textAlign: "left",
     },
     {
       Header: "Created At",
       accessor: "createdAt",
       width: "30%",
-      Cell: ({value}: any) => <div>{formatHumanReadableDate(value)}</div>,
+      Cell: ({ value }: any) => <div>{formatHumanReadableDate(value)}</div>,
       textAlign: "left",
     },
     {
@@ -109,14 +111,14 @@ export const UserApiKeysTable = () => {
   ];
   return (
     <>
-      <RefreshContext.Provider value={refreshData}>
-        <GenerateApiKeyModal/>
+      <UserApiKeysContext.Provider value={refreshData}>
+        <GenerateApiKeyModal />
         <Table
           data={keys}
           columns={columns}
           stub={(
             <Stub
-              icon={<Icons.Package height={104} width={107}/>}
+              icon={<Icons.Package height={104} width={107} />}
               title="No results found"
               message="Try adjusting your search or filter to find what you are looking for."
             />
@@ -128,14 +130,14 @@ export const UserApiKeysTable = () => {
             },
           ]}
         />
-      </RefreshContext.Provider>
+      </UserApiKeysContext.Provider>
     </>
   );
 };
 
 export const KeysStub = () => (
   <Stub
-    icon={<Icons.Function height={104} width={107}/>}
+    icon={<Icons.Function height={104} width={107} />}
     title="No API keys"
     message=""
   />
@@ -145,8 +147,8 @@ function renderUserApiKeysActions(
   setSuccess: (data: string) => void,
   setError: (data: string) => void,
 ) {
-  return ({row: {values: userKeyData}}: { row: { values: UserKeyData } }) => {
-    return (<div tw="flex flex-wrap gap-5">
+  return ({ row: { values: userKeyData } }: { row: { values: UserKeyData } }) => (
+    <div tw="flex flex-wrap gap-5">
       <Button
         secondary
         size="small"
@@ -164,6 +166,6 @@ function renderUserApiKeysActions(
       >
         Delete
       </Button>
-    </div>);
-  };
+    </div>
+  );
 }

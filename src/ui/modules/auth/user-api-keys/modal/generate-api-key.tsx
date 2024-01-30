@@ -22,8 +22,7 @@ import {
 } from "@drill4j/ui-kit";
 
 import "twin.macro";
-import {generateApiKeyForm} from "../forms/generate-api-key";
-
+import { generateApiKeyForm } from "../forms/generate-api-key";
 
 export const GenerateApiKeyModal = () => {
   const queryParams = useQueryParams<{ activeModal: string }>();

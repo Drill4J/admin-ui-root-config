@@ -15,7 +15,7 @@
  */
 import React from "react";
 import "twin.macro";
-import {ApiKeysManagementTable} from "./tables/keys";
+import { ApiKeysManagementTable } from "./tables/keys";
 
 export const ApiKeysManagement = () => (
   <div tw="p-5 pt-6">
@@ -23,7 +23,7 @@ export const ApiKeysManagement = () => (
       API-Keys management
     </div>
     <div tw="mt-5">
-      <ApiKeysManagementTable/>
+      <ApiKeysManagementTable />
     </div>
   </div>
 );

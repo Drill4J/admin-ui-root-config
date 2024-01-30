@@ -14,8 +14,8 @@
  * limitations under the License.
  */
 import { AxiosResponse } from "axios";
-import { ApiResponseData } from "./hooks/types";
 import dayjs from "dayjs";
+import { ApiResponseData } from "./hooks/types";
 
 export async function runCatching<ReturnType>(promise: Promise<AxiosResponse<ApiResponseData<ReturnType>>>) {
   try {
@@ -27,5 +27,5 @@ export async function runCatching<ReturnType>(promise: Promise<AxiosResponse<Api
 }
 
 export function formatHumanReadableDate(date: string) {
-  return dayjs(date).format('YYYY-MM-DD HH:mm:ss');
+  return dayjs(date).format("YYYY-MM-DD HH:mm:ss");
 }

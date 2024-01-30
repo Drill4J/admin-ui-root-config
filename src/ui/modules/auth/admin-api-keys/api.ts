@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 import axios from "axios";
-import {runCatching} from "../util";
+import { runCatching } from "../util";
 
 async function getKeys() {
   const response = await runCatching<any>(axios.get("/keys"));
@@ -28,5 +28,5 @@ async function deleteKey(id: number) {
 
 export {
   getKeys,
-  deleteKey
+  deleteKey,
 };

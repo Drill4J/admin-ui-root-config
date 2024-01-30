@@ -13,7 +13,7 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-import React, {useEffect, useState} from "react";
+import React, { useEffect, useState } from "react";
 import "twin.macro";
 import {
   Icons,
@@ -23,8 +23,8 @@ import {
   sendAlertEvent,
 } from "@drill4j/ui-kit";
 import * as API from "../api";
-import {KeyData} from "../../models";
-import {formatHumanReadableDate} from "../../util";
+import { KeyData } from "../../models";
+import { formatHumanReadableDate } from "../../util";
 
 export const ApiKeysManagementTable = () => {
   const [keys, setKeys] = useState([]);
@@ -32,12 +32,12 @@ export const ApiKeysManagementTable = () => {
 
   const setSuccess = (data: string) => {
     refreshData(Date.now().toString());
-    sendAlertEvent({type: "SUCCESS", title: data});
+    sendAlertEvent({ type: "SUCCESS", title: data });
   };
 
   const setError = (data: string) => {
     refreshData(Date.now().toString());
-    sendAlertEvent({type: "ERROR", title: data});
+    sendAlertEvent({ type: "ERROR", title: data });
   };
 
   useEffect(() => {
@@ -58,7 +58,7 @@ export const ApiKeysManagementTable = () => {
     fetchData();
   }, [refreshFlag]);
 
-  if (!keys.length) return <KeysStub/>;
+  if (!keys.length) return <KeysStub />;
 
   const columns = [
     {
@@ -78,21 +78,21 @@ export const ApiKeysManagementTable = () => {
       accessor: "description",
       filterable: true,
       width: "30%",
-      Cell: ({value}: any) => <div>{value}</div>,
+      Cell: ({ value }: any) => <div>{value}</div>,
       textAlign: "left",
     },
     {
       Header: "Expires At",
       accessor: "expiresAt",
       width: "30%",
-      Cell: ({value}: any) => <div>{formatHumanReadableDate(value)}</div>,
+      Cell: ({ value }: any) => <div>{formatHumanReadableDate(value)}</div>,
       textAlign: "left",
     },
     {
       Header: "Created At",
       accessor: "createdAt",
       width: "30%",
-      Cell: ({value}: any) => <div>{formatHumanReadableDate(value)}</div>,
+      Cell: ({ value }: any) => <div>{formatHumanReadableDate(value)}</div>,
       textAlign: "left",
     },
     {
@@ -100,14 +100,14 @@ export const ApiKeysManagementTable = () => {
       accessor: "username",
       filterable: true,
       width: "30%",
-      Cell: ({value}: any) => <div>{value}</div>,
+      Cell: ({ value }: any) => <div>{value}</div>,
       textAlign: "left",
     },
     {
       Header: "Role",
       accessor: "role",
       width: "30%",
-      Cell: ({value}: any) => <div>{value}</div>,
+      Cell: ({ value }: any) => <div>{value}</div>,
       textAlign: "left",
     },
     {
@@ -126,7 +126,7 @@ export const ApiKeysManagementTable = () => {
         columns={columns}
         stub={(
           <Stub
-            icon={<Icons.Package height={104} width={107}/>}
+            icon={<Icons.Package height={104} width={107} />}
             title="No results found"
             message="Try adjusting your search or filter to find what you are looking for."
           />
@@ -144,7 +144,7 @@ export const ApiKeysManagementTable = () => {
 
 export const KeysStub = () => (
   <Stub
-    icon={<Icons.Function height={104} width={107}/>}
+    icon={<Icons.Function height={104} width={107} />}
     title="No keys"
     message=""
   />
@@ -154,8 +154,8 @@ function renderApiKeysManagementActions(
   setSuccess: (data: string) => void,
   setError: (data: string) => void,
 ) {
-  return ({row: {values: keyData}}: { row: { values: KeyData } }) => {
-    return (<div tw="flex flex-wrap gap-5">
+  return ({ row: { values: keyData } }: { row: { values: KeyData } }) => (
+    <div tw="flex flex-wrap gap-5">
       <Button
         secondary
         size="small"
@@ -173,6 +173,6 @@ function renderApiKeysManagementActions(
       >
         Delete
       </Button>
-    </div>);
-  };
+    </div>
+  );
 }

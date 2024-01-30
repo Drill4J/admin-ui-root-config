@@ -13,26 +13,24 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-import React, {useContext, useState} from "react";
-import tw, {styled} from "twin.macro";
+import React, { useContext, useState } from "react";
+import tw, { styled } from "twin.macro";
 import {
-  Button, Field, Fields, Formik, Form, LightDropdown
+  Button, Field, Fields, Formik, Form, LightDropdown,
 } from "@drill4j/ui-kit";
-import {API, ExpiryPeriodEnum, GenerateApiKeyPayload} from "..";
-import {RefreshContext} from "../tables/keys";
-import {DarkDropdown} from "../../../../components";
-
+import { API, ExpiryPeriodEnum, GenerateApiKeyPayload } from "..";
+import { UserApiKeysContext } from "../tables/user-api-keys-context";
 
 export function generateApiKeyForm(
   setSuccess: React.Dispatch<React.SetStateAction<string | null>>,
   setError: React.Dispatch<React.SetStateAction<string | null>>,
   resetState: () => void,
 ) {
-  const refreshData = useContext(RefreshContext);
+  const refreshData = useContext(UserApiKeysContext);
   const [expiryPeriod, setExpiryPeriod] = useState<any>(ExpiryPeriodEnum.ONE_MONTH);
 
   async function handleGenerateApiKey(
-    payload: GenerateApiKeyPayload
+    payload: GenerateApiKeyPayload,
   ) {
     try {
       const result = await API.generateKey({
@@ -40,7 +38,7 @@ export function generateApiKeyForm(
         expiryPeriod: payload.expiryPeriod,
       });
       refreshData(Date.now().toString());
-      await navigator.clipboard.writeText(result.data.apiKey)
+      await navigator.clipboard.writeText(result.data.apiKey);
       setSuccess("Success. API keys is copied to clipboard.");
     } catch (e) {
       setError(e);

@@ -20,10 +20,10 @@ import { routes } from "common";
 import { PrivateRoute, useSetPanelContext } from "components";
 import { AdministratePage } from "pages/administrate-page";
 import { Button, Icons, Stub } from "@drill4j/ui-kit";
-import { AgentPage } from "../agent";
-import { ServiceGroup } from "../service-group";
 import { AdminApiKeysPage } from "pages/admin-api-keys-page";
 import { UserApiKeysPage } from "pages/user-api-keys-page";
+import { AgentPage } from "../agent";
+import { ServiceGroup } from "../service-group";
 
 export const PageSwitcher = () => {
   const setPanel = useSetPanelContext();

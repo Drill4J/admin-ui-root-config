@@ -16,17 +16,17 @@
 import React from "react";
 import "twin.macro";
 
-import {AppLayout} from "layouts";
+import { AppLayout } from "layouts";
 
-import {userHasAdminRole} from "modules/auth/hooks/use-has-role";
-import {ApiKeysManagement} from "../../modules/auth/admin-api-keys/user-management";
+import { userHasAdminRole } from "modules/auth/hooks/use-has-role";
+import { ApiKeysManagement } from "../../modules/auth/admin-api-keys/user-management";
 
 export const AdminApiKeysPage = () => {
-  const {hasRole, isError, errorMessage} = userHasAdminRole();
+  const { hasRole, isError, errorMessage } = userHasAdminRole();
 
   return (
     <AppLayout>
-      {hasRole && (<ApiKeysManagement/>)}
+      {hasRole && (<ApiKeysManagement />)}
       {isError && (<div>{errorMessage}</div>)}
     </AppLayout>
   );
