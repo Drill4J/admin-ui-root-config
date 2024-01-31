@@ -16,7 +16,7 @@
 import React, { useContext } from "react";
 import tw, { styled } from "twin.macro";
 import {
-  Button, Field, Fields, Formik, Form
+  Button, Field, Fields, Formik, Form,
 } from "@drill4j/ui-kit";
 import { API, ExpiryPeriodEnum, GenerateApiKeyPayload } from "..";
 import { UserApiKeysContext } from "../tables/user-api-keys-context";
@@ -64,7 +64,7 @@ export function generateApiKeyForm(
             name="description"
             type="text"
             component={Fields.Input}
-            required={true}
+            required
             placeholder="Description"
           />
         </Label>
