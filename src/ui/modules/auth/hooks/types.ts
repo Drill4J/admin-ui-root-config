@@ -16,10 +16,25 @@
 export type ApiResponse<T> = {
   data: T | null
   isError: boolean
-  errorMessage: string | null
+  errorMessage: string | null,
+  isLoading: boolean,
+  httpStatusError: HttpStatusError | null
 }
 
 export type ApiResponseData<T> = {
   data: T | null
   message: string
+}
+
+// Disabled due to known bug; see https://github.com/typescript-eslint/typescript-eslint/issues/2471#issuecomment-685828962
+// TODO - replace with typescript rule
+// eslint-disable-next-line no-shadow
+export enum HttpStatusError {
+  BadRequest = 400,
+  Unauthorized = 401,
+  Forbidden = 403,
+  NotFound = 404,
+  InternalServerError = 500,
+  BadGateway = 502,
+  ServiceUnavailable = 503,
 }

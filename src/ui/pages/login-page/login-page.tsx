@@ -13,18 +13,18 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-import React, { useLayoutEffect, useState } from "react";
-import { useHistory } from "react-router-dom";
-import "twin.macro";
+import React, { useState } from "react";
+import tw, { styled } from "twin.macro";
 import {
-  addQueryParamsToPath,
+  Button,
   ContentAlert,
+  Spinner,
 } from "@drill4j/ui-kit";
 
 import { LoginLayout } from "layouts";
-import { TOKEN_KEY } from "common/constants";
-import { getCustomPath } from "common";
 import { Tab, Tabs } from "components/tabs";
+import useUiConfig from "modules/auth/hooks/use-ui-config";
+import { navigateToOAuthLoginPage } from "modules/auth/user-authentication/utils";
 import { signUpForm } from "../../modules/auth/user-authentication/forms/sign-up";
 import { signInForm } from "../../modules/auth/user-authentication/forms/sign-in";
 
@@ -35,37 +35,77 @@ export const LoginPage = () => {
     setError("");
     setSuccess("");
   };
-  const { push } = useHistory();
-  useLayoutEffect(() => {
-    if (localStorage.getItem(TOKEN_KEY)) {
-      push(
-        addQueryParamsToPath({ activeModal: "analityc" }, `${getCustomPath()}/`),
-      );
-    }
-  }, []);
+
+  const {
+    data: uiConfig,
+    errorMessage: uiConfigErrorMessage,
+    isLoading: isUiConfigLoading,
+  } = useUiConfig();
+
+  if (!uiConfig?.simpleAuth?.enabled && uiConfig?.oauth2?.automaticSignIn) {
+    navigateToOAuthLoginPage();
+  }
 
   return (
     <LoginLayout>
       <div tw="flex flex-col h-full">
-        <div className="flex flex-col justify-center items-center w-full h-full">
+        <div tw="px-5" className="flex flex-col justify-center items-center w-full h-full">
           <div tw="text-32 leading-40 text-monochrome-black">
             Welcome to Drill4J
           </div>
-          <Tabs onChange={resetState}>
-            <Tab title="Sign in">
-              {signInForm(setSuccess, setError, resetState)}
-            </Tab>
-            <Tab title="Sign up">
-              {signUpForm(setSuccess, setError, resetState)}
-            </Tab>
-            <Tab title="Forgot password">
-              <div tw="mt-2 px-16 text-16 leading-24 text-monochrome-default text-center">
-                Please contact Drill4J instance administrator to request
-                password reset
-              </div>
-            </Tab>
-          </Tabs>
-          {error && <ContentAlert type="ERROR">{`${error}`}</ContentAlert>}
+          {isUiConfigLoading ? (
+            <>
+              <Text>Loading authentication information...</Text>
+              <Spinner tw="mt-5" color="blue" />
+            </>
+          ) : (
+            <>
+              {uiConfig?.simpleAuth?.enabled && (
+                <Tabs onChange={resetState}>
+                  <Tab title="Sign in">
+                    {signInForm(setSuccess, setError, resetState)}
+                  </Tab>
+                  <Tab title="Sign up">
+                    {uiConfig?.simpleAuth?.signUpEnabled ? (
+                      signUpForm(setSuccess, setError, resetState)
+                    ) : (
+                      <Text>
+                        Sign up is disabled. Please
+                        {uiConfig?.oauth2?.enabled && (
+                          <>
+                            {" "}
+                            use `&quot;`{uiConfig?.oauth2?.buttonTitle}`&quot;` authentication
+                            method or{" "}
+                          </>
+                        )}
+                        contact Drill4J instance Administrator
+                      </Text>
+                    )}
+                  </Tab>
+                  <Tab title="Forgot password">
+                    <Text>
+                      Please contact Drill4J instance administrator to request
+                      password reset
+                    </Text>
+                  </Tab>
+                </Tabs>
+              )}
+              { uiConfig?.oauth2?.enabled && uiConfig?.simpleAuth?.enabled &&
+                <div tw="w-full mt-2 text-monochrome-gray text-center">or</div>}
+              {uiConfig?.oauth2?.enabled && (
+                <Button
+                  tw="mt-5 w-full mb-5"
+                  secondary
+                  size="large"
+                  type="submit"
+                  onClick={() => navigateToOAuthLoginPage()}
+                >
+                  {uiConfig?.oauth2?.buttonTitle}
+                </Button>
+              )}
+            </>
+          )}
+          {(uiConfigErrorMessage || error) && <ContentAlert type="ERROR">{`${uiConfigErrorMessage || error}`}</ContentAlert>}
           {success && (
             <ContentAlert type="SUCCESS">{`${success}`}</ContentAlert>
           )}
@@ -77,3 +117,7 @@ export const LoginPage = () => {
     </LoginLayout>
   );
 };
+
+const Text = styled.div`
+  ${tw`mt-2 px-2 text-16 leading-24 text-monochrome-default text-center`}
+`;

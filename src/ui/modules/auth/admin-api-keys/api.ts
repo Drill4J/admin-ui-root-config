@@ -13,9 +13,20 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-export { configureAxios, defaultAdminSocket } from "./connection";
+import axios from "axios";
+import { runCatching } from "../util";
+
+async function getKeys() {
+  const response = await runCatching<any>(axios.get("/keys"));
+  return response.data.data;
+}
+
+async function deleteKey(id: number) {
+  const response = await runCatching<any>(axios.delete(`/keys/${id}`));
+  return response.data.message;
+}
+
 export {
-  AGENT_STATUS, BUILD_STATUS,
-} from "./constants";
-export { getPagePath, routes } from "./get-page-path";
-export { getRoutePath, getCustomPath } from "./get-route-path";
+  getKeys,
+  deleteKey,
+};

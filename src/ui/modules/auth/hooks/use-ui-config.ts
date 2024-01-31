@@ -13,9 +13,8 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-export { configureAxios, defaultAdminSocket } from "./connection";
-export {
-  AGENT_STATUS, BUILD_STATUS,
-} from "./constants";
-export { getPagePath, routes } from "./get-page-path";
-export { getRoutePath, getCustomPath } from "./get-route-path";
+
+import { getUiConfig } from "../user-authentication/api";
+import { useApiData } from "./use-api-data";
+
+export default () => useApiData(() => getUiConfig());

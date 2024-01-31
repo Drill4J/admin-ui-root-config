@@ -13,9 +13,17 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-export { configureAxios, defaultAdminSocket } from "./connection";
-export {
-  AGENT_STATUS, BUILD_STATUS,
-} from "./constants";
-export { getPagePath, routes } from "./get-page-path";
-export { getRoutePath, getCustomPath } from "./get-route-path";
+
+export type GenerateApiKeyPayload = {
+  description: string
+  expiryPeriod: ExpiryPeriodEnum
+};
+
+// https://github.com/typescript-eslint/typescript-eslint/issues/2471
+// eslint-disable-next-line
+export enum ExpiryPeriodEnum {
+  ONE_MONTH = "ONE_MONTH",
+  THREE_MONTHS = "THREE_MONTHS",
+  SIX_MONTHS = "SIX_MONTHS",
+  ONE_YEAR = "ONE_YEAR",
+}

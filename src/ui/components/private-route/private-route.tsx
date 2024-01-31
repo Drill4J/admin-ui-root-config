@@ -16,29 +16,38 @@
 import React from "react";
 import { RouteProps, Route, Redirect } from "react-router-dom";
 
-import { TOKEN_KEY } from "common/constants";
 import { getPagePath } from "common";
+import useUserInfo from "modules/auth/hooks/use-user-info";
+import { Spinner } from "@drill4j/ui-kit";
+import { Role } from "modules/auth/models";
+import { HttpStatusError } from "modules/auth/hooks/types";
 
 interface PrivateRouteProps extends RouteProps {
   component: React.ComponentType<any>;
-}
-
-export function isAuth() {
-  return Boolean(localStorage.getItem(TOKEN_KEY));
 }
 
 export function PrivateRoute(props: PrivateRouteProps) {
   const { component, ...rest } = props;
   const Component = component;
 
+  const { data, httpStatusError, isLoading } = useUserInfo();
+  if (isLoading) {
+    return <Spinner color="blue" />;
+  }
+
+  // handle edgecase when user role has been changed to UNDEFINED after page loaded
+  // TODO doesn't work as intended since Admin Backend does not reflect role changes in /user-info
+  //   unless user sings out - signs in
+  if (data?.role === Role.UNDEFINED
+    // 401 / 403 are already handled by interceptor in configureAxios but we might change that
+    || httpStatusError === HttpStatusError.Unauthorized
+    || httpStatusError === HttpStatusError.Forbidden) {
+    return <Redirect to={{ pathname: getPagePath({ name: "login" }) }} />;
+  }
+
   return (
     <Route
-      render={() =>
-        (isAuth() ? (
-          <Component {...props} />
-        ) : (
-          <Redirect to={{ pathname: getPagePath({ name: "login" }) }} />
-        ))}
+      render={() => <Component {...props} />}
       {...rest}
     />
   );

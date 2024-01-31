@@ -14,25 +14,26 @@
  * limitations under the License.
  */
 import axios from "axios";
+import { runCatching } from "../util";
+import { GenerateApiKeyPayload } from "./models";
 
-export function configureAxios() {
-  axios.defaults.baseURL = process.env.REACT_APP_API_HOST
-    ? `http://${process.env.REACT_APP_API_HOST}/api`
-    : "/api";
-
-  axios.defaults.withCredentials = true;
-
-  axios.interceptors.response.use(
-    (response) => response,
-    (error) => {
-      if (error.response && error.response.status === 401) {
-        // TODO navigate to dedicated 401/403 page?
-        if (window.location.pathname !== "/login") {
-          window.location.href = "/login";
-        }
-      }
-
-      return Promise.reject(error);
-    },
-  );
+async function getKeys() {
+  const response = await runCatching<any>(axios.get("/user-keys"));
+  return response.data.data;
 }
+
+async function deleteKey(id: number) {
+  const response = await runCatching<any>(axios.delete(`/user-keys/${id}`));
+  return response.data.message;
+}
+
+async function generateKey(payload: GenerateApiKeyPayload) {
+  const response = await runCatching<any>(axios.post("/user-keys", payload));
+  return response.data;
+}
+
+export {
+  getKeys,
+  deleteKey,
+  generateKey,
+};

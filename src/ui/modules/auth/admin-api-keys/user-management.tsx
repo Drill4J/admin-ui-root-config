@@ -13,5 +13,17 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-export const TOKEN_HEADER = "Authorization";
-export const TOKEN_KEY = "auth_token";
+import React from "react";
+import "twin.macro";
+import { ApiKeysManagementTable } from "./tables/keys";
+
+export const ApiKeysManagement = () => (
+  <div tw="p-5 pt-6">
+    <div tw="text-32 leading-40 text-monochrome-black">
+      API keys management
+    </div>
+    <div tw="mt-5">
+      <ApiKeysManagementTable />
+    </div>
+  </div>
+);

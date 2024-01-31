@@ -13,9 +13,7 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-export { configureAxios, defaultAdminSocket } from "./connection";
-export {
-  AGENT_STATUS, BUILD_STATUS,
-} from "./constants";
-export { getPagePath, routes } from "./get-page-path";
-export { getRoutePath, getCustomPath } from "./get-route-path";
+export async function navigateToOAuthLoginPage() {
+  const host = process.env.REACT_APP_API_HOST || window.location.host;
+  window.open(`${window.location.protocol}//${host}/oauth/login`, "_self");
+}

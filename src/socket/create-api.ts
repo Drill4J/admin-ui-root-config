@@ -13,9 +13,12 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-export { configureAxios, defaultAdminSocket } from "./connection";
-export {
-  AGENT_STATUS, BUILD_STATUS,
-} from "./constants";
-export { getPagePath, routes } from "./get-page-path";
-export { getRoutePath, getCustomPath } from "./get-route-path";
+
+import { DrillSocket } from "./drill-socket";
+
+export const getSocketUrl = (socket: string) => `${window.location.href.startsWith("https") ? "wss" : "ws"}://${
+  process.env.REACT_APP_API_HOST || window.location.host
+}/ws/${socket}`;
+
+export const createApi = (apiPath: string, handleUnauthorized?: () => void) =>
+  new DrillSocket(getSocketUrl(apiPath), handleUnauthorized);
