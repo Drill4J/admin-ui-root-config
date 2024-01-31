@@ -13,10 +13,10 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-import React, { useContext, useState } from "react";
+import React, { useContext } from "react";
 import tw, { styled } from "twin.macro";
 import {
-  Button, Field, Fields, Formik, Form, LightDropdown,
+  Button, Field, Fields, Formik, Form
 } from "@drill4j/ui-kit";
 import { API, ExpiryPeriodEnum, GenerateApiKeyPayload } from "..";
 import { UserApiKeysContext } from "../tables/user-api-keys-context";
@@ -27,7 +27,6 @@ export function generateApiKeyForm(
   resetState: () => void,
 ) {
   const refreshData = useContext(UserApiKeysContext);
-  const [expiryPeriod, setExpiryPeriod] = useState<any>(ExpiryPeriodEnum.ONE_MONTH);
 
   async function handleGenerateApiKey(
     payload: GenerateApiKeyPayload,
@@ -39,7 +38,7 @@ export function generateApiKeyForm(
       });
       refreshData(Date.now().toString());
       await navigator.clipboard.writeText(result.data.apiKey);
-      setSuccess("Success. API keys is copied to clipboard.");
+      setSuccess("API key is copied to clipboard.");
     } catch (e) {
       setError(e);
     }
@@ -70,10 +69,13 @@ export function generateApiKeyForm(
         </Label>
         <Label>
           Choose Expiry Period:
-          <LightDropdown
-            onChange={(value => setExpiryPeriod(value))}
-            placeholder="Expiry period"
-           options={expiryPeriodType}/>
+          <Field as={Select} id="expiryPeriod" name="expiryPeriod">
+            {expiryPeriodType.map((option) => (
+              <option key={option.value} value={option.value}>
+                {option.label}
+              </option>
+            ))}
+          </Field>
         </Label>
         <Button
           tw="flex justify-center w-full"
@@ -88,6 +90,10 @@ export function generateApiKeyForm(
   );
 }
 
+const Select = styled.select`
+  ${tw`w-full h-10 px-4 py-2 border rounded text-monochrome-gray outline-none`};
+`;
+
 const Label = styled.label`
   ${tw`flex flex-col px-6 text-14 text-monochrome-gray p-0`}
 `;
@@ -95,7 +101,8 @@ const Label = styled.label`
 export const AuthFormStyle = styled(Form)`
   ${tw`flex flex-col gap-y-6`}
   row-gap: 3rem;
-
+  width: 100%;
+  
   & > * {
     height: 2rem;
   }
@@ -104,18 +111,18 @@ export const AuthFormStyle = styled(Form)`
 const expiryPeriodType = [
   {
     value: ExpiryPeriodEnum.ONE_MONTH,
-    label: "One month",
+    label: "1 Month",
   },
   {
     value: ExpiryPeriodEnum.THREE_MONTHS,
-    label: "Three Month",
+    label: "3 Month",
   },
   {
     value: ExpiryPeriodEnum.SIX_MONTHS,
-    label: "Six Months",
+    label: "6 Month",
   },
   {
     value: ExpiryPeriodEnum.ONE_YEAR,
-    label: "One Year",
+    label: "1 Year",
   },
 ];
