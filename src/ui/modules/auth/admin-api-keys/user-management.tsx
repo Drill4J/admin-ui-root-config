@@ -13,19 +13,17 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-import { AxiosResponse } from "axios";
-import dayjs from "dayjs";
-import { ApiResponseData } from "./hooks/types";
+import React from "react";
+import "twin.macro";
+import { ApiKeysManagementTable } from "./tables/keys";
 
-export async function runCatching<ReturnType>(promise: Promise<AxiosResponse<ApiResponseData<ReturnType>>>) {
-  try {
-    return await promise;
-  } catch (e) {
-    const message = e?.response?.data?.message || e?.message || "unknown error";
-    throw new Error(message);
-  }
-}
-
-export function formatHumanReadableDate(date: string) {
-  return dayjs(date).format("YYYY-MM-DD HH:mm:ss");
-}
+export const ApiKeysManagement = () => (
+  <div tw="p-5 pt-6">
+    <div tw="text-32 leading-40 text-monochrome-black">
+      API-Keys management
+    </div>
+    <div tw="mt-5">
+      <ApiKeysManagementTable />
+    </div>
+  </div>
+);

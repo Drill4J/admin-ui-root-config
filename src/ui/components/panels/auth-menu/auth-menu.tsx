@@ -54,6 +54,14 @@ export const AuthMenu = ({ close }: Props) => {
           </ButtonLink>
 
           <ButtonLink
+            onClick={() => {
+              push(getPagePath({ name: "userKeys" }));
+            }}
+          >
+            API keys
+          </ButtonLink>
+
+          <ButtonLink
             onClick={async () => {
               try {
                 await API.signOut();

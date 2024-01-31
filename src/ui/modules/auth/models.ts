@@ -26,3 +26,20 @@ export type UserData = {
   role: Role;
   username: string;
 }
+
+export type KeyData = {
+  id: number;
+  userId: number;
+  description: string;
+  expiresAt: string;
+  createdAt: string;
+  username: string;
+  role: Role;
+}
+
+export type UserKeyData = {
+  id: number;
+  description: string;
+  expiresAt: string;
+  createdAt: string;
+}

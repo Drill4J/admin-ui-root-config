@@ -13,19 +13,17 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-import { AxiosResponse } from "axios";
-import dayjs from "dayjs";
-import { ApiResponseData } from "./hooks/types";
 
-export async function runCatching<ReturnType>(promise: Promise<AxiosResponse<ApiResponseData<ReturnType>>>) {
-  try {
-    return await promise;
-  } catch (e) {
-    const message = e?.response?.data?.message || e?.message || "unknown error";
-    throw new Error(message);
-  }
-}
+export type GenerateApiKeyPayload = {
+  description: string
+  expiryPeriod: ExpiryPeriodEnum
+};
 
-export function formatHumanReadableDate(date: string) {
-  return dayjs(date).format("YYYY-MM-DD HH:mm:ss");
+// https://github.com/typescript-eslint/typescript-eslint/issues/2471
+// eslint-disable-next-line
+export enum ExpiryPeriodEnum {
+  ONE_MONTH = "ONE_MONTH",
+  THREE_MONTHS = "THREE_MONTHS",
+  SIX_MONTHS = "SIX_MONTHS",
+  ONE_YEAR = "ONE_YEAR",
 }

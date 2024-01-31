@@ -13,19 +13,9 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-import { AxiosResponse } from "axios";
-import dayjs from "dayjs";
-import { ApiResponseData } from "./hooks/types";
 
-export async function runCatching<ReturnType>(promise: Promise<AxiosResponse<ApiResponseData<ReturnType>>>) {
-  try {
-    return await promise;
-  } catch (e) {
-    const message = e?.response?.data?.message || e?.message || "unknown error";
-    throw new Error(message);
-  }
-}
+import React from "react";
 
-export function formatHumanReadableDate(date: string) {
-  return dayjs(date).format("YYYY-MM-DD HH:mm:ss");
-}
+// eslint-disable-next-line @typescript-eslint/no-unused-vars
+export const UserApiKeysContext = React.createContext((_: string) => {
+});
