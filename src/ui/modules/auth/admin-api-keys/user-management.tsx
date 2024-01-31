@@ -20,7 +20,7 @@ import { ApiKeysManagementTable } from "./tables/keys";
 export const ApiKeysManagement = () => (
   <div tw="p-5 pt-6">
     <div tw="text-32 leading-40 text-monochrome-black">
-      API-Keys management
+      API keys management
     </div>
     <div tw="mt-5">
       <ApiKeysManagementTable />
