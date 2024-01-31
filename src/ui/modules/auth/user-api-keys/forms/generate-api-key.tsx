@@ -64,6 +64,7 @@ export function generateApiKeyForm(
             name="description"
             type="text"
             component={Fields.Input}
+            required={true}
             placeholder="Description"
           />
         </Label>
