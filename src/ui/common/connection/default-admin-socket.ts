@@ -13,11 +13,10 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-import { createApi } from "@drill4j/socket";
-import { routes, TOKEN_KEY } from "common";
+import { routes } from "common";
+import { createApi } from "../../../socket";
 
 export const defaultAdminSocket = createApi("drill-admin-socket", () => {
-  localStorage.setItem(TOKEN_KEY, "");
   if (window.location.pathname !== routes.login) {
     window.location.href = routes.login;
   }

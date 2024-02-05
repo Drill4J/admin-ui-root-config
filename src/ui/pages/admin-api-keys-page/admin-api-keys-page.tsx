@@ -13,9 +13,21 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-export { configureAxios, defaultAdminSocket } from "./connection";
-export {
-  AGENT_STATUS, BUILD_STATUS,
-} from "./constants";
-export { getPagePath, routes } from "./get-page-path";
-export { getRoutePath, getCustomPath } from "./get-route-path";
+import React from "react";
+import "twin.macro";
+
+import { AppLayout } from "layouts";
+
+import { userHasAdminRole } from "modules/auth/hooks/use-has-role";
+import { ApiKeysManagement } from "../../modules/auth/admin-api-keys/user-management";
+
+export const AdminApiKeysPage = () => {
+  const { hasRole, isError, errorMessage } = userHasAdminRole();
+
+  return (
+    <AppLayout>
+      {hasRole && (<ApiKeysManagement />)}
+      {isError && (<div>{errorMessage}</div>)}
+    </AppLayout>
+  );
+};

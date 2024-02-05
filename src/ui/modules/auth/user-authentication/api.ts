@@ -14,20 +14,23 @@
  * limitations under the License.
  */
 import axios from "axios";
-import { TOKEN_KEY } from "common/constants";
 import { runCatching } from "../util";
 import {
-  LoginPayload, RegistrationPayload, ChangePasswordPayload, UserInfo,
+  LoginPayload, RegistrationPayload, ChangePasswordPayload, UserInfo, UiConfig,
 } from "./models";
 
 async function signIn(loginPayload: LoginPayload): Promise<any> {
   const response = await runCatching<any>(axios.post("/sign-in", loginPayload));
-  localStorage.setItem(TOKEN_KEY, response.headers.authorization);
   return response.data.message;
 }
 
 async function signUp(registrationPayload: RegistrationPayload) {
   const response = await runCatching<any>(axios.post("/sign-up", registrationPayload));
+  return response.data.message;
+}
+
+async function signOut() {
+  const response = await runCatching<any>(axios.post("/sign-out"));
   return response.data.message;
 }
 
@@ -41,6 +44,11 @@ async function getUserInfo() {
   return response.data.data;
 }
 
+async function getUiConfig() {
+  const response = await runCatching<UiConfig>(axios.get("/ui-config"));
+  return response.data.data?.auth;
+}
+
 export {
-  signIn, signUp, updatePassword, getUserInfo,
+  signIn, signUp, signOut, updatePassword, getUserInfo, getUiConfig,
 };

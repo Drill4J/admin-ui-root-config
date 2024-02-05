@@ -39,6 +39,7 @@ export function updatePasswordForm(
         newPassword: payload.newPassword,
         oldPassword: payload.oldPassword,
       });
+      await navigator.clipboard.writeText(payload.newPassword);
       setSuccess(result);
     } catch (e) {
       setError(e);
@@ -104,7 +105,7 @@ const Label = styled.label`
 `;
 
 export const AuthFormStyle = styled(Form)`
-  ${tw`flex flex-col gap-y-6 w-88`}
+  ${tw`flex flex-col gap-y-6`}
   row-gap: 3rem;
   & > * {
     height: 2rem;

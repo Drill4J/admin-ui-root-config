@@ -31,3 +31,23 @@ export type UserInfo = {
   role: string
   username: string
 }
+
+export type UiConfig = {
+  auth: AuthConfigView
+}
+
+type AuthConfigView = {
+  simpleAuth: SimpleAuthConfigView
+  oauth2: OAuth2ConfigView
+}
+
+type SimpleAuthConfigView = {
+  enabled: boolean,
+  signUpEnabled: boolean
+}
+
+type OAuth2ConfigView = {
+  enabled: boolean,
+  buttonTitle: string,
+  automaticSignIn: boolean
+}
